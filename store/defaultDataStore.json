@@ -1,6 +1,3 @@
 {
-    "@isMobile": true,
-    "@is_new_sidenavbar": true,
-    "@hide_clock": false,
-    "@international_strip": false
+    "mobile": true
 }

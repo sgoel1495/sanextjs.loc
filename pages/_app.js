@@ -6,15 +6,15 @@ import { isMobile } from 'react-device-detect';
 function MyApp({ Component, pageProps }) {
   const dataStoreDefault = require('../store/defaultDataStore.json');
   const [dataStore, setDataStore] = useState(dataStoreDefault);
-  useEffect(() => {
-    updateDataStore("@isMobile", isMobile);
-  }, [isMobile]);
-
   const updateDataStore = (key, value) => {
     const newDataStore = { ...dataStore };
     newDataStore[key] = value;
     setDataStore(newDataStore);
   }
+  useEffect(() => {
+    updateDataStore("@isMobile", isMobile);
+  }, [isMobile]);
+
 
   return (
     <AppWideContext.Provider value={{

@@ -1,4 +1,3 @@
-import React from 'react';
 import Document, {Html, Head, Main, NextScript} from 'next/document';
 
 class MyDcoument extends Document {
@@ -9,7 +8,7 @@ class MyDcoument extends Document {
 
   render() {
     return (
-      <Html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
+      <Html lang="en" xmlns="http://www.w3.org/1999/xhtml">
         <Head/>
         <body>
           <Main/>
