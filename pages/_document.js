@@ -9,13 +9,9 @@ class MyDcoument extends Document {
 
   render() {
     return (
-      <Html lang="en">
+      <Html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
         <Head/>
-        <body className='body-home'>
-          <noscript>
-            <iframe id="gtmiframe" src="https://www.googletagmanager.com/ns.html?id=GTM-WK9X4QX"></iframe>
-          </noscript>
-
+        <body>
           <Main/>
           <NextScript/>
         </body>
