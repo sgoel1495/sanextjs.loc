@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Acherus Grotesque Regular';
+    font-display: swap;
+    font-style: normal;
+    font-weight: normal;
+    src: local('Acherus Grotesque Regular'), url('acherus_grotesque_-_regular.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Acherus Grotesque Regular Italic';
+    font-display: swap;
+    font-style: normal;
+    font-weight: normal;
+    src: local('Acherus Grotesque Regular Italic'), url('acherus_grotesque_-_regular_italic.woff') format('woff');
+}

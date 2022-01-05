@@ -1,3 +1,9 @@
+@import url('./fonts/font.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Fonts */
 /* Only Css common to whole project */
 
 
