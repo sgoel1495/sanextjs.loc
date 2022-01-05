@@ -1,0 +1,7 @@
+{
+  "@context": "http://www.schema.org",
+  "@type": "Organization",
+  "name": "Salt Attire",
+  "url": "https://saltattire.com/",
+  "logo": "https://saltattire.com/assets/SALT_logo.png"
+}

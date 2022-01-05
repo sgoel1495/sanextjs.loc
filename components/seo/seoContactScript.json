@@ -1,0 +1,24 @@
+{
+    "@context": "http://www.schema.org",
+    "@type": "LocalBusiness",
+    "name": "Salt Attire",
+    "url": "https://saltattire.com/",
+    "logo": "https://saltattire.com/assets/SALT_logo.png",
+    "image": "https://saltattire.com/assets/look-224/Full.v1.jpg",
+    "priceRange": "INR",
+    "telephone": "+91 9015 904 904",
+    "description": " Our design team has a simple philosophy, design a nine to nine wardrobe for the contemporary working woman. We have anticipated your needs, your lifestyle, your schedule to create designs which are functional, sophisticated and chic. We focus on clean cuts with finer detailing. We understand the need for functionality without compromising on the aesthetic appeal.",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Plot 508, Udyog Vihar Phase V",
+        "addressLocality": "Gurugram",
+        "addressRegion": "Haryana",
+        "postalCode": "122022",
+        "addressCountry": "India"
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "telephone": "+91 9015 904 904"
+    }
+}
