@@ -7,9 +7,9 @@ import Link from "next/link";
 function InfoBand() {
 
   return (
-    <div id="info-band">
+    <div id="info-band" className={"bg-[#F1FF26] text-center py-2"}>
       <span>HOT DEAL</span>
-      <Link href="/end-of-season-sale">FLAT PRICES</Link>
+      <Link href="/end-of-season-sale"><span className={"underline"}>FLAT PRICES</span></Link>
     </div>
   )
 
