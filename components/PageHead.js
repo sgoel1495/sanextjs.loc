@@ -8,7 +8,7 @@ import getHeaderData from '../helpers/getHeaderData';
  */
 
 function PageHead(props) {
-  const ASSETSURL = process.env.NEXT_PUBLIC_ASSETSURL;
+  const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
   const seoLogoScript1 = require('./seo/seoLogoScript1.json');
   const seoLogoScript2 = require('./seo/seoLogoScript2.json');
   const seoReviewScript = require('./seo/seoReviewScript.json');
@@ -67,19 +67,19 @@ function PageHead(props) {
       <meta name="twitter:site" content="@AttireSalt"/>
       <meta name="twitter:created" content="SaltAttire"/>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <link rel="icon" type="image/png" href={ASSETSURL + "/assets/images/salticon.png"}/>
+      <link rel="icon" type="image/png" href={WEBASSETS + "/assets/images/salticon.png"}/>
       {(props.isMobile)
         ? <Fragment>
           <meta name="theme-color" content="#ffffff"/>
           <meta name="msapplication-navbutton-color" content="#ffffff"/>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
           <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff"/>
-          <link rel="stylesheet" href={ASSETSURL + "/assets/stylesheets/swiper_min.css"}/>
-          <link rel="preload" href={ASSETSURL + "/assets/images/usericon-white.png"} as="image" type="image/jpg"/>
-          <link rel="preload" href={ASSETSURL + "/assets/images/cart-white.png"} as="image" type="image/jpg"/>
-          <link rel="preload" href={ASSETSURL + "/assets/images/menuicon-white.png"} as="image" type="image/jpg"/>
-          <link rel="preload" href={ASSETSURL + "/assets/images/whatsapp-icon.png"} as="image" type="image/jpg"/>
-          <link rel="preload" href={ASSETSURL + "/assets/images/saltlogo-white.png"} as="image" type="image/jpg"/>
+          <link rel="stylesheet" href={WEBASSETS + "/assets/stylesheets/swiper_min.css"}/>
+          <link rel="preload" href={WEBASSETS + "/assets/images/usericon-white.png"} as="image" type="image/jpg"/>
+          <link rel="preload" href={WEBASSETS + "/assets/images/cart-white.png"} as="image" type="image/jpg"/>
+          <link rel="preload" href={WEBASSETS + "/assets/images/menuicon-white.png"} as="image" type="image/jpg"/>
+          <link rel="preload" href={WEBASSETS + "/assets/images/whatsapp-icon.png"} as="image" type="image/jpg"/>
+          <link rel="preload" href={WEBASSETS + "/assets/images/saltlogo-white.png"} as="image" type="image/jpg"/>
         </Fragment>
         : null}
     </Head>
