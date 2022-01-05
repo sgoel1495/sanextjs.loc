@@ -12,7 +12,7 @@ function RootPage(){
     <Fragment>
       <PageHead url="/" id="home" isMobile={dataStore.mobile} />
       <InfoBand />
-      <SafetyBlock />
+      <SafetyBlock isMobile={dataStore.mobile} />
     </Fragment>
   )
 }

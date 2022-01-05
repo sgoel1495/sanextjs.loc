@@ -2,10 +2,10 @@ import Image from "next/image";
 
 /**
  * This is a band just above the nav
- * @params none at this time
+ * @params {isMobile} props
  */
 
-function SafetyBlock() {
+function SafetyBlock(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     return (
