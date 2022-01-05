@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
     setDataStore(newDataStore);
   }
   useEffect(() => {
-    updateDataStore("@isMobile", isMobile);
+    updateDataStore("mobile", isMobile);
   }, [isMobile]);
 
 
