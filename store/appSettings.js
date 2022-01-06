@@ -44,14 +44,12 @@ function appSettings(key){
         "currencies": ["inr","usd"],
         "currency_data":{
             "inr" : {
-                "inr": "Hash.new",
                 "shipping_int" : "100",
                 "offer_shipping" : "1000",
                 "ex_rate" : "1.000",
                 "curr_symbol" : "₹"
             },
             "usd" : {
-                "usd": "Hash.new",
                 "shipping_int" : "25",
                 "offer_shipping" : "150",
                 "ex_rate" : "0.015",
