@@ -5,6 +5,7 @@ import InfoBand from "../components/info-band/InfoBand";
 import SafetyBlock from "../components/safety-block/SafetyBlock";
 import Navbar from "../components/navbar/Navbar";
 import WhySalt from "../components/why-salt/WhySalt";
+import AboutSalt from "../components/about-salt/AboutSalt";
 
 
 function RootPage(){
@@ -17,6 +18,7 @@ function RootPage(){
       <Navbar isMobile={dataStore.mobile} />
       <SafetyBlock isMobile={dataStore.mobile} />
       <WhySalt isMobile={dataStore.mobile} />
+      <AboutSalt isMobile={dataStore.mobile} />
     </Fragment>
   )
 }
