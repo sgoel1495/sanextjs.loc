@@ -1,3 +1,4 @@
 {
-    "mobile": true
+    "mobile": true,
+    "currCurrency": "inr"
 }
