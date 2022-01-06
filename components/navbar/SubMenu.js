@@ -12,10 +12,10 @@ function SubMenu(props){
   if(!props.isMobile && props.menu=="accessories")
   browserView = <div>
     <ul className="accessories-class">
-      <li><Link href="/shop-scarves">Scarves</Link></li>
-      <li><Link href="/shop-belts">Belts</Link></li>
-      <li><Link href="/shop-jewellery">Jewellery</Link></li>
-      <li><Link href="/shop-masks">Masks</Link></li>
+      <li><Link href="/shop-scarves"><a>Scarves</a></Link></li>
+      <li><Link href="/shop-belts"><a>Belts</a></Link></li>
+      <li><Link href="/shop-jewellery"><a>Jewellery</a></Link></li>
+      <li><Link href="/shop-masks"><a>Masks</a></Link></li>
     </ul>
   </div>
 

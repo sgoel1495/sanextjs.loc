@@ -11,16 +11,18 @@ function CartMenu(props) {
   const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
   const mobileView = <div>
-      <Link href="/homepage/cart">
+    <Link href="/homepage/cart">
+      <a>
         <Image src={WEBASSETS + "/assets/images/cart_icon.svg"} alt="cart"/>
         <sup>0</sup>
-      </Link>
+      </a>
+    </Link>
   </div>;
 
   const browserView = <div>
-      <Cart isMobile={false} />
-      <Image src={ WEBASSETS + "/assets/images/cart.png"} alt="cart" />
-      <sup>0</sup>
+    <Cart isMobile={false}/>
+    <Image src={WEBASSETS + "/assets/images/cart.png"} alt="cart"/>
+    <sup>0</sup>
   </div>;
 
   return (

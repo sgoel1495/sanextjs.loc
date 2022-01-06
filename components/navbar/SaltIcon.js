@@ -13,15 +13,19 @@ function SaltIcon(props) {
 
   const mobileView = <div>
     <Link href="/">
-      <Image src={WEBASSETS + "/assets/images/salticon.png"} alt="salt icon"/>
+      <a>
+        <Image src={WEBASSETS + "/assets/images/salticon.png"} alt="salt icon"/>
+      </a>
     </Link>
   </div>;
 
   const browserView = <div>
-      <Link href="/">
+    <Link href="/">
+      <a>
         <Image src={WEBASSETS + "/assets/images/salticon.png"} alt="salt icon"/>
-      </Link>
-    </div>;
+      </a>
+    </Link>
+  </div>;
 
   return (
     (props.isMobile) ? mobileView : browserView

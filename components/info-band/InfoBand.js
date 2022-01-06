@@ -9,7 +9,9 @@ function InfoBand() {
   return (
     <div id="info-band" className={"bg-[#F1FF26] text-center pt-1 pb-2 text-sm tracking-wide"}>
       <span>HOT DEAL : </span>
-      <Link href="/end-of-season-sale"><span className={"underline"}>FLAT PRICES</span></Link>
+      <Link href="/end-of-season-sale">
+        <a className={"underline"}>FLAT PRICES</a>
+      </Link>
     </div>
   )
 
