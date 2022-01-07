@@ -8,21 +8,20 @@ import {Fragment, useState} from "react";
 
 function SidebarMenuHamburger(props) {
 
-  const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-  const [showSidebarMenu, setShowSidebarMenu] = useState(false);
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const [showSidebarMenu, setShowSidebarMenu] = useState(false);
 
-  const mobileView = null;
+    const mobileView = null;
 
-  const browserView = <Fragment>
-
-      <div onClick={() => setShowSidebarMenu(true)}>
-        <Image src={WEBASSETS + "/assets/images/menuicon_v1.png"} alt="menuicon"/>
-      </div>
+    const browserView = <Fragment>
+        <div onClick={() => setShowSidebarMenu(true)} className={"ml-2"}>
+            <Image src={WEBASSETS + "/assets/images/menuicon_v1.png"} alt="menuicon" width="24" height="24"/>
+        </div>
     </Fragment>;
 
-  return (
-    (props.isMobile) ? mobileView : browserView
-  )
+    return (
+        (props.isMobile) ? mobileView : browserView
+    )
 
 }
 
