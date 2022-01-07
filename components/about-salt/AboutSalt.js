@@ -23,7 +23,7 @@ function AboutSalt(props) {
                 <p className={"text-h2"}>About SALT</p>
                 <hr/>
             </div>
-            <div id="about-salt-features" className={"grid grid-cols-3 gap-x-5 gap-y-10 items-center"}>
+            <div id="about-salt-features" className={"grid grid-cols-3 gap-x-5 gap-y-20 items-center"}>
                 <Link href="/blog/about-salt/why-custom-tailored-clothing">
                     <a className={blockStyle}>
                         <Image src={WEBASSETS + "/assets/images/Made-to-measure_300.jpg"} alt="free-delivery lazy" width={"280"} height={"280"}/>
@@ -61,6 +61,13 @@ function AboutSalt(props) {
                         <Image src={WEBASSETS + "/assets/images/minimal-wasteage.jpg"} alt="free-delivery lazy" width="280" height="280"/>
                         <p className={blockHeaderStyle}> MINIMAL WASTAGE </p>
                         <p className={blockParaStyle}> No Inventory, No Mass Production </p>
+                    </a>
+                </Link>
+                <Link href="/blog/about-salt/no-inventory-no-mass-production">
+                    <a className={blockStyle}>
+                        <Image src={WEBASSETS + "/assets/images/ethical-&-fair_300.jpg"} alt="free-delivery lazy" width="280" height="280"/>
+                        <p className={blockHeaderStyle}> ETHICAL & FAIR </p>
+                        <p className={blockParaStyle}> Good Working Conditions </p>
                     </a>
                 </Link>
 

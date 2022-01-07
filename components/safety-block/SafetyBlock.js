@@ -18,7 +18,7 @@ function SafetyBlock(props) {
     const blockDescParaStyle = "text-sm text-left";
 
     return (
-        <div id="safety-block" className={"bg-[#FFFAF7] py-10"}>
+        <div id="safety-block" className={"bg-[#FFFAF7] py-10 mb-10"}>
             <div className="container">
                 <div className="mb-10 text-center">
                     <h3 className={[mobile ? 'text-[17px] ' : 'text-h3 '] + "text-[#d95c5c] font-600 uppercase"}>Your Safety is Our Priority!</h3>
