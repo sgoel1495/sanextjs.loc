@@ -74,7 +74,6 @@ function PageHead(props) {
           <meta name="msapplication-navbutton-color" content="#ffffff"/>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
           <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff"/>
-          <link rel="stylesheet" href={WEBASSETS + "/assets/stylesheets/swiper_min.css"}/>
           <link rel="preload" href={WEBASSETS + "/assets/images/usericon-white.png"} as="image" type="image/jpg"/>
           <link rel="preload" href={WEBASSETS + "/assets/images/cart-white.png"} as="image" type="image/jpg"/>
           <link rel="preload" href={WEBASSETS + "/assets/images/menuicon-white.png"} as="image" type="image/jpg"/>
