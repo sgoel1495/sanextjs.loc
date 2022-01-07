@@ -6,6 +6,8 @@ import SafetyBlock from "../components/safety-block/SafetyBlock";
 import Navbar from "../components/navbar/Navbar";
 import WhySalt from "../components/why-salt/WhySalt";
 import AboutSalt from "../components/about-salt/AboutSalt";
+import DesignBlock from "../components/design-block/DesignBlock";
+import Footer from "../components/footer/Footer";
 
 
 function RootPage(){
@@ -19,6 +21,8 @@ function RootPage(){
       <SafetyBlock isMobile={dataStore.mobile} />
       <WhySalt isMobile={dataStore.mobile} />
       <AboutSalt isMobile={dataStore.mobile} />
+      <DesignBlock isMobile={dataStore.mobile} />
+      <Footer isMobile={dataStore.mobile} />
     </Fragment>
   )
 }
