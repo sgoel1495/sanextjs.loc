@@ -4,78 +4,86 @@
  */
 import Link from "next/link";
 import Image from "next/image";
+import React from 'react';
 
 
 function AboutSalt(props) {
-  const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-  const mobileView = null;
+    const myContainer = " container w-[50%] py-16";
+    const blockStyle = "text-center leading-none tracking-wide flex flex-col gap-4 items-center";
+    const blockHeaderStyle = "text-center";
+    const blockParaStyle = "text-center italic font-600";
 
-  const browserView = <div>
-    <hr/>
-    <div>About SALT</div>
+    const mobileView = null;
+    const browserView = (
+        <div className={myContainer}>
+            <div className={"grid grid-cols-3 items-center text-center mb-16"}>
+                <hr/>
+                <p className={"text-h2"}>About SALT</p>
+                <hr/>
+            </div>
+            <div id="about-salt-features" className={"grid grid-cols-3 gap-x-5 gap-y-10 items-center"}>
+                <Link href="/blog/about-salt/why-custom-tailored-clothing">
+                    <a className={blockStyle}>
+                        <Image src={WEBASSETS + "/assets/images/Made-to-measure_300.jpg"} alt="free-delivery lazy" width={"280"} height={"280"}/>
+                        <p className={blockHeaderStyle}>MADE TO MEASURE</p>
+                        <p className={blockParaStyle}>Custom Clothing, Tailored to you</p>
+                    </a>
+                </Link>
 
-    <div id="about-salt-features">
-      <div>
-        <Link href="/blog/about-salt/why-custom-tailored-clothing"><a>
-          <Image src={WEBASSETS + "/assets/images/Made-to-measure_300.jpg"} alt="free-delivery lazy"/>
-          <span> MADE TO MEASURE </span>
-          <span> Custom Clothing, Tailored to you </span>
-        </a></Link>
-      </div>
+                <Link href="/blog/about-salt/styling-service">
+                    <a className={blockStyle}>
+                        <Image src={WEBASSETS + "/assets/images/styling-services_300.jpg"} alt="free-delivery lazy" width="280" height="280"/>
+                        <p className={blockHeaderStyle}> STYLING SERVICES </p>
+                        <p className={blockParaStyle}> Free Styling Sessions In-Store or Online </p>
+                    </a>
+                </Link>
 
-      <div>
-        <Link href="/blog/about-salt/styling-service"><a>
-          <Image src={WEBASSETS + "/assets/images/styling-services_300.jpg"} alt="free-delivery lazy"/>
-          <span> STYLING SERVICES </span>
-          <span> Free Styling Sessions In-Store or Online </span>
-        </a></Link>
-      </div>
+                <Link href="/blog/about-salt/free-alteration">
+                    <a className={blockStyle}>
+                        <Image src={WEBASSETS + "/assets/images/free-alteration_300.jpg"} alt="free-delivery lazy" width="280" height="280"/>
+                        <p className={blockHeaderStyle}> FREE ALTERATIONS </p>
+                        <p className={blockParaStyle}> Alterations available at no additional cost </p>
+                    </a>
+                </Link>
 
-      <div>
-        <Link href="/blog/about-salt/free-alteration"><a>
-          <Image src={WEBASSETS + "/assets/images/free-alteration_300.jpg"} alt="free-delivery lazy"/>
-          <span> FREE ALTERATIONS </span>
-          <span> Alterations available at no additional cost </span>
-        </a></Link>
-      </div>
+                <Link href="/blog/about-salt/premium-fabric-quality">
+                    <a className={blockStyle}>
+                        <Image src={WEBASSETS + "/assets/images/premium-fabric_300.jpg"} alt="free-delivery lazy" width="280" height="280"/>
+                        <p className={blockHeaderStyle}> PREMIUM FABRIC &amp; QUALITY </p>
+                        <p className={blockParaStyle}> Premium Quality Fabric &amp; Finishing </p>
+                    </a>
+                </Link>
 
-      <div>
-        <Link href="/blog/about-salt/premium-fabric-quality"><a>
-          <Image src={WEBASSETS + "/assets/images/premium-fabric_300.jpg"} alt="free-delivery lazy"/>
-          <span> PREMIUM FABRIC &amp; QUALITY </span>
-          <span> Premium Quality Fabric &amp; Finishing </span>
-        </a></Link>
-      </div>
+                <Link href="/blog/about-salt/no-inventory-no-mass-production">
+                    <a className={blockStyle}>
+                        <Image src={WEBASSETS + "/assets/images/minimal-wasteage.jpg"} alt="free-delivery lazy" width="280" height="280"/>
+                        <p className={blockHeaderStyle}> MINIMAL WASTAGE </p>
+                        <p className={blockParaStyle}> No Inventory, No Mass Production </p>
+                    </a>
+                </Link>
 
-      <div>
-        <Link href="/blog/about-salt/no-inventory-no-mass-production"><a>
-          <Image src={WEBASSETS + "/assets/images/minimal-wasteage.jpg"} alt="free-delivery lazy"/>
-          <span> MINIMAL WASTAGE </span>
-          <span> No Inventory, No Mass Production </span>
-        </a></Link>
-      </div>
-    </div>
+                <Link href="/get-appointment">
+                    <a className={blockStyle + " col-start-1 col-end-4"}>
+                        <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} alt="free-delivery lazy" width="870" height="650"/>
+                        <p className={blockHeaderStyle}>Book An Appointment In Store</p>
+                        <p className={blockParaStyle + ' underline'}>Dlf Mega Mall, Gurgaon</p>
+                    </a>
+                </Link>
 
-    <div>
-      <Link href="/get-appointment"><a>
-        <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} alt="free-delivery lazy"/>
-        <span>Book An Appointment In Store</span>
-        <span>Dlf Mega Mall, Gurgaon</span>
-      </a></Link>
-    </div>
+                <Link href="/get-virtual-appointment">
+                    <a className={blockStyle + " col-start-2 col-end-3"}>
+                        <p className={blockHeaderStyle}>Book A Virtual Styling Session</p>
+                        <p className={blockParaStyle + ' underline'}>Video Call</p>
+                    </a>
+                </Link>
+            </div>
+        </div>);
 
-    <div>
-      <Link href="/get-virtual-appointment"><a>
-        <span>Book A Virtual Styling Session</span>
-        <span>Video Call</span>
-      </a></Link>
-    </div>
-  </div>;
-
-  return (
-    (props.isMobile) ? mobileView : browserView
-  )
+    return (
+        (props.isMobile) ? mobileView : browserView
+    )
 
 }
 
