@@ -13,6 +13,29 @@ import Image from "next/image";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
+const actualData = [
+    {
+        link: "#",
+        url: "https://saltattire.com/assets/Shirts-Freda-PrintedSatinLongShirt/new.jpg"
+    },
+    {
+        link: "#",
+        url: "https://saltattire.com/assets/Tops-Sabre-PrintedSatinTie-upTop/new.jpg"
+    },
+    {
+        link: "#",
+        url: "https://saltattire.com/assets/Dresses-Claret-PrintedsatinShirtDress/new.jpg"
+    },
+    {
+        link: "#",
+        url: "https://saltattire.com/assets/Dresses-Glory-Printedsatinrucheddetaildress/new.jpg"
+    },
+    {
+        link: "#",
+        url: "\thttps://saltattire.com/assets/Skirts-Rubios-SatinprintedA-lineskirt/new.jpg"
+    },
+]
+
 function NewArrivalsSwiper(props) {
     const mobileView = null;
 
@@ -35,13 +58,13 @@ function NewArrivalsSwiper(props) {
                 navigation={true}
                 className={"mb-10"}
             >
-                {[...Array(20)].map((_, index) => {
+                {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            <a href="#" className={"flex flex-col gap-5 items-center"}>
+                            <a href={item.link} className={"flex flex-col gap-5 items-center"}>
                                     <span className="relative h-[606px] w-full">
                                         <Image
-                                            src={"https://source.unsplash.com/random"}
+                                            src={item.url}
                                             width={1080}
                                             height={1080}
                                             layout="fill"

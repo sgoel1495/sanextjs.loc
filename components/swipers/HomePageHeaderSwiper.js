@@ -14,15 +14,15 @@ import Image from "next/image";
 
 SwiperCore.use([EffectFade,Navigation,Pagination, Autoplay]);
 
+const actualData = [];
+for(let i=1; i<5; i++){
+    actualData.push({
+        link: "#",
+        url: `https://saltattire.com/assets/videos/new_arrivals_nitto_v${i}.jpg`
+    })
+}
+
 function HomePageHeaderSwiper(props) {
-
-    const [data, setData] = React.useState([]);
-    React.useEffect(()=>{
-        fetch('https://jsonplaceholder.typicode.com/photos')
-            .then(response => response.json())
-            .then(json => setData(json.slice(0, 5)))
-    }, [])
-
     const mobileView = null;
 
     const browserView = (
@@ -38,7 +38,7 @@ function HomePageHeaderSwiper(props) {
                 effect="fade"
                 className={"mb-10"}
             >
-                {data.map((item, index) => {
+                {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
                             <a href="#" className={'block relative h-[860px] w-full'}>

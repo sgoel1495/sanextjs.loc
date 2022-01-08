@@ -12,7 +12,7 @@ function SubMenu(props) {
     if (!props.isMobile && props.menu == "accessories")
         browserView = (
             <>
-                <ul className="accessories-class absolute top-[100%] bg-white w-full text-center hidden group-hover:block">
+                <ul className="accessories-class absolute top-[100%] bg-white w-full text-center hidden group-hover:block z-10">
                     <li>
                         <Link href="/shop-scarves">
                             <a className={"block px-4 py-2 border-b border-transparent hover:border-black"}>Scarves</a>
