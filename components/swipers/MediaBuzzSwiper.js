@@ -21,7 +21,7 @@ function MediaBuzzSwiper(props) {
             <div className="container w-[50%]">
                 <div className={"grid grid-cols-3 items-center text-center mb-10"}>
                     <hr/>
-                    <p className={"text-h2"}>MEDIA BUZZ</p>
+                    <p className={"text-h2 uppercase"}>MEDIA BUZZ</p>
                     <hr/>
                 </div>
             </div>

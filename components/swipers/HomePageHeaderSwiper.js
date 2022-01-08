@@ -23,7 +23,6 @@ function HomePageHeaderSwiper(props) {
             .then(json => setData(json.slice(0, 5)))
     }, [])
 
-    console.log(data)
     const mobileView = null;
 
     const browserView = (
@@ -42,8 +41,14 @@ function HomePageHeaderSwiper(props) {
                 {data.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            <a href="#">
-                                <Image src={item.url} width="1920" height="865"  layout="responsive" objectFit="cover"/>
+                            <a href="#" className={'block relative h-[860px] w-full'}>
+                                <Image
+                                    src={item.url}
+                                    width={1080}
+                                    height={1080}
+                                    layout="fill"
+                                    objectFit="cover"
+                                />
                             </a>
                         </SwiperSlide>
                     )

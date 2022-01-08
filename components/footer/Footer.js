@@ -16,7 +16,7 @@ function Footer(props) {
                 <h6 className={blockHeader}>GET ON OUR LIST FOR MORE!</h6>
                 <p className={"mb-4"}>Sign Up for new looks, insider styling tips, exclusive offers and more.</p>
                 <form className={"flex items-stretch mb-4"}>
-                    <input className={"border border-black px-1 py-2 outline-hidden w-3/5 focus:outline-hidden"} type="text" name="signup_email" id="signup_email" placeholder="Email Address"/>
+                    <input className={"px-1 py-2 w-3/5 border border-black focus:border-black focus:shadow-none outline-0 focus:outline-0 "} type="text" name="signup_email" id="signup_email" placeholder="Email Address"/>
                     <button className={"bg-black text-white px-10"} type="button" name="signup_btn">+</button>
                 </form>
                 <p>

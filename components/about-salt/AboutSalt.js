@@ -73,7 +73,9 @@ function AboutSalt(props) {
 
                 <Link href="/get-appointment">
                     <a className={blockStyle + " col-start-1 col-end-4"}>
-                        <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} alt="free-delivery lazy" width="870" height="650"/>
+                        <span className="block relative">
+                            <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} alt="free-delivery lazy" width="869" height="652"/>
+                        </span>
                         <p className={blockHeaderStyle}>Book An Appointment In Store</p>
                         <p className={blockParaStyle + ' underline'}>Dlf Mega Mall, Gurgaon</p>
                     </a>
