@@ -43,7 +43,7 @@ function HomePageHeaderSwiper(props) {
                     return (
                         <SwiperSlide key={index}>
                             <a href="#">
-                                <Image src={item.url} width="1920" height="865"  layout="fill"/>
+                                <Image src={item.url} width="1920" height="865"  layout="responsive" objectFit="cover"/>
                             </a>
                         </SwiperSlide>
                     )

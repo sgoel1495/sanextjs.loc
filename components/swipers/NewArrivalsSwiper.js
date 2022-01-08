@@ -38,10 +38,12 @@ function NewArrivalsSwiper(props) {
                 {[...Array(20)].map((_, index) => {
                     return (
                         <SwiperSlide key={index}>
+                            <div className="teacii">
                             <a href="#" className={"flex flex-col gap-5 items-center grayscale hover:grayscale-0"}>
-                                <Image src={"https://source.unsplash.com/random"} width={"450"} height={"450"} />
+                                <Image src={"https://source.unsplash.com/random"} width={"450"} height={"450"}   layout="fill" objectFit="cover"/>
                                 <h5 className={'text-h5 italic font-500'}>Lorem Ipsum {index +1}</h5>
                             </a>
+                            </div>
                         </SwiperSlide>
                     )
                 })}
