@@ -12,7 +12,7 @@ function SubMenu(props) {
     if (!props.isMobile && props.menu == "accessories")
         browserView = (
             <>
-                <ul className="accessories-class absolute top-[100%] bg-white w-full text-center hidden group-hover:block z-10">
+                <ul className="accessories-class absolute top-[100%] bg-white w-full text-center hidden group-hover:block z-10 text-xs text-black/60">
                     <li>
                         <Link href="/shop-scarves">
                             <a className={"block px-4 py-2 border-b border-transparent hover:border-black"}>Scarves</a>
@@ -26,7 +26,7 @@ function SubMenu(props) {
                     <li>
                         <Link href="/shop-jewellery">
                             <a className={"flex flex-col items-start px-4 py-2 border-b border-transparent hover:border-black leading-none"}>
-                                <span className={"bg-black text-xs text-white leading-none font-600"}>New</span>
+                                <span className={"bg-black text-xs text-white leading-none"}>New</span>
                                 Jewellery
                             </a>
                         </Link>
@@ -34,7 +34,7 @@ function SubMenu(props) {
                     <li>
                         <Link href="/shop-masks">
                             <a className={"flex flex-col items-start px-4 py-2 border-b border-transparent hover:border-black leading-none"}>
-                                <span className={"bg-black text-xs text-white leading-none font-600"}>New</span>
+                                <span className={"bg-black text-xs text-white leading-none"}>New</span>
                                 Masks
                             </a>
                         </Link>

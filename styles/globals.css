@@ -1,3 +1,6 @@
+@import "./acherus-grotesque/acherusGrotesque.css";
+@import "./adobe-caslon-pro/adobeCaslonPro.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,11 +12,11 @@
     opacity: 0.35;
 }
 
-.swiper-pagination-bullet:not(:last-child){
+.swiper-pagination-bullet:not(:last-child) {
     margin-right: 0.75rem !important;
 }
 
-.swiper-pagination-bullet.swiper-pagination-bullet-active{
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
     background: black;
 }
 

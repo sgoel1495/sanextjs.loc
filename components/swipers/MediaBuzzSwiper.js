@@ -4,12 +4,14 @@
  */
 
 import React from 'react';
+import BlockHeader from "../common/blockHeader";
 import Image from "next/image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination"
 import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation} from 'swiper';
+
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -50,14 +52,15 @@ function MediaBuzzSwiper(props) {
     const mobileView = null;
 
     const browserView = (
-        <>
-            <div className="container w-[50%]">
-                <div className={"grid grid-cols-3 items-center text-center mb-10"}>
-                    <hr/>
-                    <p className={"text-h2 uppercase"}>MEDIA BUZZ</p>
-                    <hr/>
-                </div>
-            </div>
+        <section className={"mediaBuzz"}>
+            <BlockHeader
+                line
+                blockHeaderStyle={"bg-white"}
+                space={"py-10"}
+                titleStyle={"text-h2 uppercase"}
+            >
+                Media Buzz
+            </BlockHeader>
             <Swiper
                 slidesPerView={4}
                 pagination={{
@@ -83,7 +86,7 @@ function MediaBuzzSwiper(props) {
                     )
                 })}
             </Swiper>
-        </>
+        </section>
     );
 
     return (

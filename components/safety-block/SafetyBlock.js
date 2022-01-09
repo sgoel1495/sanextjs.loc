@@ -10,15 +10,15 @@ function SafetyBlock(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobile = props.isMobile;
 
-    const blockStyle = "flex flex-col gap-5 items-center";
+    const blockStyle = "flex flex-col gap-5 items-center text-black/70 leading-tight";
     const blockTitleStyle = "uppercase" + [mobile ? ' tracking-wide' : ' tracking-normal'];
     const blockLeadStyle = "block leading-none" + [mobile ? ' text-[8px]' : ''];
-    const blockLeadDescStyle = "block leading-none" + [mobile ? ' text-[4.9px]' : ' text-xs'];
+    const blockLeadDescStyle = "block leading-none text-black/60" + [mobile ? ' text-[4.9px]' : ' text-xs'];
     const blockDescStyle = "w-5/9" + [mobile ? ' hidden' : ''];
-    const blockDescParaStyle = "text-sm text-left";
+    const blockDescParaStyle = "text-xs text-left";
 
     return (
-        <div id="safety-block" className={"bg-[#FFFAF7] py-10 mb-10"}>
+        <section id="safety-block" className={"bg-[#FFFAF7] py-20"}>
             <div className="container">
                 <div className="mb-10 text-center">
                     <h3 className={[mobile ? 'text-[17px] ' : 'text-h3 '] + "text-[#d95c5c] font-600 uppercase"}>Your Safety is Our Priority!</h3>
@@ -87,7 +87,7 @@ function SafetyBlock(props) {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

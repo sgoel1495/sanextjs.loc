@@ -5,6 +5,7 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
+import BlockHeader from "../common/blockHeader";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
@@ -24,14 +25,15 @@ const actualData = [
 function InstagramStoriesSwiper(props) {
     const mobileView = null;
     const browserView = (
-        <>
-            <div className="container w-[80%]">
-                <div className={"grid grid-cols-5 items-center text-center mb-10"}>
-                    <hr className={"col-span-1"}/>
-                    <p className={"text-h2 uppercase col-span-3"}>SHARE YOUR INSTAGRAM STORIES WITH US #SALTATTIRESTORIES</p>
-                    <hr className={"col-span-1"}/>
-                </div>
-            </div>
+        <section className={"saltAttireStories"}>
+            <BlockHeader
+                line
+                blockHeaderStyle={"bg-white"}
+                space={"py-10"}
+                titleStyle={"text-h4 capitalize"}
+            >
+                Share your instagram stories with us #SALTATTIRESTORIES
+            </BlockHeader>
             <Swiper
                 slidesPerView={6.2}
                 spaceBetween={0}
@@ -60,7 +62,7 @@ function InstagramStoriesSwiper(props) {
                     )
                 })}
             </Swiper>
-        </>
+        </section>
     )
     return (
         (props.isMobile) ? mobileView : browserView

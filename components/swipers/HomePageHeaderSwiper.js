@@ -36,12 +36,11 @@ function HomePageHeaderSwiper(props) {
                 }}
                 navigation={true}
                 effect="fade"
-                className={"mb-10"}
             >
                 {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            <a href="#" className={'block relative h-[860px] w-full'}>
+                            <a href="#" className={'block relative h-[95vh] w-full'}>
                                 <Image
                                     src={item.url}
                                     width={1080}

@@ -29,7 +29,8 @@ function CurrencySwitcher(props) {
     })
 
     const browserView = (
-        <select id="currency-switcher" className={"border-0 border-b py-0 pl-1 pr-6 text-sm" + focusStyle} value={currCurrency} onChange={(event) => updateDataStore("currCurrency", event.target.value)}>
+        <select id="currency-switcher" className={"border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent" + focusStyle} value={currCurrency}
+                onChange={(event) => updateDataStore("currCurrency", event.target.value)}>
             {options}
         </select>
     );

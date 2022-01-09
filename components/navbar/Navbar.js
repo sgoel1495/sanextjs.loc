@@ -16,8 +16,7 @@ import Menu from "./Menu";
 function Navbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const navStyle = "bg-[#ffffff99] hover:bg-white px-4 py-1"
-    const navIconsStyle = "w-6 h-6";
+    const navStyle = "px-4 py-1 uppercase"
     const iconHeightWeight = "30"
 
     const mobileView = <nav className={navStyle}>
@@ -61,7 +60,7 @@ function Navbar(props) {
     </nav>;
 
     const browserView = (
-        <nav className={navStyle + " flex"}>
+        <nav className={navStyle + " flex items-center"}>
             <SaltIcon isMobile={false}/>
             <SidebarMenuHamburger isMobile={false}/>
             <Menu isMobile={false}/>

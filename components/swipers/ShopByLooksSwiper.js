@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import BlockHeader from "../common/blockHeader";
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination"
@@ -70,14 +71,15 @@ function ShopByLooksSwiper(props) {
     const mobileView = null;
 
     const browserView = (
-        <>
-            <div className="container w-[50%]">
-                <div className={"grid grid-cols-3 items-center text-center mb-10"}>
-                    <hr/>
-                    <p className={"text-h2 uppercase"}>Shop By Looks</p>
-                    <hr/>
-                </div>
-            </div>
+        <section className={"shopByLooks"}>
+            <BlockHeader
+                line
+                blockHeaderStyle={"bg-white"}
+                space={"py-10"}
+                titleStyle={"text-h2 uppercase"}
+            >
+                Shop By Looks
+            </BlockHeader>
             <Swiper
                 slidesPerView={2.1}
                 autoplay={{
@@ -100,13 +102,13 @@ function ShopByLooksSwiper(props) {
                                         objectFit="cover"
                                     />
                                 </span>
-                                <h5 className={'text-h5 italic font-500'}>{item.title}</h5>
+                                <h2 className={'text-h2 italic font-cursive'}>{item.title}</h2>
                             </a>
                         </SwiperSlide>
                     )
                 })}
             </Swiper>
-        </>
+        </section>
     );
 
     return (

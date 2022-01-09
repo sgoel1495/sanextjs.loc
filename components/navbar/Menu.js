@@ -10,15 +10,15 @@ import React from 'react';
 
 function Menu(props) {
 
-    const browserViewStyle = "block px-4 py-1 mx-1 leading-none border-b border-transparent hover:border-black";
+    const browserViewStyle = "block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black text-black/60";
 
     const mobileView = null;
     const browserView =
         <>
-            <ul className={"flex flex-1 justify-center"}>
+            <ul className={"flex flex-1 justify-center items-center"}>
                 <li>
                     <Link href="/new-arrivals/all">
-                        <a className={browserViewStyle + " bg-[#B5DDF5] text-white"}>New In</a>
+                        <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>New In</a>
                     </Link>
                 </li>
                 <li>

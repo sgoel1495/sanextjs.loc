@@ -11,7 +11,7 @@ function Footer(props) {
     const mobileView = null;
     const blockHeader = "font-500 text-black-200 mb-2 leading-none"
     const browserView = (
-        <footer className={"bg-[#f5f5f5] text-black/50 pt-10 mt-10 grid grid-cols-3"}>
+        <footer className={"bg-[#f5f5f5] text-black/50 pt-10 grid grid-cols-3"}>
             <div className={"px-4"}>
                 <h6 className={blockHeader}>GET ON OUR LIST FOR MORE!</h6>
                 <p className={"mb-4"}>Sign Up for new looks, insider styling tips, exclusive offers and more.</p>

@@ -1,0 +1,60 @@
+@font-face {
+    font-family: 'Adobe Caslon Pro';
+    src: local('Adobe Caslon Pro Italic'), local('ACaslonPro-Italic'),
+    url('ACaslonPro-Italic.woff2') format('woff2'),
+    url('ACaslonPro-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Adobe Caslon Pro';
+    src: local('Adobe Caslon Pro Regular'), local('ACaslonPro-Regular'),
+    url('ACaslonPro-Regular.woff2') format('woff2'),
+    url('ACaslonPro-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Adobe Caslon Pro';
+    src: local('Adobe Caslon Pro Semibold Italic'), local('ACaslonPro-SemiboldItalic'),
+    url('ACaslonPro-SemiboldItalic.woff2') format('woff2'),
+    url('ACaslonPro-SemiboldItalic.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Adobe Caslon Pro';
+    src: local('Adobe Caslon Pro Semibold'), local('ACaslonPro-Semibold'),
+    url('ACaslonPro-Semibold.woff2') format('woff2'),
+    url('ACaslonPro-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Adobe Caslon Pro';
+    src: local('Adobe Caslon Pro Bold'), local('ACaslonPro-Bold'),
+    url('ACaslonPro-Bold.woff2') format('woff2'),
+    url('ACaslonPro-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Adobe Caslon Pro';
+    src: local('Adobe Caslon Pro Bold Italic'), local('ACaslonPro-BoldItalic'),
+    url('ACaslonPro-BoldItalic.woff2') format('woff2'),
+    url('ACaslonPro-BoldItalic.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+

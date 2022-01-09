@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import BlockHeader from "../common/blockHeader";
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination"
@@ -34,20 +35,23 @@ const actualData = [
         link: "#",
         url: "\thttps://saltattire.com/assets/Skirts-Rubios-SatinprintedA-lineskirt/new.jpg"
     },
-]
+];
 
 function NewArrivalsSwiper(props) {
     const mobileView = null;
 
     const browserView = (
-        <>
-            <div className="container w-[50%]">
-                <div className={"grid grid-cols-3 items-center text-center mb-10"}>
-                    <hr/>
-                    <p className={"text-h3 uppercase text-[#b5ddf5] font-500"}>~ <span className={'lowercase'}>new</span> Arrivals ~</p>
-                    <hr/>
-                </div>
-            </div>
+        <section className={"newArrivals"}>
+            <BlockHeader
+                blockHeaderStyle="bg-[#f9f9f9]"
+                space={"py-10"}
+                titleStyle={"text-[#b5ddf5] font-600 flex justify-center items-center gap-3 leading-none"}
+            >
+                <span className={"text-h1"}>~</span>
+                <span className={'font-cursive italic text-h1'}>new</span>
+                <span className={"tracking-widest text-h4 uppercase"}>Arrivals</span>
+                <span className={"text-h1"}>~</span>
+            </BlockHeader>
             <Swiper
                 slidesPerView={3.1}
                 spaceBetween={5}
@@ -56,28 +60,31 @@ function NewArrivalsSwiper(props) {
                     "disableOnInteraction": false
                 }}
                 navigation={true}
-                className={"mb-10"}
             >
                 {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
                             <a href={item.link} className={"flex flex-col gap-5 items-center"}>
-                                    <span className="relative h-[606px] w-full">
-                                        <Image
-                                            src={item.url}
-                                            width={1080}
-                                            height={1080}
-                                            layout="fill"
-                                            objectFit="cover"
-                                        />
-                                    </span>
-                                <h5 className={'text-h5 italic font-500'}>Lorem Ipsum {index + 1}</h5>
+                                <span className="relative h-[606px] w-full">
+                                    <Image
+                                        src={item.url}
+                                        width={1080}
+                                        height={1080}
+                                        layout="fill"
+                                        objectFit="cover"
+                                    />
+                                </span>
+                                <div className={"text-center"}>
+                                    <h5 className={'text-h5 font-600'}>Product {index + 1}</h5>
+                                    <p className="text-sm tracking-wide">Product Description</p>
+                                    <p className="text-sm tracking-wide">₹****</p>
+                                </div>
                             </a>
                         </SwiperSlide>
                     )
                 })}
             </Swiper>
-        </>
+        </section>
     );
 
     return (
