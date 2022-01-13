@@ -96,8 +96,6 @@ function ShopByLooksSwiper(props) {
                                 <span className={"relative h-[806px] w-full"}>
                                     <Image
                                         src={item.image}
-                                        width={1080}
-                                        height={1080}
                                         layout="fill"
                                         objectFit="cover"
                                     />

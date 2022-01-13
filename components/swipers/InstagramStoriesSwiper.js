@@ -51,8 +51,6 @@ function InstagramStoriesSwiper(props) {
                                 <span className={"block relative h-[270px] w-full"}>
                                     <Image
                                         src={item}
-                                        width={1080}
-                                        height={1080}
                                         layout="fill"
                                         objectFit="cover"
                                     />

@@ -43,8 +43,6 @@ function HomePageHeaderSwiper(props) {
                             <a href="#" className={'block relative h-[95vh] w-full'}>
                                 <Image
                                     src={item.url}
-                                    width={1080}
-                                    height={1080}
                                     layout="fill"
                                     objectFit="cover"
                                 />
