@@ -1,4 +1,5 @@
 /**
+ * @todo The api does not differentiate between mobile and non mobile carousel data
  * @params {isMobile} props
  * @constructor
  */
@@ -11,13 +12,13 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay, EffectFade} from 'swiper';
 import Image from "next/image";
-import useGetApiCall from "../../hooks/useApiCall";
+import useApiCall from "../../hooks/useApiCall";
 
 SwiperCore.use([EffectFade,Navigation,Pagination, Autoplay]);
 
 function HomePageHeaderSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [data,setData] = useState(null);
+
     const url="/api/v1/get_products";
     const body = {
         "product": {
@@ -27,12 +28,14 @@ function HomePageHeaderSwiper(props) {
             "limit": 10
         }
     };
-    const resp = useGetApiCall(url,body);
+    const resp = useApiCall(url,body);
 
+    const [data,setData] = useState(null);
     useEffect(()=>{
+        console.log("RESP",resp);
         if(resp
             && resp.hasOwnProperty("status")
-            && resp.status == "200"
+            && resp.status == 200
             && resp.hasOwnProperty("new_arr_carousal")
             && resp.new_arr_carousal.hasOwnProperty("imgs")
         )
@@ -41,7 +44,7 @@ function HomePageHeaderSwiper(props) {
 
     const actualData = [];
     let foreground = null;
-    let transitionTime = 1.0
+    let transitionTime = 1.0;
 
     if(data && data.imgs && data.imgs.length > 0){
         foreground = WEBASSETS + data.foreground_path;
