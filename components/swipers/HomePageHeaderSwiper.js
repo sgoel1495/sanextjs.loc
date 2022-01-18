@@ -22,7 +22,7 @@ function HomePageHeaderSwiper(props) {
     const body = {
         "product": {
             "token": process.env.API_TOKEN,
-            "category": "new-arrival",
+            "category": "new-arrivals",
             "skip": 0,
             "limit": 10
         }
@@ -33,24 +33,23 @@ function HomePageHeaderSwiper(props) {
         if(resp
             && resp.hasOwnProperty("status")
             && resp.status == "200"
-            && resp.hasOwnProperty("response")
-            && resp.response.hasOwnProperty("data")
+            && resp.hasOwnProperty("new_arr_carousal")
+            && resp.new_arr_carousal.hasOwnProperty("imgs")
         )
-        setData(resp.response.data);
+        setData(resp.new_arr_carousal);
     },[resp]);
+    console.log("DATA",data);
     const actualData = [];
-    if(data && data.length > 0){
-        data.forEach(ele=>{
-            if(props.isMobile)
-                actualData.push({
-                    link: "/" + ele.asset_id,
-                    url: WEBASSETS + ele.double_view_img
-                });
-            else
-                actualData.push({
-                    link: "/" + ele.asset_id,
-                    url: WEBASSETS + ele.single_view_img
-                });
+    let foreground = null;
+    if(data && data.imgs && data.imgs.length > 0){
+        foreground = WEBASSETS + data.foreground_path;
+        data.imgs.forEach((ele,index)=>{
+            console.log("ELE",ele);
+            console.log("Index",index);
+            actualData.push({
+                link: "/" + data.imgs_path[index],
+                url: WEBASSETS + ele
+            });
         });
     }
 
