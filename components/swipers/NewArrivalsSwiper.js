@@ -3,7 +3,7 @@
  * @constructor
  */
 
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import BlockHeader from "../common/blockHeader";
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
@@ -11,33 +11,66 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
+import useApiCall from "../../hooks/useApiCall";
+import AppWideContext from "../../store/AppWideContext";
+import appSettings from "../../store/appSettings";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
-const actualData = [
-    {
-        link: "#",
-        url: "https://saltattire.com/assets/Shirts-Freda-PrintedSatinLongShirt/new.jpg"
-    },
-    {
-        link: "#",
-        url: "https://saltattire.com/assets/Tops-Sabre-PrintedSatinTie-upTop/new.jpg"
-    },
-    {
-        link: "#",
-        url: "https://saltattire.com/assets/Dresses-Claret-PrintedsatinShirtDress/new.jpg"
-    },
-    {
-        link: "#",
-        url: "https://saltattire.com/assets/Dresses-Glory-Printedsatinrucheddetaildress/new.jpg"
-    },
-    {
-        link: "#",
-        url: "\thttps://saltattire.com/assets/Skirts-Rubios-SatinprintedA-lineskirt/new.jpg"
-    },
-];
-
 function NewArrivalsSwiper(props) {
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+
+    const url="/api/v1/get_products";
+    const body = {
+        "product": {
+            "token": process.env.API_TOKEN,
+            "category": "new-arrivals",
+            "skip": 0,
+            "limit": 10
+        }
+    };
+    const resp = useApiCall(url,body);
+
+    const [data,setData] = useState(null);
+    useEffect(()=>{
+        if(resp
+            && resp.hasOwnProperty("status")
+            && resp.status == 200
+            && resp.hasOwnProperty("response")
+            && resp.response.hasOwnProperty("data")
+        )
+            setData(resp.response.data);
+    },[resp]);
+
+    const {dataStore} = useContext(AppWideContext);
+    const currCurrency = dataStore.currCurrency;
+    const currencyData = appSettings("currency_data");
+    const currSymbol = currencyData[currCurrency]["curr_symbol"];
+
+    const actualData = [];
+
+    if(data && data.length > 0){
+        data.forEach(ele=>{
+            if(props.isMobile)
+                actualData.push({
+                    link: "/" + ele.asset_id,
+                    url: WEBASSETS + ele.double_view_img,
+                    name: ele.name,
+                    tag: ele.tag_line,
+                    price: currSymbol + ((currCurrency=="inr")?ele.price:ele.usd_price)
+                });
+            else
+                actualData.push({
+                    link: "/" + ele.asset_id,
+                    url: WEBASSETS + ele.single_view_img,
+                    name: ele.name,
+                    tag: ele.tag_line,
+                    price:  (currCurrency=="inr")?ele.price:ele.usd_price
+                });
+        });
+    }
+
+
     const mobileView = null;
 
     const browserView = (
@@ -73,9 +106,9 @@ function NewArrivalsSwiper(props) {
                                     />
                                 </span>
                                 <div className={"text-center"}>
-                                    <h5 className={'text-h5 font-600'}>Product {index + 1}</h5>
-                                    <p className="text-sm tracking-wide">Product Description</p>
-                                    <p className="text-sm tracking-wide">₹****</p>
+                                    <h5 className={'text-h5 font-600'}>{item.name}</h5>
+                                    <p className="text-sm tracking-wide">{item.tag}</p>
+                                    <p className="text-sm tracking-wide">{currSymbol}{item.price}</p>
                                 </div>
                             </a>
                         </SwiperSlide>

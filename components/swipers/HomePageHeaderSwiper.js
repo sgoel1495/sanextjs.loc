@@ -32,7 +32,6 @@ function HomePageHeaderSwiper(props) {
 
     const [data,setData] = useState(null);
     useEffect(()=>{
-        console.log("RESP",resp);
         if(resp
             && resp.hasOwnProperty("status")
             && resp.status == 200
