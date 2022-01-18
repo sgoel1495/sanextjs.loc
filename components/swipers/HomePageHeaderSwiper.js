@@ -38,14 +38,15 @@ function HomePageHeaderSwiper(props) {
         )
         setData(resp.new_arr_carousal);
     },[resp]);
-    console.log("DATA",data);
+
     const actualData = [];
     let foreground = null;
+    let transitionTime = 1.0
+
     if(data && data.imgs && data.imgs.length > 0){
         foreground = WEBASSETS + data.foreground_path;
+        transitionTime = data.transition_time;
         data.imgs.forEach((ele,index)=>{
-            console.log("ELE",ele);
-            console.log("Index",index);
             actualData.push({
                 link: "/" + data.imgs_path[index],
                 url: WEBASSETS + ele
