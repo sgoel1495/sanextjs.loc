@@ -20,7 +20,7 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 function NewArrivalsSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const url="/api/v1/get_products";
+    const url="/get_products";
     const body = {
         "product": {
             "token": process.env.API_TOKEN,

@@ -1,4 +1,5 @@
 /**
+ * @todo Unable to find api for SaltMedia table
  * @params {isMobile} props
  * @constructor
  */

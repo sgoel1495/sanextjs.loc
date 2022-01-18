@@ -1,9 +1,10 @@
 /**
+ * @todo The params for mobile/browser not clear. Also data does not match with current site.
  * @params {isMobile} props
  * @constructor
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import BlockHeader from "../common/blockHeader";
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
@@ -11,63 +12,46 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
+import useApiCall from "../../hooks/useApiCall";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
-const actualData = [
-    {
-        url: "#",
-        title: "A Classic",
-        image: "https://saltattire.com/assets/look-796/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Jacquard",
-        image: "https://saltattire.com/assets/look-795/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Raspberry Crush",
-        image: "https://saltattire.com/assets/look-794/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Paris Winter",
-        image: "https://saltattire.com/assets/look-793/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Ace of Spades",
-        image: "https://saltattire.com/assets/look-792/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Check Mate",
-        image: "https://saltattire.com/assets/look-791/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Classic Checks",
-        image: "https://saltattire.com/assets/look-790/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Poncho Must Have",
-        image: "https://saltattire.com/assets/look-789/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "Work & Travel Friendly",
-        image: "https://saltattire.com/assets/look-788/Full.v1.jpg"
-    },
-    {
-        url: "#",
-        title: "1 Dress Many Ways",
-        image: "https://saltattire.com/assets/look-787/Full.v1.jpg"
-    },
-]
 
 function ShopByLooksSwiper(props) {
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+
+    const url="/get_looks_data";
+    const body = {
+        "token": process.env.API_TOKEN,
+        "look_id": "",
+        "skip": 0,
+        "limit": 10
+    };
+    const resp = useApiCall(url,body);
+
+    const [data,setData] = useState(null);
+    useEffect(()=>{
+        if(resp
+            && resp.hasOwnProperty("status")
+            && resp.status == 200
+            && resp.hasOwnProperty("response")
+            && resp.response.hasOwnProperty("look")
+        )
+            setData(resp.response.look);
+    },[resp]);
+
+    const actualData = [];
+
+    if(data && data.length > 0){
+        data.forEach(ele=> {
+            actualData.push({
+                url: "/looks/" + ele.look_id,
+                title: ele.heading,
+                image:  WEBASSETS + ele.img_path
+            });
+        });
+    }
+
     const mobileView = null;
 
     const browserView = (

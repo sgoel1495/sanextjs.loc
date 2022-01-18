@@ -1,1 +1,306 @@
-{"status":400,"error":"Bad Request","exception":"#\u003cActionController::ParameterMissing: param is missing or the value is empty: product\u003e","traces":{"Application Trace":[{"exception_object_id":70018674860700,"id":1,"trace":"app/controllers/api/v1/product_controller.rb:999:in `permit_token_params'"},{"exception_object_id":70018674860700,"id":2,"trace":"app/controllers/api/v1/product_controller.rb:10:in `get_products'"}],"Framework Trace":[{"exception_object_id":70018674860700,"id":0,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/strong_parameters.rb:462:in `require'"},{"exception_object_id":70018674860700,"id":3,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'"},{"exception_object_id":70018674860700,"id":4,"trace":"actionpack (6.0.3.5) lib/abstract_controller/base.rb:195:in `process_action'"},{"exception_object_id":70018674860700,"id":5,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/rendering.rb:30:in `process_action'"},{"exception_object_id":70018674860700,"id":6,"trace":"actionpack (6.0.3.5) lib/abstract_controller/callbacks.rb:42:in `block in process_action'"},{"exception_object_id":70018674860700,"id":7,"trace":"activesupport (6.0.3.5) lib/active_support/callbacks.rb:101:in `run_callbacks'"},{"exception_object_id":70018674860700,"id":8,"trace":"actionpack (6.0.3.5) lib/abstract_controller/callbacks.rb:41:in `process_action'"},{"exception_object_id":70018674860700,"id":9,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/rescue.rb:22:in `process_action'"},{"exception_object_id":70018674860700,"id":10,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/instrumentation.rb:33:in `block in process_action'"},{"exception_object_id":70018674860700,"id":11,"trace":"activesupport (6.0.3.5) lib/active_support/notifications.rb:180:in `block in instrument'"},{"exception_object_id":70018674860700,"id":12,"trace":"activesupport (6.0.3.5) lib/active_support/notifications/instrumenter.rb:24:in `instrument'"},{"exception_object_id":70018674860700,"id":13,"trace":"activesupport (6.0.3.5) lib/active_support/notifications.rb:180:in `instrument'"},{"exception_object_id":70018674860700,"id":14,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/instrumentation.rb:32:in `process_action'"},{"exception_object_id":70018674860700,"id":15,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/params_wrapper.rb:245:in `process_action'"},{"exception_object_id":70018674860700,"id":16,"trace":"activerecord (6.0.3.5) lib/active_record/railties/controller_runtime.rb:27:in `process_action'"},{"exception_object_id":70018674860700,"id":17,"trace":"mongoid (7.2.0) lib/mongoid/railties/controller_runtime.rb:22:in `process_action'"},{"exception_object_id":70018674860700,"id":18,"trace":"actionpack (6.0.3.5) lib/abstract_controller/base.rb:136:in `process'"},{"exception_object_id":70018674860700,"id":19,"trace":"actionpack (6.0.3.5) lib/action_controller/metal.rb:190:in `dispatch'"},{"exception_object_id":70018674860700,"id":20,"trace":"actionpack (6.0.3.5) lib/action_controller/metal.rb:254:in `dispatch'"},{"exception_object_id":70018674860700,"id":21,"trace":"actionpack (6.0.3.5) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'"},{"exception_object_id":70018674860700,"id":22,"trace":"actionpack (6.0.3.5) lib/action_dispatch/routing/route_set.rb:33:in `serve'"},{"exception_object_id":70018674860700,"id":23,"trace":"actionpack (6.0.3.5) lib/action_dispatch/journey/router.rb:49:in `block in serve'"},{"exception_object_id":70018674860700,"id":24,"trace":"actionpack (6.0.3.5) lib/action_dispatch/journey/router.rb:32:in `each'"},{"exception_object_id":70018674860700,"id":25,"trace":"actionpack (6.0.3.5) lib/action_dispatch/journey/router.rb:32:in `serve'"},{"exception_object_id":70018674860700,"id":26,"trace":"actionpack (6.0.3.5) lib/action_dispatch/routing/route_set.rb:834:in `call'"},{"exception_object_id":70018674860700,"id":27,"trace":"rack (2.2.3) lib/rack/etag.rb:27:in `call'"},{"exception_object_id":70018674860700,"id":28,"trace":"rack (2.2.3) lib/rack/conditional_get.rb:40:in `call'"},{"exception_object_id":70018674860700,"id":29,"trace":"rack (2.2.3) lib/rack/head.rb:12:in `call'"},{"exception_object_id":70018674860700,"id":30,"trace":"activerecord (6.0.3.5) lib/active_record/migration.rb:567:in `call'"},{"exception_object_id":70018674860700,"id":31,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'"},{"exception_object_id":70018674860700,"id":32,"trace":"activesupport (6.0.3.5) lib/active_support/callbacks.rb:101:in `run_callbacks'"},{"exception_object_id":70018674860700,"id":33,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/callbacks.rb:26:in `call'"},{"exception_object_id":70018674860700,"id":34,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/executor.rb:14:in `call'"},{"exception_object_id":70018674860700,"id":35,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'"},{"exception_object_id":70018674860700,"id":36,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/debug_exceptions.rb:32:in `call'"},{"exception_object_id":70018674860700,"id":37,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'"},{"exception_object_id":70018674860700,"id":38,"trace":"railties (6.0.3.5) lib/rails/rack/logger.rb:37:in `call_app'"},{"exception_object_id":70018674860700,"id":39,"trace":"railties (6.0.3.5) lib/rails/rack/logger.rb:26:in `block in call'"},{"exception_object_id":70018674860700,"id":40,"trace":"activesupport (6.0.3.5) lib/active_support/tagged_logging.rb:80:in `block in tagged'"},{"exception_object_id":70018674860700,"id":41,"trace":"activesupport (6.0.3.5) lib/active_support/tagged_logging.rb:28:in `tagged'"},{"exception_object_id":70018674860700,"id":42,"trace":"activesupport (6.0.3.5) lib/active_support/tagged_logging.rb:80:in `tagged'"},{"exception_object_id":70018674860700,"id":43,"trace":"railties (6.0.3.5) lib/rails/rack/logger.rb:26:in `call'"},{"exception_object_id":70018674860700,"id":44,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'"},{"exception_object_id":70018674860700,"id":45,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/request_id.rb:27:in `call'"},{"exception_object_id":70018674860700,"id":46,"trace":"rack (2.2.3) lib/rack/runtime.rb:22:in `call'"},{"exception_object_id":70018674860700,"id":47,"trace":"activesupport (6.0.3.5) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'"},{"exception_object_id":70018674860700,"id":48,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/executor.rb:14:in `call'"},{"exception_object_id":70018674860700,"id":49,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/static.rb:126:in `call'"},{"exception_object_id":70018674860700,"id":50,"trace":"rack (2.2.3) lib/rack/sendfile.rb:110:in `call'"},{"exception_object_id":70018674860700,"id":51,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/host_authorization.rb:82:in `call'"},{"exception_object_id":70018674860700,"id":52,"trace":"rack-cors (1.1.1) lib/rack/cors.rb:100:in `call'"},{"exception_object_id":70018674860700,"id":53,"trace":"railties (6.0.3.5) lib/rails/engine.rb:527:in `call'"},{"exception_object_id":70018674860700,"id":54,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/rack/thread_handler_extension.rb:107:in `process_request'"},{"exception_object_id":70018674860700,"id":55,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/request_handler/thread_handler.rb:157:in `accept_and_process_next_request'"},{"exception_object_id":70018674860700,"id":56,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/request_handler/thread_handler.rb:110:in `main_loop'"},{"exception_object_id":70018674860700,"id":57,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/request_handler.rb:416:in `block (3 levels) in start_threads'"},{"exception_object_id":70018674860700,"id":58,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/utils.rb:113:in `block in create_thread_and_abort_on_exception'"}],"Full Trace":[{"exception_object_id":70018674860700,"id":0,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/strong_parameters.rb:462:in `require'"},{"exception_object_id":70018674860700,"id":1,"trace":"app/controllers/api/v1/product_controller.rb:999:in `permit_token_params'"},{"exception_object_id":70018674860700,"id":2,"trace":"app/controllers/api/v1/product_controller.rb:10:in `get_products'"},{"exception_object_id":70018674860700,"id":3,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'"},{"exception_object_id":70018674860700,"id":4,"trace":"actionpack (6.0.3.5) lib/abstract_controller/base.rb:195:in `process_action'"},{"exception_object_id":70018674860700,"id":5,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/rendering.rb:30:in `process_action'"},{"exception_object_id":70018674860700,"id":6,"trace":"actionpack (6.0.3.5) lib/abstract_controller/callbacks.rb:42:in `block in process_action'"},{"exception_object_id":70018674860700,"id":7,"trace":"activesupport (6.0.3.5) lib/active_support/callbacks.rb:101:in `run_callbacks'"},{"exception_object_id":70018674860700,"id":8,"trace":"actionpack (6.0.3.5) lib/abstract_controller/callbacks.rb:41:in `process_action'"},{"exception_object_id":70018674860700,"id":9,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/rescue.rb:22:in `process_action'"},{"exception_object_id":70018674860700,"id":10,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/instrumentation.rb:33:in `block in process_action'"},{"exception_object_id":70018674860700,"id":11,"trace":"activesupport (6.0.3.5) lib/active_support/notifications.rb:180:in `block in instrument'"},{"exception_object_id":70018674860700,"id":12,"trace":"activesupport (6.0.3.5) lib/active_support/notifications/instrumenter.rb:24:in `instrument'"},{"exception_object_id":70018674860700,"id":13,"trace":"activesupport (6.0.3.5) lib/active_support/notifications.rb:180:in `instrument'"},{"exception_object_id":70018674860700,"id":14,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/instrumentation.rb:32:in `process_action'"},{"exception_object_id":70018674860700,"id":15,"trace":"actionpack (6.0.3.5) lib/action_controller/metal/params_wrapper.rb:245:in `process_action'"},{"exception_object_id":70018674860700,"id":16,"trace":"activerecord (6.0.3.5) lib/active_record/railties/controller_runtime.rb:27:in `process_action'"},{"exception_object_id":70018674860700,"id":17,"trace":"mongoid (7.2.0) lib/mongoid/railties/controller_runtime.rb:22:in `process_action'"},{"exception_object_id":70018674860700,"id":18,"trace":"actionpack (6.0.3.5) lib/abstract_controller/base.rb:136:in `process'"},{"exception_object_id":70018674860700,"id":19,"trace":"actionpack (6.0.3.5) lib/action_controller/metal.rb:190:in `dispatch'"},{"exception_object_id":70018674860700,"id":20,"trace":"actionpack (6.0.3.5) lib/action_controller/metal.rb:254:in `dispatch'"},{"exception_object_id":70018674860700,"id":21,"trace":"actionpack (6.0.3.5) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'"},{"exception_object_id":70018674860700,"id":22,"trace":"actionpack (6.0.3.5) lib/action_dispatch/routing/route_set.rb:33:in `serve'"},{"exception_object_id":70018674860700,"id":23,"trace":"actionpack (6.0.3.5) lib/action_dispatch/journey/router.rb:49:in `block in serve'"},{"exception_object_id":70018674860700,"id":24,"trace":"actionpack (6.0.3.5) lib/action_dispatch/journey/router.rb:32:in `each'"},{"exception_object_id":70018674860700,"id":25,"trace":"actionpack (6.0.3.5) lib/action_dispatch/journey/router.rb:32:in `serve'"},{"exception_object_id":70018674860700,"id":26,"trace":"actionpack (6.0.3.5) lib/action_dispatch/routing/route_set.rb:834:in `call'"},{"exception_object_id":70018674860700,"id":27,"trace":"rack (2.2.3) lib/rack/etag.rb:27:in `call'"},{"exception_object_id":70018674860700,"id":28,"trace":"rack (2.2.3) lib/rack/conditional_get.rb:40:in `call'"},{"exception_object_id":70018674860700,"id":29,"trace":"rack (2.2.3) lib/rack/head.rb:12:in `call'"},{"exception_object_id":70018674860700,"id":30,"trace":"activerecord (6.0.3.5) lib/active_record/migration.rb:567:in `call'"},{"exception_object_id":70018674860700,"id":31,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'"},{"exception_object_id":70018674860700,"id":32,"trace":"activesupport (6.0.3.5) lib/active_support/callbacks.rb:101:in `run_callbacks'"},{"exception_object_id":70018674860700,"id":33,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/callbacks.rb:26:in `call'"},{"exception_object_id":70018674860700,"id":34,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/executor.rb:14:in `call'"},{"exception_object_id":70018674860700,"id":35,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'"},{"exception_object_id":70018674860700,"id":36,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/debug_exceptions.rb:32:in `call'"},{"exception_object_id":70018674860700,"id":37,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'"},{"exception_object_id":70018674860700,"id":38,"trace":"railties (6.0.3.5) lib/rails/rack/logger.rb:37:in `call_app'"},{"exception_object_id":70018674860700,"id":39,"trace":"railties (6.0.3.5) lib/rails/rack/logger.rb:26:in `block in call'"},{"exception_object_id":70018674860700,"id":40,"trace":"activesupport (6.0.3.5) lib/active_support/tagged_logging.rb:80:in `block in tagged'"},{"exception_object_id":70018674860700,"id":41,"trace":"activesupport (6.0.3.5) lib/active_support/tagged_logging.rb:28:in `tagged'"},{"exception_object_id":70018674860700,"id":42,"trace":"activesupport (6.0.3.5) lib/active_support/tagged_logging.rb:80:in `tagged'"},{"exception_object_id":70018674860700,"id":43,"trace":"railties (6.0.3.5) lib/rails/rack/logger.rb:26:in `call'"},{"exception_object_id":70018674860700,"id":44,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'"},{"exception_object_id":70018674860700,"id":45,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/request_id.rb:27:in `call'"},{"exception_object_id":70018674860700,"id":46,"trace":"rack (2.2.3) lib/rack/runtime.rb:22:in `call'"},{"exception_object_id":70018674860700,"id":47,"trace":"activesupport (6.0.3.5) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'"},{"exception_object_id":70018674860700,"id":48,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/executor.rb:14:in `call'"},{"exception_object_id":70018674860700,"id":49,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/static.rb:126:in `call'"},{"exception_object_id":70018674860700,"id":50,"trace":"rack (2.2.3) lib/rack/sendfile.rb:110:in `call'"},{"exception_object_id":70018674860700,"id":51,"trace":"actionpack (6.0.3.5) lib/action_dispatch/middleware/host_authorization.rb:82:in `call'"},{"exception_object_id":70018674860700,"id":52,"trace":"rack-cors (1.1.1) lib/rack/cors.rb:100:in `call'"},{"exception_object_id":70018674860700,"id":53,"trace":"railties (6.0.3.5) lib/rails/engine.rb:527:in `call'"},{"exception_object_id":70018674860700,"id":54,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/rack/thread_handler_extension.rb:107:in `process_request'"},{"exception_object_id":70018674860700,"id":55,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/request_handler/thread_handler.rb:157:in `accept_and_process_next_request'"},{"exception_object_id":70018674860700,"id":56,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/request_handler/thread_handler.rb:110:in `main_loop'"},{"exception_object_id":70018674860700,"id":57,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/request_handler.rb:416:in `block (3 levels) in start_threads'"},{"exception_object_id":70018674860700,"id":58,"trace":"passenger (6.0.7) src/ruby_supportlib/phusion_passenger/utils.rb:113:in `block in create_thread_and_abort_on_exception'"}]}}
+{
+  "status": 200,
+  "msg": "success",
+  "response": {
+    "look": [
+      {
+        "look_id": "look-808",
+        "heading": "Verve",
+        "name": "Verve",
+        "products": [
+          "Shirts-Verve-SatinNotchCollarShirt",
+          "Pants-Audacious-Cream-HighwaistWide-legpant"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-808/Collage.v1.jpg",
+        "img_path": "/assets/look-808/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#5b4351",
+        "color": "#ffffff",
+        "details": "Verve,Audacious-Cream",
+        "template": 2
+      },
+      {
+        "look_id": "look-807",
+        "heading": "Auburn",
+        "name": "Auburn",
+        "products": [
+          "Tops-Auburn-SatinPrintedTop",
+          "Pants-Earnest-Black-MidToHighRisePants"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-807/Collage.v1.jpg",
+        "img_path": "/assets/look-807/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#0c172f",
+        "color": "#ffffff",
+        "details": "Auburn,Earnest-Black",
+        "template": 2
+      },
+      {
+        "look_id": "look-806",
+        "heading": "Virid",
+        "name": "Virid",
+        "products": [
+          "Tops-Virid-SatinPrintedTop",
+          "Pants-Audacious-Cream-HighwaistWide-legpant"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-806/Collage.v1.jpg",
+        "img_path": "/assets/look-806/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#a43941",
+        "color": "#ffffff",
+        "details": "Virid,Audacious-Cream",
+        "template": 2
+      },
+      {
+        "look_id": "look-805",
+        "heading": "Tora",
+        "name": "Tora",
+        "products": [
+          "Tunics-Tora-LongPrintedShirt",
+          "Pants-Audacious-Cream-HighwaistWide-legpant"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-805/Collage.v1.jpg",
+        "img_path": "/assets/look-805/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#38255d",
+        "color": "#ffffff",
+        "details": "Tora,Audacious-Cream",
+        "template": 2
+      },
+      {
+        "look_id": "look-804",
+        "heading": "Baagh",
+        "name": "Baagh",
+        "products": [
+          "Outerwear-Baagh-OverlayinTigerMotifPrint",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-804/Collage.v1.jpg",
+        "img_path": "/assets/look-804/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#1f5f61",
+        "color": "#ffffff",
+        "details": "Baagh,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-803",
+        "heading": "Hobbes",
+        "name": "Hobbes",
+        "products": [
+          "Tunics-Hobbes-LongPrintedTop",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-803/Collage.v1.jpg",
+        "img_path": "/assets/look-803/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#4d2323",
+        "color": "#ffffff",
+        "details": "Hobbes,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-802",
+        "heading": "Fierce",
+        "name": "Fierce",
+        "products": [
+          "Tops-Fierce-Wraptop",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-802/Collage.v1.jpg",
+        "img_path": "/assets/look-802/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#3f3934",
+        "color": "#ffffff",
+        "details": "Fierce,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-801",
+        "heading": "Rayas",
+        "name": "Rayas",
+        "products": [
+          "Outerwear-Rayas-OverlayinTigerMotifPrint",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-801/Collage.v1.jpg",
+        "img_path": "/assets/look-801/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#884808",
+        "color": "#ffffff",
+        "details": "Rayas,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-800",
+        "heading": "Lynx",
+        "name": "Lynx",
+        "products": [
+          "Tunics-Lynx-LongPrintedShirt",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-800/Collage.v1.jpg",
+        "img_path": "/assets/look-800/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#583714",
+        "color": "#ffffff",
+        "details": "Lynx,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-799",
+        "heading": "Overcast",
+        "name": "Overcast",
+        "products": [
+          "Sweater-Overcast-OpenFrontCardigan",
+          "Pants-Black-Treggings-Highwaistjeggings"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-799/Collage.v1.jpg",
+        "img_path": "/assets/look-799/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#100d2d",
+        "color": "#ffffff",
+        "details": "Overcast,Black Treggings",
+        "template": 2
+      }
+    ],
+    "prod": {
+      "Shirts-Verve-SatinNotchCollarShirt": {
+        "category": "shirts",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Verve",
+        "price": 2650.0,
+        "tag_line": "Satin Notch Collar Shirt",
+        "usd_price": 38.0
+      },
+      "Pants-Audacious-Cream-HighwaistWide-legpant": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Audacious-Cream",
+        "price": 3450.0,
+        "tag_line": "High waist Wide-leg pant",
+        "usd_price": 49.0
+      },
+      "Tops-Auburn-SatinPrintedTop": {
+        "category": "tops",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Auburn",
+        "price": 2450.0,
+        "tag_line": "Satin Printed Top",
+        "usd_price": 35.0
+      },
+      "Pants-Earnest-Black-MidToHighRisePants": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Earnest-Black",
+        "price": 2750.0,
+        "tag_line": "Mid To High Rise Pants",
+        "usd_price": 39.0
+      },
+      "Tops-Virid-SatinPrintedTop": {
+        "category": "tops",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Virid",
+        "price": 2450.0,
+        "tag_line": "Satin Printed Top",
+        "usd_price": 35.0
+      },
+      "Tunics-Tora-LongPrintedShirt": {
+        "category": "tunics",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Tora",
+        "price": 2450.0,
+        "tag_line": "Long Printed Shirt",
+        "usd_price": 35.0
+      },
+      "Outerwear-Baagh-OverlayinTigerMotifPrint": {
+        "category": "outerwear",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Baagh",
+        "price": 3250.0,
+        "tag_line": "Overlay in Tiger Motif Print",
+        "usd_price": 56.0
+      },
+      "Pants-Diligent-Navy-StraightFitPants": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Diligent-Navy",
+        "price": 2550.0,
+        "tag_line": "Elasticated Waist Pants",
+        "usd_price": 36.0
+      },
+      "Tunics-Hobbes-LongPrintedTop": {
+        "category": "tunics",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Hobbes",
+        "price": 2450.0,
+        "tag_line": "Long Printed Top",
+        "usd_price": 35.0
+      },
+      "Tops-Fierce-Wraptop": {
+        "category": "tops",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Fierce",
+        "price": 2450.0,
+        "tag_line": "Wrap top",
+        "usd_price": 35.0
+      },
+      "Outerwear-Rayas-OverlayinTigerMotifPrint": {
+        "category": "outerwear",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Rayas",
+        "price": 3250.0,
+        "tag_line": "Overlay in Tiger Motif Print",
+        "usd_price": 56.0
+      },
+      "Tunics-Lynx-LongPrintedShirt": {
+        "category": "tunics",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Lynx",
+        "price": 2450.0,
+        "tag_line": "Long Printed Shirt",
+        "usd_price": 35.0
+      },
+      "Sweater-Overcast-OpenFrontCardigan": {
+        "category": "sweaters",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Overcast",
+        "price": 4250.0,
+        "tag_line": "Open Front Cardigan",
+        "usd_price": 60.0
+      },
+      "Pants-Black-Treggings-Highwaistjeggings": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Black Treggings",
+        "price": 2750.0,
+        "tag_line": "High waist jeggings",
+        "usd_price": 39.0
+      }
+    }
+  }
+}
