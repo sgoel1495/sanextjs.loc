@@ -1,4 +1,5 @@
 {
     "mobile": true,
-    "currCurrency": "inr"
+    "currCurrency": "inr",
+    "apiToken": null
 }

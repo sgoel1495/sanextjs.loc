@@ -9,11 +9,8 @@ function useApiCall(word,apiToken=null, queryObject={}){
 
     useEffect(()=>{
         if(apiToken!=null) {
-            console.log("Sending data for call object>>",word,apiToken,queryObject);
             const callObject = apiDictionary(word,apiToken,queryObject);
-            console.log("CALL OBJECT",callObject);
             if(callObject!=null) {
-                console.log("ACTUALLY CALLING WITH <<<>>>>",callObject);
                 fetch(callObject.url, callObject.fetcher)
                     .then(response => {
                         return response.json();

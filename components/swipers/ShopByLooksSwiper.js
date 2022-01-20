@@ -20,13 +20,8 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 function ShopByLooksSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
     const {dataStore} = useContext(AppWideContext);
-
-    console.log("CALLING GETLOOKS");
     const resp = useApiCall("getLooksData",dataStore.apiToken,{look_id: ""});
-
-
     const [data,setData] = useState(null);
     useEffect(()=>{
         if(resp

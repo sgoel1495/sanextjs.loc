@@ -17,20 +17,21 @@ import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper
 
 function RootPage() {
     const {dataStore} = useContext(AppWideContext);
+
     const [navControl, setNavControl] = React.useState(false);
     const controller = () => {
         if (window.scrollY > 0) {
-            setNavControl(true)
+            setNavControl(true);
         } else {
-            setNavControl(false)
-        }
-    }
+            setNavControl(false);
+        };
+    };
     React.useEffect(() => {
-        window.addEventListener("scroll", controller)
+        window.addEventListener("scroll", controller);
         return () => {
             window.removeEventListener('scroll', controller)
-        }
-    })
+        };
+    },[]);
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>

@@ -20,7 +20,6 @@ SwiperCore.use([EffectFade,Navigation,Pagination, Autoplay]);
 function HomePageHeaderSwiper(props) {
     const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    console.log("CALLING GETPRODUCTS");
     const resp = useApiCall("getProducts",dataStore.apiToken,{category: "new-arrivals"});
     const [data,setData] = useState(null);
     useEffect(()=>{
@@ -32,6 +31,7 @@ function HomePageHeaderSwiper(props) {
         )
         setData(resp.new_arr_carousal);
     },[resp]);
+
 
     const actualData = [];
     let foreground = null;
@@ -46,6 +46,8 @@ function HomePageHeaderSwiper(props) {
                 url: WEBASSETS + ele
             });
         });
+        console.log("ACTUAL DATA",actualData);
+
     }
 
 

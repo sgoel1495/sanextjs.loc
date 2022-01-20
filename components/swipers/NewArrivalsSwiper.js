@@ -21,7 +21,6 @@ function NewArrivalsSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
 
-    console.log("CALLING GETPRODUCTS again");
     const resp = useApiCall("getProducts",dataStore.apiToken,{category: "new-arrivals"});
 
     const [data,setData] = useState(null);

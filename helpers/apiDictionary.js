@@ -25,13 +25,11 @@ export const apiDictionary = (word,apiToken="",queryObject={})=>{
 
     switch (word){
         case "getToken":
-            console.log("ACCESSING API GET TOKEN");
             url += "/get_authenticate_token";
             finalFetcher = {...getFetcher};
             break;
 
         case "getProducts":
-            console.log("ACCESSING API POST GET PRODUCTS");
             url += "/get_products";
             body = {
                 product: {
@@ -46,7 +44,6 @@ export const apiDictionary = (word,apiToken="",queryObject={})=>{
             break;
 
         case "getLooksData":
-            console.log("ACCESSING API POST GET PRODUCTS");
             url += "/get_looks_data";
             body = {
                 token: apiToken,

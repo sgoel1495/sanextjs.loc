@@ -10,22 +10,16 @@ import App from "next/app";
 
 function MyApp({ Component, pageProps }) {
   const dataStoreDefault = require('../store/defaultDataStore.json');
+  dataStoreDefault.mobile = isMobile;
+  dataStoreDefault.apiToken = pageProps.apiToken;
   const [dataStore, setDataStore] = useState(dataStoreDefault);
+  const [refresh, setRefresh] = useState(true);
+
   const updateDataStore = (key, value) => {
-    const newDataStore = { ...dataStore };
-    newDataStore[key] = value;
-    setDataStore(newDataStore);
+    dataStore[key] = value;
+    setDataStore({...dataStore});
+    setRefresh(!refresh);
   }
-
-  useEffect(() => {
-    updateDataStore("mobile", isMobile);
-  }, [isMobile]);
-
-  useEffect(()=>{
-    updateDataStore("apiToken", pageProps.apiToken);
-  },[pageProps.apiToken]);
-
-  console.log("TOKEN",pageProps.apiToken);
 
   return (
     <AppWideContext.Provider value={{
