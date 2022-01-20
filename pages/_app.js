@@ -1,3 +1,6 @@
+/**
+ * @todo OPTIONAL At the API server, you can restrict the token call only from the webserver ip for security
+ */
 import '../styles/globals.css';
 import AppWideContext from "../store/AppWideContext";
 import { useEffect, useState } from 'react';
@@ -12,6 +15,7 @@ function MyApp({ Component, pageProps }) {
     newDataStore[key] = value;
     setDataStore(newDataStore);
   }
+
   useEffect(() => {
     updateDataStore("mobile", isMobile);
   }, [isMobile]);
@@ -32,13 +36,7 @@ function MyApp({ Component, pageProps }) {
 MyApp.getInitialProps = async () => {
   const returnObject = {apiToken:null};
   const callObject = apiDictionary("getToken");
-  const response = await fetch(callObject.url,{
-    method:callObject.method,
-    headers: {
-      'Accept': 'application/json; charset=UTF-8',
-      'Content-Type': 'application/json; charset=UTF-8'
-    }
-  });
+  const response = await fetch(callObject.url, callObject.fetcher);
   const data = await response.json();
   if(data
       && data.hasOwnProperty("status")
