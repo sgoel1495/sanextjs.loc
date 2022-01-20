@@ -11,6 +11,9 @@ class MyDcoument extends Document {
       <Html lang="en" xmlns="http://www.w3.org/1999/xhtml">
         <Head/>
         <body>
+          <div id="hamburger"></div>
+          <div id="userband"></div>
+          <div id="cartside"></div>
           <Main/>
           <NextScript/>
         </body>

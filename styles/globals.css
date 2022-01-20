@@ -24,3 +24,12 @@
 @media only screen and (max-width: 450px) {
 
 }
+
+/* TEACII ONLY FOR TEST */
+.hamburger{
+    display: block;
+    min-height: 100px;
+    background-color: aliceblue;
+    color: black;
+    z-index: 9999;
+}

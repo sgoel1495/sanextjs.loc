@@ -18,6 +18,7 @@ import AppWideContext from "../../store/AppWideContext";
 SwiperCore.use([EffectFade,Navigation,Pagination, Autoplay]);
 
 function HomePageHeaderSwiper(props) {
+    const maxSlides = 10;
     const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const resp = useApiCall("getProducts",dataStore.apiToken,{category: "new-arrivals"});
@@ -41,10 +42,11 @@ function HomePageHeaderSwiper(props) {
         foreground = WEBASSETS + data.foreground_path;
         transitionTime = data.transition_time;
         data.imgs.forEach((ele,index)=>{
-            actualData.push({
-                link: "/" + data.imgs_path[index],
-                url: WEBASSETS + ele
-            });
+            if(index<maxSlides)
+                actualData.push({
+                    link: "/" + data.imgs_path[index],
+                    url: WEBASSETS + ele
+                });
         });
     }
 

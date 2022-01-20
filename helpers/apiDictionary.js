@@ -39,6 +39,7 @@ export const apiDictionary = (word,apiToken="",queryObject={})=>{
                     limit: queryObject.limit || 10
                 }
             };
+            console.log("BODY",body);
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
