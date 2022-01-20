@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 /**
+ * @todo We do now know where in api to get the submenu data
  * @params {isMobile, menu} props
  * @constructor
  */

@@ -46,8 +46,6 @@ function HomePageHeaderSwiper(props) {
                 url: WEBASSETS + ele
             });
         });
-        console.log("ACTUAL DATA",actualData);
-
     }
 
 

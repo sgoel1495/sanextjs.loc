@@ -55,6 +55,15 @@ export const apiDictionary = (word,apiToken="",queryObject={})=>{
             finalFetcher = {...postFetcher}
             break;
 
+        case "exploreNewArrivals":
+            url += "/explore_new_arrivals";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         default:
             url=null;
             break;
