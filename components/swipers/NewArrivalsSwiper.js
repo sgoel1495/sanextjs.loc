@@ -19,17 +19,10 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 function NewArrivalsSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const {dataStore} = useContext(AppWideContext);
 
-    const url="/get_products";
-    const body = {
-        "product": {
-            "token": process.env.API_TOKEN,
-            "category": "new-arrivals",
-            "skip": 0,
-            "limit": 10
-        }
-    };
-    const resp = useApiCall(url,body);
+    console.log("CALLING GETPRODUCTS again");
+    const resp = useApiCall("getProducts",dataStore.apiToken,{category: "new-arrivals"});
 
     const [data,setData] = useState(null);
     useEffect(()=>{
@@ -42,7 +35,6 @@ function NewArrivalsSwiper(props) {
             setData(resp.response.data);
     },[resp]);
 
-    const {dataStore} = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currSymbol = currencyData[currCurrency]["curr_symbol"];

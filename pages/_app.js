@@ -25,6 +25,8 @@ function MyApp({ Component, pageProps }) {
     updateDataStore("apiToken", pageProps.apiToken);
   },[pageProps.apiToken]);
 
+  console.log("TOKEN",pageProps.apiToken);
+
   return (
     <AppWideContext.Provider value={{
       dataStore: dataStore, updateDataStore: updateDataStore
@@ -45,7 +47,7 @@ MyApp.getInitialProps = async (appContext) => {
       && data.hasOwnProperty("response")
       && data.response.hasOwnProperty("token")
   )
-    returnObject.apiToken = data.response.token
+    returnObject.apiToken = data.response.token;
   const appProps = await App.getInitialProps(appContext);
   return { pageProps: {...appProps.pageProps,...returnObject} };
 }

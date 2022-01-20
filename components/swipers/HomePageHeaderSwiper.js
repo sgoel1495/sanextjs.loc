@@ -4,7 +4,7 @@
  * @constructor
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import 'swiper/css/effect-fade';
@@ -13,23 +13,15 @@ import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay, EffectFade} from 'swiper';
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
+import AppWideContext from "../../store/AppWideContext";
 
 SwiperCore.use([EffectFade,Navigation,Pagination, Autoplay]);
 
 function HomePageHeaderSwiper(props) {
+    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
-    const url="/get_products";
-    const body = {
-        "product": {
-            "token": process.env.API_TOKEN,
-            "category": "new-arrivals",
-            "skip": 0,
-            "limit": 10
-        }
-    };
-    const resp = useApiCall(url,body);
-
+    console.log("CALLING GETPRODUCTS");
+    const resp = useApiCall("getProducts",dataStore.apiToken,{category: "new-arrivals"});
     const [data,setData] = useState(null);
     useEffect(()=>{
         if(resp

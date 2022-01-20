@@ -1,27 +1,34 @@
+/**
+ * @params word is the api dictionary word, apiToken is required to make calls, queryObject has special params as may be required
+ */
 import {useEffect, useState} from "react";
+import {apiDictionary} from "../helpers/apiDictionary";
 
-function useApiCall(url,body,callType="POST"){
-
-    url = process.env.API_SERVER + url;
+function useApiCall(word,apiToken=null, queryObject={}){
     const [result,setResult] = useState(null);
+
     useEffect(()=>{
-        fetch(url,{
-            method:callType,
-            headers: {
-                'Accept': 'application/json; charset=UTF-8',
-                'Content-Type': 'application/json; charset=UTF-8'
-            },
-            body: JSON.stringify(body)
-        })
-            .then(response=>{
-                return response.json();
-            })
-            .then(data=> {
-                setResult(data);
-            });
+        if(apiToken!=null) {
+            console.log("Sending data for call object>>",word,apiToken,queryObject);
+            const callObject = apiDictionary(word,apiToken,queryObject);
+            console.log("CALL OBJECT",callObject);
+            if(callObject!=null) {
+                console.log("ACTUALLY CALLING WITH <<<>>>>",callObject);
+                fetch(callObject.url, callObject.fetcher)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        setResult(data);
+                    });
+            }
+        }
     },[])
 
-    return result;
+    if (apiToken === null)
+        return null;
+    else
+        return result;
 
 }
 

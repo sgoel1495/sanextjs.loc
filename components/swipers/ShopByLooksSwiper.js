@@ -4,7 +4,7 @@
  * @constructor
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import BlockHeader from "../common/blockHeader";
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
@@ -13,6 +13,7 @@ import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
+import AppWideContext from "../../store/AppWideContext";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
@@ -20,14 +21,11 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 function ShopByLooksSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const url="/get_looks_data";
-    const body = {
-        "token": process.env.API_TOKEN,
-        "look_id": "",
-        "skip": 0,
-        "limit": 10
-    };
-    const resp = useApiCall(url,body);
+    const {dataStore} = useContext(AppWideContext);
+
+    console.log("CALLING GETLOOKS");
+    const resp = useApiCall("getLooksData",dataStore.apiToken,{look_id: ""});
+
 
     const [data,setData] = useState(null);
     useEffect(()=>{
