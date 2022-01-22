@@ -1,4 +1,5 @@
 module.exports = {
+  swcMinify: false,
   reactStrictMode: true,
   env: {
     NEXT_PUBLIC_WEBASSETS: process.env.NEXT_PUBLIC_WEBASSETS,

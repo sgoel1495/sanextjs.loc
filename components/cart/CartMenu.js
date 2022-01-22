@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Cart from "./Cart";
@@ -19,15 +20,15 @@ function CartMenu(props) {
         </Link>
     </div>;
 
-    const browserView = <div>
-        <Cart isMobile={false}/>
-        <Image src={WEBASSETS + "/assets/images/cart.png"} alt="cart" width="24" height="24"/>
-        <sup>0</sup>
-    </div>;
+    const browserView = (
+        <div>
+            <Cart isMobile={false}/>
+            <Image src={WEBASSETS + "/assets/images/cart.png"} alt="cart" width="24" height="24"/>
+            <sup>0</sup>
+        </div>
+    );
 
-    return (
-        (props.isMobile) ? mobileView : browserView
-    )
+    return props.isMobile ? mobileView : browserView
 
 }
 
