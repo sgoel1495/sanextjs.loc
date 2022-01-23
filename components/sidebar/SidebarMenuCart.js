@@ -11,7 +11,7 @@ import ReactDom from "react-dom";
 
 function CartModal(props) {
     /*
-    @Sambahav Please complate the modal asyou see correct
+    @Sambahav Please complete the modal asy ou see correct
      */
     const {closeModal} = props
 

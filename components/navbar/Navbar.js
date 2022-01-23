@@ -8,12 +8,10 @@ import Link from "next/link";
 import SaltIcon from "./SaltIcon";
 import SidebarMenuHamburger from "../sidebar/SidebarMenuHamburger";
 import CurrencySwitcher from "./CurrencySwitcher";
-import UserLoginMenu from "../user/UserLoginMenu";
-import CartMenu from "../cart/CartMenu";
 import SearchMenu from "../search/SearchMenu";
 import Menu from "./Menu";
-import CartSidebar from "../sidebar/SidebarMenuCart";
 import SidebarMenuCart from "../sidebar/SidebarMenuCart";
+import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 
 function Navbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -68,8 +66,8 @@ function Navbar(props) {
             <Menu isMobile={false}/>
             <SearchMenu isMobile={false}/>
             <CurrencySwitcher isMobile={false}/>
-            <UserLoginMenu isMobile={false}/>
-            <CartMenu isMobile={false}/>
+            <SidebarMenuUser isMobile={false}/>
+            <SidebarMenuCart isMobile={false}/>
         </nav>
     );
 
