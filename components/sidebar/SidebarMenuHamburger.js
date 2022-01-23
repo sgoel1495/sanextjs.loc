@@ -113,15 +113,6 @@ const ChildLink = props => {
 
 function HamburgerModal(props) {
 
-    /*
-    @Sambhav
-    please create an icon to close the modal and call props.closeModal on it
-    added global css for testing. should be removed when button in place
-    At present we do not have data for this. so create static.
-    You also have to set the css so that the modal has precedence
-     */
-
-    //    Destructuring Props
     const {closeModal} = props
 
     return (

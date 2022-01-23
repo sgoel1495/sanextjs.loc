@@ -12,6 +12,8 @@ import UserLoginMenu from "../user/UserLoginMenu";
 import CartMenu from "../cart/CartMenu";
 import SearchMenu from "../search/SearchMenu";
 import Menu from "./Menu";
+import CartSidebar from "../sidebar/SidebarMenuCart";
+import SidebarMenuCart from "../sidebar/SidebarMenuCart";
 
 function Navbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -54,7 +56,7 @@ function Navbar(props) {
                 <SearchMenu isMobile={true}/>
             </li>
             <li>
-                <CartMenu isMobile={true}/>
+                <SidebarMenuCart isMobile={true}/>
             </li>
         </ul>
     </nav>;
