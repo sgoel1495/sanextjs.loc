@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, {Fragment, useRef, useState} from "react";
+import React, {Fragment, useContext, useRef, useState} from "react";
 import ReactDom from "react-dom";
+import AppWideContext from "../../store/AppWideContext";
 
 /**
  * @todo API login to be done.
@@ -18,13 +19,17 @@ function UserModal(props) {
 
     const username= useRef(null);
     const password= useRef(null);
-
+    const {updateDataStore} = useContext(AppWideContext);
 
     const signIn = (uname,pwd)=>{};
     const signUp = (uname,pwd)=>{};
     const forgotPassword = (uname)=>{};
     const loginOtp = (uname)=>{};
     const loginFacebook = ()=>{};
+
+    const saveUserDataAfterSuccessfulLogn = (userData)=>{
+        updateDataStore("userData",userData);
+    }
 
     const signInAction = (action)=>{
         switch (action){
