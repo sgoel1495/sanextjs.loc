@@ -1,30 +1,80 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useRef, useState} from "react";
 import ReactDom from "react-dom";
 
 /**
- * @todo No api for media buzz or testimonial. Hardcoded.
+ * @todo API login to be done.
  * @params {isMobile} props
  * @constructor
  */
 
 function UserModal(props) {
     /*
-    @Sambahav Please complete the modal as you see correct
-     */
-    const {closeModal} = props
-
+        @Sambahav Please complete the modal asy ou see correct
+    */
+    const {closeModal} = props;
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+
+    const username= useRef(null);
+    const password= useRef(null);
+
+
+    const signIn = (uname,pwd)=>{};
+    const signUp = (uname,pwd)=>{};
+    const forgotPassword = (uname)=>{};
+    const loginOtp = (uname)=>{};
+    const loginFacebook = ()=>{};
+
+    const signInAction = (action)=>{
+        switch (action){
+            case "singIn":
+                signIn(username.current.value, password.current.value);
+                break;
+            case "singUp":
+                signUp(username.current.value, password.current.value);
+                break;
+            case "forgot":
+                forgotPassword(username.current.value);
+                break;
+            case "otp":
+                forgotPassword(username.current.value);
+                break;
+            case "facebook":
+                forgotPassword();
+                break;
+            default:
+                break;
+        }
+    };
+
+
     const mobileView = null;
 
     const browserView = (
         <div onClick={closeModal}>
+            <div>
+                <div onClick={()=>{signInAction("signIn")}}>SIGN IN</div>
+                | <div onClick={()=>{signInAction("signUp")}}>SIGN UP</div>
+                | <div onClick={()=>{signInAction("forgot")}}>FORGOT YOUR PASSWORD?</div>
+            </div>
+            <div>
+                <form>
+                    <input type="text" name='username' ref={username} placeholder="email/phone (required)" />
+                    <input type="password" ref={password} name='password' />
+                    <button type="submit" onClick={()=>{signInAction("signIn")}}>SIGN IN</button>
+                    <div>OR</div>
+                    <button type="submit" onClick={()=>{signInAction("otp")}}>LOGIN USING OTP</button>
+                    <button type="submit" onClick={()=>{signInAction("facebook")}}>
+                        <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" />
+                        <span>LOGIN</span>
+                    </button>
+                </form>
+            </div>
         </div>);
 
     return props.isMobile ? mobileView : browserView
 }
-
 
 function SidebarMenuUser(props) {
 
@@ -39,7 +89,6 @@ function SidebarMenuUser(props) {
     const closeModal = () => {
         setShowSidebarMenu(false);
     }
-    const data = [];
 
     const mobileView = null;
 
@@ -49,7 +98,7 @@ function SidebarMenuUser(props) {
                 <Image src={WEBASSETS + "/assets/images/usericon.png"} alt="menuicon" width="24" height="24"/>
             </div>
             {showSidebarMenu && ReactDom.createPortal(
-                <CartModal data={data} closeModal={closeModal.bind(this)}/>,
+                <UserModal data={data} closeModal={closeModal.bind(this)}/>,
                 document.getElementById("userband"))}
         </>
     );

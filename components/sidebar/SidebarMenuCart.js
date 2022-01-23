@@ -13,7 +13,7 @@ function CartModal(props) {
     /*
     @Sambahav Please complete the modal asy ou see correct
      */
-    const {closeModal} = props
+    const {closeModal} = props;
 
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 

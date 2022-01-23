@@ -113,7 +113,7 @@ const ChildLink = props => {
 
 function HamburgerModal(props) {
 
-    const {closeModal} = props
+    const {closeModal} = props;
 
     return (
         <div className={`overlay bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
