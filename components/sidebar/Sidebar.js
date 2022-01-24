@@ -8,9 +8,7 @@ function Sidebar(props){
 
   const browserView = null;
 
-  return (
-    (props.isMobile) ? mobileView : browserView
-  )
+  return props.isMobile ? mobileView : browserView
 
 }
 

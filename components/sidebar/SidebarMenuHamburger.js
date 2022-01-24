@@ -116,7 +116,7 @@ function HamburgerModal(props) {
     const {closeModal} = props;
 
     return (
-        <div className={`overlay bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
+        <div className={`bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
             <div
                 className="max-w-[300px] h-full bg-white overflow-y-auto overflow-x-hidden"
                 onClick={(e) => e.stopPropagation()}
@@ -163,8 +163,8 @@ function SidebarMenuHamburger(props) {
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
 
     React.useEffect(() => {
-        if (showSidebarMenu) document.body.style.overflow = "hidden";
-        return () => document.body.style.overflow = "unset"
+        if (showSidebarMenu) document.body.classList.add("scroll-overflow");
+        return () => document.body.classList.remove("scroll-overflow");
     }, [showSidebarMenu])
 
     const closeModal = () => {

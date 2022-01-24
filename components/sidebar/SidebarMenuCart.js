@@ -2,6 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import React, {Fragment, useState} from "react";
 import ReactDom from "react-dom";
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore, {Autoplay} from "swiper";
+import "swiper/css";
+
+SwiperCore.use([Autoplay]);
 
 /**
  * @todo No api for media buzz or testimonial. Hardcoded.
@@ -11,43 +16,56 @@ import ReactDom from "react-dom";
 
 function CartModal(props) {
     /*
-    @Sambahav Please complete the modal asy ou see correct
+    @Sambhav Please complete the modal as you see correct
      */
     const {closeModal} = props;
 
+    const imageClass = "block relative w-40 h-40";
+    const blockHeader = "border-4 border-theme-200 p-2 uppercase mb-5 tracking-wide"
+
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const returnPolicy = <div>
-        <Link href="#faq_slides">
-            <a>
-                <span>Our Return Policy</span>
-                <span>Money Back Guarantee For Pre-paid.<br/>You can exchange the size, <br/>get a store credit or get a full refund For Pre-paid.<br/>No questions asked.</span>
-           </a>
-        </Link>
+    const returnPolicy = (
+        <>
+            <Link href="#faq_slides">
+                <a className={`block ${blockHeader}`}>
+                    <h6 className={`text-h6 font-600 text-center mb-1`}>Our Return Policy</h6>
+                    <ul className={`text-theme-600 text-xs`}>
+                        <li>Money Back Guarantee For Pre-paid.</li>
+                        <li>You can exchange the size.</li>
+                        <li>Get a store credit or get a full refund For Pre-paid.</li>
+                        <li>No questions asked.</li>
+                    </ul>
+                </a>
+            </Link>
+            <div id="faq_slides">
+                <Swiper
+                    slidesPerView={1.25}
+                    spaceBetween={5}
+                    autoplay={{
+                        "delay": 2500,
+                        "disableOnInteraction": false
+                    }}
+                    className={`w-full`}
+                >
+                    {[...Array(6)].map((_, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <div className={`p-2 bg-theme-50 border border-theme-200`}>
+                                    <span className={`block relative w-full h-64`}>
+                                        <Image src={WEBASSETS + `/assets/faq/S${index + 1}.jpg`} alt="return policy" layout="fill" objectFit="cover"/>
+                                    </span>
+                                </div>
+                            </SwiperSlide>
+                        )
+                    })}
 
-        <div id="faq_slides">
-            <div>
-                <Image src={WEBASSETS + "/assets/faq/S1.jpg"} alt="return policy" />
+                </Swiper>
             </div>
-            <div>
-                <Image src={WEBASSETS + "/assets/faq/S2.jpg"} alt="return policy" />
-            </div>
-            <div>
-                <Image src={WEBASSETS + "/assets/faq/S3.jpg"} alt="return policy" />
-            </div>
-            <div>
-                <Image src={WEBASSETS + "/assets/faq/S4.jpg"} alt="return policy" />
-            </div>
-            <div>
-                <Image src={WEBASSETS + "/assets/faq/S5.jpg"} alt="return policy" />
-            </div>
-            <div>
-                <Image src={WEBASSETS + "/assets/faq/S6.jpg"} alt="return policy" />
-            </div>
-        </div>
-    </div>;
+        </>
+    );
 
-    const mediaBuzzData  = [
+    const mediaBuzzData = [
         {
             link: "https://economictimes.indiatimes.com/small-biz/startups/newsbuzz/fashion-tech-firm-salt-attire-launches-its-offline-experience-store-in-gurugram/articleshow/70765514.cms",
             media: WEBASSETS + "/assets/images/media/the-economic-times/logo/economic_times.png",
@@ -85,29 +103,42 @@ function CartModal(props) {
             headline: "Bloomberg Quint"
         }
     ];
-    const mediaBuzz = ()=>{
-        let showMediaBuzz = null;
-        mediaBuzzData.forEach(ele=>{
-            showMediaBuzz = <Fragment>
-                {showMediaBuzz}
-                <div>
-                    <Link href={ele.link}>
-                        <a>
-                            <Image src={ele.media} alt={ele.alt} />
-                            <span>- {ele.headline}</span>
-                        </a>
-                    </Link>
+    const mediaBuzz = () => {
+        return (
+            <div className={`my-12`}>
+                <div className={blockHeader}>
+                    <h5 className={`text-h5 font-600 text-center`}>Media Buzz</h5>
                 </div>
-            </Fragment>
-        })
+                <Swiper
+                    slidesPerView={1.25}
+                    spaceBetween={5}
+                    autoplay={{
+                        "delay": 2500,
+                        "disableOnInteraction": false
+                    }}
+                    className={`w-full`}
+                >
+                    {mediaBuzzData.map((item, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <div className={`p-1.5 bg-yellow-600 border border-theme-200`}>
+                                    <div className="bg-white p-5">
+                                        <span className={`block relative w-36 h-36 mx-auto`}>
+                                            <Image src={item.media} alt={item.alt} layout="fill" objectFit="contain"/>
+                                        </span>
+                                        <p className={`text-right font-600 text-xs`}>- {item.headline}</p>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                        )
+                    })}
 
-        return <div>
-            <h1>Media Buzz</h1>
-            {showMediaBuzz}
-        </div>;
+                </Swiper>
+            </div>
+        )
     }
 
-    const testimonialsData  = [
+    const testimonialsData = [
         {
             link: "https://www.facebook.com/hiraldhaval.shah/posts/3789743831052915",
             name: "Hiral Dhaval Shah",
@@ -133,83 +164,112 @@ function CartModal(props) {
             comment: "The fabric is good with some different design also they are good in after sale service Thank you!!! 😊 So much I appreciate the acknowledge my query and refund policy I am glad with your response and continue to shoping with you .They are 100 percentage trustworthy."
         }
     ];
-    const testimonials = ()=>{
-        let showTestimonials = null;
-        testimonialsData.forEach(ele=>{
-            showTestimonials = <Fragment>
-                {showTestimonials}
-                <span>- {ele.comment}</span>
-                <div>
-                    <Link href={ele.link}>
-                        <a>
-                            <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"} alt="fb" />
-                            <span>- {ele.name}</span>
-                            <span>- {ele.time}</span>
-                        </a>
-                    </Link>
+    const testimonials = () => {
+        return (
+            <div className={`my-12`}>
+                <div className={blockHeader}>
+                    <h5 className={`text-h5 font-600 text-center`}>Testimonials</h5>
                 </div>
-            </Fragment>
-        })
-
-        return <div>
-            <h1>Testimonials</h1>
-            {showTestimonials}
-        </div>;
+                <Swiper
+                    slidesPerView={1.25}
+                    spaceBetween={5}
+                    autoplay={{
+                        "delay": 2500,
+                        "disableOnInteraction": false
+                    }}
+                    className={`w-full`}
+                >
+                    {testimonialsData.map((item, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <div className={`p-2 bg-theme-50 border border-theme-200`}>
+                                    <p className="text-justify text-sm mb-6">
+                                        {item.comment}
+                                    </p>
+                                    <div className="flex items-center justify-between">
+                                        <Link href={item.link}>
+                                            <a className={`block relative w-8 h-8`}>
+                                                <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"} alt={`Facebook Link`} layout="fill" objectFit="contain"/>
+                                            </a>
+                                        </Link>
+                                        <div>
+                                            <p className={`text-right font-600 text-xs`}>- {item.name}</p>
+                                            <p className={`text-right text-xs text-theme-500`}>{item.time}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                        )
+                    })}
+                </Swiper>
+            </div>
+        )
     }
 
     const mobileView = null;
 
     const browserView = (
-        <div onClick={closeModal}>
-            <h5>YOUR CART</h5>
-            {!data &&
-            <div>
-                <Image id="emptycart" src={WEBASSETS + "/assets/images/empty_bag.png"} alt="empty_cart" />
-                <h4>Hey, it feels so light!</h4>
-                <h6>There is nothing in your cart. Let's add some items.</h6>
-                <Link href="/new-arrivals/all">Continue Shopping</Link>
-            </div>}
-            {returnPolicy}
-            {mediaBuzz()}
-            {testimonials()}
-        </div>);
+        <div className={`bg-theme-900/50 fixed inset-0 z-20`} onClick={closeModal}>
+            <div
+                className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden ml-auto p-4"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <button className={`w-8 h-8 float-right`} onClick={closeModal}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} viewBox="0 0 24 24">
+                        <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                    </svg>
+                </button>
+                <div className={`text-center font-600 tracking-wider mb-10`}>
+                    <p className={`text-sm mb-6`}>YOUR CART</p>
+                    <span className={`block relative w-16 h-16 mx-auto mb-4`}>
+                        <Image
+                            id="emptycart"
+                            src={WEBASSETS + "/assets/images/empty_bag.png"}
+                            alt="empty_cart"
+                            layout="fill"
+                            objectFit="cover"
+                        />
+                    </span>
+                    <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
+                    <p className={`text-sm mb-4`}>There is nothing in your cart. Let's add some items.</p>
+                    <Link href="/new-arrivals/all">
+                        <a className="underline uppercase text-sm">Continue Shopping</a>
+                    </Link>
+                </div>
+                {returnPolicy}
+                {mediaBuzz()}
+                {testimonials()}
+            </div>
+        </div>)
+    ;
 
     return props.isMobile ? mobileView : browserView
 }
 
 
 function SidebarMenuCart(props) {
-
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [showSidebarMenu, setShowSidebarMenu] = useState(false);
-
+    const [showSidebarMenuCart, setShowSidebarMenuCart] = useState(false);
     React.useEffect(() => {
-        if (showSidebarMenu) document.body.style.overflow = "hidden";
-        return () => document.body.style.overflow = "unset"
-    }, [showSidebarMenu])
-
+        if (showSidebarMenuCart) document.body.classList.add("scroll-overflow");
+        return () => document.body.classList.remove("scroll-overflow");
+    }, [showSidebarMenuCart])
     const closeModal = () => {
-        setShowSidebarMenu(false);
+        setShowSidebarMenuCart(false);
     }
     const data = [];
-
     const mobileView = null;
-
     const browserView = (
         <>
-            <div onClick={() => setShowSidebarMenu(true)} className={"ml-2"}>
+            <div onClick={() => setShowSidebarMenuCart(true)} className={"ml-2"}>
                 <Image src={WEBASSETS + "/assets/images/cart.png"} alt="menuicon" width="24" height="24"/>
             </div>
-            {showSidebarMenu && ReactDom.createPortal(
-                <CartModal data={data} closeModal={closeModal.bind(this)}/>,
+            {showSidebarMenuCart && ReactDom.createPortal(<CartModal data={data} closeModal={closeModal.bind(this)}/>,
                 document.getElementById("cartside"))}
         </>
     );
 
-    return (
-        (props.isMobile) ? mobileView : browserView
-    )
-
+    return props.isMobile ? mobileView : browserView
 }
 
 export default SidebarMenuCart;

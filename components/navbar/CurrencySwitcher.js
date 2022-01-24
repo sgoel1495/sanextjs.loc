@@ -15,7 +15,7 @@ function CurrencySwitcher(props) {
     const currencies = appSettings("currencies");
     const currencyData = appSettings("currency_data");
 
-    const focusStyle = " focus:outline-0 focus:border-black focus:shadow-none focus:ring-offset-transparent";
+    const focusStyle = "focus:shadow-none focus:ring-0 focus:border-black focus:shadow-none focus:ring-offset-transparent";
 
     let options = null;
     currencies.forEach(currency => {
@@ -29,8 +29,12 @@ function CurrencySwitcher(props) {
     })
 
     const browserView = (
-        <select id="currency-switcher" className={"border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent" + focusStyle} value={currCurrency}
-                onChange={(event) => updateDataStore("currCurrency", event.target.value)}>
+        <select
+            id="currency-switcher"
+            className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
+            value={currCurrency}
+            onChange={(event) => updateDataStore("currCurrency", event.target.value)}
+        >
             {options}
         </select>
     );
