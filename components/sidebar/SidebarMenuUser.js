@@ -12,7 +12,7 @@ import AppWideContext from "../../store/AppWideContext";
 
 function UserModal(props) {
     /*
-        @Sambahav Please complete the modal asy ou see correct
+    *@todo @team complete login logic
     */
     const {closeModal} = props;
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;

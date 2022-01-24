@@ -14,6 +14,7 @@ class MyDcoument extends Document {
           <div id="hamburger"></div>
           <div id="userband"></div>
           <div id="cartside"></div>
+          <div id="searchmenu"></div>
           <Main/>
           <NextScript/>
         </body>

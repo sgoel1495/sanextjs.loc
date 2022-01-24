@@ -13,7 +13,7 @@ import Menu from "./Menu";
 import SidebarMenuCart from "../sidebar/SidebarMenuCart";
 import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 
-function Navbar(props) {
+function LookNavbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const navStyle = "px-4 py-1 uppercase"
@@ -61,9 +61,9 @@ function Navbar(props) {
 
     const browserView = (
         <nav className={navStyle + " flex items-center"}>
-            <SaltIcon type="a" isMobile={false}/>
+            <SaltIcon type="b" isMobile={false}/>
             <SidebarMenuHamburger isMobile={false}/>
-            <Menu source="exploreNewArrivals" isMobile={false}/>
+            <Menu source="getLooksData" isMobile={false}/>
             <SearchMenu isMobile={false}/>
             <CurrencySwitcher isMobile={false}/>
             <SidebarMenuUser isMobile={false}/>
@@ -77,4 +77,4 @@ function Navbar(props) {
 
 }
 
-export default Navbar;
+export default LookNavbar;
