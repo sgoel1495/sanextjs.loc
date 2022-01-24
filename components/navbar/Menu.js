@@ -36,7 +36,7 @@ function Menu(props) {
             {mimotoList}
             <li>
                 <Link href={ele.link}>
-                    <a className={browserViewStyle}>
+                    <a>
                         {ele.category}
                         <span>{ele.span}</span>
                     </a>
@@ -76,26 +76,35 @@ function Menu(props) {
      * @todo API issue. Not all the categories are present
      */
 
+    console.log(data);
+    const doneCategories = [];
     if(props.source == "exploreNewArrivals"
         && data && data.hasOwnProperty("left_text")
         && data.left_text.length > 0)
     {
         data.left_text.forEach((ele)=>{
-            actualData.push({
-                link: ele.link,
-                category: ele.category
-            });
+            if(!doneCategories.includes(ele.category)) {
+                actualData.push({
+                    id: ele.category,
+                    link: ele.link,
+                    category: ele.category
+                });
+                doneCategories.push(ele.category);
+            }
         });
         browserViewStyle = "block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black text-black/60";
-    } else if(props.source == "getLooksData"){
+    } else if(props.source == "getLooksData"
+        && data && data.hasOwnProperty("prod")){
         const keys = Object.keys(data.prod);
         if(keys.length>0){
             keys.forEach(ele=>{
-               categories.push(data.prod[ele].category);
-                actualData.push({
-                    link: "/shop-" + data.prod[ele].category.toLowerCase(),
-                    category: data.prod[ele].category
-                });
+                if(!doneCategories.includes(data.prod[ele].category)) {
+                    actualData.push({
+                        link: "/shop-" + data.prod[ele].category.toLowerCase(),
+                        category: data.prod[ele].category
+                    });
+                    doneCategories.push(data.prod[ele].category);
+                }
             });
         }
     }
@@ -147,7 +156,7 @@ function Menu(props) {
                     Shop
                     <span>Our Store</span>
                 </li>
-                <li>
+                <li onMouseEnter={()=> setShowMimoto(true)} onMouseLeave={()=> setShowMimoto(false)}>
                     Mimoto
                     <span>Our Collection</span>
                 </li>
@@ -167,18 +176,13 @@ function Menu(props) {
                         </a>
                     </Link>
                 </li>
-                {categoriesList}
-                <li className={"relative group"}>
-                    <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
-                    <SubMenu isMobile={false} menu="accessories"/>
-                </li>
             </ul>
             {showShop &&
-                <div id="typeb-submenu">
+                <div id="typeb-submenu"  onMouseEnter={()=> setShowShop(true)} onMouseLeave={()=> setShowShop(false)}>
                     {categoriesList}
                 </div>}
             {showMimoto &&
-                <div id="typeb-submenu">
+                <div id="typeb-submenu" onMouseEnter={()=> setShowMimoto(true)} onMouseLeave={()=> setShowMimoto(false)}>
                     {mimotoList}
                 </div>}
         </Fragment>

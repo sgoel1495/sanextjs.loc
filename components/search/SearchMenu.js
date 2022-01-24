@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ReactDom from "react-dom";
+import {useEffect, useState} from "react";
 
 /**
  * @params {isMobile} props
@@ -45,7 +46,7 @@ function SearchMenu(props){
   const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
   const [showMenuSearch, setShowMenuSearch] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (showMenuSearch) document.body.classList.add("scroll-overflow");
     return () => document.body.classList.remove("scroll-overflow");
   }, [showMenuSearch])

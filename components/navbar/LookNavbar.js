@@ -1,4 +1,5 @@
 /**
+ * @todo @Sambhav css pls
  * @params {isMobile} props
  * @constructor
  */
@@ -13,7 +14,7 @@ import Menu from "./Menu";
 import SidebarMenuCart from "../sidebar/SidebarMenuCart";
 import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 
-function LookNavbar(props) {
+function LooksNavbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const navStyle = "px-4 py-1 uppercase"
@@ -77,4 +78,4 @@ function LookNavbar(props) {
 
 }
 
-export default LookNavbar;
+export default LooksNavbar;
