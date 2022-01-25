@@ -26,6 +26,11 @@ function LooksPage() {
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
 
+    /**
+     *
+     * @todo API issue. We have no idea about the number of products we should get. Please change the limit below accordingly
+     */
+
     const resp = useApiCall("getLooksData", dataStore.apiToken, {look_id: "", limit: 10});
     useEffect(() => {
         if (resp
