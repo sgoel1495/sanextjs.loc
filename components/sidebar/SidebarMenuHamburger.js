@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, {Fragment, useState} from "react";
 import ReactDom from "react-dom";
 import Link from "next/link";
+import {New} from "../common/tags";
 
 /**
  * @todo We do not have to api to list the menu
@@ -60,7 +61,7 @@ const SelfLink = (props) => {
             <a className={`block px-4 py-3 text-black/70 hover:bg-black/5`}>
                 <span className={`block leading-none`}>
                     {props.title}
-                    {props.new && <span className={`bg-black text-xs text-white leading-none px-1 ml-2`}>New</span>}
+                    {props.new && <New/>}
                 </span>
                 {props.description && <span className="text-xs block leading-none">{props.description}</span>}
             </a>
@@ -77,7 +78,7 @@ const ChildLink = props => {
                     <div className={`flex-1`}>
                         <span className={`block leading-none`}>
                             {props.title}
-                            {props.new && <span className={`bg-black text-xs text-white leading-none px-1 ml-2`}>New</span>}
+                            {props.new && <New/>}
                         </span>
                         {props.description && <span className="text-xs block leading-none">{props.description}</span>}
                     </div>
@@ -98,7 +99,7 @@ const ChildLink = props => {
                                 <Link href={item.link} key={index}>
                                     <a className={`block px-4 py-1 hover:bg-black/5 text-sm`}>
                                         {item.title}
-                                        {item.new && <span className={`bg-black text-xs text-white leading-none px-1 ml-2`}>New</span>}
+                                        {item.new && <New/>}
                                     </a>
                                 </Link>
                             </li>
@@ -176,9 +177,14 @@ function SidebarMenuHamburger(props) {
 
     const browserView = (
         <>
-            <div onClick={() => setShowSidebarMenu(true)} className={"ml-2"}>
-                <Image src={WEBASSETS + "/assets/images/menuicon_v1.png"} alt="menuicon" width="24" height="24"/>
-            </div>
+            <span onClick={() => setShowSidebarMenu(true)} className={`block relative w-6 h-6`}>
+                <Image
+                    src={WEBASSETS + "/assets/images/menuicon_v1.png"}
+                    alt="menuicon"
+                    layout={`fill`}
+                    objectFit={`cover`}
+                />
+            </span>
             {showSidebarMenu && ReactDom.createPortal(
                 <HamburgerModal data={data} closeModal={closeModal.bind(this)}/>,
                 document.getElementById("hamburger"))}

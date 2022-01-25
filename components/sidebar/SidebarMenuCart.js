@@ -261,9 +261,14 @@ function SidebarMenuCart(props) {
     const mobileView = null;
     const browserView = (
         <>
-            <div onClick={() => setShowSidebarMenuCart(true)} className={"ml-2"}>
-                <Image src={WEBASSETS + "/assets/images/cart.png"} alt="menuicon" width="24" height="24"/>
-            </div>
+            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 h-6`}>
+                <Image
+                    src={WEBASSETS + "/assets/images/cart.png"}
+                    alt="menuicon"
+                    layout={`fill`}
+                    objectFit={`contain`}
+                />
+            </span>
             {showSidebarMenuCart && ReactDom.createPortal(<CartModal data={data} closeModal={closeModal.bind(this)}/>,
                 document.getElementById("cartside"))}
         </>

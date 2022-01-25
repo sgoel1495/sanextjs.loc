@@ -17,7 +17,7 @@ import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 function LooksNavbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const navStyle = "px-4 py-1 uppercase"
+    const navStyle = "px-4 py-1"
     const iconHeightWeight = "30"
 
     const mobileView = <nav className={navStyle}>
@@ -61,7 +61,7 @@ function LooksNavbar(props) {
     </nav>;
 
     const browserView = (
-        <nav className={navStyle + " flex items-center"}>
+        <nav className={navStyle + " flex items-start gap-x-4 relative"}>
             <SaltIcon type="b" isMobile={false}/>
             <SidebarMenuHamburger isMobile={false}/>
             <Menu source="getLooksData" isMobile={false}/>
@@ -72,9 +72,7 @@ function LooksNavbar(props) {
         </nav>
     );
 
-    return (
-        (props.isMobile) ? mobileView : browserView
-    )
+    return props.isMobile ? mobileView : browserView
 
 }
 

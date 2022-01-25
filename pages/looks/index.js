@@ -8,6 +8,13 @@ import useApiCall from "../../hooks/useApiCall";
 import appSettings from "../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
+import BlockHeader from "../../components/common/blockHeader";
+
+const LookDataBlockImage = (props) => (
+    <span className={`block relative w-full h-full aspect-square`}>
+        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
+    </span>
+)
 
 function LooksPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -19,9 +26,9 @@ function LooksPage() {
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
 
-    const resp = useApiCall("getLooksData",dataStore.apiToken,{look_id:"",limit:10});
-    useEffect(()=>{
-       if (resp
+    const resp = useApiCall("getLooksData", dataStore.apiToken, {look_id: "", limit: 10});
+    useEffect(() => {
+        if (resp
             && resp.hasOwnProperty("status")
             && resp.status == 200
             && resp.hasOwnProperty("response")
@@ -29,7 +36,7 @@ function LooksPage() {
             && resp.response.hasOwnProperty("look")
         )
             setData(resp.response);
-    },[resp]);
+    }, [resp]);
 
 
     /*
@@ -71,101 +78,130 @@ function LooksPage() {
     tag_line: "Raw Silk Festive Fit & A-Line Dress"
     usd_price: 50
      */
-    const expandData = ()=>{
+    const expandData = () => {
+
+        const leadTextStyle = "text-h5 font-600";
+        const textStyle = "text-xs";
+        const buyNowButtonStyle = "bg-black/5 font-600 text-xs tracking-widest px-5 py-3 block mt-6";
+
         let products = null;
         let prod = null;
         let prodDetails = null;
-        if(expandLook.products && expandLook.products.length>0) {
+        if (expandLook.products && expandLook.products.length > 0) {
             prod = expandLook.products[0];
             prodDetails = data.prod[prod];
-            console.log(prodDetails);
-            products = <Fragment>
-                <div>
-                    <div>
-                        <Image src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"}
-                               alt={prodDetails.name}  width="200" height="200" />
+            products = (
+                <>
+                    <div className={`grid grid-cols-2 place-items-center`}>
+                        <LookDataBlockImage src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"} alt={prodDetails.name}/>
+                        <div className={`text-center`}>
+                            <p className={leadTextStyle}>{prodDetails.name}</p>
+                            <p className={textStyle}>{prodDetails.tag_line}</p>
+                            <p className={textStyle}>{currencySymbol}{(currCurrency === "inr") ? prodDetails.price : prodDetails.usd_price}</p>
+                            <Link href={"/" + prod}>
+                                <a className={`${buyNowButtonStyle}`}>BUY NOW</a>
+                            </Link>
+                        </div>
                     </div>
-                    <div>
-                        <div>{prodDetails.name}</div>
-                        <div>{prodDetails.tag_line}</div>
-                        <div>{currencySymbol}{(currCurrency == "inr") ? prodDetails.price : prodDetails.usd_price}</div>
-                        <Link href={"/" + prod}>
-                            <a>BUY NOW</a>
-                        </Link>
-                    </div>
-                </div>
-            </Fragment>;
+                </>
+            );
         }
-        if(expandLook.products && expandLook.products.length>1) {
+        if (expandLook.products && expandLook.products.length > 1) {
             prod = expandLook.products[1];
             prodDetails = data.prod[prod];
-            products = <Fragment>
-                {products}
-                <div>
-                    <div>
-                        <div>{prod.name}</div>
-                        <div>{prod.tag_line}</div>
-                        <div>{currencySymbol}{(currCurrency == "inr") ? prod.price : prod.usd_price}</div>
-                        <Link href={"/" + prod}>
-                            <a>BUY NOW</a>
-                        </Link>
-                    </div>
-                    <div>
-                        <Image src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"}
-                               alt={prodDetails.name}  width="200" height="200" />
-                    </div>
-                </div>
-            </Fragment>;
-        }
-        return <div>
-            <div onClick={()=>setExpandLook(null)}>CLOSE</div>
-            <div>~ {expandLook.heading} ~</div>
-            <div>
-                <div>
-                    <Image src={WEBASSETS + expandLook.img_path} alt={expandLook.name}  width="200" height="200" />
-                </div>
-                <div>
+            products = (
+                <>
                     {products}
+                    <div className={`grid grid-cols-2 place-items-center`}>
+                        <div className={`text-center`}>
+                            <p className={leadTextStyle}>{prod.name}</p>
+                            <p className={textStyle}>{prod.tag_line}</p>
+                            <p className={textStyle}>{currencySymbol}{(currCurrency === "inr") ? prod.price : prod.usd_price}</p>
+                            <Link href={"/" + prod}>
+                                <a className={`${buyNowButtonStyle}`}>BUY NOW</a>
+                            </Link>
+                        </div>
+                        <LookDataBlockImage src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"} alt={prodDetails.name}/>
+                    </div>
+                </>
+            );
+        }
+        return (
+            <div className={`col-span-3`}>
+                <button
+                    onClick={() => setExpandLook(null)}
+                    className={`uppercase float-right`}
+                >
+                    Close
+                </button>
+                <BlockHeader
+                    space={"py-10"}
+                    titleStyle={"font-600 flex justify-center items-center gap-3 leading-none"}
+                >
+                    <span className={"text-h1"}>~</span>
+                    <span className={'font-cursive italic text-h1'}>{expandLook.heading}</span>
+                    <span className={"text-h1"}>~</span>
+                </BlockHeader>
+                <div className={`grid grid-cols-2`}>
+                    <LookDataBlockImage src={WEBASSETS + expandLook.img_path} alt={expandLook.name}/>
+                    <div className={`place-self-center bg-white h-fit w-2/3`}>
+                        {products}
+                    </div>
                 </div>
             </div>
-        </div>;
+        );
     }
 
-    const lookData =()=>{
+    const lookData = () => {
         let showLookData = null;
-        if(!data || !data.hasOwnProperty("look") || data.look.length < 1)
-            return null;
+        if (!data || !data.hasOwnProperty("look") || data.look.length < 1) return null;
         else {
-            data.look.forEach(look=>{
-               showLookData =  <Fragment>
-                   {showLookData}
-                   <div onClick={()=>setExpandLook(look)}>
-                       <Image src={WEBASSETS + look.img_path} alt={look.name}  width="200" height="200" />
-                       <div>Heading {look.heading}</div>
-                       <div>Detail {look.details}</div>
-                   </div>
-                   {(expandLook && expandLook.look_id == look.look_id) ? expandData() : null }
-               </Fragment>;
+            data.look.forEach(look => {
+                console.log(look)
+                showLookData = (
+                    <>
+                        {showLookData}
+                        <div
+                            onClick={() => setExpandLook(look)}
+                            className={`relative group cursor-pointer`}
+                        >
+                            <LookDataBlockImage src={WEBASSETS + look.img_path} alt={look.name}/>
+                            <div className={"hidden group-hover:grid place-items-center absolute inset-0 z-10 opacity-95 text-white text-center font-600 tracking-wider"}
+                                 style={{background: look.bg_color}}>
+                                <div className={`self-end`}>
+                                    <p className={`mb-2 text-h5`}>{look.heading}</p>
+                                    <p className={`text-h5 font-cursive italic`}>{look.details}</p>
+                                </div>
+                                <p className={`uppercase text-sm`}>{'>'} Shop the look</p>
+                            </div>
+                        </div>
+                        {(expandLook && expandLook.look_id === look.look_id) ? expandData() : null}
+                    </>
+                );
             });
         }
         return showLookData;
     }
 
     const mobileView = null;
-    const browserView = <Fragment>
-        <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-        <div>
-            <InfoBand />
+    const browserView = (
+        <>
+            <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
+            <InfoBand/>
             <LooksNavbar isMobile={dataStore.mobile}/>
-        </div>
-        <div>
-            <div>SHOP THE LOOK</div>
-            <div>LOOKS <span>WE</span> LOVE</div>
-        </div>
-        {(data) ? lookData():null}
+            <section className={`bg-[#E6E1DB]`}>
+                <div className={`text-center py-10 tracking-wider`}>
+                    <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
+                    <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
+                </div>
+                <main className={`px-10 grid grid-cols-3 gap-10`}>
+                    {(data) ? lookData() : null}
+                </main>
+            </section>
 
-        <Footer isMobile={dataStore.mobile}/>
-    </Fragment>;
+            <Footer isMobile={dataStore.mobile}/>
+        </>
+    );
 
     return dataStore.mobile ? mobileView : browserView
 }

@@ -9,14 +9,15 @@ import SubMenu from "./SubMenu";
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
+import {New} from "../common/tags";
 
 function Menu(props) {
     const {dataStore} = useContext(AppWideContext);
-    const queryObject = (props.source=="getLooksData")? {look_id:"",limit:100} : null;
-    const resp = useApiCall(props.source,dataStore.apiToken,queryObject);
-    const [data,setData] = useState(null);
-    const [showShop,setShowShop] = useState(false);
-    const [showMimoto,setShowMimoto] = useState(false);
+    const queryObject = (props.source == "getLooksData") ? {look_id: "", limit: 100} : null;
+    const resp = useApiCall(props.source, dataStore.apiToken, queryObject);
+    const [data, setData] = useState(null);
+    const [showShop, setShowShop] = useState(false);
+    const [showMimoto, setShowMimoto] = useState(false);
 
     const mimotoData = [
         {
@@ -31,14 +32,15 @@ function Menu(props) {
         }
     ];
     let mimotoList = null;
-    mimotoData.forEach(ele=>{
+    mimotoData.forEach(ele => {
         mimotoList = <Fragment>
             {mimotoList}
             <li>
                 <Link href={ele.link}>
-                    <a>
+                    <a className={`font-600 block mb-1`}>
                         {ele.category}
-                        <span>{ele.span}</span>
+                        <New/>
+                        <span className={`block text-[10px] tracking-wider`}>{ele.span}</span>
                     </a>
                 </Link>
             </li>
@@ -46,9 +48,8 @@ function Menu(props) {
     })
 
 
-
-    useEffect(()=>{
-        if(props.source == "exploreNewArrivals") {
+    useEffect(() => {
+        if (props.source == "exploreNewArrivals") {
             if (resp
                 && resp.hasOwnProperty("status")
                 && resp.status == 200
@@ -56,7 +57,7 @@ function Menu(props) {
                 && resp.response.hasOwnProperty("left_text")
             )
                 setData(resp.response);
-        } else if(props.source == "getLooksData") {
+        } else if (props.source == "getLooksData") {
             if (resp
                 && resp.hasOwnProperty("status")
                 && resp.status == 200
@@ -65,7 +66,7 @@ function Menu(props) {
             )
                 setData(resp.response);
         }
-    },[resp]);
+    }, [resp]);
 
 
     const actualData = [];
@@ -75,15 +76,12 @@ function Menu(props) {
     /**
      * @todo API issue. Not all the categories are present
      */
-
-    console.log(data);
     const doneCategories = [];
-    if(props.source == "exploreNewArrivals"
+    if (props.source == "exploreNewArrivals"
         && data && data.hasOwnProperty("left_text")
-        && data.left_text.length > 0)
-    {
-        data.left_text.forEach((ele)=>{
-            if(!doneCategories.includes(ele.category)) {
+        && data.left_text.length > 0) {
+        data.left_text.forEach((ele) => {
+            if (!doneCategories.includes(ele.category)) {
                 actualData.push({
                     id: ele.category,
                     link: ele.link,
@@ -93,12 +91,12 @@ function Menu(props) {
             }
         });
         browserViewStyle = "block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black text-black/60";
-    } else if(props.source == "getLooksData"
-        && data && data.hasOwnProperty("prod")){
+    } else if (props.source == "getLooksData"
+        && data && data.hasOwnProperty("prod")) {
         const keys = Object.keys(data.prod);
-        if(keys.length>0){
-            keys.forEach(ele=>{
-                if(!doneCategories.includes(data.prod[ele].category)) {
+        if (keys.length > 0) {
+            keys.forEach(ele => {
+                if (!doneCategories.includes(data.prod[ele].category)) {
                     actualData.push({
                         link: "/shop-" + data.prod[ele].category.toLowerCase(),
                         category: data.prod[ele].category
@@ -109,25 +107,27 @@ function Menu(props) {
         }
     }
 
-    if(actualData.length>0){
-        actualData.forEach(ele=>{
-            categoriesList = <Fragment>
-                {categoriesList}
-                <li>
-                    <Link href={ele.link}>
-                        <a className={browserViewStyle}>{ele.category}</a>
-                    </Link>
-                </li>
-            </Fragment>;
+    if (actualData.length > 0) {
+        actualData.forEach(ele => {
+            categoriesList = (
+                <>
+                    {categoriesList}
+                    <li>
+                        <Link href={ele.link}>
+                            <a className={`font-600 ${browserViewStyle}`}>{ele.category}<New/></a>
+                        </Link>
+                    </li>
+                </>
+            );
         })
     }
 
     let mobileView = null;
     let browserView = null;
 
-    if(props.source == "exploreNewArrivals") {
-        browserView =<Fragment>
-            <ul className={"flex flex-1 justify-center items-center"}>
+    if (props.source == "exploreNewArrivals") {
+        browserView = <Fragment>
+            <ul className={"flex flex-1 justify-center items-center uppercase"}>
                 <li>
                     <Link href="/new-arrivals/all">
                         <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>New In</a>
@@ -146,51 +146,61 @@ function Menu(props) {
             </ul>
         </Fragment>
 
-    } else if(props.source == "getLooksData") {
+    } else if (props.source == "getLooksData") {
         /**
          * @todo API: Where to get Mimoto collection
          */
-        browserView =<Fragment>
-            <ul className={"flex flex-1 justify-center items-center"}>
-                <li onMouseEnter={()=> setShowShop(true)} onMouseLeave={()=> setShowShop(false)}>
-                    Shop
-                    <span>Our Store</span>
-                </li>
-                <li onMouseEnter={()=> setShowMimoto(true)} onMouseLeave={()=> setShowMimoto(false)}>
-                    Mimoto
-                    <span>Our Collection</span>
-                </li>
-                <li>
-                    <Link href="/looks">
-                        <a >
-                            Looks
-                            <span>Shop the Look</span>
-                        </a>
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/new-arrivals/all">
-                        <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>
-                            New In
-                            <span>New Arrivals</span>
-                        </a>
-                    </Link>
-                </li>
-            </ul>
-            {showShop &&
-                <div id="typeb-submenu"  onMouseEnter={()=> setShowShop(true)} onMouseLeave={()=> setShowShop(false)}>
-                    {categoriesList}
-                </div>}
-            {showMimoto &&
-                <div id="typeb-submenu" onMouseEnter={()=> setShowMimoto(true)} onMouseLeave={()=> setShowMimoto(false)}>
-                    {mimotoList}
-                </div>}
-        </Fragment>
-    };
+        const leadTextStyle = "block leading-none tracking-wider text-h5";
+        const textStyle = "block leading-none tracking-wide text-black/50 text-sm";
+        browserView = (
+            <>
+                <ul className={"flex flex-auto justify-center items-start gap-x-10 2xl:gap-x-20"}>
+                    <li className={`block group`}>
+                        <div className="h-12 flex flex-col justify-center">
+                            <span className={leadTextStyle}>Shop</span>
+                            <span className={textStyle}>Our Store</span>
+                        </div>
+                        <ul
+                            className={`bg-white z-20 hidden uppercase text-xs text-black/70 group-hover:block`}
+                            id="typeb-submenu"
+                        >
+                            {categoriesList}
+                        </ul>
+                    </li>
+                    <li className={`block group`}>
+                        <div className="h-12 flex flex-col justify-center">
+                            <span className={leadTextStyle}>Mimoto</span>
+                            <span className={textStyle}>Our Collection</span>
+                        </div>
+                        <ul
+                            className={`bg-white z-20 hidden uppercase text-xs text-black/70 group-hover:block`}
+                            id="typeb-submenu"
+                        >
+                            {mimotoList}
+                        </ul>
+                    </li>
+                    <li>
+                        <Link href="/looks">
+                            <a className="h-12 flex flex-col justify-center">
+                                <span className={leadTextStyle}>Looks</span>
+                                <span className={textStyle}>Shop the Look</span>
+                            </a>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/new-arrivals/all">
+                            <a className="h-12 flex flex-col justify-center">
+                                <span className={`${leadTextStyle} block w-fit px-2 py-1 text-xs leading-none bg-[#B5DDF5] text-white`}>New In</span>
+                                <span className={textStyle}>New Arrivals</span>
+                            </a>
+                        </Link>
+                    </li>
+                </ul>
+            </>
+        )
+    }
 
-    return (
-        (props.isMobile) ? mobileView : browserView
-    )
+    return props.isMobile ? mobileView : browserView
 
 }
 

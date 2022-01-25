@@ -145,9 +145,14 @@ function SidebarMenuUser(props) {
 
     const browserView = (
         <>
-            <div onClick={() => setShowSidebarMenuUser(true)} className={"ml-2"}>
-                <Image src={WEBASSETS + "/assets/images/usericon.png"} alt="menuicon" width="24" height="24"/>
-            </div>
+            <span onClick={() => setShowSidebarMenuUser(true)} className={`block relative w-6 h-6`}>
+                <Image
+                    src={WEBASSETS + "/assets/images/usericon.png"}
+                    alt="menuicon"
+                    layout={`fill`}
+                    objectFit={`contain`}
+                />
+            </span>
             {showSidebarMenuUser && ReactDom.createPortal(
                 <UserModal closeModal={closeModal.bind(this)}/>,
                 document.getElementById("userband"))}
