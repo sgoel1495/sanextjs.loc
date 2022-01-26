@@ -114,7 +114,7 @@ function Menu(props) {
                     {categoriesList}
                     <li>
                         <Link href={ele.link}>
-                            <a className={`font-600 ${browserViewStyle}`}>{ele.category}<New/></a>
+                            <a className={`font-600 ${browserViewStyle}`}>{ele.category}</a>
                         </Link>
                     </li>
                 </>
@@ -155,27 +155,29 @@ function Menu(props) {
         browserView = (
             <>
                 <ul className={"flex flex-auto justify-center items-start gap-x-10 2xl:gap-x-20"}>
-                    <li className={`block group`}>
+                    <li
+                        className={`block group relative`}
+                        onMouseEnter={() => setShowShop(true)}
+                        onMouseLeave={() => setShowShop(false)}
+                    >
                         <div className="h-12 flex flex-col justify-center">
                             <span className={leadTextStyle}>Shop</span>
                             <span className={textStyle}>Our Store</span>
                         </div>
-                        <ul
-                            className={`bg-white z-20 hidden uppercase text-xs text-black/70 group-hover:block`}
-                            id="typeb-submenu"
-                        >
+                        <ul className={`uppercase text-xs text-black/70 absolute z-20 hidden group-hover:block py-2`}>
                             {categoriesList}
                         </ul>
                     </li>
-                    <li className={`block group`}>
+                    <li
+                        className={`block group relative`}
+                        onMouseEnter={() => setShowMimoto(true)}
+                        onMouseLeave={() => setShowMimoto(false)}
+                    >
                         <div className="h-12 flex flex-col justify-center">
                             <span className={leadTextStyle}>Mimoto</span>
                             <span className={textStyle}>Our Collection</span>
                         </div>
-                        <ul
-                            className={`bg-white z-20 hidden uppercase text-xs text-black/70 group-hover:block`}
-                            id="typeb-submenu"
-                        >
+                        <ul className={`uppercase text-xs text-black/70 absolute z-20 hidden group-hover:block py-2`}>
                             {mimotoList}
                         </ul>
                     </li>
@@ -196,6 +198,8 @@ function Menu(props) {
                         </Link>
                     </li>
                 </ul>
+                {showShop && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[200px]`} />}
+                {showMimoto && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[100px]`} />}
             </>
         )
     }

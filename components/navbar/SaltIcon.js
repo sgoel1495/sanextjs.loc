@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 /**
- *@todo @Sambhav style the icon for type b
+ * @todo @Sambhav style the icon for type b
  * @param {isMobile} props
  * @constructor
  */
@@ -17,31 +17,28 @@ function SaltIcon(props) {
         </Link>
     </div>;
 
+    let sizeClass, logo;
+    switch (props.type) {
+        case "looksPage":
+            sizeClass = "h-12 w-24"
+            logo = "SALT_logo.png"
+            break;
+        default:
+            sizeClass = "w-6 h-6"
+            logo = "salticon.png"
+    }
+
     const browserView = (
         <>
             <Link href="/">
-                <a>
-                    {props.type === "a" &&
-                    <span className={`relative w-6 h-6`}>
-                        <Image
-                            src={WEBASSETS + "/assets/images/salticon.png"}
-                            alt="salt icon"
-                            layout={`fill`}
-                            objectFit={`contain`}
-                        />
-                    </span>
-                    }
-                    {props.type === "b" &&
-                    <span className={`block relative h-12 w-24`}>
-                        <Image
-                            src={WEBASSETS + "/assets/images/SALT_logo.png"}
-                            alt="salt icon"
-                            layout={`fill`}
-                            objectFit={`contain`}
-                        />
-                    </span>
-                    }
-                </a>
+                <span className={`block relative cursor-pointer ${sizeClass}`}>
+                    <Image
+                        src={WEBASSETS + `/assets/images/${logo}`}
+                        alt="salt icon"
+                        layout={`fill`}
+                        objectFit={`contain`}
+                    />
+                </span>
             </Link>
         </>
     );

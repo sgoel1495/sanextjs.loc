@@ -1,16 +1,163 @@
+/* Acherus Grotesque Font */
+
 @font-face {
     font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Thin'), local('AcherusGrotesque-Thin'),
+    url('AcherusGrotesque-Thin.woff2') format('woff2'),
+    url('AcherusGrotesque-Thin.woff') format('woff');
+    font-weight: 100;
     font-style: normal;
-    font-weight: normal;
     font-display: swap;
-    src: local('Acherus Grotesque Regular'), url('acherus_grotesque_-_regular.woff') format('woff');
 }
-
 
 @font-face {
     font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Thin Italic'), local('AcherusGrotesque-ThinItalic'),
+    url('AcherusGrotesque-ThinItalic.woff2') format('woff2'),
+    url('AcherusGrotesque-ThinItalic.woff') format('woff');
+    font-weight: 100;
     font-style: italic;
-    font-weight: normal;
     font-display: swap;
-    src: local('Acherus Grotesque Regular Italic'), url('acherus_grotesque_-_regular_italic.woff') format('woff');
 }
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque UltraLight'), local('AcherusGrotesque-UltraLight'),
+    url('AcherusGrotesque-UltraLight.woff2') format('woff2'),
+    url('AcherusGrotesque-UltraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque UltraLight Italic'), local('AcherusGrotesque-UltraLightIt'),
+    url('AcherusGrotesque-UltraLightIt.woff2') format('woff2'),
+    url('AcherusGrotesque-UltraLightIt.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Light'), local('AcherusGrotesque-Light'),
+    url('AcherusGrotesque-Light.woff2') format('woff2'),
+    url('AcherusGrotesque-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Light Italic'), local('AcherusGrotesque-LightItalic'),
+    url('AcherusGrotesque-LightItalic.woff2') format('woff2'),
+    url('AcherusGrotesque-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Regular'), local('AcherusGrotesque-Regular'),
+    url('AcherusGrotesque-Regular.woff2') format('woff2'),
+    url('AcherusGrotesque-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Regular Italic'), local('AcherusGrotesque-RegularItalic'),
+    url('AcherusGrotesque-RegularItalic.woff2') format('woff2'),
+    url('AcherusGrotesque-RegularItalic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Medium'), local('AcherusGrotesque-Medium'),
+    url('AcherusGrotesque-Medium.woff2') format('woff2'),
+    url('AcherusGrotesque-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Medium Italic'), local('AcherusGrotesque-MediumItalic'),
+    url('AcherusGrotesque-MediumItalic.woff2') format('woff2'),
+    url('AcherusGrotesque-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Bold'), local('AcherusGrotesque-Bold'),
+    url('AcherusGrotesque-Bold.woff2') format('woff2'),
+    url('AcherusGrotesque-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Bold Italic'), local('AcherusGrotesque-BoldItalic'),
+    url('AcherusGrotesque-BoldItalic.woff2') format('woff2'),
+    url('AcherusGrotesque-BoldItalic.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque ExtraBold'), local('AcherusGrotesque-ExtraBold'),
+    url('AcherusGrotesque-ExtraBold.woff2') format('woff2'),
+    url('AcherusGrotesque-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque ExtraBold Italic'), local('AcherusGrotesque-ExtraBoldIt'),
+    url('AcherusGrotesque-ExtraBoldIt.woff2') format('woff2'),
+    url('AcherusGrotesque-ExtraBoldIt.woff') format('woff');
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Black'), local('AcherusGrotesque-Black'),
+    url('AcherusGrotesque-Black.woff2') format('woff2'),
+    url('AcherusGrotesque-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Acherus Grotesque';
+    src: local('Acherus Grotesque Black Italic'), local('AcherusGrotesque-BlackItalic'),
+    url('AcherusGrotesque-BlackItalic.woff2') format('woff2'),
+    url('AcherusGrotesque-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+

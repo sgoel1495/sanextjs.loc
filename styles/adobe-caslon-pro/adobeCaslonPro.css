@@ -1,29 +1,21 @@
-@font-face {
-    font-family: 'Adobe Caslon Pro';
-    src: local('Adobe Caslon Pro Italic'), local('ACaslonPro-Italic'),
-    url('ACaslonPro-Italic.woff2') format('woff2'),
-    url('ACaslonPro-Italic.woff') format('woff');
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
-}
+/* Adobe Caslon Pro */
 
 @font-face {
     font-family: 'Adobe Caslon Pro';
     src: local('Adobe Caslon Pro Regular'), local('ACaslonPro-Regular'),
     url('ACaslonPro-Regular.woff2') format('woff2'),
     url('ACaslonPro-Regular.woff') format('woff');
-    font-weight: normal;
+    font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Adobe Caslon Pro';
-    src: local('Adobe Caslon Pro Semibold Italic'), local('ACaslonPro-SemiboldItalic'),
-    url('ACaslonPro-SemiboldItalic.woff2') format('woff2'),
-    url('ACaslonPro-SemiboldItalic.woff') format('woff');
-    font-weight: 600;
+    src: local('Adobe Caslon Pro Italic'), local('ACaslonPro-Italic'),
+    url('ACaslonPro-Italic.woff2') format('woff2'),
+    url('ACaslonPro-Italic.woff') format('woff');
+    font-weight: 500;
     font-style: italic;
     font-display: swap;
 }
@@ -35,6 +27,16 @@
     url('ACaslonPro-Semibold.woff') format('woff');
     font-weight: 600;
     font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Adobe Caslon Pro';
+    src: local('Adobe Caslon Pro Semibold Italic'), local('ACaslonPro-SemiboldItalic'),
+    url('ACaslonPro-SemiboldItalic.woff2') format('woff2'),
+    url('ACaslonPro-SemiboldItalic.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
     font-display: swap;
 }
 

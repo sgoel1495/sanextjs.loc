@@ -60,8 +60,8 @@ function Navbar(props) {
     </nav>;
 
     const browserView = (
-        <nav className={navStyle + " flex items-center"}>
-            <SaltIcon type="a" isMobile={false}/>
+        <nav className={navStyle + " flex items-center gap-x-4"}>
+            <SaltIcon isMobile={false}/>
             <SidebarMenuHamburger isMobile={false}/>
             <Menu source="exploreNewArrivals" isMobile={false}/>
             <SearchMenu isMobile={false}/>
@@ -71,9 +71,7 @@ function Navbar(props) {
         </nav>
     );
 
-    return (
-        (props.isMobile) ? mobileView : browserView
-    )
+    return props.isMobile ? mobileView : browserView
 
 }
 

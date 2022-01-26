@@ -28,21 +28,29 @@ function CurrencySwitcher(props) {
         </Fragment>;
     })
 
+    let height;
+    switch (props.type) {
+        case "looksPage":
+            height = "h-12"
+            break;
+        default:
+            height = "h-6"
+    }
+
     const browserView = (
-        <select
-            id="currency-switcher"
-            className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
-            value={currCurrency}
-            onChange={(event) => updateDataStore("currCurrency", event.target.value)}
-        >
-            {options}
-        </select>
+        <div className={`${height} flex items-center`}>
+            <select
+                id="currency-switcher"
+                className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
+                value={currCurrency}
+                onChange={(event) => updateDataStore("currCurrency", event.target.value)}
+            >
+                {options}
+            </select>
+        </div>
     );
 
-    return (
-        (props.isMobile) ? mobileView : browserView
-    )
-
+    return props.isMobile ? mobileView : browserView
 }
 
 export default CurrencySwitcher;

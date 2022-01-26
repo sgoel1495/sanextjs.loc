@@ -62,13 +62,13 @@ function LooksNavbar(props) {
 
     const browserView = (
         <nav className={navStyle + " flex items-start gap-x-4 relative"}>
-            <SaltIcon type="b" isMobile={false}/>
-            <SidebarMenuHamburger isMobile={false}/>
+            <SaltIcon type={`looksPage`} isMobile={false}/>
+            <SidebarMenuHamburger type={`looksPage`} isMobile={false}/>
             <Menu source="getLooksData" isMobile={false}/>
-            <SearchMenu isMobile={false}/>
-            <CurrencySwitcher isMobile={false}/>
-            <SidebarMenuUser isMobile={false}/>
-            <SidebarMenuCart isMobile={false}/>
+            <SearchMenu type={`looksPage`} isMobile={false}/>
+            <CurrencySwitcher type={`looksPage`} isMobile={false}/>
+            <SidebarMenuUser type={`looksPage`} isMobile={false}/>
+            <SidebarMenuCart type={`looksPage`} isMobile={false}/>
         </nav>
     );
 

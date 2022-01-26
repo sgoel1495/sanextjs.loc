@@ -141,11 +141,19 @@ function SidebarMenuUser(props) {
         setShowSidebarMenuUser(false);
     }
 
-    const mobileView = null;
+    let iconHeight;
+    switch (props.type) {
+        case "looksPage":
+            iconHeight = "h-12"
+            break;
+        default:
+            iconHeight = "h-6"
+    }
 
+    const mobileView = null;
     const browserView = (
         <>
-            <span onClick={() => setShowSidebarMenuUser(true)} className={`block relative w-6 h-6`}>
+            <span onClick={() => setShowSidebarMenuUser(true)} className={`block relative w-6 ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/usericon.png"}
                     alt="menuicon"

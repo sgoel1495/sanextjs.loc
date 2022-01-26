@@ -175,14 +175,23 @@ function SidebarMenuHamburger(props) {
 
     const mobileView = null;
 
+    let iconHeight;
+    switch (props.type) {
+        case "looksPage":
+            iconHeight = "h-12"
+            break;
+        default:
+            iconHeight = "h-6"
+    }
+
     const browserView = (
         <>
-            <span onClick={() => setShowSidebarMenu(true)} className={`block relative w-6 h-6`}>
+            <span onClick={() => setShowSidebarMenu(true)} className={`block relative w-6 ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/menuicon_v1.png"}
                     alt="menuicon"
                     layout={`fill`}
-                    objectFit={`cover`}
+                    objectFit={`contain`}
                 />
             </span>
             {showSidebarMenu && ReactDom.createPortal(
@@ -191,10 +200,7 @@ function SidebarMenuHamburger(props) {
         </>
     );
 
-    return (
-        (props.isMobile) ? mobileView : browserView
-    )
-
+    return props.isMobile ? mobileView : browserView
 }
 
 export default SidebarMenuHamburger;

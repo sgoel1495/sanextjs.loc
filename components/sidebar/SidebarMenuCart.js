@@ -258,10 +258,20 @@ function SidebarMenuCart(props) {
         setShowSidebarMenuCart(false);
     }
     const data = [];
+
+    let iconHeight;
+    switch (props.type) {
+        case "looksPage":
+            iconHeight = "h-12"
+            break;
+        default:
+            iconHeight = "h-6"
+    }
+
     const mobileView = null;
     const browserView = (
         <>
-            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 h-6`}>
+            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
                     alt="menuicon"

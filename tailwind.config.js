@@ -7,8 +7,8 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            sans : ['Acherus Grotesque', 'sans-serif'],
-            'cursive' : ['Adobe Caslon Pro', 'sans'], //600-SemiBold, 700-Bold
+            sans : ['Acherus Grotesque', 'sans-serif'], //100, 200, 300, 400, 500, 700, 800, 900
+            'cursive' : ['Adobe Caslon Pro', 'sans'], //500, 600, 700
         },
         fontWeight: {
             '100': 100,

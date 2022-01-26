@@ -16,6 +16,16 @@ const LookDataBlockImage = (props) => (
     </span>
 )
 
+// const data =[...Array(19).keys()]
+//
+// const renderData = data.reduce((all,one,i) => {
+//     const ch = Math.floor(i/3);
+//     all[ch] = [].concat((all[ch]||[]),one);
+//     return all
+// }, [])
+//
+// console.log(renderData);
+
 function LooksPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
@@ -43,6 +53,21 @@ function LooksPage() {
             setData(resp.response);
     }, [resp]);
 
+    // Nav Controller
+    const [navControl, setNavControl] = React.useState(false);
+    const controller = () => {
+        if (window.scrollY > 0) {
+            setNavControl(true);
+        } else {
+            setNavControl(false);
+        };
+    };
+    React.useEffect(() => {
+        window.addEventListener("scroll", controller);
+        return () => {
+            window.removeEventListener('scroll', controller)
+        };
+    },[]);
 
     /*
     each look has
@@ -135,7 +160,7 @@ function LooksPage() {
             <div className={`col-span-3`}>
                 <button
                     onClick={() => setExpandLook(null)}
-                    className={`uppercase float-right`}
+                    className={`uppercase float-right text-black/50`}
                 >
                     Close
                 </button>
@@ -162,7 +187,6 @@ function LooksPage() {
         if (!data || !data.hasOwnProperty("look") || data.look.length < 1) return null;
         else {
             data.look.forEach(look => {
-                console.log(look)
                 showLookData = (
                     <>
                         {showLookData}
@@ -192,9 +216,11 @@ function LooksPage() {
     const browserView = (
         <>
             <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-            <InfoBand/>
-            <LooksNavbar isMobile={dataStore.mobile}/>
-            <section className={`bg-[#E6E1DB]`}>
+            <div className={"fixed top-0 right-0 left-0 z-30 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+                <InfoBand/>
+                <LooksNavbar isMobile={dataStore.mobile}/>
+            </div>
+            <section className={`bg-[#E6E1DB] py-20`}>
                 <div className={`text-center py-10 tracking-wider`}>
                     <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
                     <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
@@ -203,7 +229,6 @@ function LooksPage() {
                     {(data) ? lookData() : null}
                 </main>
             </section>
-
             <Footer isMobile={dataStore.mobile}/>
         </>
     );
