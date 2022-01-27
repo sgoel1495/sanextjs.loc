@@ -1,5 +1,4 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
-import LooksNavbar from "../../components/navbar/LookNavbar";
 import PageHead from "../../components/PageHead";
 import AppWideContext from "../../store/AppWideContext";
 import InfoBand from "../../components/info-band/InfoBand";
@@ -12,7 +11,46 @@ import BlockHeader from "../../components/common/blockHeader";
 import Navbar from "../../../components/navbar/Navbar";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 
-const LookDataBlockImage = (props) => (
+/**
+ * @todo Swiper data
+ * @todo dispaly blocks
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
+
+/*
+    each product has
+    category: "dresses"
+    in_stock: "true"
+    is_international: true
+    name: "Aadya"
+    price: 2850
+    tag_line: "Raw Silk Festive Fit & A-Line Dress"
+    usd_price: 50
+     */
+const ProductData = (props)=>{
+    //<ProductData prod={prod} isOver={isOver} currCurrency={currCurrency} currencySymbol={currencySymbol} />
+    const showProd = <div>
+        <div>{props.prod.name}</div>
+        <div>{props.prod.tag_line}</div>
+    </div>;
+
+    const showProdDetail = <div>
+        <div>SIZE</div>
+        <div>
+            <div>ADD TO BAG</div>
+            <div>
+                {props.currencySymbol}
+                {(props.currCurrency=="inr")? props.prod.price : props.prod.usd_price }
+            </div>
+        </div>
+    </div>;
+
+    return props.isOver? showProdDetail : showProd;
+}
+
+const ArrivalDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
         <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
     </span>
@@ -32,7 +70,7 @@ function NewArrivalsAllPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState(null);
-    const [expandLook, setExpandLook] = useState(null);
+    const [isOver, setIsOver] = useState(false);
 
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
@@ -71,142 +109,20 @@ function NewArrivalsAllPage() {
         };
     },[]);
 
-    /*
-    each look has
-    after_color: ""
-    bg_color: "#0c172f"
-    bg_img_path: "/assets/look-757/Collage.v1.jpg"
-    color: "#ffffff"
-    details: "Aadya"
-    heading: "Green Sheen"
-    img_path: "/assets/look-757/Full.v1.jpg"
-    is_img_left: false
-    look_id: "look-757"
-    name: "Green Sheen"
-    products: ['Dresses-Aadya-RawSilkFestiveFitandA-LineDress']
-    template: 2
-
-    after_color: ""
-    bg_color: "#5b4351"
-    bg_img_path: "/assets/look-768/Collage.v1.jpg"
-    color: "#ffffff"
-    details: "Hibiscus,Earnest-Black"
-    heading: "Subtle Floral"
-    img_path: "/assets/look-768/Full.v1.jpg"
-    is_img_left: true
-    look_id: "look-768"
-    name: "Subtle Floral"
-    products: Array(2)
-    0: "Tops-Hibiscus-FloralKnitV-NeckTop"
-    1: "Pants-Earnest-Black-MidToHighRisePants"
-    length: 2
-
-    each product has
-    category: "dresses"
-    in_stock: "true"
-    is_international: true
-    name: "Aadya"
-    price: 2850
-    tag_line: "Raw Silk Festive Fit & A-Line Dress"
-    usd_price: 50
-     */
-    const expandData = () => {
-
-        const leadTextStyle = "text-h5 font-600";
-        const textStyle = "text-xs";
-        const buyNowButtonStyle = "bg-black/5 font-600 text-xs tracking-widest px-5 py-3 block mt-6";
-
-        let products = null;
-        let prod = null;
-        let prodDetails = null;
-        if (expandLook.products && expandLook.products.length > 0) {
-            prod = expandLook.products[0];
-            prodDetails = data.prod[prod];
-            products = (
-                <>
-                    <div className={`grid grid-cols-2 place-items-center`}>
-                        <LookDataBlockImage src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"} alt={prodDetails.name}/>
-                        <div className={`text-center`}>
-                            <p className={leadTextStyle}>{prodDetails.name}</p>
-                            <p className={textStyle}>{prodDetails.tag_line}</p>
-                            <p className={textStyle}>{currencySymbol}{(currCurrency === "inr") ? prodDetails.price : prodDetails.usd_price}</p>
-                            <Link href={"/" + prod}>
-                                <a className={`${buyNowButtonStyle}`}>BUY NOW</a>
-                            </Link>
-                        </div>
-                    </div>
-                </>
-            );
-        }
-        if (expandLook.products && expandLook.products.length > 1) {
-            prod = expandLook.products[1];
-            prodDetails = data.prod[prod];
-            products = (
-                <>
-                    {products}
-                    <div className={`grid grid-cols-2 place-items-center`}>
-                        <div className={`text-center`}>
-                            <p className={leadTextStyle}>{prod.name}</p>
-                            <p className={textStyle}>{prod.tag_line}</p>
-                            <p className={textStyle}>{currencySymbol}{(currCurrency === "inr") ? prod.price : prod.usd_price}</p>
-                            <Link href={"/" + prod}>
-                                <a className={`${buyNowButtonStyle}`}>BUY NOW</a>
-                            </Link>
-                        </div>
-                        <LookDataBlockImage src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"} alt={prodDetails.name}/>
-                    </div>
-                </>
-            );
-        }
-        return (
-            <div className={`col-span-3`}>
-                <button
-                    onClick={() => setExpandLook(null)}
-                    className={`uppercase float-right text-black/50`}
-                >
-                    Close
-                </button>
-                <BlockHeader
-                    space={"py-10"}
-                    titleStyle={"font-600 flex justify-center items-center gap-3 leading-none"}
-                >
-                    <span className={"text-h1"}>~</span>
-                    <span className={'font-cursive italic text-h1'}>{expandLook.heading}</span>
-                    <span className={"text-h1"}>~</span>
-                </BlockHeader>
-                <div className={`grid grid-cols-2`}>
-                    <LookDataBlockImage src={WEBASSETS + expandLook.img_path} alt={expandLook.name}/>
-                    <div className={`place-self-center bg-white h-fit w-2/3`}>
-                        {products}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     const newArrivals = () => {
         let showArrivalsData = null;
-        if (!data || !data.hasOwnProperty("look") || data.look.length < 1) return null;
+        if (!data || !data.hasOwnProperty("prod") || data.prod.length < 1) return null;
         else {
-            data.look.forEach(look => {
+            data.prod.forEach(prod => {
                 showArrivalsData = (
                     <>
                         {showArrivalsData}
-                        <div
-                            onClick={() => setExpandLook(look)}
-                            className={`relative group cursor-pointer`}
-                        >
-                            <LookDataBlockImage src={WEBASSETS + look.img_path} alt={look.name}/>
-                            <div className={"hidden group-hover:grid place-items-center absolute inset-0 z-10 opacity-95 text-white text-center font-600 tracking-wider"}
-                                 style={{background: look.bg_color}}>
-                                <div className={`self-end`}>
-                                    <p className={`mb-2 text-h5`}>{look.heading}</p>
-                                    <p className={`text-h5 font-cursive italic`}>{look.details}</p>
-                                </div>
-                                <p className={`uppercase text-sm`}>{'>'} Shop the look</p>
+                        <div onMouseEnter={()=>setIsOver(true)} onMouseLeave={()=>setIsOver(false)}>
+                            <ArrivalDataBlockImage src={WEBASSETS + prod.img_path} alt={prod.name}/>
+                            <div>
+                                <ProductData prod={prod} isOver={isOver} currCurrency={currCurrency} currencySymbol={currencySymbol} />
                             </div>
                         </div>
-                        {(expandLook && expandLook.look_id === look.look_id) ? expandData() : null}
                     </>
                 );
             });
