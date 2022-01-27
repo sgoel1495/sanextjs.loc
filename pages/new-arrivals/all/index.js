@@ -1,19 +1,18 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
-import PageHead from "../../components/PageHead";
-import AppWideContext from "../../store/AppWideContext";
-import InfoBand from "../../components/info-band/InfoBand";
-import Footer from "../../components/footer/Footer";
-import useApiCall from "../../hooks/useApiCall";
-import appSettings from "../../store/appSettings";
+import PageHead from "../../../components/PageHead";
+import AppWideContext from "../../../store/AppWideContext";
+import InfoBand from "../../../components/info-band/InfoBand";
+import Footer from "../../../components/footer/Footer";
+import useApiCall from "../../../hooks/useApiCall";
+import appSettings from "../../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
-import BlockHeader from "../../components/common/blockHeader";
 import Navbar from "../../../components/navbar/Navbar";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 
 /**
- * @todo Swiper data
- * @todo dispaly blocks
+ * @todo @team Swiper data
+ * @todo @Sambhav Please do CSS
  * @param props
  * @returns {JSX.Element}
  * @constructor
@@ -29,26 +28,6 @@ import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwip
     tag_line: "Raw Silk Festive Fit & A-Line Dress"
     usd_price: 50
      */
-const ProductData = (props)=>{
-    //<ProductData prod={prod} isOver={isOver} currCurrency={currCurrency} currencySymbol={currencySymbol} />
-    const showProd = <div>
-        <div>{props.prod.name}</div>
-        <div>{props.prod.tag_line}</div>
-    </div>;
-
-    const showProdDetail = <div>
-        <div>SIZE</div>
-        <div>
-            <div>ADD TO BAG</div>
-            <div>
-                {props.currencySymbol}
-                {(props.currCurrency=="inr")? props.prod.price : props.prod.usd_price }
-            </div>
-        </div>
-    </div>;
-
-    return props.isOver? showProdDetail : showProd;
-}
 
 const ArrivalDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -94,7 +73,7 @@ function NewArrivalsAllPage() {
     }, [resp]);
 
     // Nav Controller
-    const [navControl, setNavControl] = React.useState(false);
+    const [navControl, setNavControl] = React.useState(null);
     const controller = () => {
         if (window.scrollY > 0) {
             setNavControl(true);
@@ -111,17 +90,42 @@ function NewArrivalsAllPage() {
 
     const newArrivals = () => {
         let showArrivalsData = null;
-        if (!data || !data.hasOwnProperty("prod") || data.prod.length < 1) return null;
+        if (!data || !data.hasOwnProperty("prod") || !data.prod) return null;
         else {
-            data.prod.forEach(prod => {
+            const keys = Object.keys(data.prod);
+            keys.forEach(key => {
+                const prod = data.prod[key];
+                const imgPath = WEBASSETS + "/assets/" + key + ((isOver==key)? "/mo.new.jpg" : "/new.jpg");
+
+                const showProd = <div>
+                    <div>{prod.name}</div>
+                    <div>{prod.tag_line}</div>
+                </div>;
+
+                const showProdDetail = <div>
+                    <div>SIZE</div>
+                    <div>
+                        <div>ADD TO BAG</div>
+                        <div>
+                            {currencySymbol}
+                            {(currCurrency=="inr")? prod.price : prod.usd_price }
+                        </div>
+                    </div>
+                </div>;
+
+
                 showArrivalsData = (
                     <>
                         {showArrivalsData}
-                        <div onMouseEnter={()=>setIsOver(true)} onMouseLeave={()=>setIsOver(false)}>
-                            <ArrivalDataBlockImage src={WEBASSETS + prod.img_path} alt={prod.name}/>
-                            <div>
-                                <ProductData prod={prod} isOver={isOver} currCurrency={currCurrency} currencySymbol={currencySymbol} />
-                            </div>
+                        <div onMouseEnter={()=>setIsOver(key)} onMouseLeave={()=>setIsOver(null)}>
+                            <Link href={"/"+key}>
+                                <a>
+                                    <ArrivalDataBlockImage src={imgPath} alt={prod.name}  />
+                                    <div>
+                                        {(isOver==key)? showProdDetail : showProd}
+                                    </div>
+                                </a>
+                            </Link>
                         </div>
                     </>
                 );
