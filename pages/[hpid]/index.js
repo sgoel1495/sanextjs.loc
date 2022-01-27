@@ -10,7 +10,7 @@ function FromHomePageById(){
     const {dataStore} = useContext(AppWideContext);
 
     return <Fragment>
-        {(query.startsWith("shop-"))
+        {(query.hpid.startsWith("shop-"))
             ?<ShopPage  isMobile={dataStore.mobile} query={query}/>
             :<ProductPage isMobile={dataStore.mobile} query={query}/>
         }
