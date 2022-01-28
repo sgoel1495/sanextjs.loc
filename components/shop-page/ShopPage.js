@@ -16,7 +16,6 @@ import Footer from "../footer/Footer";
 import appSettings from "../../store/appSettings";
 import useApiCall from "../../hooks/useApiCall";
 import Link from "next/link";
-import BlockHeader from "../common/blockHeader";
 import Image from "next/image";
 
 const ShopDataBlockImage = (props) => (
@@ -103,26 +102,28 @@ function ShopPage(props){
                         <Link href={"/" + prod.asset_id}>
                             <a>
                                 <div onMouseEnter={()=>{setExpandShop(prod)}} onMouseLeave={()=>{setExpandShop(null)}}>
-                            <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.name}/>
-                            {(expandShop && prod.asset_id == expandShop.asset_id)
-                                ?<div>
-                                    <div>SIZE</div>
-                                    <div>
-                                        <div>ADD TO BAG</div>
-                                        <div>
-                                            {currencySymbol}
-                                            {(currCurrency=="inr")? prod.price : prod.usd_price }
+                                    {(expandShop && prod.asset_id == expandShop.asset_id)
+                                        ?<ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + "/new.jpg"} alt={prod.name}/>
+                                        :<ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + "/mo.new.jpg"} alt={prod.name}/>}
+                                    {(expandShop && prod.asset_id == expandShop.asset_id)
+                                        ?<div>
+                                            <div>SIZE</div>
+                                            <div>
+                                                <div>ADD TO BAG</div>
+                                                <div>
+                                                    {currencySymbol}
+                                                    {(currCurrency=="inr")? prod.price : prod.usd_price }
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                        : <div className={"hidden group-hover:grid place-items-center absolute inset-0 z-10 opacity-95 text-white text-center font-600 tracking-wider"}>
+                                            <div className={`self-end`}>
+                                                <p className={`mb-2 text-h5`}>{prod.name}</p>
+                                                <p className={`text-h5 font-cursive italic`}>{prod.tag_line}</p>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
-                                : <div className={"hidden group-hover:grid place-items-center absolute inset-0 z-10 opacity-95 text-white text-center font-600 tracking-wider"}>
-                                    <div className={`self-end`}>
-                                        <p className={`mb-2 text-h5`}>{prod.name}</p>
-                                        <p className={`text-h5 font-cursive italic`}>{prod.tag_line}</p>
-                                    </div>
-                                </div>
-                            }
-                        </div>
                             </a>
                         </Link>
                     </>
