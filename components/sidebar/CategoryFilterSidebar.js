@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import ReactDom from "react-dom";
 import Link from "next/link";
 import {New} from "../common/tags";
@@ -15,9 +15,12 @@ function CategoryFilterModal(props) {
     const {closeModal} = props;
 
     const keys = (props.filterData)? Object.keys(props.filterData.break_speed):[];
+
     console.log("FILTER DATA",props.filterData);
     console.log("KEYS",keys);
 
+
+    console.log()
     const filterElement=(key)=>{
         if(!props.filterData || !props.filterData.hasOwnProperty("filter_count"))
             return null;
@@ -69,8 +72,30 @@ function CategoryFilterModal(props) {
 
 function CategoryFilterSidebar(props) {
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
+    const [checkboxData,setCheckboxData] = useState(null);
+    const [dataChanged,setDataChanged]=useState(false);
 
-    React.useEffect(() => {
+    const updateCheckboxData = (key,value)=>{
+        checkboxData[key]=value;
+        setCheckboxData({...checkboxData});
+        setDataChanged(!dataChanged);
+    }
+
+    useEffect(()=>{
+        if(props.filterData && props.filterData.hasOwnProperty("filter_count")){
+            const ok = Object.keys(props.filterData.filter_count);
+            const initData = [];
+            ok.forEach(key=>{
+                const d={};
+                d[key] = false;
+                initData.push(d);
+            })
+            setCheckboxData(initData);
+        }
+    },[props.filterData.stringify()]);
+    console.log("INIT FILTER DATA", checkboxData);
+
+    useEffect(() => {
         if (showSidebarMenu) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
     }, [showSidebarMenu])

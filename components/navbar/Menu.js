@@ -11,6 +11,7 @@ import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import {New} from "../common/tags";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
+import {generateHash} from "random-hash";
 
 function Menu(props) {
     const {dataStore} = useContext(AppWideContext);
@@ -38,7 +39,7 @@ function Menu(props) {
     mimotoData.forEach(ele => {
         mimotoList = <Fragment>
             {mimotoList}
-            <li>
+            <li key="dummy">
                 <Link href={ele.link}>
                     <a className={`font-600 block mb-1`}>
                         {ele.category}
@@ -122,7 +123,7 @@ function Menu(props) {
                 <>
                     {categoriesList}
                     {(ele.new)
-                        ?<li>
+                        ?<li key={ele.category}>
                             <Link href={ele.link}>
                                 <a className={`font-600 ${browserViewStyle}`}>
                                     <span className={"bg-black text-xs text-white leading-none"}>New</span>
@@ -130,7 +131,7 @@ function Menu(props) {
                                 </a>
                             </Link>
                         </li>
-                        :<li>
+                        :<li key={ele.category}>
                             <Link href={ele.link}>
                                 <a className={`font-600 ${browserViewStyle}`}>
                                     {ele.category}
@@ -151,20 +152,25 @@ function Menu(props) {
             <ul className={"flex flex-1 justify-center items-center uppercase"}>
                 {(props.source != "shopCategory")
                 ?<Fragment>
-                    <li>
+                    <li key="new-arrivals">
                         <Link href="/new-arrivals/all">
                             <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>New In</a>
                         </Link>
                     </li>
-                    <li>
+                    <li key="looks">
                         <Link href="/looks">
                             <a className={browserViewStyle}>Looks</a>
                         </Link>
                     </li>
+                    {categoriesList}
+                    <li  key="accessories" className={"relative group"}>
+                        <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
+                        <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
+                    </li>
                 </Fragment>
                 :<Fragment>
                     {categoriesList}
-                    <li className={"relative group"}>
+                    <li  key="accessories" className={"relative group"}>
                         <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
                         <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
                     </li>
@@ -210,7 +216,7 @@ function Menu(props) {
                             {mimotoList}
                         </ul>
                     </li>
-                    <li>
+                    <li key="looks">
                         <Link href="/looks">
                             <a className="h-12 flex flex-col justify-center">
                                 <span className={leadTextStyle}>Looks</span>
@@ -218,7 +224,7 @@ function Menu(props) {
                             </a>
                         </Link>
                     </li>
-                    <li>
+                    <li key="new-arrivals-all">
                         <Link href="/new-arrivals/all">
                             <a className="h-12 flex flex-col justify-center">
                                 <span className={`${leadTextStyle} block w-fit px-2 py-1 text-xs leading-none bg-[#B5DDF5] text-white`}>New In</span>

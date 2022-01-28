@@ -35,27 +35,27 @@ function Footer(props) {
                 <div>
                     <h6 className={blockHeader}>CUSTOMER SERVICE</h6>
                     <ul className="footerlist">
-                        <li>
+                        <li key="shipping-returns">
                             <Link href="/salt/shipping-returns"><a target="_blank">
                                 Shipping &amp; Returns
                             </a></Link>
                         </li>
-                        <li>
+                        <li key="cancellation-modifications">
                             <Link href="/salt/cancellation-modifications"><a target="_blank">
                                 Cancellation &amp; Modifications
                             </a></Link>
                         </li>
-                        <li>
+                        <li key="faq">
                             <Link href="/salt/faq"><a target="_blank">
                                 FAQ
                             </a></Link>
                         </li>
-                        <li>
+                        <li key="sitemap">
                             <Link href="/salt/sitemap"><a target="_blank">
                                 Site Map
                             </a></Link>
                         </li>
-                        <li>
+                        <li key="contact-us">
                             <Link href="/salt/contact-us"><a target="_blank">
                                 Contact Us
                             </a></Link>
@@ -65,39 +65,40 @@ function Footer(props) {
                 <div>
                     <h6 className={blockHeader}>LEGAL &amp; COOKIES</h6>
                     <ul>
-                        <li>
+                        <li key="terms-and-condition">
                             <Link href="/salt/terms-and-condition"><a target="_blank">
                                 Terms &amp; Conditions
                             </a></Link>
                         </li>
-                        <li>
+                        <li key="privacy-policy">
                             <Link href="/salt/privacy-policy"><a target="_blank">
                                 Privacy Policy
-                            </a></Link></li>
+                            </a></Link>
+                        </li>
                     </ul>
                 </div>
                 <div className="col-start-1 col-end-3 mt-2">
                     <h6 className={blockHeader + " text-center"}>FOLLOW US ON</h6>
                     <ul className={"flex gap-5 justify-center mt-2"}>
-                        <li>
+                        <li key="instagram">
                             <a className={"block text-center"} href="https://www.instagram.com/saltattire" target="_blank">
                                 <i className="fa fa-instagram fa_font_style"/>
                                 <span className={"block"}>Instagram</span>
                             </a>
                         </li>
-                        <li>
+                        <li key="facebook">
                             <a className={"block text-center"} href="https://www.facebook.com/saltattire" target="_blank">
                                 <i className="fa fa-facebook fa_font_style"/>
                                 <span className="block">Facebook</span>
                             </a>
                         </li>
-                        <li>
+                        <li key="twitter">
                             <a className={"block text-center"} href="https://twitter.com/saltattire" target="_blank">
                                 <i className="fa fa-twitter fa_font_style"/>
                                 <span className="block">Twitter</span>
                             </a>
                         </li>
-                        <li>
+                        <li key="google">
                             <a className={"block text-center"} href="https://plus.google.com/113620197761223008326" target="_blank">
                                 <i className="fa fa-google-plus fa_font_style"/>
                                 <span className="block">Google+</span>
@@ -111,9 +112,9 @@ function Footer(props) {
             </div>
             <div className={"px-4 my-2"}>
                 <ul className={"flex gap-2"}>
-                    <li><i className="fa fa-cc-mastercard"/>Cards</li>
-                    <li><i className="fa fa-cc-visa"/>Card</li>
-                    <li><i className="fa fa-cc-amex"/>Card</li>
+                    <li key="mastercard"><i className="fa fa-cc-mastercard"/>Cards</li>
+                    <li key="visa"><i className="fa fa-cc-visa"/>Card</li>
+                    <li key="amex"><i className="fa fa-cc-amex"/>Card</li>
                 </ul>
             </div>
         </footer>
