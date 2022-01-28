@@ -9,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "../../../components/navbar/Navbar";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
+import BlockHeader from "../../../components/common/blockHeader";
+import WishListButton from "../../../components/common/wishlistButton";
 
 /**
  * @todo @team Swiper data
@@ -74,19 +76,11 @@ function NewArrivalsAllPage() {
 
     // Nav Controller
     const [navControl, setNavControl] = React.useState(null);
-    const controller = () => {
-        if (window.scrollY > 0) {
-            setNavControl(true);
-        } else {
-            setNavControl(false);
-        };
-    };
+    const controller = () => setNavControl(window.scrollY > 0);
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
-    },[]);
+        return () => window.removeEventListener('scroll', controller)
+    }, []);
 
     const newArrivals = () => {
         let showArrivalsData = null;
@@ -95,34 +89,39 @@ function NewArrivalsAllPage() {
             const keys = Object.keys(data.prod);
             keys.forEach(key => {
                 const prod = data.prod[key];
-                const imgPath = WEBASSETS + "/assets/" + key + ((isOver==key)? "/mo.new.jpg" : "/new.jpg");
+                const imgPath = WEBASSETS + "/assets/" + key + ((isOver == key) ? "/mo.new.jpg" : "/new.jpg");
 
-                const showProd = <div>
-                    <div>{prod.name}</div>
-                    <div>{prod.tag_line}</div>
-                </div>;
-
-                const showProdDetail = <div>
-                    <div>SIZE</div>
-                    <div>
-                        <div>ADD TO BAG</div>
-                        <div>
-                            {currencySymbol}
-                            {(currCurrency=="inr")? prod.price : prod.usd_price }
-                        </div>
+                const showProd = (
+                    <div className={`col-span-2`}>
+                        <p className={`text-h5 font-500`}>{prod.name}</p>
+                        <p className={`text-sm font-500`}>{prod.tag_line}</p>
                     </div>
-                </div>;
+                );
+
+                const showProdDetail = (
+                    <>
+                        <span className={`font-800`}>SIZE</span>
+                        <div className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
+                            <span className={`uppercase`}>Add to bag</span>
+                            <p className={`text-xs`}>
+                                {currencySymbol}
+                                {(currCurrency == "inr") ? prod.price : prod.usd_price}
+                            </p>
+                        </div>
+                    </>
+                );
 
 
                 showArrivalsData = (
                     <>
                         {showArrivalsData}
-                        <div onMouseEnter={()=>setIsOver(key)} onMouseLeave={()=>setIsOver(null)}>
-                            <Link href={"/"+key}>
-                                <a>
-                                    <ArrivalDataBlockImage src={imgPath} alt={prod.name}  />
-                                    <div>
-                                        {(isOver==key)? showProdDetail : showProd}
+                        <div onMouseEnter={() => setIsOver(key)} onMouseLeave={() => setIsOver(null)}>
+                            <Link href={"/" + key}>
+                                <a className={"block bg-white text-center relative z-0"}>
+                                    <WishListButton className={`absolute right-4 top-4 z-10`}/>
+                                    <ArrivalDataBlockImage src={imgPath} alt={prod.name}/>
+                                    <div className="grid grid-cols-2 items-center h-16">
+                                        {(isOver == key) ? showProdDetail : showProd}
                                     </div>
                                 </a>
                             </Link>
@@ -138,17 +137,19 @@ function NewArrivalsAllPage() {
     const browserView = (
         <>
             <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={dataStore.mobile}/>
-            <div className={"fixed top-0 right-0 left-0 z-30 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+            <div className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/80']}>
                 <InfoBand/>
                 <Navbar isMobile={dataStore.mobile}/>
             </div>
             <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
-            <section className={`bg-[#E6E1DB] py-20`}>
-                <div className={`text-center py-10 tracking-wider`}>
-                    <hr/>
-                        <h3 className={`text-h4 font-600`}>NEW ARRIVALS</h3>
-                    <hr/>
-                </div>
+            <section className={`bg-[#E6E1DB] pb-20`}>
+                <BlockHeader
+                    line
+                    space={"py-12"}
+                    titleStyle={"font-600 flex justify-center items-center gap-3 leading-none"}
+                >
+                    <span className={"tracking-widest text-h4 uppercase"}>New Arrivals</span>
+                </BlockHeader>
                 <main className={`px-10 grid grid-cols-3 gap-10`}>
                     {(data) ? newArrivals() : null}
                 </main>

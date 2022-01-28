@@ -42,6 +42,9 @@ module.exports = {
                 'sm': `${init * 1.75}rem`,
                 'xs': `${init * 1.5}rem`,
             },
+            zIndex: {
+                '100': '100',
+            },
             colors: {
                 theme: {
                     50: '#f8fafc',
