@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {createElement, Fragment, useEffect, useState} from "react";
 import ReactDom from "react-dom";
 import Link from "next/link";
 import {New} from "../common/tags";
@@ -11,56 +11,56 @@ import {New} from "../common/tags";
  */
 
 
+
 function CategoryFilterModal(props) {
-    const {closeModal} = props;
-
-    const keys = (props.filterData)? Object.keys(props.filterData.break_speed):[];
-
-    console.log("FILTER DATA",props.filterData);
+    //props: closeModal, checkboxData, updateCheckboxData, filterData
+    const {closeModal, checkboxData, updateCheckboxData, filterData} = props;
+    const keys = (filterData)? Object.keys(filterData.break_speed):[];
     console.log("KEYS",keys);
+    console.log("FILTER DATA",props.filterData);
 
+    const removeCategoryFromString = (category, stringValue)=>{
+        const lengthOfCategory = category.length();
+        return stringValue.substr(lengthOfCategory);
+    }
+    // filters need to be in this order. All possible filters should be mentioned here
+    const possibleFilters = [
+        {"category":"CATEGORY"}, {"fabric":"FABRIC"}, {"sleeve-length":"SLEEVE LENGTH"}, {"neckline":"NECKLINE"},
+        {"pattern":"PATTERN"}, {"color":"COLOR"}, {"fit-or-style":"FIT / STYLE"}];
 
-    console.log()
-    const filterElement=(key)=>{
-        if(!props.filterData || !props.filterData.hasOwnProperty("filter_count"))
-            return null;
-        const data = props.filterData.filter_count;
-        const dataKeys = Object.keys(data);
-        let foundKey = null;
-        const optionKeys = [];
-        dataKeys.forEach(k=>{
-            if(k.startsWith(key+"-")){
-                optionKeys.push({
-                    id: k,
-                    option: k.substr(k.indexOf("-")).toUpperCase(),
-                });
-                foundKey = k;
-                console.log("FoundKey",k,optionKeys);
-            }
+    const createElement = (e)=>{
+        let returnElement = <h2>{possibleFilters[e]}</h2>;
+        const breakSpeed = filterData.break_speed[e];
+        breakSpeed.forEach(ele=>{
+            const name = e + "-" + ele;
+           returnElement = <Fragment>
+               {returnElement}
+               <input type="checkbox"
+                      name={name}
+                      checked={checkboxData[name]}
+                      id={name}
+                      onChange={()=>updateCheckboxData(name,!checkboxData[name])} />
+           </Fragment>;
         });
-        if(optionKeys.length==0)
-            return null;
-        let returnFilter = null;
-        optionKeys.forEach(k=>{
-            returnFilter = <Fragment>
-                {returnFilter}
-                <checkbox key={k.id} value={k.id}>
-                    {k.option}
-                </checkbox>
-            </Fragment>;
+    }
+
+    let returnValue = null;
+    if(!props.filterData || !props.filterData.hasOwnProperty("filter_count")){
+        possibleFilters.forEach(filter=>{
+            returnValue = <Fragment>
+                {returnValue}
+                {createElement(filter)}
+            </Fragment>
         })
-        return <select>
-
-        </select>
+        returnValue = <form>
+            {returnValue}
+        </form>
     }
 
-    const Category = ()=>{
-        return filterElement("category");
-    }
     return <div>
         <h2>FILTER BY</h2>
-
-        </div>;
+        {returnValue}
+    </div>;
 }
 
 /**
@@ -82,17 +82,29 @@ function CategoryFilterSidebar(props) {
     }
 
     useEffect(()=>{
-        if(props.filterData && props.filterData.hasOwnProperty("filter_count")){
+        console.log("Props FilterData",props.filterData);
+        if(props.filterData
+            && props.filterData.hasOwnProperty("filter_count"))
+        {
             const ok = Object.keys(props.filterData.filter_count);
             const initData = [];
-            ok.forEach(key=>{
-                const d={};
-                d[key] = false;
+            ok.forEach(key => {
+                const d = {};
+                if(key.startsWith("category-"))
+                    d[key] = true;
+                else
+                    d[key] = false;
+                initData.push(d);
+            });
+            const dataKeys = Object.keys(props.filterData.filter_count);
+            dataKeys.forEach(key => {
+                const d = {};
+                d[key+"-view-all"] = false;
                 initData.push(d);
             })
             setCheckboxData(initData);
         }
-    },[props.filterData.stringify()]);
+    },[props.filterData]);
     console.log("INIT FILTER DATA", checkboxData);
 
     useEffect(() => {
@@ -112,7 +124,12 @@ function CategoryFilterSidebar(props) {
                 <span>FILTERS<i id="downup" className="fa fa-angle-down" /></span>
             </span>
             {showSidebarMenu && ReactDom.createPortal(
-                <CategoryFilterModal filterData={props.filterData} closeModal={closeModal.bind(this)}/>,
+                <CategoryFilterModal
+                    filterData={props.filterData}
+                    checkboxData = {checkboxData}
+                    updateCheckboxData = {updateCheckboxData.bind(this)}
+                    closeModal={closeModal.bind(this)}
+                />,
                 document.getElementById("hamburger"))}
         </>
     );

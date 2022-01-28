@@ -39,7 +39,7 @@ function Menu(props) {
     mimotoData.forEach(ele => {
         mimotoList = <Fragment>
             {mimotoList}
-            <li key="dummy">
+            <li key={ele.category}>
                 <Link href={ele.link}>
                     <a className={`font-600 block mb-1`}>
                         {ele.category}
