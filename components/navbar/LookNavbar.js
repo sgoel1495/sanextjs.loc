@@ -27,34 +27,34 @@ function LooksNavbar(props) {
             <p className={'text-xs'}>BESPOKE &amp; CUSTOM CLOTHING</p>
         </div>
         <ul className={"flex gap-5 justify-between"}>
-            <li>
+            <li key="sidebarhamburger">
                 <SidebarMenuHamburger isMobile={false}/>
             </li>
-            <li>
+            <li key="signin">
                 <Link href="/homepage/signin">
                     <a>
                         <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
                     </a>
                 </Link>
             </li>
-            <li>
+            <li key="new-arrivals">
                 <Link href="/new-arrivals/all">
                     <a>
                         <Image src={WEBASSETS + "/assets/images/new_icon.svg"} alt="new" width={iconHeightWeight} height={iconHeightWeight}/>
                     </a>
                 </Link>
             </li>
-            <li>
+            <li key="signin">
                 <Link href="/homepage/signin">
                     <a>
                         <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav" width={iconHeightWeight} height={iconHeightWeight}/>
                     </a>
                 </Link>
             </li>
-            <li>
+            <li key="searchmenu">
                 <SearchMenu isMobile={true}/>
             </li>
-            <li>
+            <li key="sidebarmenu">
                 <SidebarMenuCart isMobile={true}/>
             </li>
         </ul>

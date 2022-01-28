@@ -31,10 +31,10 @@ function CartModal(props) {
                 <a className={`block ${blockHeader}`}>
                     <h6 className={`text-h6 font-600 text-center mb-1`}>Our Return Policy</h6>
                     <ul className={`text-theme-600 text-xs`}>
-                        <li>Money Back Guarantee For Pre-paid.</li>
-                        <li>You can exchange the size.</li>
-                        <li>Get a store credit or get a full refund For Pre-paid.</li>
-                        <li>No questions asked.</li>
+                        <li key="money-back">Money Back Guarantee For Pre-paid.</li>
+                        <li key="exchange-size">You can exchange the size.</li>
+                        <li key="store-credit">Get a store credit or get a full refund For Pre-paid.</li>
+                        <li key="no-question">No questions asked.</li>
                     </ul>
                 </a>
             </Link>
