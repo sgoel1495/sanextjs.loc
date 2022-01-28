@@ -11,8 +11,8 @@ function FromHomePageById(){
 
     return <Fragment>
         {(query.hpid.startsWith("shop-"))
-            ?<ShopPage  isMobile={dataStore.mobile} query={query}/>
-            :<ProductPage isMobile={dataStore.mobile} query={query}/>
+            ?<ShopPage  isMobile={dataStore.mobile} hpid={query.hpid}/>
+            :<ProductPage isMobile={dataStore.mobile} hpid={query.hpid}/>
         }
     </Fragment>;
 }

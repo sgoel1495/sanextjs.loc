@@ -10,12 +10,15 @@ import React, {Fragment, useContext, useEffect, useState} from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import {New} from "../common/tags";
+import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
 
 function Menu(props) {
     const {dataStore} = useContext(AppWideContext);
+    const defData = (props.source == "getLooksData") ? null : {categories:dataStore.categories,accessories:dataStore.accessories};
     const queryObject = (props.source == "getLooksData") ? {look_id: "", limit: 100} : null;
-    const resp = useApiCall(props.source, dataStore.apiToken, queryObject);
-    const [data, setData] = useState(null);
+    const apiToken = (props.source == "getLooksData") ? dataStore.apiToken : null; // no need to fetch data
+    const resp = useApiCall(props.source, apiToken, queryObject);
+    const [data, setData] = useState(defData);
     const [showShop, setShowShop] = useState(false);
     const [showMimoto, setShowMimoto] = useState(false);
 
@@ -49,15 +52,7 @@ function Menu(props) {
 
 
     useEffect(() => {
-        if (props.source == "exploreNewArrivals") {
-            if (resp
-                && resp.hasOwnProperty("status")
-                && resp.status == 200
-                && resp.hasOwnProperty("response")
-                && resp.response.hasOwnProperty("left_text")
-            )
-                setData(resp.response);
-        } else if (props.source == "getLooksData") {
+        if (props.source == "getLooksData") {
             if (resp
                 && resp.hasOwnProperty("status")
                 && resp.status == 200
@@ -77,15 +72,27 @@ function Menu(props) {
      * @todo API issue. Not all the categories are present
      */
     const doneCategories = [];
-    if (props.source == "exploreNewArrivals"
-        && data && data.hasOwnProperty("left_text")
-        && data.left_text.length > 0) {
-        data.left_text.forEach((ele) => {
+    if (props.source == "exploreNewArrivals") {
+        data.categories.forEach((ele) => {
             if (!doneCategories.includes(ele.category)) {
                 actualData.push({
                     id: ele.category,
                     link: ele.link,
-                    category: ele.category
+                    category: ele.category,
+                    new: false
+                });
+                doneCategories.push(ele.category);
+            }
+        });
+        browserViewStyle = "block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black text-black/60";
+    } else if (props.source == "shopCategory") {
+        data.categories.forEach((ele) => {
+            if (!doneCategories.includes(ele.category)) {
+                actualData.push({
+                    id: ele.category,
+                    link: ele.link,
+                    category: ele.category,
+                    new: ele.new
                 });
                 doneCategories.push(ele.category);
             }
@@ -98,8 +105,10 @@ function Menu(props) {
             keys.forEach(ele => {
                 if (!doneCategories.includes(data.prod[ele].category)) {
                     actualData.push({
+                        id: data.prod[ele].category,
                         link: "/shop-" + data.prod[ele].category.toLowerCase(),
-                        category: data.prod[ele].category
+                        category: data.prod[ele].category,
+                        new: false
                     });
                     doneCategories.push(data.prod[ele].category);
                 }
@@ -112,11 +121,23 @@ function Menu(props) {
             categoriesList = (
                 <>
                     {categoriesList}
-                    <li>
-                        <Link href={ele.link}>
-                            <a className={`font-600 ${browserViewStyle}`}>{ele.category}</a>
-                        </Link>
-                    </li>
+                    {(ele.new)
+                        ?<li>
+                            <Link href={ele.link}>
+                                <a className={`font-600 ${browserViewStyle}`}>
+                                    <span className={"bg-black text-xs text-white leading-none"}>New</span>
+                                    {ele.category}
+                                </a>
+                            </Link>
+                        </li>
+                        :<li>
+                            <Link href={ele.link}>
+                                <a className={`font-600 ${browserViewStyle}`}>
+                                    {ele.category}
+                                </a>
+                            </Link>
+                        </li>
+                    }
                 </>
             );
         })
@@ -125,25 +146,33 @@ function Menu(props) {
     let mobileView = null;
     let browserView = null;
 
-    if (props.source == "exploreNewArrivals") {
+    if (props.source == "exploreNewArrivals" || props.source == "shopCategory") {
         browserView = <Fragment>
             <ul className={"flex flex-1 justify-center items-center uppercase"}>
-                <li>
-                    <Link href="/new-arrivals/all">
-                        <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>New In</a>
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/looks">
-                        <a className={browserViewStyle}>Looks</a>
-                    </Link>
-                </li>
-                {categoriesList}
-                <li className={"relative group"}>
-                    <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
-                    <SubMenu isMobile={false} menu="accessories"/>
-                </li>
+                {(props.source != "shopCategory")
+                ?<Fragment>
+                    <li>
+                        <Link href="/new-arrivals/all">
+                            <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>New In</a>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/looks">
+                            <a className={browserViewStyle}>Looks</a>
+                        </Link>
+                    </li>
+                </Fragment>
+                :<Fragment>
+                    {categoriesList}
+                    <li className={"relative group"}>
+                        <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
+                        <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
+                    </li>
+                </Fragment>}
             </ul>
+            {(props.source == "shopCategory")
+                ?<CategoryFilterSidebar />
+                :null}
         </Fragment>
 
     } else if (props.source == "getLooksData") {
