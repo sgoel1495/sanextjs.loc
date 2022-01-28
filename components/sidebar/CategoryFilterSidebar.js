@@ -10,157 +10,64 @@ import {New} from "../common/tags";
  * @constructor
  */
 
-const navigationData = [
-    {
-        title: `Link Normal`,
-        description: `Link Description`,
-        link: `#`
-    },
-    {
-        title: `Link w Child`,
-        description: `Link Description`,
-        child: [
-            {
-                title: `Child Link New`,
-                new: true,
-                link: `#`
-            },
-            {
-                title: `Child Link Normal`,
-                link: `#`
-            }
-        ]
-    },
-    {
-        title: `Link New`,
-        description: `Link Description`,
-        new: true,
-        link: `#`
-    },
-    {
-        title: `Link New w Child`,
-        description: `Link Description`,
-        new: true,
-        child: [
-            {
-                title: `Child Link Normal`,
-                link: `#`
-            },
-            {
-                title: `Child Link New`,
-                new: true,
-                link: `#`
-            }
-        ]
-    },
-];
-
-const SelfLink = (props) => {
-    return (
-        <Link href={props.link}>
-            <a className={`block px-4 py-3 text-black/70 hover:bg-black/5`}>
-                <span className={`block leading-none`}>
-                    {props.title}
-                    {props.new && <New/>}
-                </span>
-                {props.description && <span className="text-xs block leading-none">{props.description}</span>}
-            </a>
-        </Link>
-    )
-}
-
-const ChildLink = props => {
-    const [viewState, setViewState] = React.useState(false);
-    return (
-        <>
-            <div className={`cursor-pointer text-black/70`}>
-                <a className={`block px-4 py-3 hover:bg-black/5 flex items-center gap-x-5`} onClick={() => setViewState(!viewState)}>
-                    <div className={`flex-1`}>
-                        <span className={`block leading-none`}>
-                            {props.title}
-                            {props.new && <New/>}
-                        </span>
-                        {props.description && <span className="text-xs block leading-none">{props.description}</span>}
-                    </div>
-                    {viewState
-                        ? <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
-                            <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
-                        </svg>
-                        : <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
-                            <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/>
-                        </svg>
-                    }
-                </a>
-                {props.child &&
-                    <ul className={`bg-white px-4 ${viewState ? 'opacity-1' : 'hidden'}`}>
-                        {props.child.map((item, index) => {
-                            return (
-                                <li key={index}>
-                                    <Link href={item.link} key={index}>
-                                        <a className={`block px-4 py-1 hover:bg-black/5 text-sm`}>
-                                            {item.title}
-                                            {item.new && <New/>}
-                                        </a>
-                                    </Link>
-                                </li>
-                            )
-                        })}
-                    </ul>
-                }
-            </div>
-        </>
-    )
-}
 
 function CategoryFilterModal(props) {
-
     const {closeModal} = props;
 
-    return (
-        <div className={`bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
-            <div
-                className="max-w-[300px] h-full bg-white overflow-y-auto overflow-x-hidden"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <div className="flex items-center justify-between p-4 border-b border-theme-200">
-                    <span className="font-600">FILTER</span>
-                    <button onClick={closeModal}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} viewBox="0 0 24 24">
-                            <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
-                        </svg>
-                    </button>
-                </div>
-                <ul>
-                    {navigationData.map((item, index) => (
-                        <>
-                            {item.child
-                                ? <ChildLink
-                                    key={index}
-                                    title={item.title}
-                                    description={item.description}
-                                    new={item.new}
-                                    child={item.child}
-                                />
-                                : <SelfLink
-                                    key={index}
-                                    link={item.link}
-                                    title={item.title}
-                                    description={item.description}
-                                    new={item.new}
-                                />
-                            }
-                        </>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    );
+    const keys = (props.filterData)? Object.keys(props.filterData.break_speed):[];
+    console.log("FILTER DATA",props.filterData);
+    console.log("KEYS",keys);
+
+    const filterElement=(key)=>{
+        if(!props.filterData || !props.filterData.hasOwnProperty("filter_count"))
+            return null;
+        const data = props.filterData.filter_count;
+        const dataKeys = Object.keys(data);
+        let foundKey = null;
+        const optionKeys = [];
+        dataKeys.forEach(k=>{
+            if(k.startsWith(key+"-")){
+                optionKeys.push({
+                    id: k,
+                    option: k.substr(k.indexOf("-")).toUpperCase(),
+                });
+                foundKey = k;
+                console.log("FoundKey",k,optionKeys);
+            }
+        });
+        if(optionKeys.length==0)
+            return null;
+        let returnFilter = null;
+        optionKeys.forEach(k=>{
+            returnFilter = <Fragment>
+                {returnFilter}
+                <checkbox key={k.id} value={k.id}>
+                    {k.option}
+                </checkbox>
+            </Fragment>;
+        })
+        return <select>
+
+        </select>
+    }
+
+    const Category = ()=>{
+        return filterElement("category");
+    }
+    return <div>
+        <h2>FILTER BY</h2>
+
+        </div>;
 }
 
+/**
+ *
+ * @param props isMobile, filterData
+ * @returns {null|JSX.Element}
+ * @constructor
+ */
 
 function CategoryFilterSidebar(props) {
-
-    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
 
     React.useEffect(() => {
@@ -171,26 +78,16 @@ function CategoryFilterSidebar(props) {
     const closeModal = () => {
         setShowSidebarMenu(false);
     }
-    const data = [];
 
     const mobileView = null;
 
-    let iconHeight;
-    switch (props.type) {
-        case "looksPage":
-            iconHeight = "h-12"
-            break;
-        default:
-            iconHeight = "h-6"
-    }
-
     const browserView = (
         <>
-            <span onClick={() => setShowSidebarMenu(true)} className={`block relative w-6 ${iconHeight}`}>
+            <span onClick={() => setShowSidebarMenu(true)} className={`block relative w-6`}>
                 <span>FILTERS<i id="downup" className="fa fa-angle-down" /></span>
             </span>
             {showSidebarMenu && ReactDom.createPortal(
-                <CategoryFilterModal data={data} closeModal={closeModal.bind(this)}/>,
+                <CategoryFilterModal filterData={props.filterData} closeModal={closeModal.bind(this)}/>,
                 document.getElementById("hamburger"))}
         </>
     );

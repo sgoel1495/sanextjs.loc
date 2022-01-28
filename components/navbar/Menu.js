@@ -1,6 +1,6 @@
 /**
  * @todo API issue The menu list has no order to follow from api side. Also we do not know where to get subcategories like accessories. Further the NEW tag on menu item cannot be set as no basis found.
- * @param {isMobile. source} props
+ * @param {isMobile. source, filterData} props
  * @constructor
  */
 
@@ -25,12 +25,12 @@ function Menu(props) {
     const mimotoData = [
         {
             category: "noor",
-            link: "'/mimoto-noor",
+            link: "/mimoto-noor",
             span: "spreading light"
         },
         {
             category: "nostalgia",
-            link: "'/mimoto-nostalgia",
+            link: "/mimoto-nostalgia",
             span: "the color prints"
         }
     ];
@@ -171,7 +171,7 @@ function Menu(props) {
                 </Fragment>}
             </ul>
             {(props.source == "shopCategory")
-                ?<CategoryFilterSidebar />
+                ?<CategoryFilterSidebar isMobile={props.isMobile} filterData={props.filterData} />
                 :null}
         </Fragment>
 

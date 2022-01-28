@@ -140,7 +140,11 @@ function ShopPage(props){
             <InfoBand/>
             <LooksNavbar isMobile={dataStore.mobile}/>
         </div>
-        <Menu source="shopCategory" isMobile={false}/>
+        {(data && data.hasOwnProperty("break_speed"))
+            ?<Menu source="shopCategory" isMobile={false} filterData={data}/>
+            :null
+        }
+
         <div>{category}</div>
         <div>{tag_line}</div>
         <main className={`px-10 grid grid-cols-3 gap-10`}>

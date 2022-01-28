@@ -10,7 +10,7 @@ function CategoryHeader(props){
     const category= props.category;
 
     return <div>
-        <video autoplay="autoplay" muted>
+        <video autoPlay muted>
             <source src={WEBASSETS + "/assets/videos/" + category + ".mp4"}
                     type="video/mp4"
                     poster={WEBASSETS + "/assets/videos/" + category + ".jpg"}
