@@ -9,6 +9,7 @@ import appSettings from "../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
 import BlockHeader from "../../components/common/blockHeader";
+import WishListButton from "../../components/common/wishlistButton";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -192,10 +193,11 @@ function LooksPage() {
                         {showLookData}
                         <div
                             onClick={() => setExpandLook(look)}
-                            className={`relative group cursor-pointer`}
+                            className={`relative group cursor-pointer z-0`}
                         >
+                            <WishListButton className={`absolute right-4 top-4 z-10`}/>
                             <LookDataBlockImage src={WEBASSETS + look.img_path} alt={look.name}/>
-                            <div className={"hidden group-hover:grid place-items-center absolute inset-0 z-10 opacity-95 text-white text-center font-600 tracking-wider"}
+                            <div className={"hidden group-hover:grid place-items-center absolute inset-0 opacity-95 text-white text-center font-600 tracking-wider"}
                                  style={{background: look.bg_color}}>
                                 <div className={`self-end`}>
                                     <p className={`mb-2 text-h5`}>{look.heading}</p>
@@ -216,15 +218,18 @@ function LooksPage() {
     const browserView = (
         <>
             <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-            <div className={"fixed top-0 right-0 left-0 z-30 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+            <div className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <section className={`bg-[#E6E1DB] py-20`}>
-                <div className={`text-center py-10 tracking-wider`}>
+                <BlockHeader
+                    space={"py-5"}
+                    titleStyle={"text-center py-10 tracking-wider"}
+                >
                     <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
                     <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
-                </div>
+                </BlockHeader>
                 <main className={`px-10 grid grid-cols-3 gap-10`}>
                     {(data) ? lookData() : null}
                 </main>
