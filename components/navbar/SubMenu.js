@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {Fragment} from "react";
+import {generateHash} from "random-hash";
 
 /**
  * @todo We do now know where in api to get the submenu data. Hardcoded in defaultData
@@ -17,7 +18,7 @@ function SubMenu(props) {
             props.data.forEach(ele=>{
                 showMenuData = <Fragment>
                     {showMenuData}
-                    <li>
+                    <li key={generateHash()}>
                         <Link href={ele.link}>
                             {(ele.new)
                                 ?<a className={"flex flex-col items-start px-4 py-2 border-b border-transparent hover:border-black leading-none"}>
