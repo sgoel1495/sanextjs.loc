@@ -142,11 +142,11 @@ function ShopPage(props) {
     return (
         <Fragment>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-            <CategoryHeader category={category}/>
             <div className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
+            <CategoryHeader category={category}/>
             {(data && data.hasOwnProperty("break_speed"))
                 ? <Menu source="shopCategory" isMobile={false} filterData={data}/>
                 : null

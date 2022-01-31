@@ -119,7 +119,7 @@ function HamburgerModal(props) {
     return (
         <div className={`bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
             <div
-                className="max-w-[300px] h-full bg-white overflow-y-auto overflow-x-hidden"
+                className="max-w-[300px] h-full bg-white overflow-x-hidden flex flex-col"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between p-4 border-b border-theme-200">
@@ -130,7 +130,7 @@ function HamburgerModal(props) {
                         </svg>
                     </button>
                 </div>
-                <ul>
+                <div className={`flex-1 overflow-y-auto font-500`}>
                     {navigationData.map((item, index) => (
                         <>
                             {item.child
@@ -151,7 +151,7 @@ function HamburgerModal(props) {
                             }
                         </>
                     ))}
-                </ul>
+                </div>
             </div>
         </div>
     );

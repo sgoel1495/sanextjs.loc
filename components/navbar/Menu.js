@@ -15,7 +15,7 @@ import {generateHash} from "random-hash";
 
 function Menu(props) {
     const {dataStore} = useContext(AppWideContext);
-    const defData = (props.source == "getLooksData") ? null : {categories:dataStore.categories,accessories:dataStore.accessories};
+    const defData = (props.source == "getLooksData") ? null : {categories: dataStore.categories, accessories: dataStore.accessories};
     const queryObject = (props.source == "getLooksData") ? {look_id: "", limit: 100} : null;
     const apiToken = (props.source == "getLooksData") ? dataStore.apiToken : null; // no need to fetch data
     const resp = useApiCall(props.source, apiToken, queryObject);
@@ -86,7 +86,7 @@ function Menu(props) {
             }
         });
         browserViewStyle = "block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black text-black/60";
-    } else if (props.source == "shopCategory") {
+    } else if (props.source === "shopCategory") {
         data.categories.forEach((ele) => {
             if (!doneCategories.includes(ele.category)) {
                 actualData.push({
@@ -98,7 +98,7 @@ function Menu(props) {
                 doneCategories.push(ele.category);
             }
         });
-        browserViewStyle = "block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black text-black/60";
+        browserViewStyle = "block px-3 py-2 mx-1 text-sm leading-none border-b border-transparent hover:border-black text-black/60";
     } else if (props.source == "getLooksData"
         && data && data.hasOwnProperty("prod")) {
         const keys = Object.keys(data.prod);
@@ -123,7 +123,7 @@ function Menu(props) {
                 <>
                     {categoriesList}
                     {(ele.new)
-                        ?<li key={ele.category}>
+                        ? <li key={ele.category}>
                             <Link href={ele.link}>
                                 <a className={`font-600 ${browserViewStyle}`}>
                                     <span className={"bg-black text-xs text-white leading-none"}>New</span>
@@ -131,7 +131,7 @@ function Menu(props) {
                                 </a>
                             </Link>
                         </li>
-                        :<li key={ele.category}>
+                        : <li key={ele.category}>
                             <Link href={ele.link}>
                                 <a className={`font-600 ${browserViewStyle}`}>
                                     {ele.category}
@@ -147,41 +147,43 @@ function Menu(props) {
     let mobileView = null;
     let browserView = null;
 
-    if (props.source == "exploreNewArrivals" || props.source == "shopCategory") {
-        browserView = <Fragment>
-            <ul className={"flex flex-1 justify-center items-center uppercase font-600"}>
-                {(props.source != "shopCategory")
-                ?<Fragment>
-                    <li key="new-arrivals">
-                        <Link href="/new-arrivals/all">
-                            <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>New In</a>
-                        </Link>
-                    </li>
-                    <li key="looks">
-                        <Link href="/looks">
-                            <a className={browserViewStyle}>Looks</a>
-                        </Link>
-                    </li>
-                    {categoriesList}
-                    <li  key="accessories" className={"relative group"}>
-                        <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
-                        <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
-                    </li>
-                </Fragment>
-                :<Fragment>
-                    {categoriesList}
-                    <li  key="accessories" className={"relative group"}>
-                        <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
-                        <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
-                    </li>
-                </Fragment>}
-            </ul>
-            {(props.source == "shopCategory")
-                ?<CategoryFilterSidebar isMobile={props.isMobile} filterData={props.filterData} />
-                :null}
-        </Fragment>
-
-    } else if (props.source == "getLooksData") {
+    if (props.source === "exploreNewArrivals" || props.source === "shopCategory") {
+        browserView = (
+            <div className={`relative container`}>
+                <ul className={"flex flex-1 justify-center items-center uppercase font-600"}>
+                    {(props.source != "shopCategory")
+                        ? <Fragment>
+                            <li key="new-arrivals">
+                                <Link href="/new-arrivals/all">
+                                    <a className={"block px-3 py-1 mx-1 text-xs leading-none border-b border-transparent hover:border-black bg-[#B5DDF5] text-white"}>New In</a>
+                                </Link>
+                            </li>
+                            <li key="looks">
+                                <Link href="/looks">
+                                    <a className={browserViewStyle}>Looks</a>
+                                </Link>
+                            </li>
+                            {categoriesList}
+                            <li key="accessories" className={"relative group"}>
+                                <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
+                                <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
+                            </li>
+                        </Fragment>
+                        : <Fragment>
+                            {categoriesList}
+                            <li key="accessories" className={"relative group"}>
+                                <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
+                                <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
+                            </li>
+                        </Fragment>}
+                </ul>
+                {(props.source === "shopCategory")
+                    ? <CategoryFilterSidebar isMobile={props.isMobile} filterData={props.filterData}/>
+                    : null
+                }
+            </div>
+        )
+    } else if (props.source === "getLooksData") {
         /**
          * @todo API: Where to get Mimoto collection
          */
@@ -233,8 +235,8 @@ function Menu(props) {
                         </Link>
                     </li>
                 </ul>
-                {showShop && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[200px]`} />}
-                {showMimoto && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[100px]`} />}
+                {showShop && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[200px]`}/>}
+                {showMimoto && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[100px]`}/>}
             </>
         )
     }
