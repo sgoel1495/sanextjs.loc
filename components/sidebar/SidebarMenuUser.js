@@ -58,8 +58,8 @@ function UserModal(props) {
         }
     };
 
-    const inputStyle = "placeholder:text-black/30 border-black focus:ring-0 focus:border-black focus:shadow-none border py-3 px-4 text-sm leading-none";
-    const buttonStyle = "uppercase border py-3 px-6 text-sm text-black/60 font-600 tracking-wider border-black/30 hover:border-black duration-100";
+    const inputStyle = "flex-1 placeholder:text-black/30 border-black focus:ring-0 focus:border-black focus:shadow-none border py-1 px-4 text-sm font-500 leading-none";
+    const buttonStyle = "uppercase border py-2 px-4 min-w-fit text-sm text-black/60 font-600 tracking-wider border-black/30 hover:border-black duration-100";
 
     const mobileView = null;
 
@@ -81,7 +81,7 @@ function UserModal(props) {
                     <span>|</span>
                     <div onClick={() => signInAction("forgot")}>Forgot your password?</div>
                 </div>
-                <form className={`grid grid-cols-4 gap-x-8`}>
+                <form className={`flex gap-x-4 2xl:gap-x-8`}>
                     <input
                         type="text"
                         name='username'
@@ -95,7 +95,7 @@ function UserModal(props) {
                         ref={password}
                         className={`${inputStyle}`}
                     />
-                    <div className={`col-span-2 flex items-center gap-x-8 justify-start`}>
+                    <div className={`flex items-center gap-x-4 2xl:gap-x-8 justify-start`}>
                         <button
                             type="submit"
                             onClick={() => signInAction("signIn")}
@@ -105,20 +105,25 @@ function UserModal(props) {
                         </button>
                         <span>or</span>
                         <button
-                            type="submit"
+                            type="button"
                             onClick={() => signInAction("otp")}
                             className={`${buttonStyle}`}
                         >
                             Login Using OTP
                         </button>
                         <button
-                            type="submit"
+                            type="button"
                             onClick={() => signInAction("facebook")}
                             className={`${buttonStyle} flex items-center gap-x-3`}
                         >
                             <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain"/>
                             <span>LOGIN</span>
                         </button>
+                    </div>
+                    <div className={`flex-auto`}>
+                        <div className="bg-black text-white grid place-items-center py-2">
+                            Value
+                        </div>
                     </div>
                 </form>
             </div>

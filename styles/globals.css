@@ -6,7 +6,8 @@
 @tailwind utilities;
 /* Only Css common to whole project */
 
-.scroll-overflow {
+body.scroll-overflow,
+body.scroll-overflow .navigator{
     overflow: hidden;
     width: calc(100vw - 17px);
 }

@@ -137,7 +137,7 @@ function NewArrivalsAllPage() {
     const browserView = (
         <>
             <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={dataStore.mobile}/>
-            <div className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/80']}>
+            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/80']}>
                 <InfoBand/>
                 <Navbar isMobile={dataStore.mobile}/>
             </div>
