@@ -8,7 +8,7 @@ import React from "react";
  * @constructor
  */
 
-function UserLoginMenu(props){
+function UserMenu(props){
   const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
   const mobileView = <div>
@@ -32,4 +32,4 @@ function UserLoginMenu(props){
 
 }
 
-export default UserLoginMenu;
+export default UserMenu;
