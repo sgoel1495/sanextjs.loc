@@ -5,7 +5,7 @@
  * @constructor
  */
 
-import CategoryHeader from "./CategoryHeader";
+import CategoryHeaderVideo from "./CategoryHeaderVideo";
 import PageHead from "../PageHead";
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import InfoBand from "../info-band/InfoBand";
@@ -146,7 +146,7 @@ function ShopPage(props) {
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
-            <CategoryHeader category={category}/>
+            <CategoryHeaderVideo category={category}/>
             {(data && data.hasOwnProperty("break_speed"))
                 ? <Menu source="shopCategory" isMobile={false} filterData={data}/>
                 : null
