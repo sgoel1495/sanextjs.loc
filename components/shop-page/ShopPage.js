@@ -5,7 +5,7 @@
  * @constructor
  */
 
-import CategoryHeaderVideo from "./CategoryHeaderVideo";
+import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import InfoBand from "../info-band/InfoBand";
