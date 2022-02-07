@@ -22,9 +22,11 @@ function CategoryHeaderImage(props) {
 
     return (
         <section className={`relative mt-8`}>
-            <Image src={imageSource} alt={category} width="1000vw" height="300px" />
+            <span className={`block relative w-full h-[80vh]`}>
+                <Image src={imageSource} alt={category} layout={`fill`} objectFit={`cover`} />
+            </span>
             <div className={`absolute inset-0 flex items-center justify-start`}>
-                <div className={`bg-black pt-12 pb-6 pl-28 w-1/3 text-white font-cursive leading-none`}>
+                <div className={`bg-black pt-12 pb-6 pl-28 w-1/3 text-white font-cursive italic leading-none`}>
                     <span className={`text-6xl`}>
                         {category.toUpperCase()}
                     </span>
