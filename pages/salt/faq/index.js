@@ -30,7 +30,7 @@ function FaqPage() {
             window.removeEventListener('scroll', controller)
         };
     }, []);
-    const category = "faq";
+    const category = "FAQ";
 
     const faqData = require("../../../store/faqData.json");
 
