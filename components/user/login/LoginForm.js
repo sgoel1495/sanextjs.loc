@@ -5,9 +5,8 @@ import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/loader";
 import Image from "next/image";
 
-const LoginForm = () => {
+const LoginForm = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
 
     const username = useRef(null);
     const password = useRef(null);
@@ -15,6 +14,9 @@ const LoginForm = () => {
     const [optSent, setOTPSent] = useState(false)
     const {dataStore, updateDataStore} = useContext(AppWideContext);
 
+    React.useEffect(() => {
+        loadFbLoginApi()
+    }, [])
 
     const saveUserDataAfterSuccessfulLogin = (username) => {
         let userData = {
@@ -23,15 +25,39 @@ const LoginForm = () => {
         updateDataStore("userData", userData);
         localStorage.setItem("userData", JSON.stringify(userData));
     }
+
+    const loadFbLoginApi = () => {
+
+        window.fbAsyncInit = function () {
+            window.FB.init({
+                appId: '463380238827998',
+                cookie: true,
+                xfbml: true,
+                version: 'v2.12'
+            });
+            window.FB.AppEvents.logPageView();
+        };
+
+        // Load the SDK asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    }
+
     const signInAction = (action) => {
 
         const signIn = (uname, pwd, otp_login) => {
             let isValid = validateUsername(uname)
             if (!isValid["valid"]) {
                 if (isValid['type'] === "email") {
-                    alert("Please enter a valid email address")
+                    props.showToast("Please enter a valid email address")
                 } else {
-                    alert("Please enter a valid phone number")
+                    props.showToast("Please enter a valid phone number")
                 }
                 return
             }
@@ -48,12 +74,12 @@ const LoginForm = () => {
                         if (data['status'] === 200) {
                             if (otp_login) {
                                 setOTPSent(true)
-                                alert("We've sent an OTP to your Email or Phone!")
+                                props.showToast("We've sent an OTP to your Email or Phone!")
                             } else {
                                 saveUserDataAfterSuccessfulLogin(uname)
                             }
                         } else {
-                            alert(data['response']['body'].toUpperCase())
+                            props.showToast(data['response']['body'].toUpperCase());
                         }
                     })
                 }
@@ -71,7 +97,7 @@ const LoginForm = () => {
                         if (data['status'] === 200) {
                             saveUserDataAfterSuccessfulLogin(uname)
                         } else {
-                            alert(data['response']['body'].toUpperCase())
+                            props.showToast(data['response']['body'].toUpperCase());
                         }
                     })
                 }
@@ -79,6 +105,29 @@ const LoginForm = () => {
                 setLoading(false)
             })
         };
+
+        const statusChangeCallback = (response) => {
+            if (response.status === 'connected') {
+                window.FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender'}, function (response) {
+                    saveUserDataAfterSuccessfulLogin(response.email)
+                    console.log('FB ID:' + response.id + 'Name:' + response.first_name + ',' + response.last_name + 'Email:' + response.email + 'Gender:' + response.gender)
+                })
+            } else {
+                props.showToast("Facebook Login Failed");
+            }
+        }
+
+        const checkLoginState = () => {
+            window.FB.getLoginStatus(function (response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        const handleFBLogin = () => {
+            window.FB.login((resp) => {
+                checkLoginState()
+            }, {scope: 'public_profile,email'});
+        }
 
         switch (action) {
             case "signIn":
@@ -89,6 +138,9 @@ const LoginForm = () => {
                 break;
             case "verifyOTP":
                 loginOtp(username.current.value, password.current.value);
+                break;
+            case "facebook":
+                handleFBLogin();
                 break;
             default:
                 break;

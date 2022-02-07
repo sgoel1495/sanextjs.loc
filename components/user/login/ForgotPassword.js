@@ -15,9 +15,9 @@ const ForgotPassword = (props) => {
         let isValid = validateUsername(username)
         if (!isValid["valid"]) {
             if (isValid['type'] === "email") {
-                alert("Please enter a valid email")
+                props.showToast("Please enter a valid email")
             } else {
-                alert("Please enter a valid email/phone")
+                props.showToast("Please enter a valid email/phone")
             }
             return
         }
@@ -27,10 +27,10 @@ const ForgotPassword = (props) => {
             if (response.status === 200) {
                 response.json().then(respData => {
                     if (respData['status'] === 200) {
-                        alert("Link to Reset password sent on email/phone")
+                        props.showToast("Link to Reset password sent on email/phone")
                         props.closeModal();
                     } else {
-                        alert(respData['response']['body'].toUpperCase())
+                        props.showToast(respData['response']['body'].toUpperCase())
                     }
                 })
             }

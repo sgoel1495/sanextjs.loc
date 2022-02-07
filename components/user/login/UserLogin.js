@@ -2,27 +2,36 @@ import React from "react";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import ForgotPassword from "./ForgotPassword";
+import Toast from "../../common/toast";
 
 
 function UserLogin(props) {
     /*
     *@todo @team complete login logic
     *@todo default alerts to be replaces by react alerts
-    *@todo Facebook Login to be done
+    *@todo Facebook Login API needed
     */
     const {closeModal} = props;
     const mobileView = null;
     const [active, setActive] = React.useState(0)
+    const [show, setShow] = React.useState(false)
+    const [feedback, setFeedback] = React.useState('')
+
+    const showToast = (text) =>{
+        setFeedback(text);
+        setShow(true);
+    }
+
     let ActiveForm = <></>
     switch (active) {
         case 0:
-            ActiveForm = <LoginForm/>
+            ActiveForm = <LoginForm showToast={showToast}/>
             break;
         case 1:
-            ActiveForm = <SignUpForm/>
+            ActiveForm = <SignUpForm showToast={showToast}/>
             break;
         case 2:
-            ActiveForm = <ForgotPassword closeModal={closeModal}/>
+            ActiveForm = <ForgotPassword closeModal={closeModal} showToast={showToast}/>
             break;
     }
     const browserView = (
@@ -37,13 +46,16 @@ function UserLogin(props) {
                     </svg>
                 </button>
                 <div className={`flex items-center gap-x-4 text-sm uppercase text-black/60`}>
-                    <div className={active===0?`underline text-black/80 cursor-default`:'cursor-pointer'} onClick={() => setActive(0)}>Sign In</div>
+                    <div className={active === 0 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(0)}>Sign In</div>
                     <span>|</span>
-                    <div className={active===1?`underline text-black/80 cursor-default`:'cursor-pointer'} onClick={() => setActive(1)}>Sign Up</div>
+                    <div className={active === 1 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(1)}>Sign Up</div>
                     <span>|</span>
-                    <div className={active===2?`underline text-black/80 cursor-default`:'cursor-pointer'} onClick={() => setActive(2)}>Forgot your password?</div>
+                    <div className={active === 2 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(2)}>Forgot your password?</div>
                 </div>
                 {ActiveForm}
+                <Toast show={show} hideToast={() => setShow(false)}>
+                    <span>{feedback}</span>
+                </Toast>
             </div>
         </div>);
 

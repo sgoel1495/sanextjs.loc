@@ -4,7 +4,7 @@ import {validateEmail} from "../../../helpers/loginSignUpHelpers";
 import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 
-const SignUpForm = () => {
+const SignUpForm = (props) => {
 
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [stage, setStage] = React.useState(0)
@@ -34,18 +34,20 @@ const SignUpForm = () => {
 
     const validateData = () => {
         if (data.full_name.length < 3) {
-            alert('Please enter a Full Name')
-            alert("Name should be minimum of 3 characters long")
+            if (data.full_name.length)
+                props.showToast("Name should be minimum of 3 characters long")
+            else
+                props.showToast('Please enter a Full Name')
             setIsValid({...isValid, email: true, phone: true, full_name: false});
             return false
         }
         if (!validateEmail(data.email)) {
-            alert('Please enter a valid email')
+            props.showToast('Please enter a valid email')
             setIsValid({...isValid, email: data.email !== '', phone: true, full_name: true});
             return false
         }
         if (!data.phone) {
-            alert('Please enter a valid phone number')
+            props.showToast('Please enter a valid phone number')
             setIsValid({...isValid, email: true, phone: false, full_name: true});
             return false
         }
@@ -53,20 +55,20 @@ const SignUpForm = () => {
             return true
         if (data.password.length < 6) {
             if (data.password)
-                alert('Your Password must be 6 character long.')
+                props.showToast('Your Password must be 6 character long.')
             else
-                alert('Please enter your password')
+                props.showToast('Please enter your password')
             setData({...data, password: "", confirm_password: ""})
             setIsValid({...isValid, password: false, confirm_password: false});
             return false
         }
         if (data.confirm_password !== data.password) {
             if (data.confirm_password.length === 0)
-                alert('Please enter Confirm Password')
+                props.showToast('Please enter Confirm Password');
             else if (data.confirm_password.length < 6)
-                alert('Please Enter Minimum 6 character Confirm Password')
+                props.showToast('Please Enter Minimum 6 character Confirm Password')
             else
-                alert("Password and Confirm Password should be same")
+                props.showToast("Password and Confirm Password should be same")
             setData({...data, password: "", confirm_password: ""})
             setIsValid({...isValid, password: false, confirm_password: false});
             return false
@@ -88,7 +90,7 @@ const SignUpForm = () => {
                             if (respData['status'] === 200) {
                                 saveUserDataAfterSuccessfulLogin(data.email)
                             } else {
-                                alert(respData['response'].toUpperCase())
+                                props.showToast(respData['response'].toUpperCase())
                             }
                         })
                     }

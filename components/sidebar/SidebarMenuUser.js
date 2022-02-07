@@ -21,7 +21,7 @@ function SidebarMenuUser(props) {
     React.useEffect(() => {
         let userData = localStorage.getItem("userData");
         if (userData)
-            updateDataStore("userData", JSON.parse(userData))
+            updateDataStore("userData", {current: null})
     }, [])
 
     React.useEffect(() => {
@@ -32,7 +32,7 @@ function SidebarMenuUser(props) {
     const closeModal = () => {
         setShowSidebarMenuUser(false);
     }
-    console.log(dataStore.userData.contact)
+
     let iconHeight;
     switch (props.type) {
         case "looksPage":
