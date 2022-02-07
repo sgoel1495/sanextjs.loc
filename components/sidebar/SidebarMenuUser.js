@@ -21,7 +21,7 @@ function SidebarMenuUser(props) {
     React.useEffect(() => {
         let userData = localStorage.getItem("userData");
         if (userData)
-            updateDataStore("userData", {current: null})
+            updateDataStore("userData", JSON.parse(userData))
     }, [])
 
     React.useEffect(() => {
