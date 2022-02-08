@@ -11,7 +11,6 @@ import faqData from "../../../store/faqData.json";
 
 /**
  * @todo Pincode check
- * @todo The links need to be
  * @returns {JSX.Element}
  * @constructor
  */
