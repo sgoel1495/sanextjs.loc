@@ -22,6 +22,9 @@ function CategoryHeaderImage(props) {
         case "Cancellation & Modifications":
             imageSource = imageSource + "images/TnC.2.jpg";
             break;
+        case "Contact Us":
+            imageSource = imageSource + "images/ContactUs.2_v1.jpg";
+            break;
         default:
             break;
     }
