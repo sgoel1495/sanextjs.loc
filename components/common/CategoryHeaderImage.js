@@ -19,6 +19,9 @@ function CategoryHeaderImage(props) {
         case "Shipping & Returns":
             imageSource = imageSource + "images/TnC.2.jpg";
             break;
+        case "Cancellation & Modifications":
+            imageSource = imageSource + "images/TnC.2.jpg";
+            break;
         default:
             break;
     }

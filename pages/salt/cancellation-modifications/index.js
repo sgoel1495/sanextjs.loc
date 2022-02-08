@@ -32,7 +32,7 @@ function CancellationModificationsPage() {
             window.removeEventListener('scroll', controller)
         };
     }, []);
-    const category = "Shipping & Returns";
+    const category = "Cancellation & Modifications";
 
     const showSR = (ssrData)=>{
         let showSRData = null;
