@@ -1,11 +1,12 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import {Fragment, useCallback, useContext, useEffect, useState} from "react";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
 import LooksNavbar from "../../../components/navbar/LookNavbar";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
-import { GoogleMap, Marker } from "react-google-maps";
+import {GoogleMap, Marker, useJsApiLoader} from '@react-google-maps/api';
+
 
 /**
  * @todo Sambhav css pls
@@ -24,6 +25,32 @@ function ContactUsPage(){
         return () => window.removeEventListener('scroll', controller)
     }, []);
 
+    const containerStyle = {
+        width: '400px',
+        height: '400px'
+    };
+
+    const center = {
+        lat: 28.501388,
+        lng: 77.086267
+    };
+
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: "AIzaSyCneIy_canWR3DwYcH-IR0Ho-CmQCA-VjY"
+    });
+
+    const [map, setMap] = useState(null);
+
+    const onLoad = useCallback(function callback(map) {
+        const bounds = new window.google.maps.LatLngBounds();
+        map.fitBounds(bounds);
+        setMap(map)
+    }, []);
+
+    const onUnmount = useCallback(function callback(map) {
+        setMap(null)
+    }, []);
 
     const mobileView = null;
     const browserView = <div>
@@ -54,12 +81,17 @@ function ContactUsPage(){
             </div>
         </div>
         <div>
-            <GoogleMap
-                defaultZoom={12}
-                defaultCenter={{ lat: 28.501388, lng: 77.086267 }}
-            >
-                <Marker position={{ lat: 28.501388, lng: 77.086267 }} title='Salt Store' icon={WEBASSETS + "/assets/images/salt_black.png"} />
-            </GoogleMap>
+            {(isLoaded)
+                ?<GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={12}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+                >
+                    <Marker position={center} title='Salt Store' icon={WEBASSETS + "/assets/images/salt_black.png"}/>
+                </GoogleMap>
+                :null}
         </div>
     </div>;
 
