@@ -1,78 +1,82 @@
 {
-    "mobile": true,
-    "currCurrency": "inr",
-    "apiToken": null,
-    "categories": [
-        {
-            "category":"TOPS",
-            "link": "/shop-tops",
-            "new": false
-        },
-        {
-            "category":"SHIRTS",
-            "link": "/shop-tops",
-            "new": false
-        },
-        {
-            "category":"TUNICS",
-            "link": "/shop-tunics",
-            "new": false
-        },
-        {
-            "category":"PANTS",
-            "link": "/shop-tailored-pants",
-            "new": false
-        },
-        {
-            "category":"SKIRTS",
-            "link": "/shop-tailored-skirts",
-            "new": false
-        },
-        {
-            "category":"DRESSES",
-            "link": "/shop-dresses",
-            "new": false
-        },
-        {
-            "category":"OUTERWEAR",
-            "link": "/shop-outerwear",
-            "new": false
-        },
-        {
-            "category":"JUMPSUITS",
-            "link": "/shop-jumpsuits",
-            "new": false
-        },
-        {
-            "category":"SHORTS",
-            "link": "/shop-shorts",
-            "new": false
-        },
-        {
-            "category":"SWEATERS",
-            "link": "/shop-sweaters",
-            "new": false
-        }],
-    "accessories": [
-        {
-            "category":"SCARVES",
-            "link": "/shop-scarves",
-            "new": false
-        },
-        {
-            "category":"BELTS",
-            "link": "/shop-belts",
-            "new": false
-        },
-        {
-            "category":"JEWELLERY",
-            "link": "/shop-jwellery",
-            "new": true
-        },
-        {
-            "category":"MASKS",
-            "link": "/shop-masks",
-            "new": true
-        }
-    ]
+  "mobile": true,
+  "currCurrency": "inr",
+  "apiToken": null,
+  "categories": [
+    {
+      "category": "TOPS",
+      "link": "/shop-tops",
+      "new": false
+    },
+    {
+      "category": "SHIRTS",
+      "link": "/shop-tops",
+      "new": false
+    },
+    {
+      "category": "TUNICS",
+      "link": "/shop-tunics",
+      "new": false
+    },
+    {
+      "category": "PANTS",
+      "link": "/shop-tailored-pants",
+      "new": false
+    },
+    {
+      "category": "SKIRTS",
+      "link": "/shop-tailored-skirts",
+      "new": false
+    },
+    {
+      "category": "DRESSES",
+      "link": "/shop-dresses",
+      "new": false
+    },
+    {
+      "category": "OUTERWEAR",
+      "link": "/shop-outerwear",
+      "new": false
+    },
+    {
+      "category": "JUMPSUITS",
+      "link": "/shop-jumpsuits",
+      "new": false
+    },
+    {
+      "category": "SHORTS",
+      "link": "/shop-shorts",
+      "new": false
+    },
+    {
+      "category": "SWEATERS",
+      "link": "/shop-sweaters",
+      "new": false
+    }
+  ],
+  "accessories": [
+    {
+      "category": "SCARVES",
+      "link": "/shop-scarves",
+      "new": false
+    },
+    {
+      "category": "BELTS",
+      "link": "/shop-belts",
+      "new": false
+    },
+    {
+      "category": "JEWELLERY",
+      "link": "/shop-jwellery",
+      "new": true
+    },
+    {
+      "category": "MASKS",
+      "link": "/shop-masks",
+      "new": true
+    }
+  ],
+  "userData": {
+    "contact": null
+  }
 }
