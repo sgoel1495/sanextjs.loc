@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
@@ -15,10 +15,12 @@ import faqData from "../../../store/faqData.json";
  * @constructor
  */
 
-const FAQItemAnswer = ({item}) => {
-    const main = <div className={`${item.check ? 'flex-1' : null}`}>
-        <LinkParser para={item.para} />
-    </div>;
+const AnswerBlock = ({item}) => {
+    const main = (
+        <div className={`${item.check ? 'flex-1' : null}`}>
+            <LinkParser para={item.para}/>
+        </div>
+    );
     const check = (
         <div className={`flex items-start gap-x-2`}>
             <span className="block w-5 h-5">
@@ -42,9 +44,8 @@ function FaqPage() {
         window.addEventListener("scroll", controller);
         return () => window.removeEventListener('scroll', controller)
     }, []);
+
     const category = "FAQ";
-
-
 
     const showFaq = () => {
         let showFaqData = null;
@@ -54,14 +55,14 @@ function FaqPage() {
                 answersData = (
                     <>
                         {answersData}
-                        <FAQItemAnswer item={answer}/>
+                        <AnswerBlock item={answer}/>
                     </>
                 );
             });
             showFaqData = (
                 <>
                     {showFaqData}
-                    <Accordion style={`text-h6 font-500 uppercase`} title={ele.question}>
+                    <Accordion titleStyle={`text-h6 font-500 uppercase`} title={ele.question}>
                         {answersData}
                     </Accordion>
                 </>
@@ -71,20 +72,29 @@ function FaqPage() {
     }
 
     const mobileView = null;
-    const browserView = showFaq()
+    const browserView = (
+        <>
+            <div className={`flex flex-col gap-y-4`}>
+                {showFaq()}
+            </div>
+            <div className={`flex flex-col gap-y-4`}>
+                {showFaq()}
+            </div>
+        </>
+    )
     return (
-        <Fragment>
+        <>
             <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile}/>
             <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
+            <section className="container my-20 grid grid-cols-2 gap-x-20">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>
-        </Fragment>
+        </>
     )
 }
 

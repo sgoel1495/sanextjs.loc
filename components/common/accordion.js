@@ -14,21 +14,20 @@ const Accordion = props => {
     }
 
     return (
-        <div className={`salt_accordion`}>
-            <div className={`bg-black/10 py-4 px-6 flex gap-x-5`} onClick={toggleAccordion}>
-                <div className={`flex-1 ${props.style}`}>{props.title}</div>
-                {setActive
-                    ? <div className="block h-4 w-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4`} viewBox="0 0 24 24">
+        <div className={`salt_accordion ${props.style}`}>
+            <div className={`bg-black/10 py-4 px-6 flex items-center gap-x-5 cursor-pointer`} onClick={toggleAccordion}>
+                {props.titleIcon && <span className="block relative h-8 w-8">{props.titleIcon}</span>}
+                <div className={`flex-1 ${props.titleStyle}`}>{props.title}</div>
+                <span className="block relative h-4 w-4">
+                    {setActive
+                        ? <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4`} viewBox="0 0 24 24">
                             <path d="M5 11h14v2H5z"/>
                         </svg>
-                    </div>
-                    : <div className="block h-4 w-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4`} viewBox="0 0 24 24">
+                        : <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4`} viewBox="0 0 24 24">
                             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/>
                         </svg>
-                    </div>
-                }
+                    }
+                </span>
             </div>
             <div
                 ref={content}

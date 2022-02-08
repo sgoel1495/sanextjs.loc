@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
@@ -7,6 +7,8 @@ import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import cancellationModificationsData from "../../../store/cancellationModificationsData.json";
 import Image from "next/image";
+import LinkParser from "../../../components/common/LinkParser";
+import Accordion from "../../../components/common/accordion";
 
 /**
  * @todo @Sambhav pls do css
@@ -14,24 +16,37 @@ import Image from "next/image";
  * @constructor
  */
 
+const AnswerBlock = ({item}) => {
+    const main = (
+        <div className={`${item.check ? 'flex-1' : null}`}>
+            <LinkParser para={item.para} />
+        </div>
+    );
+    const check = (
+        <div className={`flex items-start gap-x-2`}>
+            <span className="block w-5 h-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
+                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"/>
+                </svg>
+            </span>
+            {main}
+        </div>
+    )
+    return item.check ? check : main;
+}
+
 function CancellationModificationsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
 
+    // NavBar Controls
     const [navControl, setNavControl] = useState(false);
-    const controller = () => {
-        if (window.scrollY > 0) {
-            setNavControl(true);
-        } else {
-            setNavControl(false);
-        }        ;
-    };
-    useEffect(() => {
+    const controller = () => setNavControl(window.scrollY > 0);
+    React.useEffect(() => {
         window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
+        return () => window.removeEventListener('scroll', controller)
     }, []);
+
     const category = "Cancellation & Modifications";
 
     const showSR = (ssrData)=>{
@@ -39,40 +54,40 @@ function CancellationModificationsPage() {
         ssrData.forEach(ele=>{
             let answersData = null;
             ele.answers.forEach(answer=>{
-                answersData = <Fragment>
-                    {answersData}
-                    <div>{answer.check}</div>
-                    <div>{answer.para}</div>
-                </Fragment>;
+                answersData = (
+                    <>
+                        {answersData}
+                        <AnswerBlock item={answer}/>
+                    </>
+                );
             });
             showSRData = <Fragment>
                 {showSRData}
-                <div>
-                    <span>
-                    <Image src={WEBASSETS + ele.icon} alt="question" width="100" height="100" />
-                    </span>
-                    {ele.question}
-                </div>
-                {answersData}
+                <Accordion
+                    title={ele.question}
+                    titleStyle={`text-h6 font-500 uppercase`}
+                    titleIcon={<Image src={WEBASSETS + ele.icon} alt="question" layout={`fill`} objectFit={`cover`}/>}
+                >
+                    {answersData}
+                </Accordion>
             </Fragment>;
         });
         return showSRData;
     }
 
     const mobileView = null;
-    const browserView = <div>
-        {showSR(cancellationModificationsData)}
-    </div>;
+    const browserView = showSR(cancellationModificationsData);
     return (
         <Fragment>
             <PageHead url="/salt/cancellation-modifications" id="cancellationmodifications" isMobile={dataStore.mobile}/>
-            <div
-                className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+            <div className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            {(dataStore.mobile) ? mobileView : browserView}
+            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
+                {(dataStore.mobile) ? mobileView : browserView}
+            </section>
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     )

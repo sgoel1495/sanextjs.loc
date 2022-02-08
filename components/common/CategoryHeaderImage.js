@@ -38,7 +38,7 @@ function CategoryHeaderImage(props) {
 
     return (
         <section className={`relative mt-8`}>
-            <span className={`block relative w-full h-[80vh]`}>
+            <span className={`block relative w-full h-[70vh]`}>
                 <Image src={imageSource} alt={category} layout={`fill`} objectFit={`cover`} />
             </span>
             <div className={`absolute inset-0 flex items-center justify-start`}>

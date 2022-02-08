@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
@@ -8,6 +8,8 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 import shippingData from "../../../store/shippingData.json";
 import returnsData from "../../../store/returnsData.json";
 import Image from "next/image";
+import Accordion from "../../../components/common/accordion";
+import LinkParser from "../../../components/common/LinkParser";
 
 /**
  * @todo @Sambhav pls do css
@@ -15,58 +17,80 @@ import Image from "next/image";
  * @constructor
  */
 
+const AnswerBlock = ({item}) => {
+    const main = (
+        <div className={`${item.check ? 'flex-1' : null}`}>
+            <LinkParser para={item.para}/>
+        </div>
+    );
+    const check = (
+        <div className={`flex items-start gap-x-2`}>
+            <span className="block w-5 h-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
+                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"/>
+                </svg>
+            </span>
+            {main}
+        </div>
+    )
+    return item.check ? check : main;
+}
+
 function ShippingNReturnsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
 
+    // NavBar Controls
     const [navControl, setNavControl] = useState(false);
-    const controller = () => {
-        if (window.scrollY > 0) {
-            setNavControl(true);
-        } else {
-            setNavControl(false);
-        }        ;
-    };
-    useEffect(() => {
+    const controller = () => setNavControl(window.scrollY > 0);
+    React.useEffect(() => {
         window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
+        return () => window.removeEventListener('scroll', controller)
     }, []);
+
     const category = "Shipping & Returns";
 
-    const showSR = (ssrData)=>{
+    const showSR = (ssrData) => {
         let showSRData = null;
-        ssrData.forEach(ele=>{
+        ssrData.forEach(ele => {
             let answersData = null;
-            ele.answers.forEach(answer=>{
-                answersData = <Fragment>
-                    {answersData}
-                    <div>{answer.check}</div>
-                    <div>{answer.para}</div>
-                </Fragment>;
+            ele.answers.forEach(answer => {
+                answersData = (
+                    <>
+                        {answersData}
+                        <AnswerBlock item={answer}/>
+                    </>
+                );
             });
-            showSRData = <Fragment>
-                {showSRData}
-                <div>
-                    <span>
-                    <Image src={WEBASSETS + ele.icon} alt="question" width="100" height="100" />
-                    </span>
-                    {ele.question}
-                </div>
-                {answersData}
-            </Fragment>;
+            showSRData = (
+                <>
+                    {showSRData}
+                    <Accordion
+                        title={ele.question}
+                        titleStyle={`text-h6 font-500 uppercase`}
+                        titleIcon={<Image src={WEBASSETS + ele.icon} alt="question" layout={`fill`} objectFit={`cover`}/>}
+                    >
+                        {answersData}
+                    </Accordion>
+                </>
+            );
         });
         return showSRData;
     }
 
     const mobileView = null;
-    const browserView = <div>
-        <div>Shipping Policy</div>
-        {showSR(shippingData)}
-        <div>Returns Policy</div>
-        {showSR(returnsData)}
-    </div>;
+    const browserView = (
+        <>
+            <div className={`flex flex-col gap-y-2`}>
+                <p className={`text-xl text-center`}>Shipping Policy</p>
+                {showSR(shippingData)}
+            </div>
+            <div className={`flex flex-col gap-y-2`}>
+                <p className={`text-xl text-center`}>Returns Policy</p>
+                {showSR(returnsData)}
+            </div>
+        </>
+    );
     return (
         <Fragment>
             <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile}/>
@@ -76,7 +100,9 @@ function ShippingNReturnsPage() {
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            {(dataStore.mobile) ? mobileView : browserView}
+            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
+                {(dataStore.mobile) ? mobileView : browserView}
+            </section>
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     )
