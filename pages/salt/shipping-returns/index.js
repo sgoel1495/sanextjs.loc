@@ -6,6 +6,7 @@ import LooksNavbar from "../../../components/navbar/LookNavbar";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import shippingData from "../../../store/shippingData.json";
+import returnsData from "../../../store/returnsData.json";
 
 /**
  * @todo Pincode check
@@ -15,6 +16,7 @@ import shippingData from "../../../store/shippingData.json";
  */
 
 function ShippingNReturnsPage() {
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
 
     const [navControl, setNavControl] = useState(false);
@@ -33,9 +35,6 @@ function ShippingNReturnsPage() {
     }, []);
     const category = "Shipping & Returns";
 
-    const shippingData = require("../../../store/shippingData.json");
-    const returnsData = require("../../../store/shippingData.json");
-
     const showSR = (ssrData)=>{
         let showSRData = null;
         ssrData.forEach(ele=>{
@@ -50,7 +49,9 @@ function ShippingNReturnsPage() {
             showSRData = <Fragment>
                 {showSRData}
                 <div>
-                    <span>{ele.icon}</span>
+                    <span>
+                    <Image src={WEBASSETS + ele.icon} alt="question" width="100" height="100" />
+                    </span>
                     {ele.question}
                 </div>
                 {answersData}

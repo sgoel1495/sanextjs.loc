@@ -6,19 +6,20 @@ import LooksNavbar from "../../../components/navbar/LookNavbar";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Accordion from "../../../components/common/accordion";
+import LinkParser from "../../../components/common/LinkParser";
+import faqData from "../../../store/faqData.json";
 
 /**
  * @todo Pincode check
- * @todo @Sambhav pls do css
+ * @todo The links need to be
  * @returns {JSX.Element}
  * @constructor
  */
 
 const FAQItemAnswer = ({item}) => {
-    const createMarkup = () => {
-        return {__html: item.para};
-    }
-    const main = <div className={`${item.check ? 'flex-1' : null}`} dangerouslySetInnerHTML={createMarkup()} />;
+    const main = <div className={`${item.check ? 'flex-1' : null}`}>
+        {LinkParser(item.para)}
+    </div>;
     const Check = (
         <div className={`flex items-start gap-x-2`}>
             <span className="block w-5 h-5">
@@ -44,7 +45,7 @@ function FaqPage() {
     }, []);
     const category = "FAQ";
 
-    const faqData = require("../../../store/faqData.json");
+
 
     const showFaq = () => {
         let showFaqData = null;
