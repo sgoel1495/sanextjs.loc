@@ -44,6 +44,7 @@ module.exports = {
             },
             zIndex: {
                 '100': '100',
+                'toast':91
             },
             colors: {
                 theme: {
