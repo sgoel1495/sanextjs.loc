@@ -18,9 +18,9 @@ import faqData from "../../../store/faqData.json";
 
 const FAQItemAnswer = ({item}) => {
     const main = <div className={`${item.check ? 'flex-1' : null}`}>
-        {LinkParser(item.para)}
+        <LinkParser para={item.para} />
     </div>;
-    const Check = (
+    const check = (
         <div className={`flex items-start gap-x-2`}>
             <span className="block w-5 h-5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@ const FAQItemAnswer = ({item}) => {
             {main}
         </div>
     )
-    return item.check ? Check : main;
+    return item.check ? check : main;
 }
 
 function FaqPage() {

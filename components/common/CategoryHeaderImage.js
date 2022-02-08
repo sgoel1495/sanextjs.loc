@@ -15,8 +15,10 @@ function CategoryHeaderImage(props) {
     switch (category){
         case "FAQ":
             imageSource = imageSource + "images/TnC.2.jpg";
+            break;
         case "Shipping & Returns":
             imageSource = imageSource + "images/TnC.2.jpg";
+            break;
         default:
             break;
     }

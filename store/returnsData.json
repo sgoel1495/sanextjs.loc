@@ -13,7 +13,7 @@
         "check": true
       },
       {
-        "para": "You can initiate a return using the following Steps:<br/>1. Go to <Link href='/homepage/signin'><a>My Orders</a></Link><br/>2. Select the item you wish to Return and Select one of the following options:",
+        "para": "You can initiate a return using the following Steps:***br***1. Go to ***signin******br***2. Select the item you wish to Return and Select one of the following options:",
         "check": true
       },
       {
@@ -150,11 +150,11 @@
     "question": "CAN TAILORED ITEMS BE RETURNED?",
     "answers": [
       {
-        "para": "If you wish to alter your Tailored Item, please initiate an Alteration for the same. All the tailored items are eligible ONLY FOR ALTERATIONS. We will do any required Alterations, so that they fit you perfectly!<br/>These are especially made for you, as per your body measurements and are strictly not eligible for a refund or exchange.",
+        "para": "If you wish to alter your Tailored Item, please initiate an Alteration for the same. All the tailored items are eligible ONLY FOR ALTERATIONS. We will do any required Alterations, so that they fit you perfectly!***br***These are especially made for you, as per your body measurements and are strictly not eligible for a refund or exchange.",
         "check": true
       },
       {
-        "para": "For fabric-related issues in a tailored order. e.g color different, fabric not as be expected<br/>Kindly check the fabric details before placing a tailored order, feel free to contact us in case of any query related to the fabric at the time of placing the order.",
+        "para": "For fabric-related issues in a tailored order. e.g color different, fabric not as be expected***br***Kindly check the fabric details before placing a tailored order, feel free to contact us in case of any query related to the fabric at the time of placing the order.",
         "check": true
       }
     ]

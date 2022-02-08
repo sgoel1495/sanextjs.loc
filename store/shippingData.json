@@ -31,7 +31,7 @@
     "question": "WHY IS THE DELIVERY TIME 6-10 DAYS?",
     "answers": [
       {
-        "para": "All our garments are made especially for you. When you place an order, the garments are tailor made just for you. Hence the longer delivery time. However, if you need the items to be delivered to you on or before a certain date, then please <Link href='/salt/contact-us'><a>Contact Us</a></Link>",
+        "para": "All our garments are made especially for you. When you place an order, the garments are tailor made just for you. Hence the longer delivery time. However, if you need the items to be delivered to you on or before a certain date, then please ||'/salt/contact-us',Contact Us||",
         "check": true
       }
     ]
@@ -42,11 +42,11 @@
     "question": "HOW DO I KNOW THE STATUS OF MY ORDER?",
     "answers": [
       {
-        "para": "We will send you an email when your order is being made and an email with the tracking details once your order has been shipped. If you do not receive any email within a week of placing your order, please <Link href='/salt/contact-us'><a>Contact Us</a></Link>",
+        "para": "We will send you an email when your order is being made and an email with the tracking details once your order has been shipped. If you do not receive any email within a week of placing your order, please ***contactus***",
         "check": true
       },
       {
-        "para": "You can always check your order status by selecting <Link href='/homepage/signin'><a>My Orders</a></Link> clicking Track My Order or Contact Us.",
+        "para": "You can always check your order status by selecting ***signin*** clicking Track My Order or Contact Us.",
         "check": true
       }
     ]
