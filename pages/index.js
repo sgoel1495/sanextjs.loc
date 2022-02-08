@@ -19,19 +19,11 @@ function RootPage() {
     const {dataStore} = useContext(AppWideContext);
 
     const [navControl, setNavControl] = React.useState(false);
-    const controller = () => {
-        if (window.scrollY > 0) {
-            setNavControl(true);
-        } else {
-            setNavControl(false);
-        };
-    };
+    const controller = () => setNavControl(window.scrollY > 0);
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
-    },[]);
+        return () => window.removeEventListener('scroll', controller)
+    }, []);
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
