@@ -26,7 +26,10 @@ function CategoryHeaderImage(props) {
             imageSource = imageSource + "images/ContactUs.2_v1.jpg";
             break;
         case "Terms & Conditions":
-            imageSource = imageSource + "images/TnC.2.jpg";
+            imageSource = imageSource + "images/TnC.1.jpg";
+            break;
+        case "Privacy Policy":
+            imageSource = imageSource + "images/TnC.1.jpg";
             break;
         default:
             break;
