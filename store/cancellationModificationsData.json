@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "icon": "/assets/images/cancel_order.svg",
+    "question": "HOW CAN I CANCEL MY ORDER?",
+    "answers": [
+      {
+        "para": "If the order is not yet Ready To Dispatch, you can cancel your order by going to ***signin*** in your profile. Click on the CANCEL Button for the order you wish to cancel",
+        "check": true
+      },
+      {
+        "para": "Incase you have already paid for your order; the amount minus the processing fee of 3% will be credited back to your account within 10-14 days",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "icon": "/assets/images/tracking.svg",
+    "question": "HOW CAN I MODIFY MY SHIPPING ADDRESS?",
+    "answers": [
+      {
+        "para": "You can modify the shipping address if the order has not been shipped",
+        "check": true
+      },
+      {
+        "para": "Go to ***signin*** in your profile. Click on Change Shipping Address against that order and modify the address",
+        "check": true
+      },
+      {
+        "para": "Shipping charges and delivery time may vary depending on the new shipping address",
+        "check": true
+      }
+    ]
+  }
+]

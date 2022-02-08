@@ -10,7 +10,6 @@ import returnsData from "../../../store/returnsData.json";
 import Image from "next/image";
 
 /**
- * @todo Pincode check
  * @todo @Sambhav pls do css
  * @returns {JSX.Element}
  * @constructor
