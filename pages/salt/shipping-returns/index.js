@@ -5,6 +5,7 @@ import InfoBand from "../../../components/info-band/InfoBand";
 import LooksNavbar from "../../../components/navbar/LookNavbar";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
+import shippingData from "../../../store/shippingData.json";
 
 /**
  * @todo Pincode check
@@ -32,11 +33,12 @@ function ShippingNReturnsPage() {
     }, []);
     const category = "Shipping & Returns";
 
-    const faqData = require("../../../store/faqData.json");
+    const shippingData = require("../../../store/shippingData.json");
+    const returnsData = require("../../../store/shippingData.json");
 
-    const showFaq = ()=>{
-        let showFaqData = null;
-        faqData.forEach(ele=>{
+    const showSR = (ssrData)=>{
+        let showSRData = null;
+        ssrData.forEach(ele=>{
             let answersData = null;
             ele.answers.forEach(answer=>{
                 answersData = <Fragment>
@@ -45,18 +47,24 @@ function ShippingNReturnsPage() {
                     <div>{answer.para}</div>
                 </Fragment>;
             });
-            showFaqData = <Fragment>
-                {showFaqData}
-                <div>{ele.question}</div>
+            showSRData = <Fragment>
+                {showSRData}
+                <div>
+                    <span>{ele.icon}</span>
+                    {ele.question}
+                </div>
                 {answersData}
             </Fragment>;
         });
-        return showFaqData;
+        return showSRData;
     }
 
     const mobileView = null;
     const browserView = <div>
-        {showFaq()}
+        <div>Shipping Policy</div>
+        {showSR(shippingData)}
+        <div>Returns Policy</div>
+        {showSR(returnsData)}
     </div>;
     return (
         <Fragment>

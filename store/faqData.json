@@ -82,11 +82,11 @@
     "question": "I have initiated a Return request. When will the product be picked up?",
     "answers": [
       {
-        "para": "1. Reverse Pickup (1-3 days)<br> A Reverse pickup will be done by the SALT Courier Partner within 1-3 days. Please keep your package ready.",
+        "para": "1. Reverse Pickup (1-3 days)<br/> A Reverse pickup will be done by the SALT Courier Partner within 1-3 days. Please keep your package ready.",
         "check": true
       },
       {
-        "para": "2. Item Received back at the SALT Unit (6-7 days)<br> The reverse garment is then shipped back to the SALT unit. Once your item is picked up, you will be emailed a Reverse Tracking ID and you can track the reverse item. Your return will be processed only after the reverse garment is received back by us.",
+        "para": "2. Item Received back at the SALT Unit (6-7 days)<br/> The reverse garment is then shipped back to the SALT unit. Once your item is picked up, you will be emailed a Reverse Tracking ID and you can track the reverse item. Your return will be processed only after the reverse garment is received back by us.",
         "check": true
       }
     ]
@@ -300,7 +300,7 @@
         "check": true
       },
       {
-        "para": "4. Your refund will be initiated within 2 business days after a successful quality check <br>Kindly allow us 10-14 days for the same.",
+        "para": "4. Your refund will be initiated within 2 business days after a successful quality check <br/>Kindly allow us 10-14 days for the same.",
         "check": true
       }
     ]
@@ -394,11 +394,11 @@
         "check": false
       },
       {
-        "para": "If you're accessing on your Mobile Phone:<br> To Tailor garments to your measurements, select the ‘Tailor It!’ Option on the product page. A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
+        "para": "If you're accessing on your Mobile Phone:<br/> To Tailor garments to your measurements, select the ‘Tailor It!’ Option on the product page. A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
         "check": true
       },
       {
-        "para": "If you're accessing on your Desktop/Laptop:<br> To Tailor garments to your measurements, select the ‘T’ Option on the product page. A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
+        "para": "If you're accessing on your Desktop/Laptop:<br/> To Tailor garments to your measurements, select the ‘T’ Option on the product page. A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
         "check": true
       }
     ]
@@ -418,7 +418,7 @@
     "question": "How do I purchase a Gift Card?",
     "answers": [
       {
-        "para": "Gift cards can be purchased from our website. The denominations for the gift card are INR 1000, INR 2000 and INR 5,000.<br>You can choose the amount in any currency (INR or USD). All you need to do is-",
+        "para": "Gift cards can be purchased from our website. The denominations for the gift card are INR 1000, INR 2000 and INR 5,000.<br/>You can choose the amount in any currency (INR or USD). All you need to do is-",
         "check": false
       },
       {
