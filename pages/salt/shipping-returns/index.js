@@ -81,11 +81,11 @@ function ShippingNReturnsPage() {
     const mobileView = null;
     const browserView = (
         <>
-            <div className={`flex flex-col gap-y-2`}>
+            <div className={`flex flex-col gap-y-4`}>
                 <p className={`text-xl text-center`}>Shipping Policy</p>
                 {showSR(shippingData)}
             </div>
-            <div className={`flex flex-col gap-y-2`}>
+            <div className={`flex flex-col gap-y-4`}>
                 <p className={`text-xl text-center`}>Returns Policy</p>
                 {showSR(returnsData)}
             </div>
@@ -100,7 +100,7 @@ function ShippingNReturnsPage() {
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
+            <section className="container my-20 grid grid-cols-2 gap-x-20">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>

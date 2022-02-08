@@ -85,7 +85,7 @@ function CancellationModificationsPage() {
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
+            <section className="container my-20 grid grid-cols-2 gap-x-20">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>
