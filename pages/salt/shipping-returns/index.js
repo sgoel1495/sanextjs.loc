@@ -7,6 +7,7 @@ import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import shippingData from "../../../store/shippingData.json";
 import returnsData from "../../../store/returnsData.json";
+import Image from "next/image";
 
 /**
  * @todo Pincode check
