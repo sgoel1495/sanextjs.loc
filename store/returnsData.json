@@ -1,0 +1,211 @@
+[
+  {
+    "id": 1,
+    "icon": "/assets/images/policy.svg",
+    "question": "WHAT ARE THE RETURN POLICIES ?",
+    "answers": [
+      {
+        "para": "You are eligible for a Return within 7-days of receiving your order. If you wish to return an item, please initiate a return from the website. Once you initiate a return, the item will be picked up by the SALT Courier Partner on a scheduled date (This is usually within 2-3 days of the return initiation). The item will then be sent back to the SALT attire office. Once we receive the item, we do a Quality Check to ensure the garments fulfill the Condition of Return and process your return thereafter. The entire process may take anywhere between 10-15 days. You will be updated on your registered email and phone number about every step during this return process.",
+        "check": true
+      },
+      {
+        "para": "We do not allow returns, refunds or exchanges on Jewellery.",
+        "check": true
+      },
+      {
+        "para": "You can initiate a return using the following Steps:***br***1. Go to ***signin******br***2. Select the item you wish to Return and Select one of the following options:",
+        "check": true
+      },
+      {
+        "para": "Size Exchange",
+        "check": true
+      },
+      {
+        "para": "Alteration",
+        "check": true
+      },
+      {
+        "para": "Redeem to Wallet",
+        "check": true
+      },
+      {
+        "para": "Refund to Bank Account",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "icon": "/assets/images/policy.svg",
+    "question": "WHAT ARE THE RETURN POLICIES FOR ITEMS BOUGHT USING A PROMO CODE ?",
+    "answers": [
+      {
+        "para": "Only size exchanges: Only for the standard sizes.",
+        "check": true
+      },
+      {
+        "para": "Only one alteration: Only for tailored order.",
+        "check": true
+      },
+      {
+        "para": "No bank refunds (wallet refund only).",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "icon": "/assets/images/size_exchange.svg",
+    "question": "WHAT IS SIZE EXCHANGE IN THE RETURN OPTIONS?",
+    "answers": [
+      {
+        "para": "If you need to exchange the size for your product, select Size Exchange and enter the new size you want.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "icon": "/assets/images/tailor_garment.svg",
+    "question": "WHAT IS ALTERATION IN THE RETURN OPTIONS?",
+    "answers": [
+      {
+        "para": "If you want to alter your item, select Alteration and enter the details of the alterations you want.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "icon": "/assets/images/wallet_refund.svg",
+    "question": "WHAT IS REDEEM TO WALLET ?",
+    "answers": [
+      {
+        "para": "You can return the item and take a full refund back to your SALT Wallet. You can use this wallet money to purchase any other product from us at any time",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "icon": "/assets/images/wallet_refund.svg",
+    "question": "SALT WALLET TERMS & CONDITIONS",
+    "answers": [
+      {
+        "para": "Orders purchased by Salt Credit can be exchanged only once. Multiple exchanges in an order (placed using salt wallet ) is not allowed.",
+        "check": true
+      },
+      {
+        "para": "For issues in an order made by wallet credit. e.g. color different, fabric is different ,fit is not as expected. Kindly check the fabric details before placing an order using the wallet , feel free to contact us in case of any query related to the fabric at the time of placing the order.",
+        "check": true
+      },
+      {
+        "para": "*PLEASE NOTE : Salt wallet is already a form of exchange of your previous order.*",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "icon": "/assets/images/refund.svg",
+    "question": "HOW CAN I GET A REFUND TO BANK ACCOUNT?",
+    "answers": [
+      {
+        "para": "Incase you want to return the item and want a refund back to your account, you can select the 'Refund to Bank Account' option.",
+        "check": true
+      },
+      {
+        "para": "If you have made an online payment, via card or any other mode, then the amount will be refunded back to your respective card or online source of payment.",
+        "check": true
+      },
+      {
+        "para": "If you have paid COD, then you will need to enter your bank details and the money will be transferred to you via NEFT transfer.",
+        "check": true
+      },
+      {
+        "para": "Please note that the COD handling charges(Rs.80) collected at the time of payment will not be refunded.",
+        "check": true
+      },
+      {
+        "para": "All COD refunds will be done via NEFT transfer on the following Saturday (and no other day of the week), after your product is received back and a Quality Check is done.",
+        "check": true
+      },
+      {
+        "para": "You shall be responsible for providing information relating to the bank details. In this connection, You undertake that all such information shall be accurate in all respects. And in case you entered incorrect information, SALT Attire will not be liable to pay for such losses.",
+        "check": true
+      },
+      {
+        "para": "Refunds cannot be processed to third-party accounts. The name on your SALT account should match with the name of the bank account holder.",
+        "check": true
+      },
+      {
+        "para": "Some special rules for promotional offers may override our Exchange/ Returns Policy. Please click here to read",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "icon": "/assets/images/tailor_garment.svg",
+    "question": "CAN TAILORED ITEMS BE RETURNED?",
+    "answers": [
+      {
+        "para": "If you wish to alter your Tailored Item, please initiate an Alteration for the same. All the tailored items are eligible ONLY FOR ALTERATIONS. We will do any required Alterations, so that they fit you perfectly!***br***These are especially made for you, as per your body measurements and are strictly not eligible for a refund or exchange.",
+        "check": true
+      },
+      {
+        "para": "For fabric-related issues in a tailored order. e.g color different, fabric not as be expected***br***Kindly check the fabric details before placing a tailored order, feel free to contact us in case of any query related to the fabric at the time of placing the order.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "icon": "/assets/images/tailor_garment.svg",
+    "question": "ARE CUSTOMISE COLORED ITEMS ELIGIBLE FOR A RETURN/EXCHANGE?",
+    "answers": [
+      {
+        "para": "It can not be returned or exchanged, and only be altered.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "icon": "/assets/images/conditions.svg",
+    "question": "CONDITIONS OF RETURN",
+    "answers": [
+      {
+        "para": "Salt attire must be returned:",
+        "check": false
+      },
+      {
+        "para": "With original tags still attached",
+        "check": true
+      },
+      {
+        "para": "Unused and unwashed",
+        "check": true
+      },
+      {
+        "para": "Without any smell of perfume, deodorant or washing powder",
+        "check": true
+      },
+      {
+        "para": "Free of make-up or tan marks",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "icon": "/assets/images/long_time.svg",
+    "question": "HOW LONG WILL IT TAKE TO PROCESS MY REFUND?",
+    "answers": [
+      {
+        "para": "Please allow 10-14 business days to process the refund",
+        "check": true
+      }
+    ]
+  }
+]

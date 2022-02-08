@@ -56,19 +56,11 @@ function LooksPage() {
 
     // Nav Controller
     const [navControl, setNavControl] = React.useState(false);
-    const controller = () => {
-        if (window.scrollY > 0) {
-            setNavControl(true);
-        } else {
-            setNavControl(false);
-        };
-    };
+    const controller = () => setNavControl(window.scrollY > 0);
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
-    },[]);
+        return () => window.removeEventListener('scroll', controller)
+    }, []);
 
     /*
     each look has
@@ -218,7 +210,7 @@ function LooksPage() {
     const browserView = (
         <>
             <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-            <div className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>

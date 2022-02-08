@@ -11,13 +11,13 @@ import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import {New} from "../common/tags";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
-import {generateHash} from "random-hash";
+
 
 function Menu(props) {
     const {dataStore} = useContext(AppWideContext);
     const defData = (props.source == "getLooksData") ? null : {categories: dataStore.categories, accessories: dataStore.accessories};
     const queryObject = (props.source == "getLooksData") ? {look_id: "", limit: 100} : null;
-    const apiToken = (props.source == "getLooksData") ? dataStore.apiToken : null; // no need to fetch data
+    const apiToken = (props.source == "getLooksData") ? dataStore.apiToken : null;
     const resp = useApiCall(props.source, apiToken, queryObject);
     const [data, setData] = useState(defData);
     const [showShop, setShowShop] = useState(false);

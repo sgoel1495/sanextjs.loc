@@ -1,9 +1,5 @@
-import Image from "next/image";
-import React, {createElement, Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import ReactDom from "react-dom";
-import Link from "next/link";
-import {New} from "../common/tags";
-import { Transition } from '@headlessui/react'
 
 /**
  * @todo Data for the category filter

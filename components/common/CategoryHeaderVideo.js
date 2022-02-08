@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-function CategoryHeader(props) {
+function CategoryHeaderVideo(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const category = props.category;
 
@@ -32,4 +32,4 @@ function CategoryHeader(props) {
     )
 }
 
-export default CategoryHeader;
+export default CategoryHeaderVideo;

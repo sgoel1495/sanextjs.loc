@@ -15,7 +15,7 @@ function CurrencySwitcher(props) {
     const currencies = appSettings("currencies");
     const currencyData = appSettings("currency_data");
 
-    const focusStyle = "focus:shadow-none focus:ring-0 focus:border-black focus:shadow-none focus:ring-offset-transparent";
+    const focusStyle = "focus:ring-0 focus:border-black focus:shadow-none focus:ring-offset-transparent";
 
     let options = null;
     currencies.forEach(currency => {
