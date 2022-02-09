@@ -137,9 +137,9 @@ function LooksPage() {
                     {products}
                     <div className={`grid grid-cols-2 place-items-center`}>
                         <div className={`text-center`}>
-                            <p className={leadTextStyle}>{prod.name}</p>
-                            <p className={textStyle}>{prod.tag_line}</p>
-                            <p className={textStyle}>{currencySymbol}{(currCurrency === "inr") ? prod.price : prod.usd_price}</p>
+                            <p className={leadTextStyle}>{prodDetails.name}</p>
+                            <p className={textStyle}>{prodDetails.tag_line}</p>
+                            <p className={textStyle}>{currencySymbol}{(currCurrency === "inr") ? prodDetails.price : prodDetails.usd_price}</p>
                             <Link href={"/" + prod}>
                                 <a className={`${buyNowButtonStyle}`}>BUY NOW</a>
                             </Link>
