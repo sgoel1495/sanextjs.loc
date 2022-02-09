@@ -47,26 +47,31 @@ function FaqPage() {
 
     const category = "FAQ";
 
-    const showFaq = () => {
+    const showFaq = (col) => {
         let showFaqData = null;
         faqData.forEach(ele => {
-            let answersData = null;
-            ele.answers.forEach(answer => {
-                answersData = (
+            if (col == "left" && ele.id < 19
+                || col == "right" && ele.id > 18
+                || col == "all"
+            ) {
+                let answersData = null;
+                ele.answers.forEach(answer => {
+                    answersData = (
+                        <>
+                            {answersData}
+                            <AnswerBlock item={answer}/>
+                        </>
+                    );
+                });
+                showFaqData = (
                     <>
-                        {answersData}
-                        <AnswerBlock item={answer}/>
+                        {showFaqData}
+                        <Accordion titleStyle={`text-h6 font-500 uppercase`} title={ele.question}>
+                            {answersData}
+                        </Accordion>
                     </>
                 );
-            });
-            showFaqData = (
-                <>
-                    {showFaqData}
-                    <Accordion titleStyle={`text-h6 font-500 uppercase`} title={ele.question}>
-                        {answersData}
-                    </Accordion>
-                </>
-            );
+            }
         });
         return showFaqData;
     }
@@ -75,17 +80,18 @@ function FaqPage() {
     const browserView = (
         <>
             <div className={`flex flex-col gap-y-4`}>
-                {showFaq()}
+                {showFaq("left")}
             </div>
             <div className={`flex flex-col gap-y-4`}>
-                {showFaq()}
+                {showFaq("right")}
             </div>
         </>
     )
     return (
         <>
             <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+            <div
+                className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
