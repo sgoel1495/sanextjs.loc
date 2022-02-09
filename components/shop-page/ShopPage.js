@@ -67,7 +67,8 @@ function ShopPage(props) {
     }, []);
 
     /**
-     * @todo API - Please tell the api which gives the tagline for categories
+     * @todo API - Please tell the api which gives the tagline for categories << HArdcoded
+     *
      * @type {string}
      */
     const tag_line = "Designed for timelessness and crafted with utmost love, the premium quality tops & blouses in a wide palette of prints and colours are made for both work & beyond.";
