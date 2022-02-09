@@ -66,11 +66,11 @@ function HomePageHeaderSwiper(props) {
             {actualData.map((item, index) => {
                 return (
                     <SwiperSlide key={index}>
-                        <a href={item.link} className={'block relative h-[95vh] w-full'}>
+                        <a href={item.link} className={'block h-[95vh]'}>
                             <Image
                                 src={item.url}
                                 layout="fill"
-                                objectFit="cover"
+                                objectFit="contain"
                             />
                         </a>
                     </SwiperSlide>

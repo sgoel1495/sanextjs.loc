@@ -80,7 +80,7 @@ function SearchMenu(props) {
 
     const browserView = (
         <>
-            <span onClick={() => setShowMenuSearch(true)} className={`block relative w-6 ${iconHeight}`}>
+            <span onClick={() => setShowMenuSearch(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/search_icon.svg"}
                     alt="searchicon"

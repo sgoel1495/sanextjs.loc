@@ -67,10 +67,14 @@ function ShippingNReturnsPage() {
                     {showSRData}
                     <Accordion
                         title={ele.question}
-                        titleStyle={`text-h6 font-500 uppercase`}
                         titleIcon={<Image src={WEBASSETS + ele.icon} alt="question" layout={`fill`} objectFit={`cover`}/>}
+                        titleStyle={"bg-black/10 py-4 px-6"}
+                        titleTextStyle={`text-h6 font-500 uppercase`}
+                        bodyStyle={"bg-black/5"}
                     >
-                        {answersData}
+                        <div className="px-6 py-4">
+                            {answersData}
+                        </div>
                     </Accordion>
                 </>
             );

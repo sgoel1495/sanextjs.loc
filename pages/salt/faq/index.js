@@ -50,10 +50,7 @@ function FaqPage() {
     const showFaq = (col) => {
         let showFaqData = null;
         faqData.forEach(ele => {
-            if (col == "left" && ele.id < 19
-                || col == "right" && ele.id > 18
-                || col == "all"
-            ) {
+            if (col === "left" && ele.id < 19 || col === "right" && ele.id > 18 || col === "all") {
                 let answersData = null;
                 ele.answers.forEach(answer => {
                     answersData = (
@@ -66,8 +63,15 @@ function FaqPage() {
                 showFaqData = (
                     <>
                         {showFaqData}
-                        <Accordion titleStyle={`text-h6 font-500 uppercase`} title={ele.question}>
-                            {answersData}
+                        <Accordion
+                            title={ele.question}
+                            titleStyle={"bg-black/10 py-4 px-6"}
+                            titleTextStyle={`text-h6 font-500 uppercase`}
+                            bodyStyle={"bg-black/5"}
+                        >
+                            <div className="px-6 py-4">
+                                {answersData}
+                            </div>
                         </Accordion>
                     </>
                 );
