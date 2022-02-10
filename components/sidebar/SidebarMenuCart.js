@@ -271,7 +271,7 @@ function SidebarMenuCart(props) {
     const mobileView = null;
     const browserView = (
         <>
-            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 ${iconHeight}`}>
+            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
                     alt="menuicon"

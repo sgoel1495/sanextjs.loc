@@ -26,10 +26,6 @@ body.scroll-overflow .navigator{
     background: black;
 }
 
-.salt_accordion>.salt_accordion_body::-webkit-scrollbar{
-    display: none;
-}
-
 /* For Mobiles */
 @media only screen and (max-width: 450px) {
 }
