@@ -1,4 +1,4 @@
-import {Fragment, useCallback, useContext, useEffect, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
 import LooksNavbar from "../../../components/navbar/LookNavbar";
@@ -9,6 +9,10 @@ import InspiredByTrueStory from "../../../components/about-salt/InspiredByTrueSt
 import Radhika from "../../../components/about-salt/Radhika";
 import OurDesign from "../../../components/about-salt/OurDesign";
 import Fabric from "../../../components/about-salt/Fabric";
+import SizeFit from "../../../components/about-salt/SizeFit";
+import FinishingDetails from "../../../components/about-salt/FinishingDetails";
+import WhySalt from "../../../components/about-salt/WhySalt";
+import ContactUs from "../../../components/about-salt/ContactUs";
 
 
 /**
@@ -16,7 +20,6 @@ import Fabric from "../../../components/about-salt/Fabric";
  */
 
 function AboutUsPage(){
-    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
 
@@ -35,6 +38,10 @@ function AboutUsPage(){
         <Radhika mobile={dataStore.mobile} />
         <OurDesign mobile={dataStore.mobile} />
         <Fabric mobile={dataStore.mobile} />
+        <SizeFit mobile={dataStore.mobile} />
+        <FinishingDetails mobile={dataStore.mobile} />
+        <WhySalt mobile={dataStore.mobile} />
+        <ContactUs mobile={dataStore.mobile} />
     </div>;
 
     return (
