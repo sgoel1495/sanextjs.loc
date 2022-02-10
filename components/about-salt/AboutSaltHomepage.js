@@ -49,7 +49,7 @@ const actualData = [
     },
 ]
 
-function AboutSalt(props) {
+function AboutSaltHomepage(props) {
     const blockStyle = "leading-none flex flex-col gap-5";
     const blockHeaderStyle = "text-center uppercase";
     const blockParaStyle = "text-center tracking-wider font-cursive italic font-700";
@@ -118,4 +118,4 @@ function AboutSalt(props) {
 
 }
 
-export default AboutSalt;
+export default AboutSaltHomepage;
