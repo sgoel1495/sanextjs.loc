@@ -5,7 +5,7 @@ import InfoBand from "../components/info-band/InfoBand";
 import SafetyBlock from "../components/safety-block/SafetyBlock";
 import Navbar from "../components/navbar/Navbar";
 import WhySalt from "../components/why-salt/WhySalt";
-import AboutSalt from "../components/about-salt/AboutSalt";
+import AboutSaltHomepage from "../components/about-salt/AboutSaltHomepage";
 import DesignBlock from "../components/design-block/DesignBlock";
 import Footer from "../components/footer/Footer";
 import HomePageHeaderSwiper from "../components/swipers/HomePageHeaderSwiper";
@@ -35,7 +35,7 @@ function RootPage() {
             <SafetyBlock isMobile={dataStore.mobile}/>
             <NewArrivalsSwiper isMobile={dataStore.mobile}/>
             <WhySalt isMobile={dataStore.mobile}/>
-            <AboutSalt isMobile={dataStore.mobile}/>
+            <AboutSaltHomepage isMobile={dataStore.mobile}/>
             <MediaBuzzSwiper isMobile={dataStore.mobile}/>
             <ShopByLooksSwiper isMobile={dataStore.mobile}/>
             <InstagramStoriesSwiper isMobile={dataStore.mobile}/>

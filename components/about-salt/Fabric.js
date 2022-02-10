@@ -1,4 +1,4 @@
-function GetVirtualAppointmentPage(){
+function Fabric(){
     const mobileView = null;
     const browserView = null;
 
@@ -6,4 +6,4 @@ function GetVirtualAppointmentPage(){
 
 }
 
-export default GetVirtualAppointmentPage;
+export default Fabric;
