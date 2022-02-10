@@ -1,4 +1,4 @@
-function GetVirtualAppointmentPage(){
+function OurDesign(){
     const mobileView = null;
     const browserView = null;
 
@@ -6,4 +6,4 @@ function GetVirtualAppointmentPage(){
 
 }
 
-export default GetVirtualAppointmentPage;
+export default OurDesign;
