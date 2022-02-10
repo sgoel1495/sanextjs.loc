@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
 import LooksNavbar from "../../../components/navbar/LookNavbar";
@@ -31,15 +31,17 @@ function AboutUsPage(){
 
 
     const mobileView = null;
-    const browserView = <div>
-        <InspiredByTrueStory isMobile={dataStore.mobile} />
-        <Radhika isMobile={dataStore.mobile} />
-        <OurDesign isMobile={dataStore.mobile} />
-        <Fabric isMobile={dataStore.mobile} />
-        <SizeFit isMobile={dataStore.mobile} />
-        <FinishingDetails isMobile={dataStore.mobile} />
-        <WhySalt isMobile={dataStore.mobile} />
-    </div>;
+    const browserView = (
+        <div>
+            <InspiredByTrueStory isMobile={dataStore.mobile} />
+            <Radhika isMobile={dataStore.mobile} />
+            <OurDesign isMobile={dataStore.mobile} />
+            <Fabric isMobile={dataStore.mobile} />
+            <SizeFit isMobile={dataStore.mobile} />
+            <FinishingDetails isMobile={dataStore.mobile} />
+            <WhySalt isMobile={dataStore.mobile} />
+        </div>
+    );
 
     return (
         <Fragment>
@@ -48,9 +50,7 @@ function AboutUsPage(){
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
-                {(dataStore.mobile) ? mobileView : browserView}
-            </section>
+            {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     )
