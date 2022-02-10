@@ -1,6 +1,17 @@
-function InspiredByTrueStory(){
+/**
+ * @todo @Sambhav css pls
+ * @param props
+ * @returns {null|JSX.Element}
+ * @constructor
+ */
+
+function InspiredByTrueStory(props) {
     const mobileView = null;
-    const browserView = null;
+    const browserView = <div>
+        <div>
+            Inspired by a true story !
+        </div>
+    </div>;
 
     return props.isMobile ? mobileView : browserView
 
