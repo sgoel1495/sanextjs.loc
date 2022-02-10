@@ -6,6 +6,7 @@ import {New} from "../common/tags";
 import Accordion from "../common/accordion";
 
 /**
+ * @todo account signin pending
  * @params {isMobile } props
  * @constructor
  */
@@ -23,99 +24,112 @@ navigationData.push(
         child: [
             {
                 title: `ALL NEW ARRIVALS`,
-                link: `#`
+                link: `/new-arrivals/all`
             },
             {
                 title: `NITTO - knits: for the snug season`,
-                link: `#`
+                link: `/mimoto-knit`
             },
             {
                 title: `NOOR - spreading light`,
-                link: `#`
+                link: `/mimoto-noor`
             },
             {
                 title: `SALT - the signature collection`,
-                link: `#`
+                link: `/mimoto-salt`
             },
             {
                 title: `MOYO - poetry in prints`,
-                link: `#`
+                link: `/mimoto-moyo`
             },
             {
                 title: `MRIDU - playing dress up`,
-                link: `#`
+                link: `/mimoto-mridu`
             }
         ]
     },
     {
         title: `POPULAR`,
         description: `Our Bestselling items`,
-        link: `#`
+        link: `/best-selling`
     },
     {
         title: `GIFT CARDS`,
         description: `Show Your Love`,
-        link: `#`
+        link: `/giftcards`
     },
     {
         title: `STEAL DEAL`,
         description: `UPTO 60% Off`,
         new: true,
-        link: `#`
+        link: `/end-of-season-sale`
     },
     {
         title: `SHOP THE LOOK`,
         description: `Looks We Love`,
-        link: `#`
+        link: `/looks`
     },
     {
         title: `COTTON MASKS`,
         description: `For Your Protection`,
         new: true,
-        link: `#`
+        link: `/shop-masks`
     },
     {
         title: `TOPS`,
         description: `Blouses, Shirts & Tunics`,
-        link: `#`
+        child: [
+            {
+                title: `BLOUSES`,
+                link: `/shop-tops`
+            },
+            {
+                title: `SHIRTS`,
+                link: `/shop-shirts`
+            },
+            {
+                title: `TUNICS`,
+                link: `/shop-tunics`
+            }
+        ]
     },
     {
         title: `JUMPSUITS`,
         description: `Easy To Wear & Stylish`,
         new: true,
-        link: `#`
+        link: `/shop-jumpsuits`
     },
     {
         title: `DRESSES`,
         description: `Desk to Dinner`,
-        link: `#`
+        link: `/shop-dresses`
     },
     {
         title: `SWEATERS`,
         description: `Winter Wears`,
         new: true,
-        link: `#`
+        link: `/shop-sweaters`
     },
     {
         title: `TROUSERS`,
         description: `Tailored Trousers`,
-        link: `#`
+        link: `/shop-tailored-pants`
     },
     {
         title: `SHORTS`,
         description: `Raise Your Chic`,
         new: true,
-        link: `#`
+        link: `/shop-shorts`
     },
     {
         title: `SKIRTS`,
         description: `Tailored Skirts`,
-        link: `#`
+        link: `/shop-tailored-skirts`
     },
     {
         title: `OUTERWEAR`,
         description: `Jackets & Capes`,
-        link: `#`
+        link: `/shop-outerwear`
     },
     {
         title: `ACCESSORIES`,
@@ -123,28 +137,28 @@ navigationData.push(
         child: [
             {
                 title: `SCARVES`,
-                link: `#`
+                link: `/shop-scarves`
             },
             {
                 title: `BELTS`,
-                link: `#`
+                link: `/shop-belts`
             },
             {
                 title: `JEWELLERY`,
                 new: true,
-                link: `#`
+                link: `/shop-jewellery`
             },
             {
                 title: `MASKS`,
                 new: true,
-                link: `#`
+                link: `/shop-masks`
             }
         ]
     },
     {
         title: `REVIEWS`,
         description: `What Customers Say About Us`,
-        link: `#`
+        link: `/reviews`
     },
     {
         title: `DISCOVER SALT`,
@@ -152,31 +166,31 @@ navigationData.push(
         child: [
             {
                 title: `OUR STORY`,
-                link: `#`
+                link: `/salt/about-us`
             },
             {
                 title: `OUR DESIGN`,
-                link: `#`
+                link: `/salt/about-us/our-design`
             },
             {
                 title: `FABRIC`,
-                link: `#`
+                link: `/salt/about-us/fabric`
             },
             {
                 title: `SIZE & FIT`,
-                link: `#`
+                link: `/salt/about-us/size-fit`
             },
             {
                 title: `FINISHING & DETAILS`,
-                link: `#`
+                link: `/salt/about-us/finishing-details`
             },
             {
                 title: `WHY SALT?`,
-                link: `#`
+                link: `/salt/about-us/why-salt`
             },
             {
                 title: `CONTACT US`,
-                link: `#`
+                link: `/salt/about-us/contact-us`
             }
         ]
     },
@@ -184,19 +198,19 @@ navigationData.push(
         title: `ABOUT US`,
         description: `Our Services`,
         new: true,
-        link: `#`
+        link: `/blog/about-salt`
     },
     {
         title: `VIRTUAL APPOINTMENT`,
         description: `Raise Your Chic`,
         new: true,
-        link: `#`
+        link: `/get-virtual-appointment`
     },
     {
         title: `IN-STORE APPOINTMENT`,
         description: `Raise Your Chic`,
         new: true,
-        link: `#`
+        link: `/get-appointment`
     },
     {
         title: ``,
@@ -206,17 +220,17 @@ navigationData.push(
     {
         title: `SHIPPING & RETURNS`,
         description: ``,
-        link: `#`
+        link: `/salt/shipping-returns`
     },
     {
         title: `CANCELLATION & MODIFICATIONS`,
         description: ``,
-        link: `#`
+        link: `/salt/cancellation-modifications`
     },
     {
         title: `FAQ`,
         description: ``,
-        link: `#`
+        link: `/salt/faq`
     },
     {
         title: `SITEMAP`,
@@ -226,7 +240,7 @@ navigationData.push(
     {
         title: `CONTACT US`,
         description: ``,
-        link: `#`
+        link: `/salt/contact-us`
     },
     {
         title: `LEGAL & COOKIES`,
@@ -234,11 +248,11 @@ navigationData.push(
         child: [
             {
                 title: `TERMS & CONDITIONS`,
-                link: `#`
+                link: `/salt/terms-condition`
             },
             {
                 title: `PRIVACY POLICY`,
-                link: `#`
+                link: `/salt/privacy-policy`
             }
         ]
     }
