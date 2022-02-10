@@ -7,6 +7,8 @@ import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
 import InspiredByTrueStory from "../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../components/about-salt/Radhika";
+import OurDesign from "../../../components/about-salt/OurDesign";
+import Fabric from "../../../components/about-salt/Fabric";
 
 
 /**
@@ -31,6 +33,8 @@ function AboutUsPage(){
     const browserView = <div>
         <InspiredByTrueStory mobile={dataStore.mobile} />
         <Radhika mobile={dataStore.mobile} />
+        <OurDesign mobile={dataStore.mobile} />
+        <Fabric mobile={dataStore.mobile} />
     </div>;
 
     return (
