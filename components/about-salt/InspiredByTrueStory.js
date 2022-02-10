@@ -1,6 +1,10 @@
-function InspiredByTrueStory(){
+function InspiredByTrueStory(props) {
     const mobileView = null;
-    const browserView = null;
+    const browserView = <div>
+        <div>
+            Inspired by a true story !
+        </div>
+    </div>;
 
     return props.isMobile ? mobileView : browserView
 

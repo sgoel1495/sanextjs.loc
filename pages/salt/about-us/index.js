@@ -6,6 +6,7 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
 import {GoogleMap, Marker, useJsApiLoader} from '@react-google-maps/api';
+import InspiredByTrueStory from "../../../components/about-salt/InspiredByTrueStory";
 
 
 /**
@@ -27,7 +28,9 @@ function AboutUsPage(){
 
 
     const mobileView = null;
-    const browserView = null;
+    const browserView = <div>
+        <InspiredByTrueStory mobile={dataStore.mobile} />
+    </div>;
 
     return (
         <Fragment>
