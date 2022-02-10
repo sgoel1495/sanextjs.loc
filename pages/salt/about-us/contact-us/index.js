@@ -17,7 +17,7 @@ import WhySalt from "../../../components/about-salt/WhySalt";
  * @todo Sambhav css pls
  */
 
-function AboutUsPage(){
+function ContactUsPage(){
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
 
@@ -43,7 +43,7 @@ function AboutUsPage(){
 
     return (
         <Fragment>
-            <PageHead url="/salt/about-us" id="aboutus" isMobile={dataStore.mobile}/>
+            <PageHead url="/salt/about-us/contact-us" id="aboutuscontactus" isMobile={dataStore.mobile}/>
             <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
@@ -57,4 +57,4 @@ function AboutUsPage(){
 
 }
 
-export default AboutUsPage;
+export default ContactUsPage;
