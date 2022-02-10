@@ -1,4 +1,4 @@
-import {Fragment, useCallback, useContext, useEffect, useState} from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
 import LooksNavbar from "../../../components/navbar/LookNavbar";
@@ -12,7 +12,7 @@ import {GoogleMap, Marker, useJsApiLoader} from '@react-google-maps/api';
  * @todo Sambhav css pls
  */
 
-function ContactUsPage(){
+function ContactUsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
@@ -26,7 +26,7 @@ function ContactUsPage(){
     }, []);
 
     const containerStyle = {
-        width: '400px',
+        width: '100%',
         height: '400px'
     };
 
@@ -35,7 +35,7 @@ function ContactUsPage(){
         lng: 77.086267
     };
 
-    const { isLoaded } = useJsApiLoader({
+    const {isLoaded} = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "AIzaSyCneIy_canWR3DwYcH-IR0Ho-CmQCA-VjY"
     });
@@ -53,47 +53,48 @@ function ContactUsPage(){
     }, []);
 
     const mobileView = null;
-    const browserView = <div>
-        <div>
-            <div>We Would Love To Hear From You!</div>
-            <div>
-                <div>
-                    Corporate Office
-                    Mon to Fri - 9:00 am to 7:00 pm
-                    Sat - 9:00 am to 2:00 pm
-                    Plot 508, Udyog Vihar Phase V,
-                    Gurugram, Haryana 122016
-                </div>
-                <div>
-                    SALT Experience Store
-                    11:00 am to 8:30 pm
-                    DLF Mega Mall (Shop No LG-51)
-                    Golf Course Road, Gurugram, Haryana 122002
-                    Open all 7 days
+    const browserView = <>
+        <div className={`grid grid-cols-2 gap-y-8 text-center`}>
+            <p className={`font-600 col-span-2`}>We Would Love To Hear From You!</p>
+            <div className={`flex flex-col gap-y-4`}>
+                <p className={`font-600`}>Corporate Office</p>
+                <div className="text-sm text-black/50 font-600">
+                    <p>Mon to Fri - 9:00 am to 7:00 pm</p>
+                    <p className={`mb-4`}>Sat - 9:00 am to 2:00 pm</p>
+                    <p>Plot 508, Udyog Vihar Phase V,</p>
+                    <p>Gurugram, Haryana 122016</p>
                 </div>
             </div>
-            <div>
-                care@saltattire.com
-                18002709515
+            <div className={`flex flex-col gap-y-4`}>
+                <p className={`font-600`}>SALT Experience Store</p>
+                <div className="text-sm text-black/50 font-600">
+                    <p className={`mb-4`}>11:00 am to 8:30 pm</p>
+                    <p>DLF Mega Mall (Shop No LG-51)</p>
+                    <p>Golf Course Road, Gurugram, Haryana 122002</p>
+                    <p>Open all 7 days</p>
+                </div>
             </div>
-            <div>
-                Contact Us
+            <div className={`col-span-2 text-black/50 font-600`}>
+                <p>care@saltattire.com</p>
+                <p>18002709515</p>
+            </div>
+            <div className={`col-span-2`}>
+                <button className={`bg-black font-500 px-12 py-3 text-white uppercase`}>Contact Us</button>
             </div>
         </div>
-        <div>
-            {(isLoaded)
-                ?<GoogleMap
+        {(isLoaded)
+            ? <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
                 zoom={12}
                 onLoad={onLoad}
                 onUnmount={onUnmount}
-                >
-                    <Marker position={center} title='Salt Store' icon={WEBASSETS + "/assets/images/salt_black.png"}/>
-                </GoogleMap>
-                :null}
-        </div>
-    </div>;
+            >
+                <Marker position={center} title='Salt Store' icon={WEBASSETS + "/assets/images/salt_black.png"}/>
+            </GoogleMap>
+            : null
+        }
+    </>;
 
     return (
         <Fragment>
@@ -103,7 +104,7 @@ function ContactUsPage(){
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
+            <section className="container my-20 grid grid-cols-2 gap-x-10 items-start justify-center">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>

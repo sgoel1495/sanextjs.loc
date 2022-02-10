@@ -1,3 +1,4 @@
+import React from 'react';
 import PageHead from "../../components/PageHead";
 import InfoBand from "../../components/info-band/InfoBand";
 import LooksNavbar from "../../components/navbar/LookNavbar";
@@ -12,8 +13,9 @@ import {Fragment, useContext, useEffect, useState} from "react";
  * @constructor
  */
 
-function GetVirtualAppointmentPage(){
+function GetVirtualAppointmentPage() {
     const {dataStore} = useContext(AppWideContext);
+
     // NavBar Controls
     const [navControl, setNavControl] = useState(false);
     const controller = () => setNavControl(window.scrollY > 0);
@@ -22,56 +24,67 @@ function GetVirtualAppointmentPage(){
         return () => window.removeEventListener('scroll', controller)
     }, []);
 
+    const focusStyle = "focus:ring-offset-0 focus:ring-0"
+    const labelStyle = "block mb-1 font-500";
+    const inputStyle = `block w-full border-none bg-black/5 px-4 py-3 ${focusStyle}`;
+    const textareaStyle = `${inputStyle} min-h-[100px]`;
+
     const mobileView = null;
-    const browserView = <div>
-        <div>Book An Online Styling Session</div>
-        <form>
-            <div>
-                <div>
-                    <label htmlFor="date">Choose Date</label>
-                    <input id="date" type="datetime-local" />
-                    <label htmlFor="time">Preferred Time</label>
-                    <input id="time" type="time" />
+    const browserView = (
+        <>
+            <div className={`text-2xl font-600 text-center mb-12`}>Book An Online Styling Session</div>
+            <form className={`grid grid-cols-2 gap-x-20 gap-y-5`}>
+                <div className={`grid grid-cols-2 gap-x-10 gap-y-8`}>
+                    <div>
+                        <label className={labelStyle} htmlFor="date">Choose Date</label>
+                        <input className={inputStyle} id="date" type="date"/>
+                    </div>
+                    <div>
+                        <label className={labelStyle} htmlFor="time">Preferred Time</label>
+                        <input className={inputStyle} id="time" type="time"/>
+                    </div>
+                    <div className={`col-span-2`}>
+                        <label className={labelStyle} htmlFor="lastname">Last Name</label>
+                        <input className={inputStyle} id="lastname" type="text"/>
+                    </div>
+                    <div className={`col-span-2`}>
+                        <label className={labelStyle} htmlFor="phonenumber">Phone Number</label>
+                        <input className={inputStyle} id="phonenumber" type="tel"/>
+                    </div>
+                    <div className={`col-span-2`}>
+                        <label className={labelStyle} htmlFor="message">Anything you would like to tell us?</label>
+                        <textarea className={textareaStyle} id="message"/>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="lastname">Last Name</label>
-                    <input id="lastname" type="text" />
+                <div className={`flex flex-col gap-y-8`}>
+                    <div>
+                        <label className={labelStyle} htmlFor="firstname">First Name</label>
+                        <input className={inputStyle} id="firstname" type="text"/>
+                    </div>
+                    <div>
+                        <label className={labelStyle} htmlFor="email">Email</label>
+                        <input className={inputStyle} id="email" type="email"/>
+                    </div>
+                    <div>
+                        <label className={labelStyle} htmlFor="shoppedbefore">Have you shopped with us before?</label>
+                        <select className={inputStyle} id="shoppedbefore">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className={labelStyle} htmlFor="somethingspecific">Anything you would like to tell us?</label>
+                        <textarea className={textareaStyle} id="somethingspecific"/>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="phonenumber">Phone Number</label>
-                    <input id="phonenumber" type="tel" />
+                <div className={`col-span-2  mt-10 flex justify-center`}>
+                    <button className={`bg-black text-white font-500 text-sm tracking-wide py-3 px-16`}>
+                        BOOK A VIRTUAL STYLING SESSION
+                    </button>
                 </div>
-                <div>
-                    <label htmlFor="message">Anything you would like to tell us?</label>
-                    <textarea id="message" />
-                </div>
-            </div>
-            <div>
-                <div>
-                    <label htmlFor="firstname">First Name</label>
-                    <input id="firstname" type="text" />
-                </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input id="email" type="email" />
-                </div>
-                <div>
-                    <label htmlFor="shoppedbefore">Have you shopped with us before?</label>
-                    <select id="shoppedbefore">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="somethingspecific">Anything you would like to tell us?</label>
-                    <textarea id="somethingspecific"/>
-                </div>
-            </div>
-            <div>
-                BOOK A VIRTUAL STYLING SESSION
-            </div>
-        </form>
-    </div>;
+            </form>
+        </>
+    );
 
     const category = "Get Virtual Appointment"
 
@@ -83,7 +96,7 @@ function GetVirtualAppointmentPage(){
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
+            <section className="container my-20 select-none">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>
