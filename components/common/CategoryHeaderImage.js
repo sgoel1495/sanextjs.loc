@@ -37,7 +37,6 @@ function CategoryHeaderImage(props) {
         default:
             break;
     }
-    console.log("Category Image Source", imageSource);
 
     return (
         <section className={`relative mt-8`}>
@@ -49,7 +48,7 @@ function CategoryHeaderImage(props) {
                 :<div className={`absolute inset-0 flex items-center justify-start`}>
                     <div className={`bg-black pt-12 pb-6 pl-28 w-1/3 text-white font-cursive italic leading-none`}>
                         <span className={`text-6xl`}>
-                            category
+                            {category}
                         </span>
                     </div>
                 </div>
