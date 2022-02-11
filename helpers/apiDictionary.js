@@ -118,6 +118,11 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "giftcards":
+            url += "/giftcards/get_giftcards";
+            finalFetcher = {...getFetcher}
+            break;
+
         default:
             url = null;
             break;

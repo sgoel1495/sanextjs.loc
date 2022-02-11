@@ -14,6 +14,11 @@ import MediaBuzzSwiper from "../components/swipers/MediaBuzzSwiper";
 import ShopByLooksSwiper from "../components/swipers/ShopByLooksSwiper";
 import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper";
 
+/**
+ * @todo assign mobile view and browser view
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 function RootPage() {
     const {dataStore} = useContext(AppWideContext);
@@ -24,6 +29,10 @@ function RootPage() {
         window.addEventListener("scroll", controller);
         return () => window.removeEventListener('scroll', controller)
     }, []);
+
+    const mobileView = null;
+    const browserView = null;
+
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
