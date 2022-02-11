@@ -11,13 +11,14 @@ import Fabric from "../../../components/about-salt/Fabric";
 import SizeFit from "../../../components/about-salt/SizeFit";
 import FinishingDetails from "../../../components/about-salt/FinishingDetails";
 import WhySalt from "../../../components/about-salt/WhySalt";
+import AffordableLuxury from "../../../components/about-salt/AffordableLuxury";
 
 
 /**
  * @todo Sambhav css pls
  */
 
-function AboutUsPage(){
+function AboutUsPage() {
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
 
@@ -32,15 +33,30 @@ function AboutUsPage(){
 
     const mobileView = null;
     const browserView = (
-        <div>
-            <InspiredByTrueStory isMobile={dataStore.mobile} />
-            <Radhika isMobile={dataStore.mobile} />
-            <OurDesign isMobile={dataStore.mobile} />
-            <Fabric isMobile={dataStore.mobile} />
-            <SizeFit isMobile={dataStore.mobile} />
-            <FinishingDetails isMobile={dataStore.mobile} />
-            <WhySalt isMobile={dataStore.mobile} />
-        </div>
+        <>
+            <section>
+                <InspiredByTrueStory isMobile={dataStore.mobile}/>
+                <Radhika isMobile={dataStore.mobile}/>
+            </section>
+            <section>
+                <OurDesign isMobile={dataStore.mobile}/>
+            </section>
+            <section>
+                <Fabric isMobile={dataStore.mobile}/>
+            </section>
+            <section>
+                <SizeFit isMobile={dataStore.mobile}/>
+            </section>
+            <section>
+                <AffordableLuxury isMobile={dataStore.mobile} />
+            </section>
+            <section>
+                <FinishingDetails isMobile={dataStore.mobile}/>
+            </section>
+            <section className={`mb-10`}>
+                <WhySalt isMobile={dataStore.mobile}/>
+            </section>
+        </>
     );
 
     return (

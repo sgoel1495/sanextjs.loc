@@ -2,6 +2,8 @@ import React, {Fragment, useContext, useEffect, useState} from "react";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import Link from "next/link";
+import BlockHeader from "../common/blockHeader";
+import WishListButton from "../common/wishlistButton";
 
 /**
  * @todo API not available
@@ -9,7 +11,13 @@ import Link from "next/link";
  * {currCurrency, currencySymbol, isMobile, apiToken } props
  */
 
-function OurSaleSection(props){
+const ImageBlock = (props) => (
+    <span className={`block relative w-full aspect-square`}>
+        <Image src={props.src} alt={props.alt} layout={`fill`} objectFit={`cover`}/>
+    </span>
+)
+
+function OurSaleSection(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const [data, setData] = useState(null);
@@ -25,27 +33,35 @@ function OurSaleSection(props){
 
     console.log("GIFT CARD DATA", data);
 
-    const showSaleSection = ()=>{
+    const showSaleSection = () => {
         let sgc = null;
-        if(data)
-            data.forEach(product=>{
+        if (data)
+            data.forEach(product => {
                 sgc = <Fragment>
                     {sgc}
                     <Link href="/sale/Sweaters-Sale-Flurry-V-NeckSleevelessSweater">
-                        <a>
-                            <i className="fa fa-heart-o"></i>
-                            <Image src={WEBASSETS + "/assets/Sweaters-Flurry-V-NeckSleevelessSweater/new.jpg"}
-                                   alt="Sweaters-Sale-Flurry-V-NeckSleevelessSweater" width="400" height="400" />
-                            <div>Flurry</div>
-                            <div>v-neck sleevless sweater</div>
-                            <div>
-                                <div>SIZE</div>
-                                <div>Only 13 left</div>
-                                <div>(M,L,XL)</div>
-                            </div>
-                            <div>
-                                <div>ADD TO BAG</div>
-                                <div><span>{props.currencySymbol}1,950</span><span>{props.currencySymbol}1,268</span></div>
+                        <a className={"block bg-white text-center relative z-0 group"}>
+                            <WishListButton className={`absolute right-4 top-4 z-10`}/>
+                            <ImageBlock src={WEBASSETS + "/assets/Sweaters-Flurry-V-NeckSleevelessSweater/new.jpg"} alt="Sweaters-Sale-Flurry-V-NeckSleevelessSweater"/>
+                            <div className="relative h-16 leading-none flex items-center">
+                                <div className={`bg-white w-full`}>
+                                    <p className={`text-h5 font-600 font-cursive`}>Flurry</p>
+                                    <p className={`text-sm font-500`}>v-neck sleevless sweater</p>
+                                </div>
+                                <div className={`hidden group-hover:grid grid-cols-2 items-center absolute inset-0 bg-white`}>
+                                    <div className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
+                                        <span className={`uppercase text-white`}>Size</span>
+                                        <p className={`text-xs`}>
+                                            <span className={`text-green-700`}>Only 13 left</span>
+                                            &nbsp;&nbsp;
+                                            <span>(M,L,XL)</span>
+                                        </p>
+                                    </div>
+                                    <div className={`font-800 bg-white h-full flex flex-col gap-2 justify-center leading-none`}>
+                                        <span className={`uppercase`}>Add to bag</span>
+                                        <p className={`text-xs`}><del>{props.currencySymbol}1,950</del>&nbsp;&nbsp;<span className={`text-red-500`}>{props.currencySymbol}1,268</span></p>
+                                    </div>
+                                </div>
                             </div>
                         </a>
                     </Link>
@@ -59,11 +75,22 @@ function OurSaleSection(props){
     const browserView = <div>
     </div>;
 
-    return <div>
-        <div>OUR SALE SECTION</div>
-        {showSaleSection()}
-        <div> &gt; CLICK FOR MORE &lt; </div>
-    </div>;
+    return (
+        <section className={`container mb-10`}>
+            <BlockHeader
+                space={"py-12"}
+                titleStyle={"font-600 flex justify-center items-center gap-3 leading-none"}
+            >
+                <span className={"tracking-widest text-h4 uppercase"}>OUR SALE SECTION</span>
+            </BlockHeader>
+            <div className="grid grid-cols-3 gap-12">
+                {showSaleSection()}
+                <div className="justify-self-center col-span-3">
+                    <button className={`bg-black text-white py-2 px-4`}> &gt; CLICK FOR MORE &lt; </button>
+                </div>
+            </div>
+        </section>
+    );
 
 }
 

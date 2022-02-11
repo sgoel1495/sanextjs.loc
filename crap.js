@@ -1,3 +1,7 @@
+import ParallaxBlock from "./components/common/parallax";
+import React from "react";
+import {gsap} from "gsap";
+
 <div className="modal-dialog modal-lg">
     <div className="modal-content" uib-modal-transclude="">
 
@@ -174,5 +178,47 @@
             <!-- ngIf: ischange -->
             <div className="modal-inner modal-success hidden"></div>
         </div>
+    </div>
+</div>
+
+import {gsap} from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+let GSAPBlock = React.useRef(null);
+let GSAPBlockAnimation = React.useRef(null);
+
+gsap.fromTo(
+    GSAPBlock,
+    {
+            x: -GSAPBlock.offsetWidth
+        },
+        {
+            scrollTrigger: {
+                trigger: GSAPBlockAnimation,
+                start: "bottom bottom",
+                end: "center center",
+                toggleActions: 'play none none reverse',
+                scrub: true
+            },
+            x: 0
+        },
+    )
+
+<div
+    className={`bg-white p-5 w-2/5`}
+    ref={el => {
+        GSAPBlock = el
+    }}
+>
+    <div
+        className={`font-cursive italic font-600`}
+        ref={el => {
+            GSAPBlockAnimation = el
+        }}
+    >
+        <p className={`text-h5 text-black/70`}>After looking through a few work-wear racks, she thinks</p>
+        <p className={`text-h3`}>"These styles are not even qualified for work-wear."</p>
     </div>
 </div>

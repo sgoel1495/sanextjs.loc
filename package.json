@@ -11,6 +11,7 @@
     "@headlessui/react": "^1.4.3",
     "@react-google-maps/api": "^2.7.0",
     "@tailwindcss/forms": "^0.4.0",
+    "gsap": "^3.9.1",
     "jsdoc": "^3.6.7",
     "next": "^12.0.9-canary.2",
     "random-hash": "^4.0.1",

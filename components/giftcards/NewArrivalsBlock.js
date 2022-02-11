@@ -2,6 +2,8 @@ import React, {Fragment, useContext, useEffect, useState} from "react";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import Link from "next/link";
+import BlockHeader from "../common/blockHeader";
+import WishListButton from "../common/wishlistButton";
 
 
 /**
@@ -9,6 +11,12 @@ import Link from "next/link";
  * @todo @Sambhav css pls
  * {currCurrency, currencySymbol, isMobile, apiToken } props
  */
+
+const ImageBlock = (props) => (
+    <span className={`block relative w-full aspect-square`}>
+        <Image src={props.src} alt={props.alt} layout={`fill`} objectFit={`cover`}/>
+    </span>
+)
 
 function NewArrivalsBlock(props){
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -33,18 +41,21 @@ function NewArrivalsBlock(props){
                 sgc = <Fragment>
                     {sgc}
                     <Link href="/sale/Sweaters-Sale-Flurry-V-NeckSleevelessSweater">
-                        <a>
-                            <i className="fa fa-heart-o"></i>
-                            <Image src={WEBASSETS + "/assets/Dresses-Crimson-Dream-FauxWrapPleatedMidiDress/new.jpg"}
-                                 alt="Dresses-Crimson-Dream-FauxWrapPleatedMidiDress" width="400" height="400" />
-                            <div>Crimson Dream</div>
-                            <div>faux wrap pleated midi dress</div>
-                            <div>
-                                <div>SIZE</div>
-                            </div>
-                            <div>
-                                <div>ADD TO BAG</div>
-                                <div>{props.currencySymbol}1,268</div>
+                        <a className={"block bg-white text-center relative z-0 group"}>
+                            <WishListButton className={`absolute right-4 top-4 z-10`}/>
+                            <ImageBlock src={WEBASSETS + "/assets/Dresses-Crimson-Dream-FauxWrapPleatedMidiDress/new.jpg"} alt="Dresses-Crimson-Dream-FauxWrapPleatedMidiDress" />
+                            <div className="relative h-16 leading-none flex items-center">
+                                <div className={`bg-white w-full`}>
+                                    <p className={`text-h5 font-600 font-cursive`}>Crimson Dream</p>
+                                    <p className={`text-sm font-500`}>faux wrap pleated midi dress</p>
+                                </div>
+                                <div className={`hidden group-hover:grid grid-cols-2 items-center absolute inset-0 bg-white`}>
+                                    <span className={`font-800`}>SIZE</span>
+                                    <div className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
+                                        <span className={`uppercase text-white/50`}>Add to bag</span>
+                                        <p className={`text-xs`}>{props.currencySymbol}1,268</p>
+                                    </div>
+                                </div>
                             </div>
                         </a>
                     </Link>
@@ -58,11 +69,22 @@ function NewArrivalsBlock(props){
     const browserView = <div>
     </div>;
 
-    return <div>
-        <div>NEW ARRIVALS</div>
-        {showNewArrivals()}
-        <div> &gt; CLICK FOR MORE &lt; </div>
-    </div>;
+    return (
+        <section className={`container`} title={`New Arrivals`}>
+            <BlockHeader
+                space={"py-12"}
+                titleStyle={"font-600 flex justify-center items-center gap-3 leading-none"}
+            >
+                <span className={"tracking-widest text-h4 uppercase"}>New Arrivals</span>
+            </BlockHeader>
+            <div className="grid grid-cols-3 gap-12">
+                {showNewArrivals()}
+                <div className="justify-self-center col-span-3">
+                    <button className={`bg-black text-white py-2 px-4`}> &gt; CLICK FOR MORE &lt; </button>
+                </div>
+            </div>
+        </section>
+    );
 
 }
 

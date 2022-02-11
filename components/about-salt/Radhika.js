@@ -1,6 +1,5 @@
 import React from 'react';
-import Image from "next/image";
-import { Parallax } from "react-parallax";
+import ParallaxBlock from "../common/parallax";
 
 /**
  * @todo @Sambhav css pls
@@ -8,21 +7,6 @@ import { Parallax } from "react-parallax";
  * @returns {null|JSX.Element}
  * @constructor
  */
-
-const ParallaxBlock = props => {
-    return (
-        <Parallax
-            bgImage={props.bgImage}
-            strength={250}
-        >
-            <div className="h-screen">
-                <div className={`absolute inset-0 flex flex-col justify-center ${props.bodyStyle}`}>
-                    {props.children}
-                </div>
-            </div>
-        </Parallax>
-    )
-}
 
 function Radhika(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -65,10 +49,10 @@ function Radhika(props) {
                     <p className={`text-h3`}>Enthusiastic and eager, One sunny weekend, Radhika stepped out to shop and visited the mall. A plush mall with so many brands, excited, Radhika enters the first store...</p>
                 </div>
             </ParallaxBlock>
-            <div>
-                <h5>Store A (An Indian brand)</h5>
-                <h6>After looking through a few work-wear racks, she thinks</h6>
-                <h2>“These styles are not even qualified for work-wear. Some of them are so sheer and the necklines too deep. And these designs are not even flattering”.</h2>
+            <div className={`h-screen grid place-items-center content-center text-center`}>
+                <p className={`text-black/50 font-600 mb-10`}>Store A (An Indian brand)</p>
+                <p className={`text-black/50 font-600 font-cursive italic text-h3`}>After looking through a few work-wear racks, she thinks</p>
+                <p className={`font-cursive italic text-5xl`}>“These styles are not even qualified for work-wear.<br/>Some of them are so sheer and the necklines too deep.<br/>And these designs are not even flattering”.</p>
             </div>
         </>
     );
