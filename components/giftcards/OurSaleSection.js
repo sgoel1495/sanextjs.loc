@@ -40,7 +40,7 @@ function OurSaleSection(props) {
                 sgc = <Fragment>
                     {sgc}
                     <Link href="/sale/Sweaters-Sale-Flurry-V-NeckSleevelessSweater">
-                        <a className={"block bg-white text-center relative z-0 group"}>
+                        <a className={"block bg-white text-center relative z-0 group border-b"}>
                             <WishListButton className={`absolute right-4 top-4 z-10`}/>
                             <ImageBlock src={WEBASSETS + "/assets/Sweaters-Flurry-V-NeckSleevelessSweater/new.jpg"} alt="Sweaters-Sale-Flurry-V-NeckSleevelessSweater"/>
                             <div className="relative h-16 leading-none flex items-center">

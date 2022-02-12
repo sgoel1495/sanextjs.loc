@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from "next/image";
 import ParallaxBlock from "../common/parallax";
+import {gsap} from "gsap";
+import {ScrollTrigger} from "gsap/dist/ScrollTrigger";
 
 /**
  * @todo @Sambhav css pls
@@ -11,6 +13,32 @@ import ParallaxBlock from "../common/parallax";
 
 function SizeFit(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+
+    // GSAP Animation
+    gsap.registerPlugin(ScrollTrigger);
+
+    let GSAPBlockAnimation = React.useRef(null);
+
+    React.useEffect(() => {
+        gsap.fromTo(
+            GSAPBlockAnimation,
+            {
+                y: -GSAPBlockAnimation.offsetHeight,
+                opacity: 0
+            },
+            {
+                scrollTrigger: {
+                    trigger: GSAPBlockAnimation,
+                    start: "bottom bottom-=150",
+                    end: "top top+=300",
+                    toggleActions: 'play none none reverse',
+                    scrub: true
+                },
+                y: 0,
+                opacity: 1
+            },
+        )
+    })
 
     const mobileView = null;
     const browserView = (
@@ -52,11 +80,11 @@ function SizeFit(props) {
             </ParallaxBlock>
             <div className={`h-screen grid place-items-center content-center text-center font-600 font-cursive italic`}>
                 <p className={`text-black/50 font-sans font-600 mb-10 not-italic`}>Store C: (Popular Luxury Clothing Brand)</p>
-                <div>
+                <div className={`mb-5`}>
                     <p className={`text-2xl text-black/70 mb-2`}>Radhika finally enters a high-end store. She tries out some tops and does like them.</p>
                     <p className={`text-4xl`}>“This shirt fits well”</p>
                 </div>
-                <div>
+                <div ref={el => {GSAPBlockAnimation = el}}>
                     <p className={`text-2xl text-black/70 mb-2`}>she thinks. Looks at the price tag</p>
                     <p className={`text-4xl`}>“Wow! This is double the price of what I would pay even in New York”.</p>
                 </div>

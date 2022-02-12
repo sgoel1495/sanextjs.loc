@@ -1,5 +1,4 @@
 import React from 'react';
-import {gsap} from "gsap";
 
 /**
  * @todo @Sambhav css pls
@@ -10,27 +9,15 @@ import {gsap} from "gsap";
 
 function InspiredByTrueStory(props) {
 
-    let GSAPText = React.useRef(null);
-
-    React.useEffect(() => {
-        gsap.fromTo(
-            GSAPText,
-            {
-                width: 0
-            },
-            {
-                repeat: 1,
-                ease: `power3`,
-                duration: 2,
-                width: GSAPText.offsetWidth
-            }
-        )
-    },[])
+    const afterStyle = "after:absolute after:inset-0 after:w-[2px] after:bg-black/50 after:animate-typewriter";
+    const beforeStyle = `before:absolute before:inset-0 before:bg-white before:animate-typewriter`;
 
     const mobileView = null;
     const browserView = (
-        <div className={`h-screen flex items-center justify-end`} ref={el => {GSAPText = el}}>
-            <p className={`text-6xl text-black/50 font-300`}>Inspired by a true story !</p>
+        <div className={`h-screen flex items-center justify-end`}>
+            <p className={`text-6xl leading-normal text-black/50 font-300 w-max relative inspired_story mr-20 ${afterStyle} ${beforeStyle}`}>
+                Inspired by a true story !
+            </p>
         </div>
     );
 

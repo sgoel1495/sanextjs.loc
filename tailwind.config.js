@@ -1,4 +1,5 @@
 const init = 0.5
+const typewriterSpeed = 2.5
 
 module.exports = {
     content: [
@@ -59,6 +60,22 @@ module.exports = {
                     800: '#1e293b',
                     900: '#0f172a',
                 },
+            },
+            animation:{
+                typewriter: `typewriter 2.5s steps(26) 1s forwards`,
+                typewriterCursor: `blink 250ms infinite alternate-reverse`
+            },
+            keyframes:{
+                typewriter: {
+                    to: {
+                        left: `100%`
+                    }
+                },
+                blink:{
+                    to:{
+                        background: `transparent`
+                    }
+                }
             }
         },
     },

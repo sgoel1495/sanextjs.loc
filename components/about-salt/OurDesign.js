@@ -1,5 +1,7 @@
 import React from 'react';
 import ParallaxBlock from "../common/parallax";
+import {gsap} from "gsap";
+import {ScrollTrigger} from "gsap/dist/ScrollTrigger";
 
 /**
  * @todo @Sambhav css pls
@@ -25,8 +27,34 @@ function OurDesign(props) {
 
     React.useEffect(() => {
         window.addEventListener('scroll', scrollController);
-        return window.removeEventListener('scroll', scrollController);
-    },[scrollDirection])
+    }, [scrollDirection]);
+
+    // GSAP Animation
+    gsap.registerPlugin(ScrollTrigger);
+
+    let GSAPBlock = React.useRef(null);
+    let GSAPBlockAnimation = React.useRef(null);
+
+    React.useEffect(() => {
+        gsap.fromTo(
+            GSAPBlockAnimation,
+            {
+                y: -GSAPBlockAnimation.offsetHeight,
+                opacity: 0
+            },
+            {
+                scrollTrigger: {
+                    trigger: GSAPBlockAnimation,
+                    start: "bottom bottom-=300",
+                    end: "top top+=200",
+                    toggleActions: 'play none none reverse',
+                    scrub: true
+                },
+                y: 0,
+                opacity: 1
+            },
+        )
+    })
 
     const mobileView = null;
     const browserView = (
@@ -35,7 +63,7 @@ function OurDesign(props) {
                 bgImage={WEBASSETS + "/assets/images/mimoto-6.jpg"}
                 bodyStyle={`items-start gap-y-10`}
             >
-                <div className={`bg-white p-5 w-2/5 font-cursive italic font-600 duration-200 ${scrollDirection ? 'translate-x-0': '-translate-x-full'}`} >
+                <div className={`bg-white p-5 w-2/5 font-cursive italic font-600 duration-200 ${scrollDirection ? 'translate-x-0' : 'opacity-0 -translate-x-full'}`}>
                     <p className={`text-h5 text-black/70`}>After looking through a few work-wear racks, she thinks</p>
                     <p className={`text-h3`}>"These styles are not even qualified for work-wear."</p>
                 </div>
@@ -65,7 +93,11 @@ function OurDesign(props) {
                     <p className={`text-2xl text-black/70 mb-2`}>Radhika then adds further,</p>
                     <p className={`text-4xl`}>“These natural fabrics are so flimsy. And the polyester fabrics are so heavy, for this weather”</p>
                 </div>
-                <div>
+                <div
+                    ref={el => {
+                        GSAPBlockAnimation = el
+                    }}
+                >
                     <p className={`text-2xl text-black/70 mb-2`}>She stumbles on some cotton,</p>
                     <p className={`text-4xl`}>“Oh Crisp Cottons! But how will I even get through to ironing some of these and they’ll wrinkle so easily“</p>
                 </div>
