@@ -150,7 +150,7 @@ function Menu(props) {
     if (props.source === "exploreNewArrivals" || props.source === "shopCategory") {
         browserView = (
             <div className={`relative container`}>
-                <ul className={"flex flex-1 justify-center items-center uppercase font-600"}>
+                <ul className={"flex flex-wrap justify-center items-center uppercase font-600"}>
                     {(props.source != "shopCategory")
                         ? <Fragment>
                             <li key="new-arrivals">
