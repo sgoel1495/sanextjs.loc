@@ -1,16 +1,16 @@
 import {Fragment, useContext, useEffect, useState} from "react";
-import PageHead from "../../../components/PageHead";
-import InfoBand from "../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../components/navbar/LookNavbar";
-import Footer from "../../../components/footer/Footer";
-import AppWideContext from "../../../store/AppWideContext";
-import InspiredByTrueStory from "../../../components/about-salt/InspiredByTrueStory";
-import Radhika from "../../../components/about-salt/Radhika";
-import OurDesign from "../../../components/about-salt/OurDesign";
-import Fabric from "../../../components/about-salt/Fabric";
-import SizeFit from "../../../components/about-salt/SizeFit";
-import FinishingDetails from "../../../components/about-salt/FinishingDetails";
-import WhySalt from "../../../components/about-salt/WhySalt";
+import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
+import Radhika from "../../../../components/about-salt/Radhika";
+import OurDesign from "../../../../components/about-salt/OurDesign";
+import Fabric from "../../../../components/about-salt/Fabric";
+import SizeFit from "../../../../components/about-salt/SizeFit";
+import FinishingDetails from "../../../../components/about-salt/FinishingDetails";
+import WhySalt from "../../../../components/about-salt/WhySalt";
+import PageHead from "../../../../components/PageHead";
+import InfoBand from "../../../../components/info-band/InfoBand";
+import LooksNavbar from "../../../../components/navbar/LookNavbar";
+import Footer from "../../../../components/footer/Footer";
+import AppWideContext from "../../../../store/AppWideContext";
 
 
 /**

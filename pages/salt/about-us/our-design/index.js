@@ -1,18 +1,16 @@
 import {Fragment, useContext, useEffect, useState} from "react";
-import PageHead from "../../../components/PageHead";
-import InfoBand from "../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../components/navbar/LookNavbar";
-import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
-import Footer from "../../../components/footer/Footer";
-import AppWideContext from "../../../store/AppWideContext";
-import InspiredByTrueStory from "../../../components/about-salt/InspiredByTrueStory";
-import Radhika from "../../../components/about-salt/Radhika";
-import OurDesign from "../../../components/about-salt/OurDesign";
-import Fabric from "../../../components/about-salt/Fabric";
-import SizeFit from "../../../components/about-salt/SizeFit";
-import FinishingDetails from "../../../components/about-salt/FinishingDetails";
-import WhySalt from "../../../components/about-salt/WhySalt";
-import ContactUs from "../../../components/about-salt/ContactUs";
+import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
+import Radhika from "../../../../components/about-salt/Radhika";
+import OurDesign from "../../../../components/about-salt/OurDesign";
+import Fabric from "../../../../components/about-salt/Fabric";
+import SizeFit from "../../../../components/about-salt/SizeFit";
+import FinishingDetails from "../../../../components/about-salt/FinishingDetails";
+import WhySalt from "../../../../components/about-salt/WhySalt";
+import PageHead from "../../../../components/PageHead";
+import InfoBand from "../../../../components/info-band/InfoBand";
+import LooksNavbar from "../../../../components/navbar/LookNavbar";
+import Footer from "../../../../components/footer/Footer";
+import AppWideContext from "../../../../store/AppWideContext";
 
 
 /**
@@ -21,7 +19,6 @@ import ContactUs from "../../../components/about-salt/ContactUs";
 
 function OurDesignPage(){
     const {dataStore} = useContext(AppWideContext);
-    const category = "Contact Us";
 
     // NavBar Controls
     const [navControl, setNavControl] = useState(false);
@@ -41,7 +38,6 @@ function OurDesignPage(){
         <SizeFit isMobile={dataStore.mobile} />
         <FinishingDetails isMobile={dataStore.mobile} />
         <WhySalt isMobile={dataStore.mobile} />
-        <ContactUs isMobile={dataStore.mobile} />
     </div>;
 
     return (
@@ -51,7 +47,6 @@ function OurDesignPage(){
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
-            <CategoryHeaderImage category={category}/>
             <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
