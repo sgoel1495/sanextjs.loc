@@ -34,26 +34,26 @@ function AboutUsPage() {
     const mobileView = null;
     const browserView = (
         <>
-            <section title={`Radhika Story`}>
+            <section id={`radhika_story`} title={`Radhika Story`}>
                 <InspiredByTrueStory isMobile={dataStore.mobile}/>
                 <Radhika isMobile={dataStore.mobile}/>
             </section>
-            <section title={`Our Design`}>
+            <section id={`our_design`} title={`Our Design`}>
                 <OurDesign isMobile={dataStore.mobile}/>
             </section>
-            <section title={`Fabric`}>
+            <section id={`fabric`} title={`Fabric`}>
                 <Fabric isMobile={dataStore.mobile}/>
             </section>
-            <section title={`Size Fit`}>
+            <section id={`size_fit`} title={`Size Fit`}>
                 <SizeFit isMobile={dataStore.mobile}/>
             </section>
-            <section title={`Affordable Luxury`}>
+            <section id={`affordable_luxury`} title={`Affordable Luxury`}>
                 <AffordableLuxury isMobile={dataStore.mobile} />
             </section>
-            <section title={`Finishing Details`}>
+            <section id={`finishing_details`} title={`Finishing Details`}>
                 <FinishingDetails isMobile={dataStore.mobile}/>
             </section>
-            <section title={`WhySalt`} className={`mb-10`}>
+            <section id={`why_salt`} title={`WhySalt`} className={`mb-10`}>
                 <WhySalt isMobile={dataStore.mobile}/>
             </section>
         </>

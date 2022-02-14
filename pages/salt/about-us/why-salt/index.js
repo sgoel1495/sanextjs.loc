@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../../components/about-salt/Radhika";
 import OurDesign from "../../../../components/about-salt/OurDesign";
@@ -11,13 +11,14 @@ import InfoBand from "../../../../components/info-band/InfoBand";
 import LooksNavbar from "../../../../components/navbar/LookNavbar";
 import Footer from "../../../../components/footer/Footer";
 import AppWideContext from "../../../../store/AppWideContext";
+import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury";
 
 
 /**
  * @todo Sambhav css pls
  */
 
-function SizeFitPage(){
+function SizeFitPage() {
     const {dataStore} = useContext(AppWideContext);
 
     // NavBar Controls
@@ -28,17 +29,41 @@ function SizeFitPage(){
         return () => window.removeEventListener('scroll', controller)
     }, []);
 
+    useEffect(() => {
+        document.getElementById("why_salt").focus()
+    });
 
     const mobileView = null;
-    const browserView = <div>
-        <InspiredByTrueStory isMobile={dataStore.mobile} />
-        <Radhika isMobile={dataStore.mobile} />
-        <OurDesign isMobile={dataStore.mobile} />
-        <Fabric isMobile={dataStore.mobile} />
-        <SizeFit isMobile={dataStore.mobile} />
-        <FinishingDetails isMobile={dataStore.mobile} />
-        <WhySalt isMobile={dataStore.mobile} />
-    </div>;
+    const browserView = (
+        <>
+            <section id={`radhika_story`} title={`Radhika Story`}>
+                <InspiredByTrueStory isMobile={dataStore.mobile}/>
+                <Radhika isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`our_design`} title={`Our Design`}>
+                <OurDesign isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`fabric`} title={`Fabric`}>
+                <Fabric isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`size_fit`} title={`Size Fit`}>
+                <SizeFit isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`affordable_luxury`} title={`Affordable Luxury`}>
+                <AffordableLuxury isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`finishing_details`} title={`Finishing Details`}>
+                <FinishingDetails isMobile={dataStore.mobile}/>
+            </section>
+            <section
+                id={`why_salt`}
+                title={`WhySalt`}
+                className={`mb-10`}
+            >
+                <WhySalt isMobile={dataStore.mobile}/>
+            </section>
+        </>
+    );
 
     return (
         <Fragment>
@@ -47,9 +72,7 @@ function SizeFitPage(){
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
-                {(dataStore.mobile) ? mobileView : browserView}
-            </section>
+            {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     )
