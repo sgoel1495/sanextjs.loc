@@ -8,6 +8,12 @@ import Link from "next/link";
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 
+/**
+ * @todo @Sambhav css
+ * @returns {JSX.Element}
+ * @constructor
+ */
+
 function ReviewsPage(){
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
@@ -36,24 +42,25 @@ function ReviewsPage(){
       let srd = null;
       if (data)
         data.forEach(review=>{
-          srd = <Fragment>
-              {srd}
-              <Link href={}>
-                  <a target="_blank">
-                      {(review.post_img_path)
-                          ?<Image src={WEBASSETS + img} alt={img} width="300" height="300"/>
-                          :null}
-                      <div>
-                          {review.post_comment}
-                      </div>
-                      <div>
-                          <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"} alt="fb" width="300" height="300"/>
-                          <div>- {review.post_user_name}</div>
-                          <div>{review.post_time}</div>
-                      </div>
-                  </a>
-              </Link>
-          </Fragment>;
+            if(review.is_visible)
+              srd = <Fragment>
+                  {srd}
+                  <Link href={review.post_link}>
+                      <a target="_blank">
+                          {(review.post_img_path)
+                              ?<Image src={WEBASSETS + "/assets/reviews/fb/" + review.post_img_path} alt={review.post_img_path} width="300" height="300"/>
+                              :null}
+                          <div>
+                              {review.post_comment}
+                          </div>
+                          <div>
+                              <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"} alt="fb" width="300" height="300"/>
+                              <div>- {review.post_user_name}</div>
+                              <div>{review.post_time}</div>
+                          </div>
+                      </a>
+                  </Link>
+              </Fragment>;
       });
 
       return srd;
@@ -63,7 +70,7 @@ function ReviewsPage(){
     const browserView = <Fragment>
         <h1>Reviews</h1>
         <div>
-            {showReviews}
+            {showReviews()}
         </div>
     </Fragment>;
 
