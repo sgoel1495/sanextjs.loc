@@ -123,6 +123,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...getFetcher}
             break;
 
+        case "reviews":
+            url += "/home/get_facebook_review";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         default:
             url = null;
             break;
