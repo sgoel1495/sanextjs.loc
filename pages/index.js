@@ -1,4 +1,4 @@
-import React, {Fragment, useContext} from 'react';
+import React, {Fragment, useContext, useEffect, useState} from 'react';
 import PageHead from '../components/PageHead';
 import AppWideContext from "../store/AppWideContext";
 import InfoBand from "../components/info-band/InfoBand";
@@ -23,15 +23,25 @@ import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper
 function RootPage() {
     const {dataStore} = useContext(AppWideContext);
 
-    const [navControl, setNavControl] = React.useState(false);
+    const [navControl, setNavControl] = useState(false);
     const controller = () => setNavControl(window.scrollY > 0);
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener("scroll", controller);
         return () => window.removeEventListener('scroll', controller)
     }, []);
 
     const mobileView = null;
-    const browserView = null;
+    const browserView = <Fragment>
+        <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
+        <SafetyBlock isMobile={dataStore.mobile}/>
+        <NewArrivalsSwiper isMobile={dataStore.mobile}/>
+        <WhySalt isMobile={dataStore.mobile}/>
+        <AboutSaltHomepage isMobile={dataStore.mobile}/>
+        <MediaBuzzSwiper isMobile={dataStore.mobile}/>
+        <ShopByLooksSwiper isMobile={dataStore.mobile}/>
+        <InstagramStoriesSwiper isMobile={dataStore.mobile}/>
+        <DesignBlock isMobile={dataStore.mobile}/>
+    </Fragment>;
 
     return (
         <Fragment>
@@ -40,15 +50,7 @@ function RootPage() {
                 <InfoBand/>
                 <Navbar isMobile={dataStore.mobile}/>
             </div>
-            <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
-            <SafetyBlock isMobile={dataStore.mobile}/>
-            <NewArrivalsSwiper isMobile={dataStore.mobile}/>
-            <WhySalt isMobile={dataStore.mobile}/>
-            <AboutSaltHomepage isMobile={dataStore.mobile}/>
-            <MediaBuzzSwiper isMobile={dataStore.mobile}/>
-            <ShopByLooksSwiper isMobile={dataStore.mobile}/>
-            <InstagramStoriesSwiper isMobile={dataStore.mobile}/>
-            <DesignBlock isMobile={dataStore.mobile}/>
+            {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     )

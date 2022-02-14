@@ -41,8 +41,6 @@ function GiftcardsPage() {
             setData(resp.giftcards);
     }, [resp]);
 
-    console.log("GIFT CARD DATA", data);
-
     // Nav Controller
     const [navControl, setNavControl] = React.useState(false);
     const controller = () => setNavControl(window.scrollY > 0);
