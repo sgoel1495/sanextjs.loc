@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {createRef, Fragment, useContext, useEffect, useState} from "react";
 import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../../components/about-salt/Radhika";
 import OurDesign from "../../../../components/about-salt/OurDesign";
@@ -29,6 +29,13 @@ function SizeFitPage(){
         return () => window.removeEventListener('scroll', controller)
     }, []);
 
+    const scrollToRef = createRef();
+    useEffect(()=>{
+        setTimeout(() => {
+            scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+        }, 500)
+    },[]);
+
 
     const mobileView = null;
     const browserView = (
@@ -43,7 +50,7 @@ function SizeFitPage(){
             <section id={`fabric`} title={`Fabric`}>
                 <Fabric isMobile={dataStore.mobile}/>
             </section>
-            <section id={`size_fit`} title={`Size Fit`}>
+            <section id={`size_fit`} title={`Size Fit`}  ref={scrollToRef}>
                 <SizeFit isMobile={dataStore.mobile}/>
             </section>
             <section id={`affordable_luxury`} title={`Affordable Luxury`}>

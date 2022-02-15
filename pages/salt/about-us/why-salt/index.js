@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {createRef, Fragment, useContext, useEffect, useState} from "react";
 import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../../components/about-salt/Radhika";
 import OurDesign from "../../../../components/about-salt/OurDesign";
@@ -33,6 +33,13 @@ function SizeFitPage() {
         document.getElementById("why_salt").focus()
     });
 
+    const scrollToRef = createRef();
+    useEffect(()=>{
+        setTimeout(() => {
+            scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+        }, 500)
+    },[]);
+
     const mobileView = null;
     const browserView = (
         <>
@@ -59,6 +66,7 @@ function SizeFitPage() {
                 id={`why_salt`}
                 title={`WhySalt`}
                 className={`mb-10`}
+                ref={scrollToRef}
             >
                 <WhySalt isMobile={dataStore.mobile}/>
             </section>
