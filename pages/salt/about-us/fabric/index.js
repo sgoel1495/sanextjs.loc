@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {createRef, Fragment, useContext, useEffect, useState} from "react";
 import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../../components/about-salt/Radhika";
 import OurDesign from "../../../../components/about-salt/OurDesign";
@@ -14,10 +14,6 @@ import AppWideContext from "../../../../store/AppWideContext";
 import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury";
 
 
-/**
- * @todo Sambhav css pls
- */
-
 function FabricPage() {
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
@@ -30,6 +26,12 @@ function FabricPage() {
         return () => window.removeEventListener('scroll', controller)
     }, []);
 
+    const scrollToRef = createRef();
+    useEffect(()=>{
+        setTimeout(() => {
+            scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+        }, 500)
+    },[]);
 
     const mobileView = null;
     const browserView = (
@@ -41,7 +43,7 @@ function FabricPage() {
             <section id={`our_design`} title={`Our Design`}>
                 <OurDesign isMobile={dataStore.mobile}/>
             </section>
-            <section id={`fabric`} title={`Fabric`}>
+            <section id={`fabric`} title={`Fabric`} ref={scrollToRef}>
                 <Fabric isMobile={dataStore.mobile}/>
             </section>
             <section id={`size_fit`} title={`Size Fit`}>

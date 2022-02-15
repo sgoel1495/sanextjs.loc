@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {createRef, Fragment, useContext, useEffect, useState} from "react";
 import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../../components/about-salt/Radhika";
 import OurDesign from "../../../../components/about-salt/OurDesign";
@@ -14,10 +14,6 @@ import AppWideContext from "../../../../store/AppWideContext";
 import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury";
 
 
-/**
- * @todo Sambhav css pls
- */
-
 function FinishingDetailsPage(){
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
@@ -29,6 +25,13 @@ function FinishingDetailsPage(){
         window.addEventListener("scroll", controller);
         return () => window.removeEventListener('scroll', controller)
     }, []);
+
+    const scrollToRef = createRef();
+    useEffect(()=>{
+        setTimeout(() => {
+            scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+        }, 500)
+    },[]);
 
 
     const mobileView = null;
@@ -50,7 +53,7 @@ function FinishingDetailsPage(){
             <section id={`affordable_luxury`} title={`Affordable Luxury`}>
                 <AffordableLuxury isMobile={dataStore.mobile} />
             </section>
-            <section id={`finishing_details`} title={`Finishing Details`}>
+            <section id={`finishing_details`} title={`Finishing Details`}  ref={scrollToRef}>
                 <FinishingDetails isMobile={dataStore.mobile}/>
             </section>
             <section id={`why_salt`} title={`WhySalt`} className={`mb-10`}>
