@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../../../components/PageHead";
 import InfoBand from "../../../../components/info-band/InfoBand";
 import Navbar from "../../../../components/navbar/Navbar";
