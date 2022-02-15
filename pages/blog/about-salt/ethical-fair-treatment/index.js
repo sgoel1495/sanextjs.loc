@@ -10,7 +10,7 @@ import PremiumFabricQuality from "../../../../components/blog/PremiumFabricQuali
 import NoInventoryNoMassProduction from "../../../../components/blog/NoInventoryNoMassProduction";
 import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatment";
 import Link from "next/link";
-import WhyCustomTailoredClothing from "../why-custom-tailored-clothing";
+import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTailoredClothing";
 
 function EthicalFairTreatmentPage(){
     const {dataStore} = useContext(AppWideContext);
