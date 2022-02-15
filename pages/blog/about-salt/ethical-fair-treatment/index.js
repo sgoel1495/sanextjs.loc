@@ -4,13 +4,14 @@ import InfoBand from "../../../../components/info-band/InfoBand";
 import Navbar from "../../../../components/navbar/Navbar";
 import Footer from "../../../../components/footer/Footer";
 import AppWideContext from "../../../../store/AppWideContext";
-import WhyCustomTailoredClothing from "./index";
+
 import StylingServices from "../../../../components/blog/StylingServices";
 import FreeAlterations from "../../../../components/blog/FreeAlterations";
 import PremiumFabricQuality from "../../../../components/blog/PremiumFabricQuality";
 import NoInventoryNoMassProduction from "../../../../components/blog/NoInventoryNoMassProduction";
 import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatment";
 import Link from "next/link";
+import WhyCustomTailoredClothing from "../why-custom-tailored-clothing";
 
 function EthicalFairTreatmentPage(){
     const {dataStore} = useContext(AppWideContext);

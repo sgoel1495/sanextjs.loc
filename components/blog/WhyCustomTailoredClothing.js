@@ -27,3 +27,5 @@ function WhyCustomTailoredClothing(props){
 
     return (props.isMobile)? mobileView : browserView;
 }
+
+export default WhyCustomTailoredClothing;
