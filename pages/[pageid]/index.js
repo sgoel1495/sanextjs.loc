@@ -4,7 +4,7 @@ import AppWideContext from "../../store/AppWideContext";
 import ShopPage from "../../components/shop-page/ShopPage";
 import ProductPage from "../../components/product-page/ProductPage";
 
-function FromHomePageById(){
+function PageById(){
     const router = useRouter();
     const query = router.query;
     const {dataStore} = useContext(AppWideContext);
@@ -17,4 +17,4 @@ function FromHomePageById(){
     </Fragment>;
 }
 
-export default FromHomePageById;
+export default PageById;

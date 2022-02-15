@@ -44,6 +44,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "getProduct":
+            url += "/get_product_by_id";
+            body = {
+                token: apiToken,
+                product_id: queryObject.product_id
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "getLooksData":
             url += "/get_looks_data";
             body = {
