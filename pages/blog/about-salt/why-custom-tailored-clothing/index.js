@@ -10,6 +10,7 @@ import FreeAlterations from "../../../../components/blog/FreeAlterations";
 import PremiumFabricQuality from "../../../../components/blog/PremiumFabricQuality";
 import NoInventoryNoMassProduction from "../../../../components/blog/NoInventoryNoMassProduction";
 import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatment";
+import Link from "next/link";
 
 function WhyCustomTailoredClothingPage(){
     const {dataStore} = useContext(AppWideContext);
@@ -22,6 +23,12 @@ function WhyCustomTailoredClothingPage(){
 
     const mobileView = null;
     const browserView = <div>
+        <div>
+            <Link href="/blog/about-salt">
+                About Salt
+            </Link>
+            <div>Our Values</div>
+        </div>
         <WhyCustomTailoredClothing isMobile={false} main={true} />
         <StylingServices isMobile={false} main={false} />
         <FreeAlterations isMobile={false} main={false} />
