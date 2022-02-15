@@ -8,11 +8,6 @@ import Link from "next/link";
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 
-/**
- * @todo @Sambhav css
- * @returns {JSX.Element}
- * @constructor
- */
 
 function ReviewsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;

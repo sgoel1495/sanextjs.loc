@@ -12,10 +12,6 @@ import OurSaleSection from "../../components/giftcards/OurSaleSection";
 import WishListButton from "../../components/common/wishlistButton";
 import BlockHeader from "../../components/common/blockHeader";
 
-/**
- * @todo API not available - we get more than 3 cards / does not tally with website
- * @todo @Sambhav css pls
- */
 
 const ImageBlock = (props) => (
     <span className={`block relative w-full aspect-square`}>
