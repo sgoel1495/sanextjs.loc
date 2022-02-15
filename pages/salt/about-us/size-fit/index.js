@@ -14,9 +14,6 @@ import AppWideContext from "../../../../store/AppWideContext";
 import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury";
 
 
-/**
- * @todo Sambhav css pls
- */
 
 function SizeFitPage(){
     const {dataStore} = useContext(AppWideContext);

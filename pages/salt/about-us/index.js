@@ -14,10 +14,6 @@ import WhySalt from "../../../components/about-salt/WhySalt";
 import AffordableLuxury from "../../../components/about-salt/AffordableLuxury";
 
 
-/**
- * @todo Sambhav css pls
- */
-
 function AboutUsPage() {
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";

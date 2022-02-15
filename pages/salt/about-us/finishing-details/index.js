@@ -14,10 +14,6 @@ import AppWideContext from "../../../../store/AppWideContext";
 import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury";
 
 
-/**
- * @todo Sambhav css pls
- */
-
 function FinishingDetailsPage(){
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
