@@ -43,7 +43,7 @@ function WhyCustomTailoredClothing(props) {
         </section>
     );
 
-    return (props.isMobile) ? mobileView : browserView;
+    return (props.isMobile)? mobileView : browserView;
 }
 
 export default WhyCustomTailoredClothing;
