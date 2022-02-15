@@ -10,9 +10,9 @@ function PageById(){
     const {dataStore} = useContext(AppWideContext);
 
     return <Fragment>
-        {(query.hpid.startsWith("shop-"))
-            ?<ShopPage  isMobile={dataStore.mobile} hpid={query.hpid}/>
-            :<ProductPage isMobile={dataStore.mobile} hpid={query.hpid}/>
+        {(query.pageid.startsWith("shop-"))
+            ?<ShopPage  isMobile={dataStore.mobile} hpid={query.pageid}/>
+            :<ProductPage isMobile={dataStore.mobile} hpid={query.pageid}/>
         }
     </Fragment>;
 }

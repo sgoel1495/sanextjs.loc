@@ -1,5 +1,5 @@
 import AppWideContext from "../../store/AppWideContext";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import PageHead from "../PageHead";
 import useApiCall from "../../hooks/useApiCall";
 
