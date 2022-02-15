@@ -9,6 +9,7 @@ import Image from "next/image";
  */
 
 function PremiumFabricQuality(props){
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobileView = null;
     const browserView = <div>
         <div>Premium Fabric & Quality</div>

@@ -10,6 +10,7 @@ import Image from "next/image";
  */
 
 function NoInventoryNoMassProduction(props){
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobileView = null;
     const browserView = <div>
         <div>No Inventory, No Mass Production</div>

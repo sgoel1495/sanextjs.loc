@@ -10,6 +10,7 @@ import Link from "next/link";
  */
 
 function StylingServices(props){
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobileView = null;
     const browserView = <div>
         <div>Styling Services</div>

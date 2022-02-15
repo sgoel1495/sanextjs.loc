@@ -10,6 +10,7 @@ import React from "react";
  */
 
 function WhyCustomTailoredClothing(props){
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobileView = null;
     const browserView = <div>
         <div>Why Custom & Tailored Clothing?</div>

@@ -9,6 +9,7 @@ import Image from "next/image";
  */
 
 function FreeAlterations(props){
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobileView = null;
     const browserView = <div>
         <div>Free Alterations</div>
