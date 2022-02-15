@@ -1,27 +1,32 @@
 import Link from "next/link";
 import Image from "next/image";
+import React from "react";
 
 function SocialShare(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const mobileView = null;
-    const browserView = <div>
-        <Link href="#fb">
-            <svg width="29" height="29" className="q">
-                <path
-                    d="M23.2 5H5.8a.8.8 0 0 0-.8.8V23.2c0 .44.35.8.8.8h9.3v-7.13h-2.38V13.9h2.38v-2.38c0-2.45 1.55-3.66 3.74-3.66 1.05 0 1.95.08 2.2.11v2.57h-1.5c-1.2 0-1.48.57-1.48 1.4v1.96h2.97l-.6 2.97h-2.37l.05 7.12h5.1a.8.8 0 0 0 .79-.8V5.8a.8.8 0 0 0-.8-.79"></path>
-            </svg>
-        </Link>
-        <Link href="#twitter">
-            <svg width="29" height="29" className="q">
-                <path
-                    d="M22.05 7.54a4.47 4.47 0 0 0-3.3-1.46 4.53 4.53 0 0 0-4.53 4.53c0 .35.04.7.08 1.05A12.9 12.9 0 0 1 5 6.89a5.1 5.1 0 0 0-.65 2.26c.03 1.6.83 2.99 2.02 3.79a4.3 4.3 0 0 1-2.02-.57v.08a4.55 4.55 0 0 0 3.63 4.44c-.4.08-.8.13-1.21.16l-.81-.08a4.54 4.54 0 0 0 4.2 3.15 9.56 9.56 0 0 1-5.66 1.94l-1.05-.08c2 1.27 4.38 2.02 6.94 2.02 8.3 0 12.86-6.9 12.84-12.85.02-.24 0-.43 0-.65a8.68 8.68 0 0 0 2.26-2.34c-.82.38-1.7.62-2.6.72a4.37 4.37 0 0 0 1.95-2.51c-.84.53-1.81.9-2.83 1.13z"></path>
-            </svg>
-        </Link>
-        <Link href="#share">
-            <Image src={WEBASSETS + "/assets/images/share_icon.svg"} width="50" height="50"/>
-        </Link>
-    </div>;
+    const browserView = (
+        <div className={`flex items-center justify-end gap-x-3`}>
+            <Link href="#fb">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill={`currentColor`} viewBox="0 0 24 24">
+                    <path
+                        d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h8.615v-6.96h-2.338v-2.725h2.338v-2c0-2.325 1.42-3.592 3.5-3.592.699-.002 1.399.034 2.095.107v2.42h-1.435c-1.128 0-1.348.538-1.348 1.325v1.735h2.697l-.35 2.725h-2.348V21H20a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"/>
+                </svg>
+            </Link>
+            <Link href="#twitter">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill={`currentColor`} viewBox="0 0 24 24">
+                    <path
+                        d="M19.633 7.997c.013.175.013.349.013.523 0 5.325-4.053 11.461-11.46 11.461-2.282 0-4.402-.661-6.186-1.809.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05c.537.299 1.16.486 1.82.511a4.022 4.022 0 0 1-1.796-3.354c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.026 4.026 0 0 1 4.028-4.028c1.16 0 2.207.486 2.943 1.272a7.957 7.957 0 0 0 2.556-.973 4.02 4.02 0 0 1-1.771 2.22 8.073 8.073 0 0 0 2.319-.624 8.645 8.645 0 0 1-2.019 2.083z"/>
+                </svg>
+            </Link>
+            <Link href="#share">
+                <span className="grid place-items-center w-6 h-6">
+                    <Image src={WEBASSETS + "/assets/images/share_icon.svg"} height={18} width={18}/>
+                </span>
+            </Link>
+        </div>
+    );
 
     return (props.isMobile) ? mobileView : browserView;
 

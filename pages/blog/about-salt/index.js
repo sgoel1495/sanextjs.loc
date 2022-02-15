@@ -14,7 +14,7 @@ import Image from "next/image";
  * @constructor
  */
 
-function BlogAboutSaltPage(){
+function BlogAboutSaltPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
     const [navControl, setNavControl] = useState(false);
@@ -26,29 +26,41 @@ function BlogAboutSaltPage(){
     const category = "About Salt";
 
     const data = require("../../../store/blogData.json");
-    const showBlogPosts = ()=>{
-      let sbp = null;
-      data.forEach(blog=>{
-          sbp=<Fragment>
-              {sbp}
-              <Link href={blog.link}>
-                  <a>
-                      <Image src={WEBASSETS + blog.img} width="300" height="300" alt={blog.title} />
-                      <div>{blog.category}</div>
-                      <div>{blog.title}</div>
-                  </a>
-              </Link>
-          </Fragment>;
-      });
-      return sbp;
+    const showBlogPosts = () => {
+        let sbp = null;
+        data.forEach(blog => {
+            sbp = (
+                <>
+                    {sbp}
+                    <Link href={blog.link}>
+                        <a className={`block`}>
+                            <span className="block relative w-full aspect-square">
+                                <Image src={WEBASSETS + blog.img} alt={blog.title} layout={`fill`} objectFit={`contain`}/>
+                            </span>
+                            <div className="px-4 py-2">
+                                <p className={`text-sm font-500 mb-2 tracking-widest`}>{blog.category}</p>
+                                <p className={`font-cursive text-h2`}>{blog.title}</p>
+                            </div>
+                        </a>
+                    </Link>
+                </>
+            );
+        });
+        return sbp;
     };
 
     const mobileView = null;
-    const browserView = <div>
-        <div>About Salt</div>
-        <div>Our Values</div>
-        {showBlogPosts()}
-    </div>;
+    const browserView = (
+        <>
+            <div className="text-center mt-5 mb-20">
+                <p className={`text-2xl font-700 font-cursive`}>About Salt</p>
+                <p>Our Values</p>
+            </div>
+            <main className="grid grid-cols-3 gap-28">
+                {showBlogPosts()}
+            </main>
+        </>
+    );
 
     return (
         <Fragment>
@@ -58,9 +70,12 @@ function BlogAboutSaltPage(){
                 <Navbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            {(dataStore.mobile) ? mobileView : browserView}
+            <section className="container mb-10">
+                {(dataStore.mobile) ? mobileView : browserView}
+            </section>
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>);
 
 }
+
 export default BlogAboutSaltPage;
