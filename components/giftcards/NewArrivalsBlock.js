@@ -7,8 +7,6 @@ import WishListButton from "../common/wishlistButton";
 
 
 /**
- * @todo API not available
- * @todo @Sambhav css pls
  * {currCurrency, currencySymbol, isMobile, apiToken } props
  */
 
@@ -37,8 +35,9 @@ function NewArrivalsBlock(props){
     const showNewArrivals = ()=>{
         let sgc = null;
         if(data)
-            data.forEach(product=>{
-                sgc = <Fragment>
+            data.forEach((product,index)=>{
+                if(index<3)
+                    sgc = <Fragment>
                     {sgc}
                     <Link href="/sale/Sweaters-Sale-Flurry-V-NeckSleevelessSweater">
                         <a className={"block bg-white text-center relative z-0 group border-b"}>

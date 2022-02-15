@@ -6,9 +6,8 @@ import BlockHeader from "../common/blockHeader";
 import WishListButton from "../common/wishlistButton";
 
 /**
- * @todo API not available
- * @todo @Sambhav css pls
- * {currCurrency, currencySymbol, isMobile, apiToken } props
+ * @todo API: Image paths are not correct
+  * {currCurrency, currencySymbol, isMobile, apiToken } props
  */
 
 const ImageBlock = (props) => (
@@ -36,8 +35,9 @@ function OurSaleSection(props) {
     const showSaleSection = () => {
         let sgc = null;
         if (data)
-            data.forEach(product => {
-                sgc = <Fragment>
+            data.forEach((product,index) => {
+                if(index<3)
+                    sgc = <Fragment>
                     {sgc}
                     <Link href="/sale/Sweaters-Sale-Flurry-V-NeckSleevelessSweater">
                         <a className={"block bg-white text-center relative z-0 group border-b"}>
