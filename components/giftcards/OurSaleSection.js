@@ -6,9 +6,8 @@ import BlockHeader from "../common/blockHeader";
 import WishListButton from "../common/wishlistButton";
 
 /**
- * @todo API not available
- * @todo @Sambhav css pls
- * {currCurrency, currencySymbol, isMobile, apiToken } props
+ * @todo API: Image paths are not correct
+  * {currCurrency, currencySymbol, isMobile, apiToken } props
  */
 
 const ImageBlock = (props) => (

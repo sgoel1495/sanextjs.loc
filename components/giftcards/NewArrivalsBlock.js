@@ -7,8 +7,6 @@ import WishListButton from "../common/wishlistButton";
 
 
 /**
- * @todo API not available
- * @todo @Sambhav css pls
  * {currCurrency, currencySymbol, isMobile, apiToken } props
  */
 
