@@ -150,16 +150,8 @@ function Footer(props) {
     //<Toast title={toastTitle} message={toastMessage} />
     return <Fragment>
         <Toast show={!!toastMessage} hideToast={() => setToastMessage(null)}>
-            {
-                toastMessage ?
-                    <>
-                        <p>{toastMessage.title}</p>
-                        <p>{toastMessage.message}</p>
-                    </>
-                    :
-                    <>
-                    </>
-            }
+            <p>{toastMessage.title}</p>
+            <p>{toastMessage.message}</p>
         </Toast>
         {(props.isMobile) ? mobileView : browserView}
     </Fragment>;
