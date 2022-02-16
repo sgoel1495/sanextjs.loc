@@ -6,12 +6,11 @@
 
 import Link from "next/link";
 import SubMenu from "./SubMenu";
-import {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useEffect, useState} from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
-import {Tags} from "../common/Tags";
+import {NewTag} from "../common/Tags";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
-
 
 function Menu(props) {
     const {dataStore} = useContext(AppWideContext);
@@ -43,7 +42,7 @@ function Menu(props) {
                 <Link href={ele.link}>
                     <a className={`font-600 block mb-1`}>
                         {ele.category}
-                        <Tags />
+                        <NewTag />
                         <span className={`block text-[10px] tracking-wider`}>{ele.span}</span>
                     </a>
                 </Link>

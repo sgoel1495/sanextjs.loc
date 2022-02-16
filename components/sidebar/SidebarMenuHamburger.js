@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, {Fragment, useState} from "react";
 import ReactDom from "react-dom";
 import Link from "next/link";
-import {New} from "../common/tags";
+import {NewTag} from "../common/Tags";
 import Accordion from "../common/accordion";
 
 /**
@@ -264,7 +264,7 @@ const SelfLink = (props) => {
             <a className={`block px-4 py-3 text-black/70 hover:bg-black/5`}>
                 <span className={`block leading-none`}>
                     {props.title}
-                    {props.new && <New/>}
+                    {props.new && <NewTag/>}
                 </span>
                 {props.description && <span className="text-xs block leading-none">{props.description}</span>}
             </a>
@@ -284,7 +284,7 @@ const ChildLink = props => {
                 <>
                     <div className={`leading-none`}>
                         {props.title}
-                        {props.new && <New/>}
+                        {props.new && <NewTag/>}
                     </div>
                     {props.description && <span className="text-xs block leading-none">{props.description}</span>}
                 </>
@@ -312,7 +312,7 @@ const ChildLink = props => {
                                 <Link href={item.link} key={index}>
                                     <a className={`block px-4 py-1 hover:bg-black/5 text-sm`}>
                                         {item.title}
-                                        {item.new && <New/>}
+                                        {item.new && <NewTag/>}
                                     </a>
                                 </Link>
                             </li>
