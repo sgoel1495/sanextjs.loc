@@ -12,7 +12,7 @@ class MyDcoument extends Document {
             <Html lang="en" xmlns="http://www.w3.org/1999/xhtml">
                 <Head/>
                 <body>
-                <div id="toast"></div>
+                <div id="toastContainer" className={"sticky z-toast top-10 right-10 float-right"}/>
                 <div id="hamburger"></div>
                 <div id="userband"></div>
                 <div id="cartside"></div>

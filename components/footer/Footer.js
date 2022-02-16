@@ -20,7 +20,7 @@ function Footer(props) {
         "msg": "sign up successfully for NewsLetter"
      */
 
-    const newsletterSignup = async ()=>{
+    const newsletterSignup = async () => {
         setToastMessage({
             title: "Signup Status",
             message: 'resp.msg'
@@ -28,16 +28,15 @@ function Footer(props) {
         return
         const newEmail = newsletterRef.current.value;
         console.log("EMAIL", newEmail);
-        if(isValidEmail(newEmail)){
-            const resp = await apiCall("addExclusiveUser", dataStore.apiToken,{email:newEmail});
-            if(resp.hasOwnProperty("msg"))
+        if (isValidEmail(newEmail)) {
+            const resp = await apiCall("addExclusiveUser", dataStore.apiToken, {email: newEmail});
+            if (resp.hasOwnProperty("msg"))
                 setToastMessage({
                     title: "Signup Status",
                     message: resp.msg
                 })
         }
     }
-
 
 
     const mobileView = null;
@@ -48,7 +47,8 @@ function Footer(props) {
                 <h6 className={blockHeader}>GET ON OUR LIST FOR MORE!</h6>
                 <p className={"mb-4"}>Sign Up for new looks, insider styling tips, exclusive offers and more.</p>
                 <form className={"flex items-stretch mb-4"}>
-                    <input ref={newsletterRef} className={"px-1 py-2 w-3/5 border border-black focus:border-black focus:shadow-none outline-0 focus:outline-0 "} type="text" name="signup_email" id="signup_email" placeholder="Email Address"/>
+                    <input ref={newsletterRef} className={"px-1 py-2 w-3/5 border border-black focus:border-black focus:shadow-none outline-0 focus:outline-0 "} type="text"
+                           name="signup_email" id="signup_email" placeholder="Email Address"/>
                     <button className={"bg-black text-white px-10"} type="button" name="signup_btn" onClick={newsletterSignup}>+</button>
                 </form>
                 <p>
@@ -154,7 +154,7 @@ function Footer(props) {
 
     //<Toast title={toastTitle} message={toastMessage} />
     return <Fragment>
-        {(toastMessage)?<Toast msg={toastMessage} setToastMessage={setToastMessage} />:null}
+        <Toast show={true}>msg</Toast>
         {(props.isMobile) ? mobileView : browserView}
     </Fragment>;
 

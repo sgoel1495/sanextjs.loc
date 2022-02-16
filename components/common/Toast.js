@@ -1,48 +1,43 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom'
 
 /**
  *
- * @param props, will contain title and message
+ * @param props
+ * show - boolean(required) (weather to show the toast or not),
+ * duration - int(optional)(default - 5000ms) (after how much time(in ms) the toast should disappear)
+ * hideToast - callback(optional) (will be called when the toast is removed),
+ * children - data to be displayed
  * @returns {React.ReactPortal}
  * @constructor
  */
 
 const Toast = (props) => {
-    const [node] = useState(document.createElement('div'));
     const ref = React.useRef();
 
     // Tailwind CSS
-    const toastClasses = ['bg-black', 'p-4', 'z-toast', 'sticky', 'top-10', 'right-10', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'float-right'];
+    const toastClasses = ['bg-black', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1'];
 
 
     useEffect(() => {
-        if (props.show || props.msg) {
-            document.querySelector('#toast')
-                .classList.add(...toastClasses);
+        if (props.show) {
             if (ref.current) {
                 clearTimeout(ref.current);
             }
             ref.current = setTimeout(() => {
-                if (props.setToastMessage) {
-                    props.setToastMessage(null)
-                } else {
+                if (props.hideToast)
                     props.hideToast();
-                }
             }, props.duration || 5000);
         } else {
-            document.querySelector('#toast')
-                .classList.remove(...toastClasses);
+            if (ref.current) {
+                clearTimeout(ref.current);
+            }
         }
         return () => {
-            if (props.setToastMessage)
-                props.setToastMessage(null);
-            document.querySelector('#toast')
-                .classList.remove(...toastClasses);
         }
     }, [props])
 
-    return ReactDOM.createPortal(props.msg ? <p>msg</p> : props.show ? props.children : <></>, document.querySelector('#toast'));
+    return ReactDOM.createPortal(props.show ? <p className={toastClasses.join(" ")}>{props.children}</p> : <></>, document.getElementById('toastContainer'));
 };
 
 export default Toast;
