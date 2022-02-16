@@ -8,11 +8,6 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 import Link from "next/link";
 import Image from "next/image";
 
-/**
- * @todo @Sambhav css pls
- * @returns {JSX.Element}
- * @constructor
- */
 
 function BlogAboutSaltPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;

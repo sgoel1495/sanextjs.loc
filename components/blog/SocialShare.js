@@ -2,6 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 
+/**
+ * @todo Social Links
+ * @param props
+ * @returns {null|JSX.Element}
+ * @constructor
+ */
+
 function SocialShare(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 

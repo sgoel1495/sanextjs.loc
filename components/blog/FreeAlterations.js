@@ -2,13 +2,6 @@ import SocialShare from "./SocialShare";
 import Image from "next/image";
 import React from "react";
 
-/**
- * @todo @Sambhav Css
- * @todo clicks on social and share
- * @param props have isMobile, main
- * @constructor
- */
-
 function FreeAlterations(props){
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobileView = null;

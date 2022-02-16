@@ -31,10 +31,10 @@ function PremiumFabricQualityPage(){
                 <p className={`tracking-wide`}>Our Values</p>
             </div>
             <div className="col-span-3 mt-28">
-                <WhyCustomTailoredClothing isMobile={false} main={true}/>
+                <PremiumFabricQuality isMobile={false} main={true}/>
+                <WhyCustomTailoredClothing isMobile={false} main={false}/>
                 <StylingServices isMobile={false} main={false}/>
                 <FreeAlterations isMobile={false} main={false}/>
-                <PremiumFabricQuality isMobile={false} main={false}/>
                 <NoInventoryNoMassProduction isMobile={false} main={false}/>
                 <EthicalFairTreatment isMobile={false} main={false}/>
             </div>
