@@ -39,7 +39,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
                     limit: queryObject.limit || 10
                 }
             };
-            console.log("BODY", body);
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
@@ -137,6 +136,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/home/get_facebook_review";
             body = {
                 token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "addExclusiveUser":
+            url += "/salt/add_exclusive_user";
+            body = {
+                user:{
+                    email: queryObject.email,
+                    token: apiToken
+                }
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}

@@ -4,24 +4,47 @@
  */
 
 import Link from "next/link";
-import React, {Fragment, useState} from 'react';
-import Toast from "../common/toast";
-
+import React, {createRef, Fragment, useContext, useState} from 'react';
+import isValidEmail from "../../helpers/isValidEmail";
+import {apiCall} from "../../helpers/apiCall";
+import AppWideContext from "../../store/AppWideContext";
+import Toast from "../common/Toast";
 
 function Footer(props) {
-    const [toastTitle,setToastTitle] = useState(null);
-    const [toastMessage,setToastMessage] = useState(null);
+    const {dataStore} = useContext(AppWideContext);
+    const newsletterRef = createRef();
+
+    const [toastMessage, setToastMessage] = useState(null);
+    /*
+        "msg": "Already sign up for NewsLetter"
+        "msg": "sign up successfully for NewsLetter"
+     */
+
+    const newsletterSignup = async ()=>{
+        const newEmail = newsletterRef.current.value;
+        console.log("EMAIL", newEmail);
+        if(isValidEmail(newEmail)){
+            const resp = await apiCall("addExclusiveUser", dataStore.apiToken,{email:newEmail});
+            if(resp.hasOwnProperty("msg"))
+                setToastMessage({
+                    title: "Signup Status",
+                    message: resp.msg
+                })
+        }
+    }
+
+
 
     const mobileView = null;
-    const blockHeader = "font-500 text-black-200 mb-2 leading-none"
+    const blockHeader = "font-500 text-black-200 mb-2 leading-none";
     const browserView = (
         <footer className={"bg-[#f5f5f5] text-black/50 pt-10 grid grid-cols-3"}>
             <div className={"px-4"}>
                 <h6 className={blockHeader}>GET ON OUR LIST FOR MORE!</h6>
                 <p className={"mb-4"}>Sign Up for new looks, insider styling tips, exclusive offers and more.</p>
                 <form className={"flex items-stretch mb-4"}>
-                    <input className={"px-1 py-2 w-3/5 border border-black focus:border-black focus:shadow-none outline-0 focus:outline-0 "} type="text" name="signup_email" id="signup_email" placeholder="Email Address"/>
-                    <button className={"bg-black text-white px-10"} type="button" name="signup_btn">+</button>
+                    <input ref={newsletterRef} className={"px-1 py-2 w-3/5 border border-black focus:border-black focus:shadow-none outline-0 focus:outline-0 "} type="text" name="signup_email" id="signup_email" placeholder="Email Address"/>
+                    <button className={"bg-black text-white px-10"} type="button" name="signup_btn" onClick={newsletterSignup}>+</button>
                 </form>
                 <p>
                     By entering your email, you agree to our<br/>
@@ -124,9 +147,10 @@ function Footer(props) {
         </footer>
     );
 
+    //<Toast title={toastTitle} message={toastMessage} />
     return <Fragment>
-        (props.isMobile) ? mobileView : browserView
-        <Toast title={toastTitle} message={toastMessage} />
+        {(toastMessage)?<Toast msg={toastMessage} setToastMessage={setToastMessage.bind(this)} />:null}
+        {(props.isMobile) ? mobileView : browserView}
     </Fragment>;
 
 }

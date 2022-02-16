@@ -10,7 +10,7 @@ import Link from "next/link";
 import Navbar from "../../../components/navbar/Navbar";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
-import WishListButton from "../../../components/common/wishlistButton";
+import WishlistButton from "../../../components/common/WishlistButton";
 
 /**
  * @todo @team Swiper data
@@ -118,7 +118,7 @@ function NewArrivalsAllPage() {
                         <div onMouseEnter={() => setIsOver(key)} onMouseLeave={() => setIsOver(null)}>
                             <Link href={"/" + key}>
                                 <a className={"block bg-white text-center relative z-0"}>
-                                    <WishListButton className={`absolute right-4 top-4 z-10`}/>
+                                    <WishlistButton className={`absolute right-4 top-4 z-10`}/>
                                     <ArrivalDataBlockImage src={imgPath} alt={prod.name}/>
                                     <div className="grid grid-cols-2 items-center h-16">
                                         {(isOver == key) ? showProdDetail : showProd}

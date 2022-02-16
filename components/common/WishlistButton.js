@@ -1,6 +1,6 @@
 import React from "react";
 
-const WishListButton = (props) => (
+const WishlistButton = (props) => (
     <button className={`w-6 h-6 ${props.className}`} onClick={props.onClick}>
         {props.checked
             ? <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} fillOpacity={1} viewBox="0 0 24 24">
@@ -15,4 +15,4 @@ const WishListButton = (props) => (
     </button>
 )
 
-export default WishListButton;
+export default WishlistButton;

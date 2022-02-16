@@ -10,10 +10,10 @@ import ReactDOM from 'react-dom'
 
 const Toast = (props) => {
     const [node] = useState(document.createElement('div'));
-    const ref = React.useRef()
+    const ref = React.useRef();
 
     // Tailwind CSS
-    const toastClasses = ['bg-black', 'p-4', 'z-toast', 'absolute', 'top-10', 'right-10', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm']
+    const toastClasses = ['bg-black', 'p-4', 'z-toast', 'absolute', 'top-10', 'right-10', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm'];
 
 
     useEffect(() => {
