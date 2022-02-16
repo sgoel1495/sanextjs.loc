@@ -21,6 +21,11 @@ function Footer(props) {
      */
 
     const newsletterSignup = async ()=>{
+        setToastMessage({
+            title: "Signup Status",
+            message: 'resp.msg'
+        })
+        return
         const newEmail = newsletterRef.current.value;
         console.log("EMAIL", newEmail);
         if(isValidEmail(newEmail)){
@@ -149,7 +154,7 @@ function Footer(props) {
 
     //<Toast title={toastTitle} message={toastMessage} />
     return <Fragment>
-        {(toastMessage)?<Toast msg={toastMessage} setToastMessage={setToastMessage.bind(this)} />:null}
+        {(toastMessage)?<Toast msg={toastMessage} setToastMessage={setToastMessage} />:null}
         {(props.isMobile) ? mobileView : browserView}
     </Fragment>;
 
