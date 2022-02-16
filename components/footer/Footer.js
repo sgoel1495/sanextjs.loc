@@ -154,7 +154,7 @@ function Footer(props) {
 
     //<Toast title={toastTitle} message={toastMessage} />
     return <Fragment>
-        <Toast show={!!toastMessage} setToastMessage={() => setToastMessage(null)}>
+        <Toast show={!!toastMessage} hideToast={() => setToastMessage(null)}>
             {
                 toastMessage ?
                     <>
