@@ -4,10 +4,14 @@
  */
 
 import Link from "next/link";
-import React from 'react';
+import React, {Fragment, useState} from 'react';
+import Toast from "../common/toast";
 
 
 function Footer(props) {
+    const [toastTitle,setToastTitle] = useState(null);
+    const [toastMessage,setToastMessage] = useState(null);
+
     const mobileView = null;
     const blockHeader = "font-500 text-black-200 mb-2 leading-none"
     const browserView = (
@@ -120,9 +124,10 @@ function Footer(props) {
         </footer>
     );
 
-    return (
+    return <Fragment>
         (props.isMobile) ? mobileView : browserView
-    )
+        <Toast title={toastTitle} message={toastMessage} />
+    </Fragment>;
 
 }
 

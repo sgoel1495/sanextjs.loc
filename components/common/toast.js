@@ -1,7 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom'
 
-const Toast = props => {
+/**
+ *
+ * @param props, will contain title and message
+ * @returns {React.ReactPortal}
+ * @constructor
+ */
+
+const Toast = (props) => {
     const [node] = useState(document.createElement('div'));
     const ref = React.useRef()
 
