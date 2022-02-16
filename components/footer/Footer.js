@@ -157,8 +157,7 @@ function Footer(props) {
                         <p>{toastMessage.message}</p>
                     </>
                     :
-                    <>
-                    </>
+                    null
             }
         </Toast>
         {(props.isMobile) ? mobileView : browserView}
