@@ -66,7 +66,7 @@ function HomePageHeaderSwiper(props) {
             {actualData.map((item, index) => {
                 return (
                     <SwiperSlide key={index}>
-                        <a href={item.link} className={'block h-[95vh]'}>
+                        <a href={item.link} className={'block relative h-[95vh]'}>
                             <Image
                                 src={item.url}
                                 layout="fill"
