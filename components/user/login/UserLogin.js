@@ -2,7 +2,7 @@ import React from "react";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import ForgotPassword from "./ForgotPassword";
-import Toast from "../../common/toast";
+import Toast from "../../common/Toast";
 
 
 function UserLogin(props) {

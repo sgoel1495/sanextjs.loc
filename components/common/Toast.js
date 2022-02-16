@@ -33,12 +33,10 @@ const Toast = (props) => {
                 clearTimeout(ref.current);
             }
         }
-        return () => {
-        }
     }, [props])
 
-    const returnElement = (props.show)? <p className={toastClasses.join(" ")}>{props.children}</p> : null;
-    if(returnElement)
+    const returnElement = (props.show) ? <div className={toastClasses.join(" ")}>{props.children}</div> : null;
+    if (returnElement)
         return ReactDOM.createPortal(returnElement, document.getElementById("toastContainer"));
     else
         return null;

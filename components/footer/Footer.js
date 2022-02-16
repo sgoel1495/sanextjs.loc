@@ -21,11 +21,6 @@ function Footer(props) {
      */
 
     const newsletterSignup = async () => {
-        setToastMessage({
-            title: "Signup Status",
-            message: 'resp.msg'
-        })
-        return
         const newEmail = newsletterRef.current.value;
         console.log("EMAIL", newEmail);
         if (isValidEmail(newEmail)) {
