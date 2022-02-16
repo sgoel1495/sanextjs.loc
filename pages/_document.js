@@ -1,12 +1,13 @@
 import React from "react";
 import Document, {Html, Head, Main, NextScript} from 'next/document';
 
-class MyDcoument extends Document {
+class MyDocument extends Document {
+/*
     static async getInitialProps(ctx) {
         const initialProps = await Document.getInitialProps(ctx)
         return {...initialProps}
     }
-
+*/
     render() {
         return (
             <Html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -25,4 +26,4 @@ class MyDcoument extends Document {
     }
 }
 
-export default MyDcoument;
+export default MyDocument;

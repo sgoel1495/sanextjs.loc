@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import ReactDOM from 'react-dom'
+import React, {Fragment, useEffect} from 'react';
+import ReactDOM from 'react-dom';
 
 /**
  *
@@ -37,7 +37,11 @@ const Toast = (props) => {
         }
     }, [props])
 
-    return ReactDOM.createPortal(props.show ? <p className={toastClasses.join(" ")}>{props.children}</p> : <></>, document.getElementById('toastContainer'));
+    const returnElement = (props.show)? <p className={toastClasses.join(" ")}>{props.children}</p> : null;
+    if(returnElement)
+        return ReactDOM.createPortal(returnElement, document.getElementById("toastContainer"));
+    else
+        return null;
 };
 
 export default Toast;
