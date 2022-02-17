@@ -9,7 +9,7 @@ import appSettings from "../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
 import BlockHeader from "../../components/common/blockHeader";
-import WishListButton from "../../components/common/wishlistButton";
+import WishListButton from "../../components/common/wishListButton";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -110,6 +110,7 @@ function LooksPage() {
         let products = null;
         let prod = null;
         let prodDetails = null;
+        // the product
         if (expandLook.products && expandLook.products.length > 0) {
             prod = expandLook.products[0];
             prodDetails = data.prod[prod];
@@ -129,6 +130,7 @@ function LooksPage() {
                 </>
             );
         }
+        // when the product has another item with it like top and bottom
         if (expandLook.products && expandLook.products.length > 1) {
             prod = expandLook.products[1];
             prodDetails = data.prod[prod];
