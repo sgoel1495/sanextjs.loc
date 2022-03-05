@@ -1,5 +1,5 @@
 import {useRouter} from "next/router";
-import {Fragment, useContext} from "react";
+import React, {Fragment, useContext} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import ShopPage from "../../components/shop-page/ShopPage";
 import ProductPage from "../../components/product-page/ProductPage";

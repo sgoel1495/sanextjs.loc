@@ -13,7 +13,7 @@ function CategoryHeaderVideo(props) {
 
     return (
         <section className={`relative mt-8`}>
-            <video autoPlay muted className={`w-full h-fit`}>
+            <video autoPlay muted className={`w-full h-fit`} loop>
                 <source
                     src={WEBASSETS + "/assets/videos/" + category + ".mp4"}
                     type="video/mp4"

@@ -31,7 +31,7 @@ function TermsAndConditionPage() {
     const blockLeadStyle = `font-600`;
 
     const browserView = (
-        <div className={`flex flex-col gap-y-8 text-black/70 text-justify`}>
+        <div className={`flex flex-col gap-y-8 text-black/70 text-justify w-1/2 mx-auto text-[#777]`}>
             <p>Welcome to <span className={`underline`}>saltattire.com</span> website (hereinafter the "Website").</p>
             <p>
                 PLEASE READ THE FOLLOWING TERMS AND CONDITIONS OF USE OF THE WEBSITE (HEREINAFTER THE "TERMS OF USE")
@@ -243,12 +243,12 @@ function TermsAndConditionPage() {
         <Fragment>
             <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile}/>
             <div
-                className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+                className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/95' : ' bg-white/90']}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20">
+            <section className="my-20">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>

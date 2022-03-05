@@ -70,7 +70,8 @@ function HomePageHeaderSwiper(props) {
                             <Image
                                 src={item.url}
                                 layout="fill"
-                                objectFit="contain"
+                                objectFit="cover"
+                                objectPosition="center top"
                             />
                         </a>
                     </SwiperSlide>

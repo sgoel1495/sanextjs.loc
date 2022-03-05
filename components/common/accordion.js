@@ -19,7 +19,7 @@ const Accordion = props => {
                 className={`flex items-center gap-x-5 cursor-pointer ${props.titleStyle}`}
                 onClick={toggleAccordion}
             >
-                {props.titleIcon && <span className="block relative h-8 w-8">{props.titleIcon}</span>}
+                {props.titleIcon && <span className="block relative h-10 w-10">{props.titleIcon}</span>}
                 <div className={`flex-1 ${props.titleTextStyle}`} onClick={props.onClick}>
                     {props.title}
                 </div>

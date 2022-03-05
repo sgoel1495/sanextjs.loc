@@ -17,7 +17,7 @@ import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 function LooksNavbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const navStyle = "px-4 py-1"
+    const navStyle = "px-8 py-4"
     const iconHeightWeight = "30"
 
     const mobileView = <nav className={navStyle}>

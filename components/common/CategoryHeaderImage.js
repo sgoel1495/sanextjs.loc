@@ -51,8 +51,8 @@ function CategoryHeaderImage(props) {
             </span>
             {(showCategoryName)
                 ?<div className={`absolute inset-0 flex items-center justify-start`}>
-                    <div className={`bg-black pt-12 pb-6 pl-28 w-1/3 text-white font-cursive italic leading-none`}>
-                        <span className={`text-6xl`}>
+                    <div className={`bg-black pt-12 pb-6 pl-32 pr-10 w-[28%] text-white font-cursive italic leading-none`}>
+                        <span className={`text-5xl`}>
                             {category}
                         </span>
                     </div>

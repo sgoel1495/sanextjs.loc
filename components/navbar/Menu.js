@@ -186,7 +186,7 @@ function Menu(props) {
         /**
          * @todo API: Where to get Mimoto collection
          */
-        const leadTextStyle = "block leading-none tracking-wider text-h5";
+        const leadTextStyle = "block leading-none tracking-wider text-h5 font-500";
         const textStyle = "block leading-none tracking-wide text-black/50 text-sm";
         browserView = (
             <>
@@ -234,8 +234,8 @@ function Menu(props) {
                         </Link>
                     </li>
                 </ul>
-                {showShop && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[200px]`}/>}
-                {showMimoto && <div className={`bg-white absolute top-full inset-x-0 z-10 h-[100px]`}/>}
+                {showShop && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[200px]`}/>}
+                {showMimoto && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[100px]`}/>}
             </>
         )
     }

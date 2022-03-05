@@ -69,7 +69,7 @@ function ShippingNReturnsPage() {
                         title={ele.question}
                         titleIcon={<Image src={WEBASSETS + ele.icon} alt="question" layout={`fill`} objectFit={`cover`}/>}
                         titleStyle={"bg-black/10 py-4 px-6"}
-                        titleTextStyle={`text-h6 font-500 uppercase`}
+                        titleTextStyle={`text-h6 text-[#777] font-400 uppercase`}
                         bodyStyle={"bg-black/5"}
                     >
                         <div className="px-6 py-4">
@@ -85,11 +85,11 @@ function ShippingNReturnsPage() {
     const mobileView = null;
     const browserView = (
         <>
-            <div className={`flex flex-col gap-y-4`}>
+            <div className={`flex flex-col gap-y-2`}>
                 <p className={`text-xl text-center`}>Shipping Policy</p>
                 {showSR(shippingData)}
             </div>
-            <div className={`flex flex-col gap-y-4`}>
+            <div className={`flex flex-col gap-y-2`}>
                 <p className={`text-xl text-center`}>Returns Policy</p>
                 {showSR(returnsData)}
             </div>
@@ -98,8 +98,7 @@ function ShippingNReturnsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile}/>
-            <div
-                className={"fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
+            <div className={"navigator fixed top-0 right-0 left-0 z-10 hover:bg-white/95 hover:shadow-lg bg-white/90"}>
                 <InfoBand/>
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>

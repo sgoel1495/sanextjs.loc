@@ -49,13 +49,13 @@ const actualData = [
 
 function DesignBlock(props) {
     const headerStyle = "font-cursive flex justify-center items-center gap-3 text-h1 italic"
-    const paraStyle = "text-justify mb-2 text-black/75"
+    const paraStyle = "text-justify my-2 text-[#777] font-500 tracking-wide"
 
     const mobileView = null;
 
     const browserView = (
         <section id="design-block" className={"bg-white py-20"}>
-            <div className="container">
+            <div className="w-3/5 mx-auto">
                 {actualData.map((item, index) => {
                     return (
                         <div className={"flex flex-col gap-1" + [index === 0 ? '' : ' mt-10']} key={index}>
