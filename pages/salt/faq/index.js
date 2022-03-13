@@ -65,8 +65,8 @@ function FaqPage() {
                         {showFaqData}
                         <Accordion
                             title={ele.question}
-                            titleStyle={"bg-black/10 py-4 px-6"}
-                            titleTextStyle={`text-h6 font-500 uppercase`}
+                            titleStyle={"bg-black/10 py-7 px-6"}
+                            titleTextStyle={`text-[#777] text-sm font-500 uppercase`}
                             bodyStyle={"bg-black/5"}
                         >
                             <div className="px-6 py-4">
@@ -82,14 +82,14 @@ function FaqPage() {
 
     const mobileView = null;
     const browserView = (
-        <>
-            <div className={`flex flex-col gap-y-4`}>
+        <div className="w-3/4 mx-auto my-10 grid grid-cols-2 gap-x-36">
+            <div className={`flex flex-col gap-y-2`}>
                 {showFaq("left")}
             </div>
-            <div className={`flex flex-col gap-y-4`}>
+            <div className={`flex flex-col gap-y-2`}>
                 {showFaq("right")}
             </div>
-        </>
+        </div>
     )
     return (
         <>
@@ -100,7 +100,7 @@ function FaqPage() {
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-20">
+            <section >
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>

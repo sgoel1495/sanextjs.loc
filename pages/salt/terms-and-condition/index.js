@@ -31,7 +31,7 @@ function TermsAndConditionPage() {
     const blockLeadStyle = `font-600`;
 
     const browserView = (
-        <div className={`flex flex-col gap-y-8 text-black/70 text-justify w-1/2 mx-auto text-[#777]`}>
+        <div className={`flex flex-col gap-y-8 text-justify w-1/2 mx-auto text-[#777]`}>
             <p>Welcome to <span className={`underline`}>saltattire.com</span> website (hereinafter the "Website").</p>
             <p>
                 PLEASE READ THE FOLLOWING TERMS AND CONDITIONS OF USE OF THE WEBSITE (HEREINAFTER THE "TERMS OF USE")

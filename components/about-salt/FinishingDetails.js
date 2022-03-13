@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from "next/image";
-import ParallaxBlock from "../common/parallax";
+import ParallaxBlock from "../common/ParallaxBlock";
 
 /**
  * @todo @Sambhav css pls

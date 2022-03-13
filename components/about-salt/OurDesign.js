@@ -1,5 +1,5 @@
 import React from 'react';
-import ParallaxBlock from "../common/parallax";
+import ParallaxBlock from "../common/ParallaxBlock";
 import {gsap} from "gsap";
 import {ScrollTrigger} from "gsap/dist/ScrollTrigger";
 

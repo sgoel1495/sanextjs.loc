@@ -27,7 +27,7 @@ function PrivacyPolicyPage() {
     const mobileView = null;
 
     const browserView = (
-        <div className='w-1/2 mx-auto'>
+        <div className='w-1/2 mx-auto text-[#777]'>
             <p>
                 We view protection of your privacy as a very important principle. This privacy policy (the "Policy"), is published pursuant to Section 43A of the Information Technology Act, 2000 (the
                 "Act"), and the Rules thereunder . We understand clearly that You and Your Personal Information is one of our most important assets. We store and process Your Information including any
