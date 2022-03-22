@@ -6,12 +6,11 @@ import AppWideContext from "../store/AppWideContext";
 import React, {useEffect, useState} from 'react';
 import {apiDictionary} from "../helpers/apiDictionary";
 import App from "next/app";
-//import IsMobile from "../helpers/IsMobile";
 import {isMobile} from "react-device-detect";
 
 function MyApp({Component, pageProps}) {
     const dataStoreDefault = require('../store/defaultDataStore.json');
-    //dataStoreDefault.mobile = false;
+
     useEffect(()=>{
         if(isMobile!=dataStoreDefault.mobile)
             updateDataStore("mobile",isMobile);
@@ -52,4 +51,3 @@ MyApp.getInitialProps = async (appContext) => {
 }
 
 export default MyApp;
-
