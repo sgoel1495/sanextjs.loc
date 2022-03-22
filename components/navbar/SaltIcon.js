@@ -20,7 +20,7 @@ function SaltIcon(props) {
             logo = "SALT_attire_logo.png"
     }
     const mobileView = <div>
-        <Link href="/">
+        <Link href="/" passHref>
             <span className={`block relative cursor-pointer ${sizeClass}`}>
                 <Image
                     src={WEBASSETS + `/assets/images/${logo}`}
@@ -45,7 +45,7 @@ function SaltIcon(props) {
 
     const browserView = (
         <>
-            <Link href="/">
+            <Link href="/" passHref>
                 <span className={`block relative cursor-pointer ${sizeClass}`}>
                     <Image
                         src={WEBASSETS + `/assets/images/${logo}`}

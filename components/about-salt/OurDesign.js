@@ -1,7 +1,7 @@
 import React from 'react';
 import ParallaxBlock from "../common/ParallaxBlock";
-import {gsap} from "gsap";
-import {ScrollTrigger} from "gsap/dist/ScrollTrigger";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 /**
  * @todo @Sambhav css pls
@@ -15,7 +15,8 @@ function OurDesign(props) {
 
     let oldValue, newValue = 0;
     const [scrollDirection, setScrollDirection] = React.useState(false)
-    const scrollController = e => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    function scrollController(_e) {
         newValue = window.pageYOffset;
         if (oldValue < newValue) {
             setScrollDirection(true)
@@ -27,7 +28,7 @@ function OurDesign(props) {
 
     React.useEffect(() => {
         window.addEventListener('scroll', scrollController);
-    }, [scrollDirection]);
+    }, [scrollController, scrollDirection]);
 
     // GSAP Animation
     gsap.registerPlugin(ScrollTrigger);
@@ -65,7 +66,7 @@ function OurDesign(props) {
             >
                 <div className={`bg-white p-5 w-2/5 font-cursive italic font-600 duration-200 ${scrollDirection ? 'translate-x-0' : 'opacity-0 -translate-x-full'}`}>
                     <p className={`text-h5 text-black/70`}>After looking through a few work-wear racks, she thinks</p>
-                    <p className={`text-h3`}>"These styles are not even qualified for work-wear."</p>
+                    <p className={`text-h3`}>&quot;These styles are not even qualified for work-wear.&quot;</p>
                 </div>
                 <div className={`bg-black/50 w-1/2 text-white p-5`}>
                     <p className={`text-h1 font-cursive italic`}>Our Designs</p>

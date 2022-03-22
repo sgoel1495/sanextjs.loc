@@ -10,7 +10,7 @@ import Link from "next/link";
 import Navbar from "../../../components/navbar/Navbar";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
-import WishlistButton from "../../../components/common/WishlistButton";
+import WishlistButton from "../../../components/common/WishListButton";
 
 /**
  * @todo @team Swiper data

@@ -69,6 +69,7 @@ function HomePageHeaderSwiper(props) {
                         <a href={item.link} className={'block relative h-[95vh]'}>
                             <Image
                                 src={item.url}
+                                alt={'header'}
                                 layout="fill"
                                 objectFit="cover"
                                 objectPosition="center top"

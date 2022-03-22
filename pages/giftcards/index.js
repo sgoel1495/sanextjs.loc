@@ -9,7 +9,7 @@ import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import NewArrivalsBlock from "../../components/giftcards/NewArrivalsBlock";
 import OurSaleSection from "../../components/giftcards/OurSaleSection";
-import WishListButton from "../../components/common/wishlistButton";
+import WishListButton from "../../components/common/WishListButton";
 import BlockHeader from "../../components/common/blockHeader";
 
 
