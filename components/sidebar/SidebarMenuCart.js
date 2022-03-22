@@ -284,7 +284,7 @@ function SidebarMenuCart(props) {
         </>
     );
 
-    return props.isMobile ? mobileView : browserView
+    return props.isMobile ? browserView : browserView
 }
 
 export default SidebarMenuCart;

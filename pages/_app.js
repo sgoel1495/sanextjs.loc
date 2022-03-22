@@ -4,17 +4,17 @@
 import '../styles/globals.css';
 import AppWideContext from "../store/AppWideContext";
 import React, {useEffect, useState} from 'react';
-import {isMobile} from 'react-device-detect';
 import {apiDictionary} from "../helpers/apiDictionary";
 import App from "next/app";
+import IsMobile from "../helpers/IsMobile";
+import {isMobile} from "react-device-detect";
 
 function MyApp({Component, pageProps}) {
     const dataStoreDefault = require('../store/defaultDataStore.json');
-    dataStoreDefault.mobile = isMobile;
+    dataStoreDefault.mobile = false;
     dataStoreDefault.apiToken = pageProps.apiToken;
     const [dataStore, setDataStore] = useState(dataStoreDefault);
     const [refresh, setRefresh] = useState(true);
-
     const updateDataStore = (key, value) => {
         dataStore[key] = value;
         setDataStore({...dataStore});
@@ -25,6 +25,20 @@ function MyApp({Component, pageProps}) {
         <AppWideContext.Provider value={{
             dataStore: dataStore, updateDataStore: updateDataStore
         }}>
+            {
+                dataStore.mobile === false ?
+                    <IsMobile>
+                        {(isMobile) => {
+                            if (isMobile) {
+                                updateDataStore("mobile", isMobile)
+                            }
+                            return <></>
+                        }}
+                    </IsMobile>
+                    :
+                    <></>
+
+            }
             <Component {...pageProps} />
         </AppWideContext.Provider>
     )

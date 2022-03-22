@@ -24,7 +24,30 @@ function SearchModal(props) {
          */
     }
 
-    const mobileView = null;
+    const mobileView = (
+        <div className={`fixed inset-0 z-20 bg-white/90`}>
+            <div className="container">
+                <form onSubmit={searchExecution} className={`mt-12 flex mx-3`}>
+                    <input
+                        type="text"
+                        name="searchInput"
+                        ref={searchInput}
+                        placeholder="Enter your search text"
+                        className={`flex-1 text-sm border-0 border-b border-black focus:border-black bg-transparent focus:ring-offset-0 focus:ring-0 focus:ring-offset-transparent focus:shadow-none`}
+                    />
+                    <button
+                        type="submit"
+                        className={`bg-black text-sm text-white px-4 py-2`}
+                    >SEARCH
+                    </button>
+                </form>
+                <button className={`w-10 h-10 absolute right-0 top-0`} onClick={closeModal}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className={`w-10 h-10`} viewBox="0 0 24 24">
+                        <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>);
 
     const browserView = (
         <div className={`fixed inset-0 z-20 bg-white/90`}>
@@ -40,7 +63,8 @@ function SearchModal(props) {
                     <button
                         type="submit"
                         className={`bg-black text-white px-8`}
-                    >SEARCH</button>
+                    >SEARCH
+                    </button>
                 </form>
                 <button className={`w-10 h-10 absolute right-10 top-10`} onClick={closeModal}>
                     <svg xmlns="http://www.w3.org/2000/svg" className={`w-10 h-10`} viewBox="0 0 24 24">
@@ -89,13 +113,13 @@ function SearchMenu(props) {
                 />
             </span>
             {showMenuSearch && ReactDom.createPortal(
-                <SearchModal closeModal={closeModal.bind(this)}/>,
+                <SearchModal closeModal={closeModal.bind(this)} isMobile={props.isMobile}/>,
                 document.getElementById("searchmenu"))
             }
         </>
     );
 
-    return props.isMobile ? mobileView : browserView
+    return browserView
 
 }
 

@@ -120,7 +120,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/reset_password";
             body = {
                 token: apiToken,
-                contact : queryObject.username,
+                contact: queryObject.username,
 
             };
             postFetcher.body = JSON.stringify(body);
@@ -144,10 +144,19 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         case "addExclusiveUser":
             url += "/salt/add_exclusive_user";
             body = {
-                user:{
+                user: {
                     email: queryObject.email,
                     token: apiToken
                 }
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getCategoryCircle":
+            url += "/get_category_circle";
+            body = {
+                token: apiToken
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}

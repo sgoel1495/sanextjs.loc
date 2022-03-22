@@ -1,9 +1,8 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import PageHead from '../components/PageHead';
 import AppWideContext from "../store/AppWideContext";
-import InfoBand from "../components/info-band/InfoBand";
 import SafetyBlock from "../components/safety-block/SafetyBlock";
-import Navbar from "../components/navbar/Navbar";
+import Navbar from "../components/navbar/Index";
 import WhySalt from "../components/why-salt/WhySalt";
 import AboutSaltHomepage from "../components/about-salt/AboutSaltHomepage";
 import DesignBlock from "../components/design-block/DesignBlock";
@@ -13,6 +12,8 @@ import NewArrivalsSwiper from "../components/swipers/NewArrivalsSwiper";
 import MediaBuzzSwiper from "../components/swipers/MediaBuzzSwiper";
 import ShopByLooksSwiper from "../components/swipers/ShopByLooksSwiper";
 import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper";
+import CategorySection from "../components/category-section/categorySection";
+
 
 /**
  * @todo assign mobile view and browser view
@@ -30,7 +31,10 @@ function RootPage() {
         return () => window.removeEventListener('scroll', controller)
     }, []);
 
-    const mobileView = null;
+    const mobileView = <Fragment>
+        <CategorySection/>
+    </Fragment>;
+
     const browserView = <Fragment>
         <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
         <SafetyBlock isMobile={dataStore.mobile}/>
@@ -46,10 +50,7 @@ function RootPage() {
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/60']}>
-                <InfoBand/>
-                <Navbar isMobile={dataStore.mobile}/>
-            </div>
+            <Navbar isMobile={dataStore.mobile} navControl={navControl}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

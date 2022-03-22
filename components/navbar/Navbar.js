@@ -15,49 +15,52 @@ import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 
 function Navbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
     const navStyle = "px-4 py-1 uppercase"
     const iconHeightWeight = "30"
 
-    const mobileView = <nav className={navStyle}>
+    const mobileView = <div className={navStyle}>
         <div className={"text-center mb-4"}>
-            <SaltIcon isMobile={true}/>
-            <CurrencySwitcher isMobile={false}/>
+            <div className={"flex items-center justify-center"}>
+                <SaltIcon isMobile={true}/>
+                <CurrencySwitcher isMobile={true}/>
+            </div>
             <p className={'text-xs'}>BESPOKE &amp; CUSTOM CLOTHING</p>
         </div>
-        <ul className={"flex gap-5 justify-between"}>
-            <li>
-                <SidebarMenuHamburger isMobile={false}/>
-            </li>
-            <li>
-                <Link href="/homepage/signin">
-                    <a>
-                        <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
-                    </a>
-                </Link>
-            </li>
-            <li>
-                <Link href="/new-arrivals/all">
-                    <a>
-                        <Image src={WEBASSETS + "/assets/images/new_icon.svg"} alt="new" width={iconHeightWeight} height={iconHeightWeight}/>
-                    </a>
-                </Link>
-            </li>
-            <li>
-                <Link href="/homepage/signin">
-                    <a>
-                        <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav" width={iconHeightWeight} height={iconHeightWeight}/>
-                    </a>
-                </Link>
-            </li>
-            <li>
-                <SearchMenu isMobile={true}/>
-            </li>
-            <li>
-                <SidebarMenuCart isMobile={true}/>
-            </li>
-        </ul>
-    </nav>;
+        <div className={"sticky top-0"}>
+            <ul className={"flex gap-5 justify-between"}>
+                <li>
+                    <SidebarMenuHamburger isMobile={false}/>
+                </li>
+                <li>
+                    <Link href="/homepage/signin">
+                        <a>
+                            <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
+                        </a>
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/new-arrivals/all">
+                        <a>
+                            <Image src={WEBASSETS + "/assets/images/new_icon.svg"} alt="new" width={iconHeightWeight} height={iconHeightWeight}/>
+                        </a>
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/homepage/signin">
+                        <a>
+                            <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav" width={iconHeightWeight} height={iconHeightWeight}/>
+                        </a>
+                    </Link>
+                </li>
+                <li>
+                    <SearchMenu isMobile={true}/>
+                </li>
+                <li>
+                    <SidebarMenuCart isMobile={true}/>
+                </li>
+            </ul>
+        </div>
+    </div>;
 
     const browserView = (
         <nav className={navStyle + " flex items-center gap-x-4"}>
