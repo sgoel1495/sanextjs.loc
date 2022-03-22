@@ -1,5 +1,5 @@
 {
-  "mobile": true,
+  "mobile": false,
   "currCurrency": "inr",
   "apiToken": null,
   "categories": [
