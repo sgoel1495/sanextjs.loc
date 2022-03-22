@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 const Index = (props) => {
 
     const mobileView = <div
-        className={"navigator z-10 duration-300 hover:bg-white transition-colors" + [props.navControl ? ' bg-white' : ' bg-white/60']}>
+        className={"navigator z-10 duration-300 hover:bg-white transition-colors bg-[#fffaf7]"}>
         <InfoBand/>
         <Navbar isMobile={props.isMobile}/>
     </div>

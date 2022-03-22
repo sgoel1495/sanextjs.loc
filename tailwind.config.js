@@ -8,31 +8,31 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            sans : ['Acherus Grotesque', 'sans-serif'], //100, 200, 300, 400, 500, 700, 800, 900
-            'cursive' : ['Adobe Caslon Pro', 'sans'], //500, 600, 700
-        },
-        fontWeight: {
-            '100': 100,
-            '200': 200,
-            '300': 300,
-            '400': 400,
-            '500': 500,
-            '600': 600,
-            '700': 700,
-            '800': 800,
-            '900': 900,
+            sans: ['Acherus Grotesque', 'sans-serif'], //100, 200, 300, 400, 500, 700, 800, 900
+            'cursive': ['Adobe Caslon Pro', 'sans'], //500, 600, 700
         },
         container: {
             center: true,
         },
-        borderRadius: {
-            'none': '0',
-            'sm': `${init / 4}rem`,
-            DEFAULT: `${init / 2}rem`,
-            'lg': `${init}rem`,
-            'full': '99999px',
-        },
         extend: {
+            borderRadius: {
+                'none': '0',
+                'sm': `${init / 4}rem`,
+                DEFAULT: `${init / 2}rem`,
+                'lg': `${init}rem`,
+                'full': '99999px',
+            },
+            fontWeight: {
+                '100': 100,
+                '200': 200,
+                '300': 300,
+                '400': 400,
+                '500': 500,
+                '600': 600,
+                '700': 700,
+                '800': 800,
+                '900': 900,
+            },
             fontSize: {
                 'h1': `${init * 3.75}rem`,
                 'h2': `${init * 3.45}rem`,
@@ -45,7 +45,7 @@ module.exports = {
             },
             zIndex: {
                 '100': '100',
-                'toast':91
+                'toast': 91
             },
             colors: {
                 theme: {
@@ -61,18 +61,18 @@ module.exports = {
                     900: '#0f172a',
                 },
             },
-            animation:{
+            animation: {
                 typewriter: `typewriter 2.5s steps(26) 1s forwards`,
                 typewriterCursor: `blink 250ms infinite alternate-reverse`
             },
-            keyframes:{
+            keyframes: {
                 typewriter: {
                     to: {
                         left: `100%`
                     }
                 },
-                blink:{
-                    to:{
+                blink: {
+                    to: {
                         background: `transparent`
                     }
                 }
