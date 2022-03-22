@@ -51,6 +51,7 @@ function SaltIcon(props) {
                         src={WEBASSETS + `/assets/images/${logo}`}
                         alt="salt icon"
                         layout={`fill`}
+                        priority={true}
                         objectFit={`contain`}
                     />
                 </span>
