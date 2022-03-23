@@ -1,0 +1,458 @@
+[
+  {
+    "id": 1,
+    "question": "HOW DO I PAY FOR MY ORDER?",
+    "answers": [
+      {
+        "para": "We accept:",
+        "check": false
+      },
+      {
+        "para": "Cash on Delivery",
+        "check": true
+      },
+      {
+        "para": "All online payments via Debit Card, Credit Card, UPI, Paytm, Net Banking and All Mobile Wallets; Ola Money, freecharge, Mobikwik, JioMoney, Scan n Pay.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "question": "WHAT IS THE DELIVERY TIME?",
+    "answers": [
+      {
+        "para": "Our Delivery Time Can be anywhere between 6-10 days. All our garments are made especially for you. When you place an order, the garments are tailor made just for you! Hence the relatively longer delivery time. However, if you need the items to be delivered to you on or before a certain date, then please ***contactus***",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Do you have any Shipping charges?",
+    "answers": [
+      {
+        "para": "We provide free shipping within India",
+        "check": true
+      },
+      {
+        "para": "Outside of India, Shipping charges may apply. Please visit our ***shippingreturns*** for more details",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "question": "How do I check the status of my order?",
+    "answers": [
+      {
+        "para": "We will send you an email when your order is being made and an email with the tracking details once your order has been shipped. If you do not receive any email within a week of placing your order please Contact Us.",
+        "check": true
+      },
+      {
+        "para": "You can always check your order status by selecting My Orders and clicking Track My Order.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "question": "How do I create a Return/Exchange/Alteration Request?",
+    "answers": [
+      {
+        "para": "If you wish to raise a request for alterations/exchange/return for an item, please initiate a return from the website.",
+        "check": false
+      },
+      {
+        "para": "1. You can log into your account on our website, Click on 'My orders', and you can select the product you want to return/exchange or give for alterations.***br***OR***br***",
+        "check": true
+      },
+      {
+        "para": "2. You can exchange/alter by clicking on the view/manage order button on the confirmation email, which is sent to you when you place your order.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "question": "I have initiated a Return request. When will the product be picked up?",
+    "answers": [
+      {
+        "para": "1. Reverse Pickup (1-3 days)***br*** A Reverse pickup will be done by the SALT Courier Partner within 1-3 days. Please keep your package ready.",
+        "check": true
+      },
+      {
+        "para": "2. Item Received back at the SALT Unit (6-7 days)***br*** The reverse garment is then shipped back to the SALT unit. Once your item is picked up, you will be emailed a Reverse Tracking ID and you can track the reverse item. Your return will be processed only after the reverse garment is received back by us.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "question": "Why refund is not available on tailored items ?",
+    "answers": [
+      {
+        "para": "Since your piece is especially crafted for you according to your measurements, we only offer alterations for the order. If you wish to return your Tailored Item, please initiate an Alteration for the same. All the tailored items will be attempted for alterations.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "question": "How much would you charge for shipping to our country?",
+    "answers": [
+      {
+        "para": "We charge $25 Shipping Fee for Orders less than $150 and Free Shipping For Orders that are $150 or more",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "question": "I want a size exchange but I want it urgently Is that possible?",
+    "answers": [
+      {
+        "para": "As per our policies, the process of exchange is- Once we receive the item back at SALT, we do a thorough Quality Check to ensure the garments received are unused, unwashed with labels intact. If your item has completed the Quality Check, only after then we proceed with the new item to be sent. But you can contact us on our customer care number or please email us on care@saltattire.com and we will do our best to resolve your issue.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "question": "Why did the pick up of my product fail?",
+    "answers": [
+      {
+        "para": "1. The order needs a day or 2 to get picked.You will be receiving a confirmation mail on the registered mail and the pickup guy will be contacting you for the pickup",
+        "check": true
+      },
+      {
+        "para": "2.The order was not picked due to :Reason to be mentioned if we had received any exceptions.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "question": "What is the status of my refund ?",
+    "answers": [
+      {
+        "para": "Once we receive the item back at SALT, we do a thorough Quality Check to ensure the garments received are unused, unwashed with labels intact. If your item has completed the Quality Check and you still haven't received a refund, please email us on care@saltattire.com for the status of your refund.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "question": "Can I change the mode of payment after placing the order?",
+    "answers": [
+      {
+        "para": "If you want to change the mode of payment after you have placed your order, kindly email us care@saltattire.com before your item is shipped.",
+        "check": true
+      },
+      {
+        "para": "Once your item is shipped, we will not be able to change the mode of payment",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "question": "Can I return the item that I had asked for exchange earlier?",
+    "answers": [
+      {
+        "para": "You can change the request from exchange to return by getting in touch with our customer care Team. Please write to us on care@saltattire.com for the request.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "question": "Can I ask for alterations/exchange/ return for discounted items?",
+    "answers": [
+      {
+        "para": "The products purchased on discount/promo codes are not eligible for any alterations/exchange/return. Any request for the same will not be entertained.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "question": "I am shopping for someone else. Would I be able to exchange/return it, if required?",
+    "answers": [
+      {
+        "para": "You can go for alterations/exchange or return for your order. You are eligible for a Return within 7-days of receiving your order.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "question": "My pickup has been done, when will I get my refund?",
+    "answers": [
+      {
+        "para": "Once your item is picked up, you will be emailed a Reverse Tracking ID and you can track the reverse item. Your return will be processed only after the reverse garment is received back by us. Once we receive the item back at SALT, we do a thorough Quality Check to ensure the garments received are unused, unwashed with labels intact.Your exchange/alteration/refund will be processed as requested, after a successful quality check. Please allow 10-14 business days to process the refund",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "question": "Can I return the item purchased from Gift card?",
+    "answers": [
+      {
+        "para": "You can return the item purchased using the gift card.***br*** *NOTE- The amount will be refunded to the Salt Wallet. No Bank account refund is applicable",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "question": "My friend got me a gift card. How and where can I use it?",
+    "answers": [
+      {
+        "para": "Once you receive the gift card, there will be a code will be mentioned on it. You can use that code at the time of check-out to place the order with us. The amount will be adjusted.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "question": "HOW DO I KNOW IF MY ORDER HAS BEEN SHIPPED?",
+    "answers": [
+      {
+        "para": "We will send you an email with the tracking details once your order has been shipped. Please check our ***shippingreturns*** for more details.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "question": "HOW DO I RETURN MY ORDER?",
+    "answers": [
+      {
+        "para": "All orders can be returned within 7-days of receiving your order. Please refer to our ***shippingreturns*** for further details.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "question": "HOW CAN I ORDER TAILORED GARMENTS?",
+    "answers": [
+      {
+        "para": "If you’re accessing on your Mobile Phone:",
+        "check": false
+      },
+      {
+        "para": "To Tailor garments to your measurements, select the ‘Tailor It!’ Option on the product page.",
+        "check": true
+      },
+      {
+        "para": "A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
+        "check": true
+      },
+      {
+        "para": "If you’re accessing on your Desktop/Laptop:",
+        "check": false
+      },
+      {
+        "para": "To Tailor garments to your measurements, select the ‘T’ Option on the product page.",
+        "check": true
+      },
+      {
+        "para": "A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "question": "HOW CAN I CHECK IF SALT ATTIRE DELIVERS TO MY PIN CODE?",
+    "answers": [
+      {
+        "para": "Enter Your Pin Code Here,",
+        "check": false
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "question": "I have initiated a Return request. When will I get the refund?",
+    "answers": [
+      {
+        "para": "Here is how our return process works:",
+        "check": false
+      },
+      {
+        "para": "1. Reverse Pickup (1-3 days)A Reverse pickup will be done by the SALT Courier Partner within 1-3 days. Please keep your package ready.",
+        "check": true
+      },
+      {
+        "para": "2. Item Received back at the SALT Unit (6-7 days)The reverse garment is then shipped back to the SALT unit. Once your item is picked up, you will be emailed a Reverse Tracking ID and you can track the reverse item. Your return will be processed only after the reverse garment is received back by us.",
+        "check": true
+      },
+      {
+        "para": "3. Processing Refund/Exchange/Alteration (2 days)Once we receive the item back at SALT, we do a thorough Quality Check to ensure the garments received are unused, unwashed with labels intact.",
+        "check": true
+      },
+      {
+        "para": "4. Your refund will be initiated within 2 business days after a successful quality check ***br***Kindly allow us 10-14 days for the same.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "question": "How can I redeem Salt credit?",
+    "answers": [
+      {
+        "para": "You need to login to the website using your registered mobile number.The amount will show in your wallet,which you can redeem at the time of payment.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "question": "Does Saltattire deliver products outside India?",
+    "answers": [
+      {
+        "para": "Yes, we ship worldwide !",
+        "check": false
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "question": "How can I get my order delivered faster?",
+    "answers": [
+      {
+        "para": "Email us care@saltattire.com with your Order ID and desired delivery date, we will try to ship it to you as soon as possible",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "question": "Can I modify the shipping address of my order after it has been placed?",
+    "answers": [
+      {
+        "para": "You can modify the shipping address if the order has not been shipped. Go to 'My Orders' in your profile. Click on 'Change Shipping Address' against that order and modify the address. Shipping charges and delivery time may vary depending on the new shipping address",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "question": "Why can't I see the COD option for the tailored orders?",
+    "answers": [
+      {
+        "para": "We do not allow COD for Tailored Items. All Tailored items are pre-paid only",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "question": "How can I select option for customization for length, in a standard size, while placing the order",
+    "answers": [
+      {
+        "para": "When selecting the size, select Tailor It OR 'T' Option. A wizard will take you through any tailor or customizations needed",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "question": "Why am I not able to initiate exchange/return from my account?",
+    "answers": [
+      {
+        "para": "Please make sure you have logged into your account before initiating the exchange/alterations/return request. If you are still unable to initiate the request, kindly contact us on care@saltattire.com",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "question": "Can you send my order after a few days, I am traveling?",
+    "answers": [
+      {
+        "para": "Want to hold the order for a while, no worries. You can contact us on our customer care number or please email us on care@saltattire.com and let us know when do you want your order to be delivered to you.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "question": "Do you have plus size outfits?",
+    "answers": [
+      {
+        "para": "Wondering if we make garments in your size? Salt offers full tailor-made clothing. If you don't find your size in our size chart, don't worry. You can get your size by sharing your measurements with us and getting a tailored piece for you, crafted just for you.",
+        "check": false
+      },
+      {
+        "para": "If you're accessing on your Mobile Phone:***br*** To Tailor garments to your measurements, select the ‘Tailor It!’ Option on the product page. A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
+        "check": true
+      },
+      {
+        "para": "If you're accessing on your Desktop/Laptop:***br*** To Tailor garments to your measurements, select the ‘T’ Option on the product page. A Wizard will guide you through the Tailoring by allowing you to enter measurements and enter any other details you would like us to know.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "question": "My pickup was scheduled for today but why did no one come to pick it up?",
+    "answers": [
+      {
+        "para": "All our deliveries and pick-ups are attempted by third parties. The assigned pick-up person contacts you once they reach your address. They may have failed to get in touch with you, due to which the pickup sometimes fail. The pick-up is then rescheduled for the next day and the update is sent via text message on your registered number.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "question": "How do I purchase a Gift Card?",
+    "answers": [
+      {
+        "para": "Gift cards can be purchased from our website. The denominations for the gift card are INR 1000, INR 2000 and INR 5,000.***br***You can choose the amount in any currency (INR or USD). All you need to do is-",
+        "check": false
+      },
+      {
+        "para": "1. Go to our website and click on ***giftcards***",
+        "check": true
+      },
+      {
+        "para": "2. Once you click on it, you will be redirected to the page where you can select the gift card.",
+        "check": true
+      },
+      {
+        "para": "3. Fill the recipient's details and click on 'Submit'.",
+        "check": true
+      },
+      {
+        "para": "4. One you make the pay,ent, the gift card will be generated and am email will be sent to the recipient's registered ID.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "question": "How long is the gift card valid?",
+    "answers": [
+      {
+        "para": "The validity of the gift card is upto a year from the day of purchase.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "question": "Can the gift card be used online and in a SALT Attire store as well?",
+    "answers": [
+      {
+        "para": "Yes, you can use the gift card both on our website and our offline store.",
+        "check": true
+      }
+    ]
+  }
+]

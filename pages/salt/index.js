@@ -1,6 +1,7 @@
-function Salt () {
+import React from 'react';
 
-  return null;
+function SaltIndex() {
+    return (<>Salt Page Index</>);
 }
 
-export default Salt;
+export default SaltIndex;

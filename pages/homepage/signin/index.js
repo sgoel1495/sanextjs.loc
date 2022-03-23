@@ -1,11 +1,7 @@
 import React from 'react';
 
-const Index = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+function SignInPage() {
+    return (<>Sign In</>);
+}
 
-export default Index;
+export default SignInPage;

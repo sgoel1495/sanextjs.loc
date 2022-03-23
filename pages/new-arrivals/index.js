@@ -1,11 +1,7 @@
 import React from 'react';
 
-const Index = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+function NewArriavalsIndex() {
+    return (<>NewArriavalsIndex</>);
+}
 
-export default Index;
+export default NewArriavalsIndex;

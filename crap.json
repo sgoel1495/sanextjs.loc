@@ -1,0 +1,330 @@
+{
+  "status": 200,
+  "msg": "success",
+  "response": {
+    "look": [
+      {
+        "look_id": "look-808",
+        "heading": "Verve",
+        "name": "Verve",
+        "products": [
+          "Shirts-Verve-SatinNotchCollarShirt",
+          "Pants-Audacious-Cream-HighwaistWide-legpant"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-808/Collage.v1.jpg",
+        "img_path": "/assets/look-808/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#5b4351",
+        "color": "#ffffff",
+        "details": "Verve,Audacious-Cream",
+        "template": 2
+      },
+      {
+        "look_id": "look-807",
+        "heading": "Auburn",
+        "name": "Auburn",
+        "products": [
+          "Tops-Auburn-SatinPrintedTop",
+          "Pants-Earnest-Black-MidToHighRisePants"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-807/Collage.v1.jpg",
+        "img_path": "/assets/look-807/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#0c172f",
+        "color": "#ffffff",
+        "details": "Auburn,Earnest-Black",
+        "template": 2
+      },
+      {
+        "look_id": "look-806",
+        "heading": "Virid",
+        "name": "Virid",
+        "products": [
+          "Tops-Virid-SatinPrintedTop",
+          "Pants-Audacious-Cream-HighwaistWide-legpant"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-806/Collage.v1.jpg",
+        "img_path": "/assets/look-806/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#a43941",
+        "color": "#ffffff",
+        "details": "Virid,Audacious-Cream",
+        "template": 2
+      },
+      {
+        "look_id": "look-805",
+        "heading": "Tora",
+        "name": "Tora",
+        "products": [
+          "Tunics-Tora-LongPrintedShirt",
+          "Pants-Audacious-Cream-HighwaistWide-legpant"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-805/Collage.v1.jpg",
+        "img_path": "/assets/look-805/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#38255d",
+        "color": "#ffffff",
+        "details": "Tora,Audacious-Cream",
+        "template": 2
+      },
+      {
+        "look_id": "look-804",
+        "heading": "Baagh",
+        "name": "Baagh",
+        "products": [
+          "Outerwear-Baagh-OverlayinTigerMotifPrint",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-804/Collage.v1.jpg",
+        "img_path": "/assets/look-804/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#1f5f61",
+        "color": "#ffffff",
+        "details": "Baagh,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-803",
+        "heading": "Hobbes",
+        "name": "Hobbes",
+        "products": [
+          "Tunics-Hobbes-LongPrintedTop",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-803/Collage.v1.jpg",
+        "img_path": "/assets/look-803/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#4d2323",
+        "color": "#ffffff",
+        "details": "Hobbes,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-802",
+        "heading": "Fierce",
+        "name": "Fierce",
+        "products": [
+          "Tops-Fierce-Wraptop",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-802/Collage.v1.jpg",
+        "img_path": "/assets/look-802/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#3f3934",
+        "color": "#ffffff",
+        "details": "Fierce,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-801",
+        "heading": "Rayas",
+        "name": "Rayas",
+        "products": [
+          "Outerwear-Rayas-OverlayinTigerMotifPrint",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": false,
+        "bg_img_path": "/assets/look-801/Collage.v1.jpg",
+        "img_path": "/assets/look-801/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#884808",
+        "color": "#ffffff",
+        "details": "Rayas,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-800",
+        "heading": "Lynx",
+        "name": "Lynx",
+        "products": [
+          "Tunics-Lynx-LongPrintedShirt",
+          "Pants-Diligent-Navy-StraightFitPants"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-800/Collage.v1.jpg",
+        "img_path": "/assets/look-800/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#583714",
+        "color": "#ffffff",
+        "details": "Lynx,Diligent-Navy",
+        "template": 2
+      },
+      {
+        "look_id": "look-799",
+        "heading": "Overcast",
+        "name": "Overcast",
+        "products": [
+          "Sweater-Overcast-OpenFrontCardigan",
+          "Pants-Black-Treggings-Highwaistjeggings"
+        ],
+        "is_img_left": true,
+        "bg_img_path": "/assets/look-799/Collage.v1.jpg",
+        "img_path": "/assets/look-799/Full.v1.jpg",
+        "after_color": "",
+        "bg_color": "#100d2d",
+        "color": "#ffffff",
+        "details": "Overcast,Black Treggings",
+        "template": 2
+      }
+    ],
+    "prod": {
+      "Shirts-Verve-SatinNotchCollarShirt": {
+        "category": "shirts",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Verve",
+        "price": 2650.0,
+        "tag_line": "Satin Notch Collar Shirt",
+        "usd_price": 38.0
+      },
+      "Pants-Audacious-Cream-HighwaistWide-legpant": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Audacious-Cream",
+        "price": 3450.0,
+        "tag_line": "High waist Wide-leg pant",
+        "usd_price": 49.0
+      },
+      "Tops-Auburn-SatinPrintedTop": {
+        "category": "tops",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Auburn",
+        "price": 2450.0,
+        "tag_line": "Satin Printed Top",
+        "usd_price": 35.0
+      },
+      "Pants-Earnest-Black-MidToHighRisePants": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Earnest-Black",
+        "price": 2750.0,
+        "tag_line": "Mid To High Rise Pants",
+        "usd_price": 39.0
+      },
+      "Tops-Virid-SatinPrintedTop": {
+        "category": "tops",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Virid",
+        "price": 2450.0,
+        "tag_line": "Satin Printed Top",
+        "usd_price": 35.0
+      },
+      "Tunics-Tora-LongPrintedShirt": {
+        "category": "tunics",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Tora",
+        "price": 2450.0,
+        "tag_line": "Long Printed Shirt",
+        "usd_price": 35.0
+      },
+      "Outerwear-Baagh-OverlayinTigerMotifPrint": {
+        "category": "outerwear",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Baagh",
+        "price": 3250.0,
+        "tag_line": "Overlay in Tiger Motif Print",
+        "usd_price": 56.0
+      },
+      "Pants-Diligent-Navy-StraightFitPants": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Diligent-Navy",
+        "price": 2550.0,
+        "tag_line": "Elasticated Waist Pants",
+        "usd_price": 36.0
+      },
+      "Tunics-Hobbes-LongPrintedTop": {
+        "category": "tunics",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Hobbes",
+        "price": 2450.0,
+        "tag_line": "Long Printed Top",
+        "usd_price": 35.0
+      },
+      "Tops-Fierce-Wraptop": {
+        "category": "tops",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Fierce",
+        "price": 2450.0,
+        "tag_line": "Wrap top",
+        "usd_price": 35.0
+      },
+      "Outerwear-Rayas-OverlayinTigerMotifPrint": {
+        "category": "outerwear",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Rayas",
+        "price": 3250.0,
+        "tag_line": "Overlay in Tiger Motif Print",
+        "usd_price": 56.0
+      },
+      "Tunics-Lynx-LongPrintedShirt": {
+        "category": "tunics",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Lynx",
+        "price": 2450.0,
+        "tag_line": "Long Printed Shirt",
+        "usd_price": 35.0
+      },
+      "Sweater-Overcast-OpenFrontCardigan": {
+        "category": "sweaters",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Overcast",
+        "price": 4250.0,
+        "tag_line": "Open Front Cardigan",
+        "usd_price": 60.0
+      },
+      "Pants-Black-Treggings-Highwaistjeggings": {
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Black Treggings",
+        "price": 2750.0,
+        "tag_line": "High waist jeggings",
+        "usd_price": 39.0
+      }
+    }
+  }
+}
+
+const radhikaStoryData = [
+  {
+    image: "/assets/images/mimoto-2.jpg",
+    lead: "Once upon a time, One Indian girl, Radhika, lived and worked in New York",
+    para: "(And no, this is not the Radhika from Chetan Bhagat’s book. Although she is that smart, independent girl)"
+  },
+  {
+    image: "/assets/images/mimoto-3.jpg",
+    lead: "So, Radhika also shopped in New York.",
+    para: "She wore those impressive clothes to work, out at dinners or at fancy rooftops for work events !"
+  },
+  {
+    image: "/assets/images/mimoto-4.jpg",
+    lead: "A few years later Radhika moved back to India (new land of opportunity), and one day, she wanted to shop! But where could she?",
+    para: "There were so many options; International (mostly European) brands now in India, the e-commerce space was bursting with brands. In fact, there were many Indian brands too that" +
+    " promised to offer work-wear clothing."
+  },
+  {
+    image: "/assets/images/mimoto-5.jpg",
+    lead: "Enthusiastic and eager, One sunny weekend, Radhika stepped out to shop and visited the mall. A plush mall with so many brands, excited, Radhika enters the first store...",
+    para: false
+  }
+]

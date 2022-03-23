@@ -1,0 +1,38 @@
+[
+  {
+    "category": "ABOUT SALT",
+    "title": "Why Custom & Tailored Clothing?",
+    "img": "/assets/images/made-to-measure_800.jpg",
+    "link": "/blog/about-salt/why-custom-tailored-clothing"
+  },
+  {
+    "category": "ABOUT SALT",
+    "title": "Styling Services",
+    "img": "/assets/images/styling_service_800.jpg",
+    "link": "/blog/about-salt/styling-service"
+  },
+  {
+    "category": "ABOUT SALT",
+    "title": "Free Alterations",
+    "img": "/assets/images/free_alteration_800.jpg",
+    "link": "/blog/about-salt/free-alteration"
+  },
+  {
+    "category": "ABOUT SALT",
+    "title": "Premium Fabric & Quality",
+    "img": "/assets/images/premium_fabric_quality_800.jpg",
+    "link": "/blog/about-salt/premium-fabric-quality"
+  },
+  {
+    "category": "ABOUT SALT",
+    "title": "No Inventory, No Mass Production",
+    "img": "/assets/images/minimal-wasteage_800.jpg",
+    "link": "/blog/about-salt/no-inventory-no-mass-production"
+  },
+  {
+    "category": "ABOUT SALT",
+    "title": "Ethical & Fair Treatment",
+    "img": "/assets/images/ethical-fair_800.jpg",
+    "link": "/blog/about-salt/ethical-fair-treatment"
+  }
+]

@@ -1,11 +1,7 @@
 import React from 'react';
 
-const Index = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+function HomePageIndex() {
+    return ( <>Home Page Index</> );
+}
 
-export default Index;
+export default HomePageIndex;

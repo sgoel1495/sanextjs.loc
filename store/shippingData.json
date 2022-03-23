@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "icon": "/assets/images/free_shipping.svg",
+    "question": "DO YOU SHIP WITHIN INDIA?",
+    "answers": [
+      {
+        "para": "6-10 day free shipping policy within India on orders above INR 1000.",
+        "check": true
+      },
+      {
+        "para": "If you need a delivery earlier or at a particular date, please contact us at care@saltattire.com OR Call OR Whatsapp Message us at 18002709515 after placing your order.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "icon": "/assets/images/overseas_shipping.svg",
+    "question": "DO YOU SHIP OVERSEAS?",
+    "answers": [
+      {
+        "para": "International Shipping charges will apply. These will be calculated at the time of checkout.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "icon": "/assets/images/shipping_time.svg",
+    "question": "WHY IS THE DELIVERY TIME 6-10 DAYS?",
+    "answers": [
+      {
+        "para": "All our garments are made especially for you. When you place an order, the garments are tailor made just for you. Hence the longer delivery time. However, if you need the items to be delivered to you on or before a certain date, then please ||'/salt/contact-us',Contact Us||",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "icon": "/assets/images/status.svg",
+    "question": "HOW DO I KNOW THE STATUS OF MY ORDER?",
+    "answers": [
+      {
+        "para": "We will send you an email when your order is being made and an email with the tracking details once your order has been shipped. If you do not receive any email within a week of placing your order, please ***contactus***",
+        "check": true
+      },
+      {
+        "para": "You can always check your order status by selecting ***signin*** clicking Track My Order or Contact Us.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "icon": "/assets/images/tracking.svg",
+    "question": "HOW DO I TRACK MY ORDER ONCE IT HAS BEEN SHIPPED?",
+    "answers": [
+      {
+        "para": "Once your order has been shipped, an Email will be sent to you with the Order Tracking Details.",
+        "check": true
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "icon": "/assets/images/long_time.svg",
+    "question": "HOW LONG WILL IT TAKE FOR MY ORDER TO REACH ME?",
+    "answers": [
+      {
+        "para": "International: Please allow 10-15 day shipping time",
+        "check": true
+      },
+      {
+        "para": "Domestic Orders: It will take 2-4 days for your Salt Attire to reach you, after it has been shipped",
+        "check": true
+      }
+    ]
+  }
+]
