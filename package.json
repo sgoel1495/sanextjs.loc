@@ -5,7 +5,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "heroku-postbuild": "npm run build",
     "lint": "next lint"
+  },
+  "engines": {
+    "node": "16.x"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.3",
