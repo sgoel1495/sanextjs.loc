@@ -14,6 +14,7 @@ import ShopByLooksSwiper from "../components/swipers/ShopByLooksSwiper";
 import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper";
 import CategorySection from "../components/category-section/categorySection";
 import NewArrivalsSection from "../components/new-Arrivals"
+import LooksSection from "../components/looks-section"
 
 /**
  * @todo assign mobile view and browser view
@@ -34,6 +35,7 @@ function RootPage() {
     const mobileView = <Fragment>
         <CategorySection/>
         <NewArrivalsSection/>
+        <LooksSection/>
     </Fragment>;
 
     const browserView = <Fragment>
