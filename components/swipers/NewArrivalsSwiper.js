@@ -3,13 +3,13 @@
  * @constructor
  */
 
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import BlockHeader from "../common/blockHeader";
-import {Swiper, SwiperSlide} from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination"
 import "swiper/css/navigation"
-import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
+import SwiperCore, { Pagination, Navigation, Autoplay } from 'swiper';
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
@@ -19,7 +19,7 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 function NewArrivalsSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
     const resp = useApiCall("getProducts", dataStore.apiToken, {category: "new-arrivals"});
     const [data, setData] = useState(null);
@@ -53,27 +53,29 @@ function NewArrivalsSwiper(props) {
 
 
     const mobileView = (
-        <section className={"newArrivals"}>
+        <section className={"newArrivals bg-[#e8e2df]"}>
             <Swiper
-                slidesPerView={1.2}
-                spaceBetween={5}
+                slidesPerView={1.25}
                 navigation={false}
             >
                 {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            <a href={item.link} className={"flex flex-col gap-5 items-center"}>
-                                <span className="relative h-[300px] aspect-square">
+                            <a href={item.link} className={"block rounded-3xl overflow-hidden mx-4"}>
+                                <span className="block relative h-64 w-full">
                                     <Image
                                         src={item.url}
+                                        alt={item.name}
                                         layout="fill"
                                         objectFit="cover"
                                     />
                                 </span>
-                                <div className={"text-center"}>
-                                    <h5 className={'text-h5 font-600'}>{item.name}</h5>
-                                    <p className="text-sm tracking-wide">{item.tag}</p>
-                                    <p className="text-sm tracking-wide">{currSymbol}{item.price}</p>
+                                <div className={"bg-white flex items-center py-6 px-4"}>
+                                    <div className='flex-1 leading-none'>
+                                        <h5 className={'text-h5 font-600 font-cursive italic'}>{item.name}</h5>
+                                        <p className="text-[8.5px] font-600 text-black/70 uppercase tracking-widest">{item.tag}</p>
+                                    </div>
+                                    <p className="text-sm tracking-wide text-black/70">{currSymbol}{item.price}</p>
                                 </div>
                             </a>
                         </SwiperSlide>
