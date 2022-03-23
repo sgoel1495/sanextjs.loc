@@ -5,8 +5,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "heroku-postbuild": "npm run build",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "16.x"
+  }
   "dependencies": {
     "jsdoc": "^3.6.7",
     "next": "12.0.7",
