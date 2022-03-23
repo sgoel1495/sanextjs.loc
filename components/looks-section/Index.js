@@ -10,12 +10,11 @@ const Index = () => {
     const resp = useApiCall("getLookSection", dataStore.apiToken);
     return (
         <div className={"py-4 bg-[#f5efea]"}>
-            <p>Looks</p>
-            <p>handpicked for you</p>
-            {
-                resp && resp.response &&
+            <h3 className='text-h3 text-[#96c7d0] font-900 uppercase tracking-widest mx-4'>Looks</h3>
+            <h3 className='text-h3 text-[#96c7d0] font-cursive italic leadding-none tracking-wider mx-4 mb-4'>Handpicked for you</h3>
+            {resp && resp.response &&
                 <>
-                    <section className={"newArrivals"}>
+                    <section className={"newArrivals mb-5"}>
                         <Swiper
                             slidesPerView={1.2}
                             spaceBetween={5}
@@ -24,17 +23,18 @@ const Index = () => {
                             {resp.response.look_top_view.map((item, index) => {
                                 return (
                                     <SwiperSlide key={index}>
-                                        <a href={item.link} className={"flex flex-col gap-5 items-center"}>
+                                        <a href={item.link} className={"block rounded-3xl overflow-hidden mx-4"}>
                                             <span className="block relative h-[300px] aspect-square">
                                                 <Image
                                                     src={WEBASSETS + item.img_path}
+                                                    alt={item.name}
                                                     layout="fill"
                                                     objectFit="cover"
                                                 />
                                             </span>
-                                            <div className={"text-center"}>
-                                                <h5 className={'text-h5 font-600'}>{item.name}</h5>
-                                                <p className="text-sm tracking-wide">{item.details.split(',').join(' . ')}</p>
+                                            <div className={"bg-white text-center py-6 px-4 leading-none"}>
+                                                <h5 className={'text-h5 font-600 font-cursive italic'}>{item.name}</h5>
+                                                <p className="text-[10px] font-600 text-black/70 uppercase tracking-widest">{item.details.split(',').join(' . ')}</p>
                                             </div>
                                         </a>
                                     </SwiperSlide>
@@ -42,8 +42,8 @@ const Index = () => {
                             })}
                         </Swiper>
                     </section>
-                    <span className={"py-4"}>Popular Looks</span>
-                    <div className={"grid grid-cols-2 grid-rows-3 p-8 overflow-hidden"}>
+                    <span className='font-cursive italic leading-none text-2xl text-black/80 mb-5 block text-center'>Popular Looks</span>
+                    <div className={"grid grid-cols-2 grid-rows-3 px-5 overflow-hidden mb-4"}>
                         {resp.response.look_bottom_view.slice(0, 5).map((item, index) => {
                             let style = "";
                             switch (index) {
@@ -64,13 +64,13 @@ const Index = () => {
                                     break;
                             }
                             return <span className={"relative h-full aspect-square overflow-hidden box-shadow-lg " + style} key={index}>
-                                <Image src={WEBASSETS + item.img_path} layout={`fill`} objectFit={`cover`} />
+                                <Image src={WEBASSETS + item.img_path} alt='looks' layout={`fill`} objectFit={`cover`} />
                             </span>
                         })}
-                        <span className={"relative h-full"}>
-                            <p>Tap to see more</p>
-                            <p>ALL LOOKS SECTION</p>
-                        </span>
+                        <div className={"relative h-full grid place-items-center text-center content-center"}>
+                            <p className='text-[20px] font-600 font-cursive italic leading-none'>Tap to see more</p>
+                            <p className="text-[10px] font-600 text-black/70 uppercase tracking-widest">ALL LOOKS SECTION</p>
+                        </div>
                     </div>
                 </>
             }
