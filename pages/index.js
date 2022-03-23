@@ -15,6 +15,7 @@ import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper
 import CategorySection from "../components/category-section/categorySection";
 import NewArrivalsSection from "../components/new-Arrivals"
 import LooksSection from "../components/looks-section"
+import Collections from "../components/collections"
 
 /**
  * @todo assign mobile view and browser view
@@ -36,6 +37,7 @@ function RootPage() {
         <CategorySection/>
         <NewArrivalsSection/>
         <LooksSection/>
+        <Collections/>
     </Fragment>;
 
     const browserView = <Fragment>
