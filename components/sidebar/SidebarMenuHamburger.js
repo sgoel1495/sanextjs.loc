@@ -213,14 +213,10 @@ navigationData.push(
         link: `/get-appointment`
     },
     {
-        title: ``,
-        description: ``,
-        link: `#`
-    },
-    {
         title: `SHIPPING & RETURNS`,
         description: ``,
-        link: `/salt/shipping-returns`
+        link: `/salt/shipping-returns`,
+        style:"mt-12"
     },
     {
         title: `CANCELLATION & MODIFICATIONS`,
@@ -261,7 +257,7 @@ navigationData.push(
 const SelfLink = (props) => {
     return (
         <Link href={props.link}>
-            <a className={`block px-4 py-3 text-black/70 hover:bg-black/5`}>
+            <a className={`block px-4 py-3 text-black/70 hover:bg-black/5 ` + [props.style ? props.style:""]}>
                 <span className={`block leading-none`}>
                     {props.title}
                     {props.new && <NewTag/>}
@@ -343,7 +339,7 @@ function HamburgerModal(props) {
                         </svg>
                     </button>
                 </div>
-                <div className={`flex-1 overflow-y-auto font-500`}>
+                <div className={`flex-1 overflow-y-auto font-500 pb-40`}>
                     {navigationData.map((item, index) => (
                         <>
                             {item.child
@@ -360,6 +356,7 @@ function HamburgerModal(props) {
                                     title={item.title}
                                     description={item.description}
                                     new={item.new}
+                                    style={item.style}
                                 />
                             }
                         </>
