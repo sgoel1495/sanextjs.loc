@@ -9,7 +9,7 @@ import appSettings from "../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
 import BlockHeader from "../../components/common/blockHeader";
-import WishListButton from "../../components/common/wishListButton";
+import WishListButton from "../../components/common/WishListButton";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>

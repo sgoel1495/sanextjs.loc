@@ -231,7 +231,7 @@ function CartModal(props) {
                         />
                     </span>
                     <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
-                    <p className={`text-sm mb-4`}>There is nothing in your cart. Let's add some items.</p>
+                    <p className={`text-sm mb-4`}>There is nothing in your cart. Let&apos;s add some items.</p>
                     <Link href="/new-arrivals/all">
                         <a className="underline uppercase text-sm">Continue Shopping</a>
                     </Link>

@@ -47,10 +47,11 @@ function InstagramStoriesSwiper(props) {
                 {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            <a href={item} className={"block"} target="_blank">
+                            <a href={item} className={"block"} target="_blank" rel="noreferrer">
                                 <span className={"block relative h-[270px] w-full"}>
                                     <Image
                                         src={item}
+                                        alt="instagram_story"
                                         layout="fill"
                                         objectFit="cover"
                                     />

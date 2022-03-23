@@ -78,6 +78,7 @@ function MediaBuzzSwiper(props) {
                                 <span className="relative h-[140px] w-full grayscale hover:grayscale-0">
                                     <Image
                                         src={item.image}
+                                        alt={item.title}
                                         layout="fill"
                                         objectFit="contain"
                                     />

@@ -30,7 +30,7 @@ function OurDesignPage(){
         setTimeout(() => {
             scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
         }, 500)
-    },[]);
+    },[scrollToRef]);
 
 
     const mobileView = null;

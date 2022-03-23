@@ -112,6 +112,7 @@ function NewArrivalsSwiper(props) {
                                 <span className="relative h-[606px] w-full">
                                     <Image
                                         src={item.url}
+                                        alt={item.name}
                                         layout="fill"
                                         objectFit="cover"
                                     />

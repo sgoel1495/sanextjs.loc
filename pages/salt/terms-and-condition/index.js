@@ -32,22 +32,22 @@ function TermsAndConditionPage() {
 
     const browserView = (
         <div className={`flex flex-col gap-y-8 text-justify w-1/2 mx-auto text-[#777]`}>
-            <p>Welcome to <span className={`underline`}>saltattire.com</span> website (hereinafter the "Website").</p>
+            <p>Welcome to <span className={`underline`}>saltattire.com</span> website (hereinafter the &quot;Website&quot;).</p>
             <p>
-                PLEASE READ THE FOLLOWING TERMS AND CONDITIONS OF USE OF THE WEBSITE (HEREINAFTER THE "TERMS OF USE")
+                PLEASE READ THE FOLLOWING TERMS AND CONDITIONS OF USE OF THE WEBSITE (HEREINAFTER THE &quot;TERMS OF USE&quot;)
                 CAREFULLY BEFORE USING THE WEBSITE.
             </p>
             <p>The Terms of Use govern the access to, and use of, the Website.</p>
             <p>
                 Use of the Website implies the full acceptance of these Terms of Use and all guidelines and rules, and
                 acknowledgement of their relevant mandatory nature. You are only authorized to use the Website if you agree
-                to abide by all applicable laws and the terms of these Terms of Use. If you ( "User") do not agree to be
+                to abide by all applicable laws and the terms of these Terms of Use. If you ( &quot;User&quot;) do not agree to be
                 bound by these Terms of Use and to follow all applicable laws, you should not proceed with using the
                 Services.
             </p>
             <p>
                 Saltattire reserves the right, at its sole discretion, to modify these Terms of Use from time to time. We
-                will post the revised Terms of Use on this Website and update the "Last Updated" date to reflect the
+                will post the revised Terms of Use on this Website and update the &quot;Last Updated&quot; date to reflect the
                 date of the changes. Please consult these Terms of Use regularly. The use of the Website after such
                 modifications constitutes your full acceptance of the revised Terms of Use. If you do not agree with the
                 revised Terms of Use, please stop using the Website.
@@ -57,19 +57,19 @@ function TermsAndConditionPage() {
                 <p>
                     <span className={blockLeadStyle}>1.1</span> The Website and its contents are designed, operated and administered by Mimoto Technologies
                     Private Limited, with registered office in A-66 1St floor Gurunanakpura, VikasMargLaxmi Nagar,
-                    Delhi, Central Delhi, Delhi, India, 110092 (hereinafter "Saltattire", "we", "us", "our").
+                    Delhi, Central Delhi, Delhi, India, 110092 (hereinafter &quot;Saltattire&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;).
                 </p>
             </div>
             <div className={blockStyle}>
                 <p className={blockLeadStyle}>2. INTELLECTUAL PROPERTY RIGHTS</p>
                 <p>
-                    <span className={blockLeadStyle}>2.1</span> The terms "Website" and "Material" refer, respectively, by way of example, to the software
+                    <span className={blockLeadStyle}>2.1</span> The terms &quot;Website&quot; and &quot;Material&quot; refer, respectively, by way of example, to the software
                     design, implementation and use of the Website, the layout, structure and organization of the
                     contents of the Website, and to any Material reproduced therein and / or made available to the
                     public, including in particular the collection and organization of data and information,
                     photographs, images, illustrations, texts, video clips, musical compositions, audio clips, designs,
                     devices, logos, trademarks, distinctive elements so-called trade dress or any other Material
-                    reproduced and / or made available through this Website ("Material").
+                    reproduced and / or made available through this Website (&quot;Material&quot;).
                 </p>
                 <p>
                     <span className={blockLeadStyle}>2.2</span> All Materials on this Website, in whole and in part, including by way of example trademarks,
@@ -111,7 +111,7 @@ function TermsAndConditionPage() {
                 <p>
                     <span className={blockLeadStyle}>3.1</span> You acknowledge and agree that any proposals, projects, ideas, concepts, photographs,
                     contributions or any other content and material (with the exception of personal information)
-                    disclosed or sent to Saltattire through this Website or by other means ("Submitted Material") is not
+                    disclosed or sent to Saltattire through this Website or by other means (&quot;Submitted Material&quot;) is not
                     considered confidential. By submitting the Submitted Material you grant to Saltattire a royalty
                     free, non-exclusive, worldwide right to copy, reproduce, publish, disclose, distribute or otherwise
                     use, in whole or in part, the Submitted Material, for the entire term of protection thereof, for
@@ -162,9 +162,9 @@ function TermsAndConditionPage() {
                 </p>
             </div>
             <div className={blockStyle}>
-                <p className={blockLeadStyle}>5. AUTHENTICITY OF PRODUCTS BRANDED "SALTATTIRE"</p>
+                <p className={blockLeadStyle}>5. AUTHENTICITY OF PRODUCTS BRANDED &quot;SALTATTIRE&quot;</p>
                 <p>
-                    <span className={blockLeadStyle}>5.1 1</span> The products branded "Saltattire" promoted through the Website are made with the finest
+                    <span className={blockLeadStyle}>5.1 1</span> The products branded &quot;Saltattire&quot; promoted through the Website are made with the finest
                     materials, and they are all MADE IN INIDIA.
                 </p>
             </div>
@@ -172,7 +172,7 @@ function TermsAndConditionPage() {
                 <p className={blockLeadStyle}>6. EXCLUSION OF WARRANTIES</p>
                 <p>
                     <span className={blockLeadStyle}>6.1</span> TO THE EXTENT PERMITTED BY APPLICABLE LAW, THIS WEBSITE, ITS CONTENTS AND SERVICES ARE PROVIDED
-                    FREE OF CHARGE ON AN "AS IS" AND "AS AVAILABLE" BASIS. SALTATTIRE PROVIDES NO WARRANTY OR GUARANTEE
+                    FREE OF CHARGE ON AN &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; BASIS. SALTATTIRE PROVIDES NO WARRANTY OR GUARANTEE
                     IN CONNECTION WITH THIS WEBSITE, ITS CONTENT OR SERVICES, INCLUDING, BY WAY OF EXAMPLE, THAT IT WILL
                     ALWAYS BE AVAILABLE, WITHOUT INTERRUPTION OR ERRORS IN FUNCTIONING, OR THAT IT WILL BE SAFE FROM
                     MALICIOUS PROGRAMS (SUCH AS VIRUSES, BUGS, MALWARE OR SIMILAR), OR THAT IT IS SUITABILE FOR ANY
@@ -217,7 +217,7 @@ function TermsAndConditionPage() {
                 <p>
                     <span className={blockLeadStyle}>8.1</span> You agree to indemnify and hold us, and each of our subsidiaries and affiliates, and their
                     respective officers, agents, partners and employees, harmless from any loss, liability, claim, or
-                    demand, including reasonable attorneys' fees, made by any third party due to or arising out of your
+                    demand, including reasonable attorneys&apos; fees, made by any third party due to or arising out of your
                     use of the Website and the Services in violation of these Terms of Use and/or arising from a breach
                     of these Terms of Use and/or any breach of your representations and warranties set forth herein
                     and/or if any Submitted Material that is transmitted through the Services causes our liability to a

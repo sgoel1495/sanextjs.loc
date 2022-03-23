@@ -3,7 +3,7 @@ import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import Link from "next/link";
 import BlockHeader from "../common/blockHeader";
-import WishListButton from "../common/wishlistButton";
+import WishListButton from "../common/WishListButton";
 
 
 /**

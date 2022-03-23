@@ -1,7 +1,7 @@
 import React from 'react';
 import ParallaxBlock from "../common/ParallaxBlock";
-import {gsap} from "gsap";
-import {ScrollTrigger} from "gsap/dist/ScrollTrigger";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 /**
  * @todo @Sambhav css pls
@@ -14,8 +14,10 @@ function Fabric(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     let oldValue, newValue = 0;
-    const [scrollDirection, setScrollDirection] = React.useState(false)
-    const scrollController = e => {
+    const [scrollDirection, setScrollDirection] = React.useState(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    function scrollController(_e){
         newValue = window.pageYOffset;
         if (oldValue < newValue) {
             setScrollDirection(true)
@@ -27,7 +29,7 @@ function Fabric(props) {
 
     React.useEffect(() => {
         window.addEventListener('scroll', scrollController);
-    }, [scrollDirection]);
+    }, [scrollController, scrollDirection]);
 
     // GSAP Animation
     gsap.registerPlugin(ScrollTrigger);
@@ -87,7 +89,7 @@ function Fabric(props) {
                 <div className={`w-1/2 bg-white/70 p-6`}>
                     <p className={`px-10 font-cursive italic text-5xl text-[#794e4d]`}>Fabric</p>
                     <div className="bg-white/70 py-5 px-10 text-lg text-justify">
-                        <p className={`mb-5`}>After traveling across various markets in search for that perfect fabric,(We must've crossed over 10 million steps on fitbit too!), we brought together a
+                        <p className={`mb-5`}>After traveling across various markets in search for that perfect fabric,(We must&apos;ve crossed over 10 million steps on fitbit too!), we brought together a
                             selection of fabrics which are aesthetically pleasing, feel good on your skin and are very comfortable for all day wear.</p>
                         <p>These are of premium quality, lightweight and durable.</p>
                         <p>Our polyesters are light weight, all weather, easy to maintain and wrinkle free.</p>

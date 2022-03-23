@@ -18,12 +18,12 @@ function StylingServices(props) {
                 <Image src={WEBASSETS + "/assets/images/styling_service_800.jpg"} alt="Styling Service" layout={`fill`} objectFit={`cover`}/>
             </span>
             <p>
-                Need a Wardrobe Refresh or Need to decide what to wear for an event that's coming up?
+                Need a Wardrobe Refresh or Need to decide what to wear for an event that&apos;s coming up?
                 Not sure about the silhouette that will flatter you? or the color you should pick?
-                Well, we've got your back!We provide Styling Services too!
+                Well, we&apos;ve got your back!We provide Styling Services too!
                 Whether you need to pick for an event, your everyday clothing, or if you have any questions based on what style, color, or silhouette would suit you best, we have in-house stylists to
                 answer your queries.
-                <Link href="/get-appointment">
+                <Link href="/get-appointment" passHref>
                     <b><u>Book Your Free Styling Appointment in Store Now</u></b>
                 </Link>
                 , or Contact Us, email care@saltattire.com, call or whatsapp +91 9015904904 for a Virtual Styling Session!

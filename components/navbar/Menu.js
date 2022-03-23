@@ -61,7 +61,7 @@ function Menu(props) {
             )
                 setData(resp.response);
         }
-    }, [resp]);
+    }, [props.source, resp]);
 
 
     const actualData = [];
