@@ -5,7 +5,7 @@ import ExploreNewArrivals from "./ExploreNewArrivals";
 const Index = (props) => {
     return (
         <div className={"py-2"}>
-            <span>NEW ARRIVALS</span>
+            <span className='font-600 uppercase text-2xl tracking-wider'>NEW ARRIVALS</span>
             <NewArrivalsSwiper isMobile={true}/>
             <ExploreNewArrivals/>
         </div>
