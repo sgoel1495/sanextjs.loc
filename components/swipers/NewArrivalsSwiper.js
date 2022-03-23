@@ -22,7 +22,6 @@ function NewArrivalsSwiper(props) {
     const {dataStore} = useContext(AppWideContext);
 
     const resp = useApiCall("getProducts", dataStore.apiToken, {category: "new-arrivals"});
-    console.log(resp)
     const [data, setData] = useState(null);
     useEffect(() => {
         if (resp
