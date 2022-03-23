@@ -13,7 +13,7 @@ import MediaBuzzSwiper from "../components/swipers/MediaBuzzSwiper";
 import ShopByLooksSwiper from "../components/swipers/ShopByLooksSwiper";
 import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper";
 import CategorySection from "../components/category-section/categorySection";
-
+import NewArrivalsSection from "../components/new-Arrivals"
 
 /**
  * @todo assign mobile view and browser view
@@ -33,6 +33,7 @@ function RootPage() {
 
     const mobileView = <Fragment>
         <CategorySection/>
+        <NewArrivalsSection/>
     </Fragment>;
 
     const browserView = <Fragment>

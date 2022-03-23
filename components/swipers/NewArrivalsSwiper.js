@@ -21,18 +21,18 @@ function NewArrivalsSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
 
-    const resp = useApiCall("getProducts",dataStore.apiToken,{category: "new-arrivals"});
-
-    const [data,setData] = useState(null);
-    useEffect(()=>{
-        if(resp
+    const resp = useApiCall("getProducts", dataStore.apiToken, {category: "new-arrivals"});
+    console.log(resp)
+    const [data, setData] = useState(null);
+    useEffect(() => {
+        if (resp
             && resp.hasOwnProperty("status")
             && resp.status == 200
             && resp.hasOwnProperty("response")
             && resp.response.hasOwnProperty("data")
         )
             setData(resp.response.data);
-    },[resp]);
+    }, [resp]);
 
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
@@ -40,29 +40,49 @@ function NewArrivalsSwiper(props) {
 
     const actualData = [];
 
-    if(data && data.length > 0){
-        data.forEach(ele=>{
-            if(props.isMobile)
-                actualData.push({
-                    link: "/" + ele.asset_id,
-                    url: WEBASSETS + ele.double_view_img,
-                    name: ele.name,
-                    tag: ele.tag_line,
-                    price: currSymbol + ((currCurrency=="inr")?ele.price:ele.usd_price)
-                });
-            else
-                actualData.push({
-                    link: "/" + ele.asset_id,
-                    url: WEBASSETS + ele.single_view_img,
-                    name: ele.name,
-                    tag: ele.tag_line,
-                    price:  (currCurrency=="inr")?ele.price:ele.usd_price
-                });
+    if (data && data.length > 0) {
+        data.forEach(ele => {
+            actualData.push({
+                link: "/" + ele.asset_id,
+                url: WEBASSETS + ele.single_view_img,
+                name: ele.name,
+                tag: ele.tag_line,
+                price: (currCurrency == "inr") ? ele.price : ele.usd_price
+            });
         });
     }
 
 
-    const mobileView = null;
+    const mobileView = (
+        <section className={"newArrivals"}>
+            <Swiper
+                slidesPerView={1.2}
+                spaceBetween={5}
+                navigation={false}
+            >
+                {actualData.map((item, index) => {
+                    return (
+                        <SwiperSlide key={index}>
+                            <a href={item.link} className={"flex flex-col gap-5 items-center"}>
+                                <span className="relative h-[300px] aspect-square">
+                                    <Image
+                                        src={item.url}
+                                        layout="fill"
+                                        objectFit="cover"
+                                    />
+                                </span>
+                                <div className={"text-center"}>
+                                    <h5 className={'text-h5 font-600'}>{item.name}</h5>
+                                    <p className="text-sm tracking-wide">{item.tag}</p>
+                                    <p className="text-sm tracking-wide">{currSymbol}{item.price}</p>
+                                </div>
+                            </a>
+                        </SwiperSlide>
+                    )
+                })}
+            </Swiper>
+        </section>
+    );
 
     const browserView = (
         <section className={"newArrivals"}>
