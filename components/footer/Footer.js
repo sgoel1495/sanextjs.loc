@@ -4,14 +4,14 @@
  */
 
 import Link from "next/link";
-import React, { createRef, Fragment, useContext, useState } from 'react';
+import React, {createRef, Fragment, useContext, useState} from 'react';
 import isValidEmail from "../../helpers/isValidEmail";
-import { apiCall } from "../../helpers/apiCall";
+import {apiCall} from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 
 function Footer(props) {
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const newsletterRef = createRef();
 
     const [toastMessage, setToastMessage] = useState(null);
@@ -24,7 +24,7 @@ function Footer(props) {
         const newEmail = newsletterRef.current.value;
         console.log("EMAIL", newEmail);
         if (isValidEmail(newEmail)) {
-            const resp = await apiCall("addExclusiveUser", dataStore.apiToken, { email: newEmail });
+            const resp = await apiCall("addExclusiveUser", dataStore.apiToken, {email: newEmail});
             if (resp.hasOwnProperty("msg"))
                 setToastMessage({
                     title: "Signup Status",
@@ -34,7 +34,66 @@ function Footer(props) {
     }
 
 
-    const mobileView = null;
+    const mobileView = (
+        <footer className="bg-[#222222] py-2">
+            <h2 className={"text-5xl font-bold text-[#6C93E5] text-center tracking-[-3.5px] pt-10 pb-12"}>Hi there!</h2>
+            <div className="px-[10%] pb-[15%] text-white text-sm">
+                <h5>
+                    Get on Our List For More!
+                    <br/><br/>
+                    Sign Up for new looks, insider styling tips, exclusive offers and more.
+                </h5>
+                <input className={"my-5"}/>
+                <h5>
+                    By entering your email, you agree to our
+                    <br/>
+                    <strong>
+                        <a href={"/salt/terms-and-condition"}>
+                            <span className="underline">Terms Conditions</span>
+                        </a>&nbsp;+&nbsp;
+                        <a href={"/salt/privacy-policy"}>
+                            <span className="underline">Privacy Policy</span>
+                        </a>
+                    </strong>
+                    , including receipt of emails and promotions. You can unsubscribe at any time.
+                </h5>
+            </div>
+            <h2 className={"text-5xl font-bold text-[#6C93E5] text-center tracking-[-3px] pt-10 pb-12"}>Want to ask us something ?</h2>
+            <div className="px-[10%] pb-5 text-white text-xl text-center font-bold tracking-[-0.5px]">
+                We will get back to you
+                <br/>
+                within 24 hours.
+            </div>
+            <div className="text-center pb-5">
+                <button className="bg-[#c89e72] text-sm px-16 py-4 font-bold tracking-[2px]">
+                    CONTACT US
+                </button>
+            </div>
+            <div className="text-center text-white p-[4%]">
+                <div className="p-[1%]">
+                    <h6 className={"font-bold"}>Call us</h6>
+                    <p className={"my-4"}>18002709515</p>
+                </div>
+                <div className="text-xs pb-4 font-bold">
+                    <p>Mon to Fri - 9:00 am to 7:00 pm <br/> Sat - 9:00 am to 2:00 pm</p>
+                </div>
+                <div className="p-[1%]">
+                    <h6 className={"font-bold"}>Email us</h6>
+                    <p className={"my-4"}>care@saltattire.com</p>
+                </div>
+            </div>
+            <ul className="font-semibold text-xs pt-1 pb-3 text-[#cccccc] tracking-[2px] text-center">
+                <li className="border-y border-[#666666] py-5">
+                    <a href={"/salt/shipping-returns"}>RETURNS</a>
+                </li>
+
+                <li className="border-b border-[#666666] py-5">
+                    <a href={"/salt/contact-us"}>CONTACT US</a>
+                </li>
+            </ul>
+
+        </footer>
+    );
     const blockHeader = "font-500 mb-2 leading-none";
     const focusStyle = "focus:ring-offset-0 focus:ring-0";
     const browserView = (
@@ -44,16 +103,16 @@ function Footer(props) {
                 <p className={"mb-4 font-300"}>Sign Up for new looks, insider styling tips, exclusive offers and more.</p>
                 <form className={"flex items-stretch mb-4"}>
                     <input ref={newsletterRef} className={"px-1 py-2 w-3/5 border border-black focus:border-black " + focusStyle} type="text"
-                        name="signup_email" id="signup_email" placeholder="Email Address" />
+                           name="signup_email" id="signup_email" placeholder="Email Address"/>
                     <button className={"bg-black text-white px-10"} type="button" name="signup_btn" onClick={newsletterSignup}>+</button>
                 </form>
                 <p className="font-300">
-                    By entering your email, you agree to our<br />
-                    <Link href="/salt/terms-and-condition" passHref>
+                    By entering your email, you agree to our<br/>
+                    <Link href={"/salt/terms-and-condition"} passHref>
                         <span className={"font-500 text-black underline"}>Terms &amp; Conditions</span>
                     </Link>
                     <span className={"font-500 text-black"}>+</span>
-                    <Link href="/salt/privacy-policy" passHref>
+                    <Link href={"/salt/privacy-policy"} passHref>
                         <span className={"font-500 text-black underline"}>Privacy Policy</span>
                     </Link>
                     , including receipt of emails and promotions. You can unsubscribe at any time.
@@ -64,27 +123,27 @@ function Footer(props) {
                     <h6 className={blockHeader}>CUSTOMER SERVICE</h6>
                     <ul className="font-300">
                         <li key="shipping-returns">
-                            <Link href="/salt/shipping-returns"><a target="_blank">
+                            <Link href={"/salt/shipping-returns"}><a target="_blank">
                                 Shipping &amp; Returns
                             </a></Link>
                         </li>
                         <li key="cancellation-modifications">
-                            <Link href="/salt/cancellation-modifications"><a target="_blank">
+                            <Link href={"/salt/cancellation-modifications"}><a target="_blank">
                                 Cancellation &amp; Modifications
                             </a></Link>
                         </li>
                         <li key="faq">
-                            <Link href="/salt/faq"><a target="_blank">
+                            <Link href={"/salt/faq"}><a target="_blank">
                                 FAQ
                             </a></Link>
                         </li>
                         <li key="sitemap">
-                            <Link href="/salt/sitemap"><a target="_blank">
+                            <Link href={"/salt/sitemap"}><a target="_blank">
                                 Site Map
                             </a></Link>
                         </li>
                         <li key="contact-us">
-                            <Link href="/salt/contact-us"><a target="_blank">
+                            <Link href={"/salt/contact-us"}><a target="_blank">
                                 Contact Us
                             </a></Link>
                         </li>
@@ -94,12 +153,12 @@ function Footer(props) {
                     <h6 className={blockHeader}>LEGAL &amp; COOKIES</h6>
                     <ul className="font-300">
                         <li key="terms-and-condition">
-                            <Link href="/salt/terms-and-condition"><a target="_blank">
+                            <Link href={"/salt/terms-and-condition"}><a target="_blank">
                                 Terms &amp; Conditions
                             </a></Link>
                         </li>
                         <li key="privacy-policy">
-                            <Link href="/salt/privacy-policy"><a target="_blank">
+                            <Link href={"/salt/privacy-policy"}><a target="_blank">
                                 Privacy Policy
                             </a></Link>
                         </li>
@@ -112,7 +171,7 @@ function Footer(props) {
                             <a className={"block text-center flex flex-col items-center"} href="https://www.instagram.com/saltattire" target="_blank" rel="noreferrer">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 text-black" fill="currentColor" viewBox="0 0 448 512">
                                     <path
-                                        d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+                                        d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
                                 </svg>
                                 <span className={"block font-300"}>Instagram</span>
                             </a>
@@ -121,7 +180,7 @@ function Footer(props) {
                             <a className={"block text-center flex flex-col items-center"} href="https://www.facebook.com/saltattire" target="_blank" rel="noreferrer">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 text-black" fill="currentColor" viewBox="0 0 320 512">
                                     <path
-                                        d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
+                                        d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/>
                                 </svg>
                                 <span className="block font-300">Facebook</span>
                             </a>
@@ -130,7 +189,7 @@ function Footer(props) {
                             <a className={"block text-center flex flex-col items-center"} href="https://twitter.com/saltattire" target="_blank" rel="noreferrer">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 text-black" fill="currentColor" viewBox="0 0 512 512">
                                     <path
-                                        d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z" />
+                                        d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/>
                                 </svg>
                                 <span className="block font-300">Twitter</span>
                             </a>
@@ -139,7 +198,7 @@ function Footer(props) {
                             <a className={"block text-center flex flex-col items-center"} href="https://plus.google.com/113620197761223008326" target="_blank" rel="noreferrer">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 text-black" fill="currentColor" viewBox="0 0 640 512">
                                     <path
-                                        d="M386.061 228.496c1.834 9.692 3.143 19.384 3.143 31.956C389.204 370.205 315.599 448 204.8 448c-106.084 0-192-85.915-192-192s85.916-192 192-192c51.864 0 95.083 18.859 128.611 50.292l-52.126 50.03c-14.145-13.621-39.028-29.599-76.485-29.599-65.484 0-118.92 54.221-118.92 121.277 0 67.056 53.436 121.277 118.92 121.277 75.961 0 104.513-54.745 108.965-82.773H204.8v-66.009h181.261zm185.406 6.437V179.2h-56.001v55.733h-55.733v56.001h55.733v55.733h56.001v-55.733H627.2v-56.001h-55.733z" />
+                                        d="M386.061 228.496c1.834 9.692 3.143 19.384 3.143 31.956C389.204 370.205 315.599 448 204.8 448c-106.084 0-192-85.915-192-192s85.916-192 192-192c51.864 0 95.083 18.859 128.611 50.292l-52.126 50.03c-14.145-13.621-39.028-29.599-76.485-29.599-65.484 0-118.92 54.221-118.92 121.277 0 67.056 53.436 121.277 118.92 121.277 75.961 0 104.513-54.745 108.965-82.773H204.8v-66.009h181.261zm185.406 6.437V179.2h-56.001v55.733h-55.733v56.001h55.733v55.733h56.001v-55.733H627.2v-56.001h-55.733z"/>
                                 </svg>
                                 <span className="block font-300">Google+</span>
                             </a>
@@ -162,7 +221,7 @@ function Footer(props) {
                     <li key="visa">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8" fill="currentColor" viewBox="0 0 576 512">
                             <path
-                                d="M470.1 231.3s7.6 37.2 9.3 45H446c3.3-8.9 16-43.5 16-43.5-.2.3 3.3-9.1 5.3-14.9l2.8 13.4zM576 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48zM152.5 331.2L215.7 176h-42.5l-39.3 106-4.3-21.5-14-71.4c-2.3-9.9-9.4-12.7-18.2-13.1H32.7l-.7 3.1c15.8 4 29.9 9.8 42.2 17.1l35.8 135h42.5zm94.4.2L272.1 176h-40.2l-25.1 155.4h40.1zm139.9-50.8c.2-17.7-10.6-31.2-33.7-42.3-14.1-7.1-22.7-11.9-22.7-19.2.2-6.6 7.3-13.4 23.1-13.4 13.1-.3 22.7 2.8 29.9 5.9l3.6 1.7 5.5-33.6c-7.9-3.1-20.5-6.6-36-6.6-39.7 0-67.6 21.2-67.8 51.4-.3 22.3 20 34.7 35.2 42.2 15.5 7.6 20.8 12.6 20.8 19.3-.2 10.4-12.6 15.2-24.1 15.2-16 0-24.6-2.5-37.7-8.3l-5.3-2.5-5.6 34.9c9.4 4.3 26.8 8.1 44.8 8.3 42.2.1 69.7-20.8 70-53zM528 331.4L495.6 176h-31.1c-9.6 0-16.9 2.8-21 12.9l-59.7 142.5H426s6.9-19.2 8.4-23.3H486c1.2 5.5 4.8 23.3 4.8 23.3H528z" />
+                                d="M470.1 231.3s7.6 37.2 9.3 45H446c3.3-8.9 16-43.5 16-43.5-.2.3 3.3-9.1 5.3-14.9l2.8 13.4zM576 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48zM152.5 331.2L215.7 176h-42.5l-39.3 106-4.3-21.5-14-71.4c-2.3-9.9-9.4-12.7-18.2-13.1H32.7l-.7 3.1c15.8 4 29.9 9.8 42.2 17.1l35.8 135h42.5zm94.4.2L272.1 176h-40.2l-25.1 155.4h40.1zm139.9-50.8c.2-17.7-10.6-31.2-33.7-42.3-14.1-7.1-22.7-11.9-22.7-19.2.2-6.6 7.3-13.4 23.1-13.4 13.1-.3 22.7 2.8 29.9 5.9l3.6 1.7 5.5-33.6c-7.9-3.1-20.5-6.6-36-6.6-39.7 0-67.6 21.2-67.8 51.4-.3 22.3 20 34.7 35.2 42.2 15.5 7.6 20.8 12.6 20.8 19.3-.2 10.4-12.6 15.2-24.1 15.2-16 0-24.6-2.5-37.7-8.3l-5.3-2.5-5.6 34.9c9.4 4.3 26.8 8.1 44.8 8.3 42.2.1 69.7-20.8 70-53zM528 331.4L495.6 176h-31.1c-9.6 0-16.9 2.8-21 12.9l-59.7 142.5H426s6.9-19.2 8.4-23.3H486c1.2 5.5 4.8 23.3 4.8 23.3H528z"/>
                         </svg>
                     </li>
                     <li key="amex">
