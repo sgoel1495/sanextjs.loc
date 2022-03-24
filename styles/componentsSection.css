@@ -1,0 +1,18 @@
+#collectionSectionSwiper div .swiper-wrapper .swiper-slide a span {
+    max-width: 100%;
+    transition: all .25s ease-out;
+    transform: scale(.8);
+    transform-origin: center;
+}
+
+#collectionSectionSwiper div .swiper-wrapper .swiper-slide-active a span {
+    transform: scale(1);
+}
+
+#collectionSectionSwiper div .swiper-button-next{
+    margin-right: 15%;
+}
+
+#collectionSectionSwiper div .swiper-button-prev{
+    margin-left: 15%;
+}

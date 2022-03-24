@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
+import {Swiper, SwiperSlide} from "swiper/react";
 
 const Index = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const resp = useApiCall("getMarketingData", dataStore.apiToken);
     const currCurrency = dataStore.currCurrency;
 
@@ -26,11 +26,11 @@ const Index = () => {
                                 <h3 className='text-h3 text-[#df9796] font-900 uppercase tracking-widest mx-4'>{item['img_title']}</h3>
                                 <h3 className='text-h3 text-[#df9796] font-cursive italic leadding-none tracking-wider mx-4 leading-none sentence'>{item['img_sub_title']}</h3>
                                 <span className={"block relative w-full aspect-square -mt-5 mb-5"}>
-                                    <Image src={WEBASSETS + item['img_path']} alt='collection' layout={`fill`} objectFit={`cover`} />
+                                    <Image src={WEBASSETS + item['img_path']} alt='collection' layout={`fill`} objectFit={`cover`}/>
                                 </span>
                                 <p className='font-cursive italic leading-none text-2xl text-black/80 block text-center sentence'>{item['title']}</p>
                                 <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-600 tracking-widest'>{item['subtitle'][currCurrency]}</p>
-                                <div className={`py-5`}>
+                                <div className={`py-5`} id={"collectionSectionSwiper"}>
                                     <Swiper
                                         slidesPerView={2}
                                         spaceBetween={50}
@@ -46,12 +46,13 @@ const Index = () => {
                                             return (
                                                 <SwiperSlide key={i}>
                                                     <a href={item.products_links[i]} className={"block flex flex-col items-center gap-y-2"} target="_blank" rel="noreferrer">
-                                                        <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-sm bg-[#fffaf7]"}>
+                                                        <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
                                                             <Image
+
                                                                 src={WEBASSETS + product}
-                                                                alt={item.products_name[i]}
                                                                 layout="fill"
                                                                 objectFit="cover"
+                                                                alt={item.products_name[i]}
                                                             />
                                                         </span>
                                                         <span className={"text-[10px] text-[#8c8987] uppercase"}>{item.products_name[i]}</span>

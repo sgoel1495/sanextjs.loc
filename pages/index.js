@@ -13,9 +13,10 @@ import MediaBuzzSwiper from "../components/swipers/MediaBuzzSwiper";
 import ShopByLooksSwiper from "../components/swipers/ShopByLooksSwiper";
 import InstagramStoriesSwiper from "../components/swipers/InstagramStoriesSwiper";
 import CategorySection from "../components/category-section/categorySection";
-import NewArrivalsSection from "../components/new-Arrivals"
-import LooksSection from "../components/looks-section"
-import Collections from "../components/collections"
+import NewArrivalsSection from "../components/new-Arrivals/Index"
+import LooksSection from "../components/looks-section/Index"
+import Collections from "../components/collections/Index"
+import Preferences from "../components/preference-section/Index";
 
 /**
  * @todo assign mobile view and browser view
@@ -38,6 +39,7 @@ function RootPage() {
         <NewArrivalsSection/>
         <LooksSection/>
         <Collections/>
+        <Preferences/>
     </Fragment>;
 
     const browserView = <Fragment>
