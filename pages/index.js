@@ -19,6 +19,7 @@ import Collections from "../components/collections/Index"
 import Preferences from "../components/preference-section/Index";
 import OurShop from "../components/our-shop/Index"
 import AboutUs from '../components/about-us-section/Index'
+import OurStores from '../components/our-stores/Index'
 
 /**
  * @todo assign mobile view and browser view
@@ -44,6 +45,7 @@ function RootPage() {
         <Collections/>
         <Preferences/>
         <AboutUs/>
+        <OurStores/>
     </Fragment>;
 
     const browserView = <Fragment>
