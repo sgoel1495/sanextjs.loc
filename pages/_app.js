@@ -1,9 +1,9 @@
 /**
  * @todo OPTIONAL At the API server, you can restrict the token call only from the webserver ip for security
  */
-import '../styles/globals.css';
+import '../styles/globals.scss';
 import '../styles/variables.css';
-import '../styles/componentsSection.css';
+import '../styles/componentsSection.scss';
 import AppWideContext from "../store/AppWideContext";
 import React, {useEffect, useState, useCallback} from 'react';
 import {apiDictionary} from "../helpers/apiDictionary";

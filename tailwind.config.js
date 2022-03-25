@@ -6,6 +6,11 @@ module.exports = {
         "./pages/**/*.{js,ts,jsx,tsx}",
         "./components/**/*.{js,ts,jsx,tsx}",
     ],
+    safelist: [
+        {
+            pattern: /text-/,
+        },
+    ],
     theme: {
         fontFamily: {
             sans: ['Acherus Grotesque', 'sans-serif'], //100, 200, 300, 400, 500, 700, 800, 900
