@@ -1,0 +1,17 @@
+.collectionSectionSwiper div {
+    .swiper-wrapper .swiper-slide a span {
+        @apply scale-90 duration-300;
+    }
+
+    .swiper-wrapper .swiper-slide-active a span {
+        @apply scale-100 duration-300;
+    }
+
+    .swiper-button-next {
+        @apply mr-12 scale-[.6] opacity-50;
+    }
+
+    .swiper-button-prev {
+        @apply ml-12 scale-[.6] opacity-50;
+    }
+}
