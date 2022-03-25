@@ -1,193 +1,178 @@
 import React from 'react';
 import Image from "next/image";
 
+const ImageBlock = props => {
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    return (
+        <div className={`relative h-[70vw] border-white border-4 shadow-sm` + [props.style]}>
+            <Image
+                src={WEBASSETS + props.src}
+                alt={props.alt}
+                layout={`fill`}
+                objectFit={`cover`}
+            />
+        </div>
+    )
+};
+
+const blockLeadClass = "block font-cursive italic leading-[.75] text-4xl";
+const blockLeadParaClass = "block font-cursive italic leading-[.75] text-h2";
+const blockChildClass = "uppercase tracking-wider text-[10px] leading-none";
+
+
 const Index = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     return (
         <div className="bg-[#e5d5c5] py-10">
-            <span className="block uppercase tracking-wider text-3xl text-white px-5 font-black">about us</span>
-            <span className="block uppercase text-white px-5">Why, How & What ?</span>
-            <a href={"/blog/about-salt/why-custom-tailored-clothing"} className={"flex"}>
-                <div className="pr-6 flex-1">
-                    <span className={"block"}>
-                        Uniquely made for you!
-                    </span>
-                    <span className={"block uppercase"}>
-                        tailored to your measurements
-                    </span>
-                    <span className={"block uppercase"}>
-                        customize attire to your taste
-                    </span>
-                    <span className={"block uppercase"}>
-                        celebrate your uniqueness
-                    </span>
+            <h2 className="text-h2 font-900 uppercase text-white tracking-widest mx-4">about us</h2>
+            <h2 className="text-h2 font-600 text-white font-cursive italic leading-none mx-4 mb-5">Why, How & What ?</h2>
+            <a href={"/blog/about-salt/why-custom-tailored-clothing"} className={"grid grid-cols-2"}>
+                <div className="text-right flex flex-col justify-evenly pr-5">
+                    <div>
+                        <p className={blockLeadClass}>Uniquely</p>
+                        <p className={blockLeadParaClass}>made for you!</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>tailored to <span className='font-900'>your</span></p>
+                        <p>measurements</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>customize attire</p>
+                        <p>to <span className='font-900'>your</span> taste</p>
+                    </div>
+                    <div className={blockChildClass + " font-900"}>
+                        <p>celebrate your</p>
+                        <p>uniqueness</p>
+                    </div>
                 </div>
-                <span className={"block relative flex-1 h-[71vw] w-full"}>
-                    <Image src={WEBASSETS + "/assets/images/made-to-measure_800.jpg"} layout={`fill`} objectFit={`cover`}/>
-                </span>
+                <ImageBlock src={"/assets/images/made-to-measure_800.jpg"} alt='Uniquely made for you!' style=" -ml-[2px]" />
             </a>
-            <div className={"flex"}>
-                <a href={"/blog/about-salt/styling-service"} className={"flex-1"}>
-                    <span className={"block relative h-[71vw] w-full"}>
-                        <Image src={WEBASSETS + "/assets/images/styling_service_800.jpg"} layout={`fill`} objectFit={`cover`}/>
-                    </span>
+            <div className={"grid grid-cols-2 -mt-[4px]"}>
+                <a href={"/blog/about-salt/styling-service"}>
+                    <ImageBlock src={"/assets/images/styling_service_800.jpg"} alt='Styled for you!' style=" -mr-[2px]" />
                 </a>
-                <div className="pr-6 flex-1">
+                <div className="flex flex-col justify-evenly pl-5">
                     <a href={"/blog/about-salt/styling-service"}>
-                        <span className={"block"}>
-                            Styled for you!
-                        </span>
-                        <span className={"block uppercase"}>
-                            DISCOVER WHAT LOOKS GREAT ON YOU!
-                        </span>
-                        <span className={"block uppercase"}>
-                            PERSONALISED STYLING
-                        </span>
-                        <span className={"block uppercase"}>
-                           FASHION DESIGNERS GUIDE YOU
-                        </span>
+                        <div>
+                            <p className={blockLeadClass}>Styled</p>
+                            <p className={blockLeadParaClass}>for you!</p>
+                        </div>
                     </a>
-                    <a href={"#book_now_link"} className={"block uppercase"}>
-                        Free consultation
-                        <span className={"block underline"}>BOOK NOW</span>
+                    <a href={"/blog/about-salt/styling-service"}>
+                        <div className={blockChildClass}>
+                            <p>DISCOVER WHAT</p>
+                            <p>LOOKS GREAT ON YOU!</p>
+                        </div>
+                    </a>
+                    <a href={"/blog/about-salt/styling-service"}>
+                        <div className={blockChildClass}>
+                            <p>PERSONALISED STYLING</p>
+                        </div>
+                    </a>
+                    <a href={"/blog/about-salt/styling-service"}>
+                        <div className={blockChildClass}>
+                            <p>FASHION DESIGNERS</p>
+                            <p>GUIDE YOU</p>
+                        </div>
+                    </a>
+                    <a href={"#book_now_link"} className={blockChildClass + ' font-900'}>
+                        <p>Free consultation</p>
+                        <p className={"underline"}>BOOK NOW</p>
                     </a>
                 </div>
-
             </div>
-            <a href={"/blog/about-salt/free-alteration"} className={"flex"}>
-                <div className="pr-6 flex-1">
-                    <span className={"block"}>
-                        Great Fit
-                    </span>
-                    <span className={"block"}>
-                        assured!
-                    </span>
-                    <span className={"block uppercase"}>
-                        WE'RE NOT HAPPY
-                    </span>
-                    <span className={"block uppercase"}>
-                         IF YOU'RE NOT HAPPY!
-                    </span>
-                    <span className={"block uppercase"}>
-                        WE ALTER TILL YOU
-                    </span>
-                    <span className={"block uppercase"}>
-                         GET A PERFECT FIT
-                    </span>
-                    <span className={"block uppercase"}>
-                        DOORSTEP PICKUP
-                    </span>
-                    <span className={"block uppercase"}>
-                        COMPLIMENTARY
-                    </span>
-                    <span className={"block uppercase"}>
-                         SERVICE
-                    </span>
+            <a href={"/blog/about-salt/free-alteration"} className={"grid grid-cols-2 -mt-[4px]"}>
+                <div className="text-right flex flex-col justify-evenly pr-5">
+                    <div>
+                        <p className={blockLeadClass}>Great Fit</p>
+                        <p className={blockLeadParaClass}>assured!</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>WE&apos;RE NOT HAPPY</p>
+                        <p>IF YOU&apos;RE NOT HAPPY!</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>WE ALTER TILL YOU</p>
+                        <p>GET A PERFECT FIT</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>DOORSTEP PICKUP</p>
+                    </div>
+                    <div className={blockChildClass + ' font-900'}>
+                        <p>COMPLIMENTARY</p>
+                        <p>SERVICE</p>
+                    </div>
                 </div>
-                <span className={"block relative flex-1 h-[71vw] w-full"}>
-                    <Image src={WEBASSETS + "/assets/images/free_alteration_800.jpg"} layout={`fill`} objectFit={`cover`}/>
-                </span>
+                <ImageBlock src={"/assets/images/free_alteration_800.jpg"} alt="Great Fit assured!" style=" -ml-[2px]" />
             </a>
-            <a href={"/blog/about-salt/premium-fabric-quality"} className={"flex"}>
-                <span className={"block relative flex-1 h-[71vw] w-full"}>
-                    <Image src={WEBASSETS + "/assets/images/premium_fabric_quality_800.jpg"} layout={`fill`} objectFit={`cover`}/>
-                </span>
-                <div className="pr-6 flex-1">
-                    <span className={"block"}>
-                        Premium
-                    </span>
-                    <span className={"block"}>
-                        fabric
-                    </span>
-                    <span className={"block uppercase"}>
-                        SUPERIOR FABRIC :
-                    </span>
-                    <span className={"block uppercase"}>
-                        BREATHABLE &
-                    </span>
-                    <span className={"block uppercase"}>
-                        COMFORTABLE
-                    </span>
-                    <span className={"block uppercase"}>
-                        HIGH QUALITY TRIMS
-                    </span>
-                    <span className={"block uppercase"}>
-                        (BUTTONS, ZIPPERS..ETC)
-                    </span>
-                    <span className={"block uppercase"}>
-                        PRE-WASHED &
-                    </span>
-                    <span className={"block uppercase"}>
-                        PRE-SHRUNK
-                    </span>
+            <a href={"/blog/about-salt/premium-fabric-quality"} className={"grid grid-cols-2 -mt-[4px]"}>
+                <ImageBlock src={"/assets/images/premium_fabric_quality_800.jpg"} alt="Premium fabric" style=" -mr-[2px]" />
+                <div className="flex flex-col justify-evenly pl-5">
+                    <div>
+                        <p className={blockLeadClass}>Premium</p>
+                        <p className={blockLeadParaClass}>fabric</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p className='font-900'>SUPERIOR FABRIC :</p>
+                        <p>BREATHABLE &</p>
+                        <p>COMFORTABLE</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>HIGH QUALITY TRIMS</p>
+                        <p>(BUTTONS, ZIPPERS..ETC)</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>PRE-WASHED &</p>
+                        <p>PRE-SHRUNK</p>
+                    </div>
                 </div>
             </a>
-            <a href={"/blog/about-salt/no-inventory-no-mass-production"} className={"flex"}>
-                <div className="pr-6 flex-1">
-                    <span className={"block"}>
-                        Minimal
-                    </span>
-                    <span className={"block"}>
-                        waste
-                    </span>
-                    <span className={"block uppercase"}>
-                        not mass produced
-                    </span>
-                    <span className={"block uppercase"}>
-                        Items made after
-                    </span>
-                    <span className={"block uppercase"}>
-                        you place an order
-                    </span>
-                    <span className={"block uppercase"}>
-                        sustainable
-                    </span>
-                    <span className={"block uppercase"}>
-                        manufacturing
-                    </span>
-                    <span className={"block uppercase"}>
-                        zero guilt
-                    </span>
-                    <span className={"block uppercase"}>
-                        clothing
-                    </span>
+            <a href={"/blog/about-salt/no-inventory-no-mass-production"} className={"grid grid-cols-2 -mt-[4px]"}>
+                <div className="text-right flex flex-col justify-evenly pr-5" alt="Minimal wastage" >
+                    <div>
+                        <p className={blockLeadClass}>Minimal</p>
+                        <p className={blockLeadParaClass}>wastage</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>not mass produced</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>Items made after</p>
+                        <p>you place an order</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>sustainable</p>
+                        <p>manufacturing</p>
+                    </div>
+                    <div className={blockChildClass + ' font-900'}>
+                        <p>zero guilt</p>
+                        <p>clothing!</p>
+                    </div>
                 </div>
-                <span className={"block relative flex-1 h-[71vw] w-full"}>
-                    <Image src={WEBASSETS + "/assets/images/minimal-wasteage_800.jpg"} layout={`fill`} objectFit={`cover`}/>
-                </span>
+                <ImageBlock src={"/assets/images/minimal-wasteage_800.jpg"} alt='Minimal Wastage' style=' -ml-[2px]' />
             </a>
-            <a href={"/blog/about-salt/ethical-fair-treatment"} className={"flex"}>
-                <span className={"block relative flex-1 h-[71vw] w-full"}>
-                    <Image src={WEBASSETS + "/assets/images/ethical-fair_800.jpg"} layout={`fill`} objectFit={`cover`}/>
-                </span>
-                <div className="pr-6 flex-1">
-                    <span className={"block"}>
-                        Ethical
-                    </span>
-                    <span className={"block"}>
-                        production
-                    </span>
-                    <span className={"block uppercase"}>
-                        tailor's workspace
-                    </span>
-                    <span className={"block uppercase"}>
-                        is air-conditioned
-                    </span>
-                    <span className={"block uppercase"}>
-                        no inventory means
-                    </span>
-                    <span className={"block uppercase"}>
-                        no exploitation
-                    </span>
-                    <span className={"block uppercase"}>
-                        fair wages
-                    </span>
-                    <span className={"block uppercase"}>
-                        zero guilt
-                    </span>
-                    <span className={"block uppercase"}>
-                        clothing!
-                    </span>
+            <a href={"/blog/about-salt/ethical-fair-treatment"} className={"grid grid-cols-2 -mt-[4px]"}>
+                <ImageBlock src={"/assets/images/ethical-fair_800.jpg"} alt="Ethical Production" style=" -mr-[2px]" />
+                <div className="flex flex-col justify-evenly pl-5">
+                    <div>
+                        <p className={blockLeadClass}>Ethical</p>
+                        <p className={blockLeadParaClass}>production</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>tailor&apos;s workspace</p>
+                        <p>is air-conditioned</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>no inventory means</p>
+                        <p>no exploitation</p>
+                    </div>
+                    <div className={blockChildClass}>
+                        <p>fair wages</p>
+                    </div>
+                    <div className={blockChildClass + ' font-900'}>
+                        <p>zero guilt</p>
+                        <p>clothing!</p>
+                    </div>
                 </div>
             </a>
         </div>
