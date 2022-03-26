@@ -3,6 +3,7 @@ import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Link from 'next/link'
 
 const Index = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -26,8 +27,8 @@ const Index = () => {
                             const textColor = item['img_title_color'];
                             return (
                                 <div key={index} className={`py-4 ${backgroundColorClass}`}>
-                                    <h3 className={`text-h3 font-900 uppercase tracking-widest mx-4`} style={{color: textColor}}>{item['img_title']}</h3>
-                                    <h3 className={`text-h3 font-cursive italic tracking-wider mx-4 leading-none sentence`} style={{color: textColor}}>{item['img_sub_title']}</h3>
+                                    <h3 className={`text-h3 font-900 uppercase tracking-widest mx-4`} style={{ color: textColor }}>{item['img_title']}</h3>
+                                    <h3 className={`text-h3 font-cursive italic tracking-wider mx-4 leading-none sentence`} style={{ color: textColor }}>{item['img_sub_title']}</h3>
                                     <span className={"block relative w-full aspect-square -mt-5 mb-5"}>
                                         <Image src={WEBASSETS + item['img_path']} alt='collection' layout={`fill`} objectFit={`cover`} />
                                     </span>
@@ -48,18 +49,19 @@ const Index = () => {
                                             {item.products_imgs.map((product, i) => {
                                                 return (
                                                     <SwiperSlide key={i}>
-                                                        <a href={item.products_links[i]} className={"block flex flex-col items-center gap-y-2"} target="_blank" rel="noreferrer">
-                                                            <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
-                                                                <Image
-
-                                                                    src={WEBASSETS + product}
-                                                                    layout="fill"
-                                                                    objectFit="cover"
-                                                                    alt={item.products_name[i]}
-                                                                />
-                                                            </span>
-                                                            <span className={"text-[10px] text-[#8c8987] uppercase"}>{item.products_name[i]}</span>
-                                                        </a>
+                                                        <Link href={item.products_links[i]}>
+                                                            <a className={"block flex flex-col items-center gap-y-2"} target="_blank" rel="noreferrer">
+                                                                <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
+                                                                    <Image
+                                                                        src={WEBASSETS + product}
+                                                                        layout="fill"
+                                                                        objectFit="cover"
+                                                                        alt={item.products_name[i]}
+                                                                    />
+                                                                </span>
+                                                                <span className={"text-[10px] text-[#8c8987] uppercase"}>{item.products_name[i]}</span>
+                                                            </a>
+                                                        </Link>
                                                     </SwiperSlide>
                                                 )
                                             })}

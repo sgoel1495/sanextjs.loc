@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from "next/image";
+import Link from 'next/link';
 
 const blockLeadClass = "block font-cursive italic leading-none text-3xl";
 const blockLinkClass = "block text-xs text-[#302f2e] tracking-wider uppercase"
@@ -183,9 +184,15 @@ const Index = () => {
                     return (
                         <div className={`grid grid-cols-2 grid-rows-1` + [index == 0 ? ' mt-0' : ' -mt-1']} key={index}>
                             <div className={`pb-5 inline-flex flex-col justify-evenly ${index % 2 == 0 ? 'pr-5 text-right' : 'pl-5'}`}>
-                                <a className={blockLeadClass} href={item.blockLeadLink}>{item.blockLeadText}</a>
+                                <Link href={item.blockLeadLink}>
+                                    <a className={blockLeadClass}>{item.blockLeadText}</a>
+                                </Link>
                                 {item.blockLinks.map((item, index) => {
-                                    return <a className={blockLinkClass} href={item.linkURL} key={index}>{item.linkText}</a>
+                                    return (
+                                        <Link key={index} href={item.linkURL}>
+                                            <a className={blockLinkClass}>{item.linkText}</a>
+                                        </Link>
+                                    )
                                 })}
                             </div>
                             <ImageBlock

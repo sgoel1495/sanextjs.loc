@@ -3,6 +3,7 @@ import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Link from 'next/link'
 
 const Index = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -24,19 +25,19 @@ const Index = () => {
                                 return (
                                     <SwiperSlide key={index}>
                                         <a href={item.link} className={"block rounded-3xl overflow-hidden mx-4"}>
-                                            <span className="block relative h-[300px] aspect-square">
-                                                <Image
-                                                    src={WEBASSETS + item.img_path}
-                                                    alt={item.name}
-                                                    layout="fill"
-                                                    objectFit="cover"
-                                                />
-                                            </span>
-                                            <div className={"bg-white text-center py-6 px-4 leading-none"}>
-                                                <h5 className={'text-h5 font-600 font-cursive italic'}>{item.name}</h5>
-                                                <p className="text-[10px] font-600 text-black/70 uppercase tracking-widest">{item.details.split(',').join(' . ')}</p>
-                                            </div>
-                                        </a>
+                                                <span className="block relative h-[300px] aspect-square">
+                                                    <Image
+                                                        src={WEBASSETS + item.img_path}
+                                                        alt={item.name}
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                    />
+                                                </span>
+                                                <div className={"bg-white text-center py-6 px-4 leading-none"}>
+                                                    <h5 className={'text-h5 font-600 font-cursive italic'}>{item.name}</h5>
+                                                    <p className="text-[10px] font-600 text-black/70 uppercase tracking-widest">{item.details.split(',').join(' . ')}</p>
+                                                </div>
+                                            </a>
                                     </SwiperSlide>
                                 )
                             })}
@@ -63,9 +64,11 @@ const Index = () => {
                                     style = "border-t-2 border-l-4 border-b-4 border-r-4 border-white rounded-bl-[15%]"
                                     break;
                             }
-                            return <span className={"relative h-full aspect-square overflow-hidden box-shadow-lg " + style} key={index}>
-                                <Image src={WEBASSETS + item.img_path} alt='looks' layout={`fill`} objectFit={`cover`} />
-                            </span>
+                            return (
+                                <div className={"relative h-full aspect-square overflow-hidden box-shadow-lg " + style} key={index}>
+                                    <Image src={WEBASSETS + item.img_path} alt='looks' layout={`fill`} objectFit={`cover`} />
+                                </div>
+                            )
                         })}
                         <div className={"relative h-full grid place-items-center text-center content-center"}>
                             <p className='text-[20px] font-600 font-cursive italic leading-none'>Tap to see more</p>

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
+import Link from 'next/link'
 
 const Index = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -21,29 +22,37 @@ const Index = (props) => {
                                 </>
                             )}
                             <div className='py-3 mx-4'>
-                                <a className={"block text-sm uppercase font-900 uppercase tracking-widest mb-2"} style={{ color: item['title_color'].replace(";", "") }} href={item['home_url']}>{item['name']}</a>
+                                <Link href={item['home_url']}>
+                                    <a className={"block text-sm uppercase font-900 uppercase tracking-widest mb-2"} style={{ color: item['title_color'].replace(";", "") }} >
+                                        {item['name']}
+                                    </a>
+                                </Link>
                                 <div className={"grid " + [item['template_count'] === 3 ? "grid-cols-2 gap-5" : "grid-cols-3 gap-2"]}>
                                     {item['products'].map((product, index) => {
                                         return (
-                                            <a className={"block"} key={index} href={"/" + product["old_product_id"]}>
-                                                <div className={"relative h-full aspect-square border-2 border-white rounded-[35%] overflow-hidden shadow-sm"}>
-                                                    <Image
-                                                        src={WEBASSETS + "/assets/" + product["old_product_id"] + "/new.jpg"}
-                                                        layout="fill"
-                                                        objectFit="cover"
-                                                        alt={product["old_product_id"]}
-                                                    />
-                                                </div>
-                                            </a>
+                                            <Link href={"/" + product["old_product_id"]} key={index}>
+                                                <a className={"block"}>
+                                                    <div className={"relative h-full aspect-square border-2 border-white rounded-[35%] overflow-hidden shadow-sm"}>
+                                                        <Image
+                                                            src={WEBASSETS + "/assets/" + product["old_product_id"] + "/new.jpg"}
+                                                            layout="fill"
+                                                            objectFit="cover"
+                                                            alt={product["old_product_id"]}
+                                                        />
+                                                    </div>
+                                                </a>
+                                            </Link>
                                         )
                                     })
                                     }
-                                    <a className={"block"} key={index} href={item['home_url']}>
-                                        <div className={"h-full aspect-square border-2 border-white rounded-[35%] shadow-sm grid place-items-center text-center content-center tracking-widest uppercase text-[9px]"}>
-                                            <span>tap here</span>
-                                            <span>to see more</span>
-                                        </div>
-                                    </a>
+                                    <Link key={index} href={item['home_url']}>
+                                        <a className={"block"}>
+                                            <div className={"h-full aspect-square border-2 border-white rounded-[35%] shadow-sm grid place-items-center text-center content-center tracking-widest uppercase text-[9px]"}>
+                                                <span>tap here</span>
+                                                <span>to see more</span>
+                                            </div>
+                                        </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

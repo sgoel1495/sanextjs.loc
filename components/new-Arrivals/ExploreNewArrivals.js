@@ -1,21 +1,20 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
 import Image from "next/image";
-
-import {Swiper, SwiperSlide} from "swiper/react";
+import Link from 'next/link';
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import 'swiper/css/effect-fade';
 import "swiper/css/pagination"
 import "swiper/css/navigation"
-import SwiperCore, {Pagination, Navigation, Autoplay, EffectFade} from 'swiper';
-import log from "tailwindcss/lib/util/log";
+import SwiperCore, { Pagination, Navigation, Autoplay, EffectFade } from 'swiper';
 
 SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay]);
 
 const ExploreNewArrivals = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
     const resp = useApiCall("exploreNewArrivals", dataStore.apiToken);
     const [activeIndex, setActive] = React.useState(0)
 
@@ -28,10 +27,11 @@ const ExploreNewArrivals = () => {
                     <div className={"flex flex-col justify-evenly items-end text-right"}>
                         {resp.response.left_text.map((item, index) => {
                             return (
-                                <a href={item.link + "?sorted_by=created-at-desc"}
-                                   className={"uppercase font-800 tracking-widest text-white text-sm underline-offset-4" + [activeIndex === index ? ' underline' : '']} key={index}>
-                                    {item.category}
-                                </a>
+                                <Link href={item.link + "?sorted_by=created-at-desc"} key={index}>
+                                    <a className={"uppercase font-800 tracking-widest text-white text-sm underline-offset-4" + [activeIndex === index ? ' underline' : '']}>
+                                        {item.category}
+                                    </a>
+                                </Link>
                             )
                         })}
                     </div>
@@ -49,16 +49,18 @@ const ExploreNewArrivals = () => {
                             {resp.response.right_img.map((item, index) => {
                                 return (
                                     <SwiperSlide key={index}>
-                                        <a href={item.link + "?sorted_by=created-at-desc"} className="block">
-                                        <span className="block relative h-60 w-full">
-                                            <Image
-                                                src={WEBASSETS + item.asset_id}
-                                                layout="fill"
-                                                objectFit="cover"
-                                                alt={item.category}
-                                            />
-                                        </span>
-                                        </a>
+                                        <Link href={item.link + "?sorted_by=created-at-desc"}>
+                                            <a className="block">
+                                                <span className="block relative h-60 w-full">
+                                                    <Image
+                                                        src={WEBASSETS + item.asset_id}
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                        alt={item.category}
+                                                    />
+                                                </span>
+                                            </a>
+                                        </Link>
                                     </SwiperSlide>
                                 )
                             })}
@@ -67,7 +69,7 @@ const ExploreNewArrivals = () => {
                     <div className="col-span-2 flex items-center justify-center gap-2">
                         {resp.response.left_text.map((_, index) => {
                             return (
-                                <span className={`block w-2.5 h-2.5 rounded-full ${activeIndex === index ? 'bg-[#dbd5d3]' : 'bg-[#faf3f0]'}`} key={index}/>
+                                <span className={`block w-2.5 h-2.5 rounded-full ${activeIndex === index ? 'bg-[#dbd5d3]' : 'bg-[#faf3f0]'}`} key={index} />
                             )
                         })}
                     </div>

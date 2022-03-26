@@ -3,6 +3,7 @@ import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Link from 'next/link';
 
 const homeBanners = [
     "https://saltattire.com/assets/images/homebanner_new/salt_v10.jpg",
@@ -59,14 +60,16 @@ const CategorySection = () => {
                         {homeBanners.map((item, index) => {
                             return (
                                 <SwiperSlide key={index}>
-                                    <a href={item} className={'block relative h-[65vh] w-full'}>
-                                        <Image
-                                            src={item}
-                                            alt=""
-                                            layout="fill"
-                                            objectFit="cover"
-                                        />
-                                    </a>
+                                    <Link href={item}>
+                                        <a className={'block relative h-[65vh] w-full'}>
+                                            <Image
+                                                src={item}
+                                                alt=""
+                                                layout="fill"
+                                                objectFit="cover"
+                                            />
+                                        </a>
+                                    </Link>
                                 </SwiperSlide>
                             )
                         })}
