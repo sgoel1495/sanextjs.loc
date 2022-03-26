@@ -3,7 +3,7 @@
  */
 import '../styles/globals.scss';
 import '../styles/variables.css';
-import '../styles/componentsSection.scss';
+import '../styles/zoomInSwiper.scss';
 import AppWideContext from "../store/AppWideContext";
 import React, {useEffect, useState, useCallback} from 'react';
 import {apiDictionary} from "../helpers/apiDictionary";

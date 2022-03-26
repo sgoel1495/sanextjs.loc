@@ -1,6 +1,6 @@
-.collectionSectionSwiper div {
+.zoomInSwiper div {
     .swiper-wrapper .swiper-slide a span {
-        @apply scale-90 duration-300;
+        @apply scale-[0.8] duration-300;
     }
 
     .swiper-wrapper .swiper-slide-active a span {
