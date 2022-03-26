@@ -179,9 +179,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
-            
+
         case "getPreferencesData":
             url += "/get_preferences_data";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getMediaBuzz":
+            url += "/get_home_page_media";
             body = {
                 token: apiToken
             };

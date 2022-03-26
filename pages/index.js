@@ -20,6 +20,7 @@ import Preferences from "../components/preference-section/Index";
 import OurShop from "../components/our-shop/Index"
 import AboutUs from '../components/about-us-section/Index'
 import OurStores from '../components/our-stores/Index'
+import Media from "../components/media/Index"
 
 /**
  * @todo assign mobile view and browser view
@@ -46,6 +47,7 @@ function RootPage() {
         <Preferences/>
         <AboutUs/>
         <OurStores/>
+        <Media/>
     </Fragment>;
 
     const browserView = <Fragment>
