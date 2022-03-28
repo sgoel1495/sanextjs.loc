@@ -92,6 +92,7 @@ function ShippingNReturnsPage() {
             </div>
             <CategoryHeaderImage category={category}/>
             <section className={"container my-20 grid gap-x-20 "+[dataStore.mobile?"grid-cols-1":"grid-cols-2"]}>
+                {dataStore.mobile&&<span className={"block text-center text-2xl font-bold"}>Shipping & returns</span>}
                 <div className={`flex flex-col gap-y-2`}>
                     <p className={`text-xl text-center`}>Shipping Policy</p>
                     {showSR(shippingData)}
