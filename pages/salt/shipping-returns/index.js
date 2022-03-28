@@ -82,19 +82,7 @@ function ShippingNReturnsPage() {
         return showSRData;
     }
 
-    const mobileView = null;
-    const browserView = (
-        <>
-            <div className={`flex flex-col gap-y-2`}>
-                <p className={`text-xl text-center`}>Shipping Policy</p>
-                {showSR(shippingData)}
-            </div>
-            <div className={`flex flex-col gap-y-2`}>
-                <p className={`text-xl text-center`}>Returns Policy</p>
-                {showSR(returnsData)}
-            </div>
-        </>
-    );
+
     return (
         <Fragment>
             <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile}/>
@@ -103,10 +91,17 @@ function ShippingNReturnsPage() {
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-20">
-                {(dataStore.mobile) ? mobileView : browserView}
+            <section className={"container my-20 grid gap-x-20 "+[dataStore.mobile?"grid-cols-1":"grid-cols-2"]}>
+                <div className={`flex flex-col gap-y-2`}>
+                    <p className={`text-xl text-center`}>Shipping Policy</p>
+                    {showSR(shippingData)}
+                </div>
+                <div className={`flex flex-col gap-y-2`}>
+                    <p className={`text-xl text-center`}>Returns Policy</p>
+                    {showSR(returnsData)}
+                </div>
             </section>
-            <Footer isMobile={dataStore.mobile}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color="#f5f5f5"/>
         </Fragment>
     )
 }
