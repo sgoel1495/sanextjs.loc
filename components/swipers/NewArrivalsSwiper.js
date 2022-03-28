@@ -22,7 +22,7 @@ function NewArrivalsSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
 
-    const resp = useApiCall("getProducts", dataStore.apiToken, { category: "new-arrivals" });
+    const resp = useApiCall("getHomePageNewArrivals", dataStore.apiToken);
     const [data, setData] = useState(null);
     useEffect(() => {
         if (resp
@@ -43,8 +43,8 @@ function NewArrivalsSwiper(props) {
     if (data && data.length > 0) {
         data.forEach(ele => {
             actualData.push({
-                link: "/" + ele.asset_id,
-                url: WEBASSETS + ele.single_view_img,
+                link: "/" + ele.old_product_id,
+                url: WEBASSETS + ele.img_path,
                 name: ele.name,
                 tag: ele.tag_line,
                 price: (currCurrency == "inr") ? ele.price : ele.usd_price
@@ -64,7 +64,7 @@ function NewArrivalsSwiper(props) {
                         <SwiperSlide key={index}>
                             <Link href={item.link} >
                                 <a className={"block rounded-3xl overflow-hidden mx-4"}>
-                                    <span className="block relative h-64 w-full">
+                                    <span className="block relative aspect-square w-full">
                                         <Image
                                             src={item.url}
                                             alt={item.name}

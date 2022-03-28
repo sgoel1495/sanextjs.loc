@@ -65,6 +65,24 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "getTopStrip":
+            url += "/home/get_homepage_top_strip";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getHomePageNewArrivals":
+            url += "/get_home_page_new_arrivals";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "exploreNewArrivals":
             url += "/explore_new_arrivals";
             body = {
@@ -191,6 +209,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
 
         case "getMediaBuzz":
             url += "/get_home_page_media";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getHomePageCarousal":
+            url += "/get_home_page_carousal";
             body = {
                 token: apiToken
             };

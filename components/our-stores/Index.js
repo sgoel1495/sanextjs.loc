@@ -7,7 +7,7 @@ const inputStyle = "border border-white pb-6 px-1 pt-1 text-sm text-center bg-[#
 const Index = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     return (
-        <div className={"bg-[#f3e9e3] pt-5 pb-10"}>
+        <div className={"bg-[#f3e9e3] pt-5 pb-10"} id={"book_now_link"}>
             <h2 className={"text-h1 font-900 uppercase tracking-wider mx-4 text-[#db8b7d]"}>our stores</h2>
             <h3 className={"text-h2 font-cursive italic leading-none mx-4 mb-6 text-[#db8b7d]"}>Experience Salt Attire</h3>
             <div className={"mx-4"}>

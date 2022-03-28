@@ -14,74 +14,48 @@ import SwiperCore, {Pagination, Navigation, Autoplay, EffectFade} from 'swiper';
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
+import Link from "next/link";
 
 SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay]);
 
 function HomePageHeaderSwiper(props) {
-    const maxSlides = 10;
     const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const resp = useApiCall("getProducts", dataStore.apiToken, {category: "new-arrivals"});
-    const [data, setData] = useState(null);
+    const resp = useApiCall("getHomePageCarousal", dataStore.apiToken);
 
-    useEffect(() => {
-        if (resp
-            && resp.hasOwnProperty("status")
-            && resp.status == 200
-            && resp.hasOwnProperty("new_arr_carousal")
-            && resp.new_arr_carousal.hasOwnProperty("imgs")
-        )
-            setData(resp.new_arr_carousal);
-    }, [resp]);
+    if (resp && resp.status === 200)
+        return (
+            <Swiper
+                slidesPerView={1}
+                autoplay={{
+                    "delay": resp.response.data.web.transition_time,
+                    "disableOnInteraction": false
+                }}
+                navigation={true}
+                effect="fade"
+            >
+                {resp.response.data.web.imgs.map((item, index) => {
 
-    const actualData = [];
-    let foreground = null;
-    let transitionTime = 1.0;
-
-    if (data && data.imgs && data.imgs.length > 0) {
-        foreground = WEBASSETS + data.foreground_path;
-        transitionTime = data.transition_time;
-        data.imgs.forEach((ele, index) => {
-            if (index < maxSlides) {
-                actualData.push({
-                    link: "/" + data.imgs_path[index],
-                    url: WEBASSETS + ele
-                });
-            }
-        });
-    }
-
-    const mobileView = null;
-
-    const browserView = (
-        <Swiper
-            slidesPerView={1}
-            autoplay={{
-                "delay": transitionTime * 1000,
-                "disableOnInteraction": false
-            }}
-            navigation={true}
-            effect="fade"
-        >
-            {actualData.map((item, index) => {
-                return (
-                    <SwiperSlide key={index}>
-                        <a href={item.link} className={'block relative h-[95vh]'}>
-                            <Image
-                                src={item.url}
-                                alt={'header'}
-                                layout="fill"
-                                objectFit="cover"
-                                objectPosition="center top"
-                            />
-                        </a>
-                    </SwiperSlide>
-                )
-            })}
-        </Swiper>
-    );
-
-    return props.isMobile ? mobileView : browserView
+                    return (
+                        <SwiperSlide key={index}>
+                            <Link href={resp.response.data.web.links[index]}>
+                                <span className={'block relative h-[100vh]'}>
+                                    <Image
+                                        src={WEBASSETS + item}
+                                        alt={'header'}
+                                        layout="fill"
+                                        objectFit="cover"
+                                        objectPosition="center top"
+                                    />
+                                </span>
+                            </Link>
+                        </SwiperSlide>
+                    )
+                })}
+            </Swiper>
+        );
+    else
+        return <></>
 }
 
 export default HomePageHeaderSwiper;
