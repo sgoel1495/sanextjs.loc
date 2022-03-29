@@ -1,8 +1,6 @@
 import React, { Fragment, useContext, useState } from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
-import InfoBand from "../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../components/navbar/LookNavbar";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import shippingData from "../../../store/shippingData.json";
@@ -10,6 +8,7 @@ import returnsData from "../../../store/returnsData.json";
 import Image from "next/image";
 import Accordion from "../../../components/common/accordion";
 import LinkParser from "../../../components/common/LinkParser";
+import NavBar from "../../../components/navbar";
 
 /**
  * @todo @Sambhav pls do css
@@ -40,13 +39,6 @@ function ShippingNReturnsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
 
-    // NavBar Controls
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const category = "Shipping & Returns";
 
@@ -86,10 +78,7 @@ function ShippingNReturnsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile} />
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 hover:bg-white/95 hover:shadow-lg bg-white/90"}>
-                <InfoBand />
-                <LooksNavbar isMobile={dataStore.mobile} />
-            </div>
+            <NavBar type={"mimoto"}/>
             <CategoryHeaderImage category={category} />
             <section className={"container my-20 " + [dataStore.mobile ? " px-4" : " grid gap-x-20 grid-cols-2"]}>
                 {dataStore.mobile && <span className={"block text-center text-2xl font-bold capitalize"}>Shipping & returns</span>}

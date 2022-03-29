@@ -32,13 +32,6 @@ import Reviews from "../components/review-section/Index"
 function RootPage() {
     const {dataStore} = useContext(AppWideContext);
 
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
-
     const mobileView = <Fragment>
         <CategorySection/>
         <NewArrivalsSection/>
@@ -67,7 +60,7 @@ function RootPage() {
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
-            <Navbar isMobile={dataStore.mobile} navControl={navControl}/>
+            <Navbar isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

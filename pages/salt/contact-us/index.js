@@ -1,12 +1,10 @@
 import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import PageHead from "../../../components/PageHead";
-import InfoBand from "../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../components/navbar/LookNavbar";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import Image from "next/image";
+import NavBar from "../../../components/navbar";
 
 
 /**
@@ -18,14 +16,6 @@ function ContactUsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
     const category = "Contact Us";
-
-    // NavBar Controls
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const containerStyle = {
         width: '100%',
@@ -129,10 +119,7 @@ function ContactUsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/contact-us" id="contactus" isMobile={dataStore.mobile} />
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
-                <InfoBand />
-                <LooksNavbar isMobile={dataStore.mobile} />
-            </div>
+            <NavBar type={"mimoto"}/>
             <CategoryHeaderImage category={category} />
             {dataStore.mobile ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"} />

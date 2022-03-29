@@ -1,10 +1,9 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
-import InfoBand from "../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../components/navbar/LookNavbar";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
+import NavBar from "../../../components/navbar";
 
 /**
  * @todo @Sambhav css
@@ -14,14 +13,6 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 
 function TermsAndConditionPage() {
     const {dataStore} = useContext(AppWideContext);
-
-    // NavBar Controls
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const category = "Terms & Conditions";
     const blockStyle = `flex flex-col gap-y-4`;
@@ -526,11 +517,7 @@ function TermsAndConditionPage() {
     return (
         <Fragment>
             <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile}/>
-            <div
-                className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/95' : ' bg-white/90']}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
-            </div>
+            <NavBar type={"mimoto"}/>
             <CategoryHeaderImage category={category}/>
             <section className="my-20">
                 {(dataStore.mobile) ? mobileView : browserView}

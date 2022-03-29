@@ -1,10 +1,9 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
-import InfoBand from "../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../components/navbar/LookNavbar";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
+import NavBar from "../../../components/navbar";
 
 /**
  * @todo @Sambhav css
@@ -15,13 +14,6 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 function PrivacyPolicyPage() {
     const { dataStore } = useContext(AppWideContext);
 
-    // NavBar Controls
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
     const category = "Privacy Policy";
 
     const mobileView = (
@@ -52,10 +44,7 @@ function PrivacyPolicyPage() {
     return (
         <Fragment>
             <PageHead url="/salt/privacy-policy" id="privacypolicy" isMobile={dataStore.mobile} />
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
-                <InfoBand />
-                <LooksNavbar isMobile={dataStore.mobile} />
-            </div>
+            <NavBar type={"mimoto"}/>
             <CategoryHeaderImage category={category} />
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />

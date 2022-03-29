@@ -1,7 +1,6 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../../../components/PageHead";
-import InfoBand from "../../../../components/info-band/InfoBand";
-import Navbar from "../../../../components/navbar/Navbar";
+import Navbar from "../../../../components/navbar/Index";
 import Footer from "../../../../components/footer/Footer";
 import AppWideContext from "../../../../store/AppWideContext";
 import StylingServices from "../../../../components/blog/StylingServices";
@@ -14,12 +13,6 @@ import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTail
 
 function FreeAlterationPage(){
     const {dataStore} = useContext(AppWideContext);
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const mobileView = null;
     const browserView = (
@@ -44,10 +37,7 @@ function FreeAlterationPage(){
     return (
         <Fragment>
             <PageHead url="/blog/about-salt/free-alteration" id="free-alteration" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/60']}>
-                <InfoBand/>
                 <Navbar isMobile={dataStore.mobile}/>
-            </div>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>);

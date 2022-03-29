@@ -1,8 +1,7 @@
 import PageHead from "../../../components/PageHead";
 import AppWideContext from "../../../store/AppWideContext";
 import React, {Fragment, useContext, useEffect, useState} from "react";
-import InfoBand from "../../../components/info-band/InfoBand";
-import Navbar from "../../../components/navbar/Navbar";
+import Navbar from "../../../components/navbar/Index";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Link from "next/link";
@@ -12,12 +11,7 @@ import Image from "next/image";
 function BlogAboutSaltPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
+
     const category = "About Salt";
 
     const data = require("../../../store/blogData.json");
@@ -60,10 +54,7 @@ function BlogAboutSaltPage() {
     return (
         <Fragment>
             <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/60']}>
-                <InfoBand/>
-                <Navbar isMobile={dataStore.mobile}/>
-            </div>
+            <Navbar isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section className="container mb-10">
                 {(dataStore.mobile) ? mobileView : browserView}
