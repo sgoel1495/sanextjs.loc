@@ -6,10 +6,12 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
 import {GoogleMap, Marker, useJsApiLoader} from '@react-google-maps/api';
+import Image from "next/image";
 
 
 /**
  * @todo Sambhav css pls
+ * @todo bot to be integrated with both contact us button
  */
 
 function ContactUsPage() {
@@ -52,8 +54,37 @@ function ContactUsPage() {
         setMap(null)
     }, []);
 
-    const mobileView = null;
-    const browserView = <>
+    const mobileView = <section className="container my-20 grid grid-cols-1 gap-x-10 items-start justify-center">
+        <div className={`grid grid-cols-1 gap-y-8 text-center`}>
+            <p className={`font-600`}>We Would Love To Hear From You!</p>
+            <div className={`flex flex-col gap-y-4`}>
+                <p className={`font-600`}>Corporate Office</p>
+                <div className="text-sm text-black/50 font-600">
+                    <p>Mon to Fri - 9:00 am to 7:00 pm</p>
+                    <p className={`mb-4`}>Sat - 9:00 am to 2:00 pm</p>
+                    <p>Plot 508, Udyog Vihar Phase V,</p>
+                    <p>Gurugram, Haryana 122016</p>
+                </div>
+            </div>
+            <div className={`flex flex-col gap-y-4`}>
+                <p className={`font-600`}>SALT Experience Store</p>
+                <div className="text-sm text-black/50 font-600">
+                    <p className={`mb-4`}>11:00 am to 8:30 pm</p>
+                    <p>DLF Mega Mall (Shop No LG-51)</p>
+                    <p>Golf Course Road, Gurugram, Haryana 122002</p>
+                    <p>Open all 7 days</p>
+                </div>
+            </div>
+            <div className={`text-black/50 font-600`}>
+                <p>care@saltattire.com</p>
+                <p>18002709515</p>
+            </div>
+            <button className={`bg-black font-500 px-12 py-3 text-white uppercase`}>Contact Us</button>
+        </div>
+
+    </section>;
+
+    const browserView = <section className="container my-20 grid grid-cols-2 gap-x-10 items-start justify-center">
         <div className={`grid grid-cols-2 gap-y-8 text-center`}>
             <p className={`font-600 col-span-2`}>We Would Love To Hear From You!</p>
             <div className={`flex flex-col gap-y-4`}>
@@ -94,7 +125,7 @@ function ContactUsPage() {
             </GoogleMap>
             : null
         }
-    </>;
+    </section>;
 
     return (
         <Fragment>
@@ -104,10 +135,8 @@ function ContactUsPage() {
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 grid grid-cols-2 gap-x-10 items-start justify-center">
-                {(dataStore.mobile) ? mobileView : browserView}
-            </section>
-            <Footer isMobile={dataStore.mobile}/>
+            {dataStore.mobile ? mobileView : browserView}
+            <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"}/>
         </Fragment>
     )
 

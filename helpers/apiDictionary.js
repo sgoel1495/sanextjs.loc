@@ -65,6 +65,24 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "getTopStrip":
+            url += "/home/get_homepage_top_strip";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getHomePageNewArrivals":
+            url += "/get_home_page_new_arrivals";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "exploreNewArrivals":
             url += "/explore_new_arrivals";
             body = {
@@ -157,6 +175,61 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_category_circle";
             body = {
                 token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getMarketingData":
+            url += "/get_marketing_data";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getLookSection":
+            url += "/get_look_section";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getPreferencesData":
+            url += "/get_preferences_data";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getMediaBuzz":
+            url += "/get_home_page_media";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getHomePageCarousal":
+            url += "/get_home_page_carousal";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "bookAppointmentMob":
+            url += "/book_appointment_mob";
+            body = {
+                token: apiToken,
+                ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}

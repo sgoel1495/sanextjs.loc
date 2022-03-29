@@ -18,15 +18,17 @@ function Navbar(props) {
     const navStyle = "px-4 py-1 uppercase"
     const iconHeightWeight = "30"
 
-    const mobileView = <div className={navStyle}>
-        <div className={"text-center mb-4"}>
-            <div className={"flex items-center justify-center"}>
-                <SaltIcon isMobile={true}/>
-                <CurrencySwitcher isMobile={true}/>
+    const mobileView = <>
+        <div className={navStyle} style={{background:"var(--very-light-pink)"}}>
+            <div className={"text-center mb-2"}>
+                <div className={"flex items-center justify-center"}>
+                    <SaltIcon isMobile={true}/>
+                    <CurrencySwitcher isMobile={true}/>
+                </div>
+                <p className={'text-xs'}>BESPOKE &amp; CUSTOM CLOTHING</p>
             </div>
-            <p className={'text-xs'}>BESPOKE &amp; CUSTOM CLOTHING</p>
         </div>
-        <div className={"sticky top-0"}>
+        <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{background:"var(--very-light-pink)"}}>
             <ul className={"flex gap-5 justify-between"}>
                 <li>
                     <SidebarMenuHamburger isMobile={false}/>
@@ -60,7 +62,7 @@ function Navbar(props) {
                 </li>
             </ul>
         </div>
-    </div>;
+    </>;
 
     const browserView = (
         <nav className={navStyle + " flex items-center gap-x-4"}>

@@ -1,5 +1,6 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment, useContext, useEffect} from 'react';
 import ReactDOM from 'react-dom';
+import AppWideContext from "../../store/AppWideContext";
 
 /**
  *
@@ -14,9 +15,10 @@ import ReactDOM from 'react-dom';
 
 const Toast = (props) => {
     const ref = React.useRef();
+    const {dataStore} = useContext(AppWideContext);
 
     // Tailwind CSS
-    const toastClasses = ['bg-black', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1'];
+    const toastClasses = dataStore.mobile ? ['bg-black', 'p-4', 'w-full', 'text-white', 'text-sm', 'mt-1'] : ['bg-black', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1'];
 
 
     useEffect(() => {
@@ -37,7 +39,7 @@ const Toast = (props) => {
 
     const returnElement = (props.show) ? <div className={toastClasses.join(" ")}>{props.children}</div> : null;
     if (returnElement)
-        return ReactDOM.createPortal(returnElement, document.getElementById("toastContainer"));
+        return ReactDOM.createPortal(returnElement, document.getElementById(dataStore.mobile ? "toastMobContainer" : "toastContainer"));
     else
         return null;
 };
