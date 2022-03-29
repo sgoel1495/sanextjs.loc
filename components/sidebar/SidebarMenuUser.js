@@ -159,7 +159,7 @@ function SidebarMenuUser(props) {
     let iconHeight;
     switch (props.type) {
         case "mimoto":
-            iconHeight = "h-12"
+            iconHeight = "h-12 w-16"
             break;
         default:
             iconHeight = "h-6"
@@ -170,18 +170,24 @@ function SidebarMenuUser(props) {
         <>
         <span onClick={() => setShowSidebarMenuUser(true)} className={`block relative w-6 ${iconHeight}`}>
             {
-                dataStore.userData.contact ?
-                    <div className="rounded-full bg-slate-400 text-center cursor-pointer">
-                        <span className="text-sm text-white font-600 text-center">{dataStore.userData.contact[0].toUpperCase()}</span>
+                props.type === "mimoto" ?
+                    <div className={"float-right text-right"}>
+                        <span className={"block text-sm tracking-wide"}>Account</span>
+                        <span className={"block text-[10px] tracking-wider"}>{dataStore.userData.contact||"Login/Signup"}</span>
                     </div>
                     :
-                    <Image
-                        src={WEBASSETS + "/assets/images/usericon.png"}
-                        className={"cursor-pointer"}
-                        alt="menuicon"
-                        layout={`fill`}
-                        objectFit={`contain`}
-                    />
+                    dataStore.userData.contact ?
+                        <div className="rounded-full bg-slate-400 text-center cursor-pointer">
+                            <span className="text-sm text-white font-600 text-center">{dataStore.userData.contact[0].toUpperCase()}</span>
+                        </div>
+                        :
+                        <Image
+                            src={WEBASSETS + "/assets/images/usericon.png"}
+                            className={"cursor-pointer"}
+                            alt="menuicon"
+                            layout={`fill`}
+                            objectFit={`contain`}
+                        />
             }
             </span>
             {showSidebarMenuUser && ReactDom.createPortal(

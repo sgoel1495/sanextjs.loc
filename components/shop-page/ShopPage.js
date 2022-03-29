@@ -135,7 +135,7 @@ function ShopPage(props) {
     return (
         <Fragment>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-            <NavBar type={"minimal"}/>
+            <NavBar type={"mimoto"}/>
             <CategoryHeaderVideo category={category}/>
             {(data && data.hasOwnProperty("break_speed"))
                 ? <Menu source="minimal" isMobile={false} filterData={data}/>

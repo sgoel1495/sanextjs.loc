@@ -20,37 +20,30 @@ function Menu(props) {
     const [showMimoto, setShowMimoto] = useState(false);
 
     //mimoto data
-    const mimotoData = [
-        {
-            category: "noor",
-            link: "/mimoto-noor",
-            span: "spreading light"
-        },
-        {
-            category: "nostalgia",
-            link: "/mimoto-nostalgia",
-            span: "the color prints"
-        }
-    ];
+    const resp = useApiCall("getMimotoCollection", dataStore.apiToken, {skip: 0, limit: 50});
+
     let mimotoList = null;
-    mimotoData.forEach(ele => {
-        mimotoList = <Fragment>
-            {mimotoList}
-            <li key={ele.category}>
-                <Link href={ele.link}>
-                    <a className={`font-600 block mb-1`}>
-                        {ele.category}
-                        <NewTag/>
-                        <span className={`block text-[10px] tracking-wider`}>{ele.span}</span>
-                    </a>
-                </Link>
-            </li>
-        </Fragment>;
-    })
+    if (resp && resp.status === 200) {
+        resp.response.mimoto.filter(item => item.visible).reverse().forEach(ele => {
+            mimotoList = <Fragment>
+                {mimotoList}
+                <div key={ele.collection_id}>
+                    <Link href={ele.url}>
+                        <a className={`font-600 block mb-1 text-xs`}>
+                            {ele.name}
+                            {/*<NewTag/>*/}
+                            <span className={`block text-[8px] tracking-wider whitespace-nowrap`}>{ele.tagline}</span>
+                        </a>
+                    </Link>
+                </div>
+            </Fragment>;
+        })
+    }
 
 
     const actualData = [];
     let browserViewStyle = "block px-3 mx-1 leading-none border-b border-transparent hover:border-black text-black/60";
+    let newTagStyle = ""
     let categoriesList = null;
 
     /**
@@ -59,8 +52,17 @@ function Menu(props) {
 
     switch (props.type) {
         case "mimoto":
-            browserViewStyle = ""
+            browserViewStyle = "flex flex-row-reverse justify-end items-center"
+            newTagStyle = "p-[0.1rem] text-[8px] ml-1"
             data.categories.forEach((ele) => {
+                actualData.push({
+                    id: ele.category,
+                    link: ele.link,
+                    category: ele.category,
+                    new: ele.new
+                });
+            });
+            data.accessories.forEach((ele) => {
                 actualData.push({
                     id: ele.category,
                     link: ele.link,
@@ -97,14 +99,14 @@ function Menu(props) {
             categoriesList = (
                 <>
                     {categoriesList}
-                    <li key={ele.category}>
+                    <div key={ele.category}>
                         <Link href={ele.link}>
                             <a className={`font-600 ${browserViewStyle}`}>
-                                {ele.new && <span className={"bg-black text-xs text-white leading-none"}>New</span>}
+                                {ele.new && <span className={"bg-black text-xs text-white leading-none " + newTagStyle}>New</span>}
                                 {ele.category}
                             </a>
                         </Link>
-                    </li>
+                    </div>
                 </>
             );
         })
@@ -129,9 +131,11 @@ function Menu(props) {
                                 <span className={leadTextStyle}>Shop</span>
                                 <span className={textStyle}>Our Store</span>
                             </div>
-                            <ul className={`uppercase text-xs text-black/70 absolute z-20 hidden group-hover:block py-2`}>
-                                {categoriesList}
-                            </ul>
+                            <div className={`uppercase text-xs text-black/70 absolute z-20 hidden group-hover:block py-2`}>
+                                <div className={"grid grid-rows-[repeat(7,1fr)] grid-flow-col gap-x-16"}>
+                                    {categoriesList}
+                                </div>
+                            </div>
                         </li>
                         <li
                             className={`block group relative`}
@@ -143,7 +147,9 @@ function Menu(props) {
                                 <span className={textStyle}>Our Collection</span>
                             </div>
                             <ul className={`uppercase text-xs text-black/70 absolute z-20 hidden group-hover:block py-2`}>
-                                {mimotoList}
+                                <div className={"grid grid-rows-[repeat(8,1fr)] grid-flow-col gap-x-4"}>
+                                    {mimotoList}
+                                </div>
                             </ul>
                         </li>
                         <li key="looks">
@@ -163,8 +169,10 @@ function Menu(props) {
                             </Link>
                         </li>
                     </ul>
-                    {showShop && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[200px]`}/>}
-                    {showMimoto && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[100px]`}/>}
+                    {showShop && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[200px]`}>
+
+                    </div>}
+                    {showMimoto && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[300px]`}/>}
                 </>
             )
             break;

@@ -18,16 +18,13 @@ function Navbar(props) {
     let navStyle = "px-4 py-1 uppercase"
     const iconHeightWeight = "30"
 
-    let menuType = "exploreNewArrivals"
-
     switch (props.type) {
         case "mimoto":
             navStyle = "px-8 py-4 relative"
-            menuType = "getLooksData"
     }
 
     const mobileView = <>
-        <div className={navStyle} style={{background:"var(--very-light-pink)"}}>
+        <div className={navStyle} style={{background: "var(--very-light-pink)"}}>
             <div className={"text-center mb-2"}>
                 <div className={"flex items-center justify-center"}>
                     <SaltIcon isMobile={true}/>
@@ -36,7 +33,7 @@ function Navbar(props) {
                 <p className={'text-xs'}>BESPOKE &amp; CUSTOM CLOTHING</p>
             </div>
         </div>
-        <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{background:"var(--very-light-pink)"}}>
+        <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{background: "var(--very-light-pink)"}}>
             <ul className={"flex gap-5 justify-between"}>
                 <li>
                     <SidebarMenuHamburger isMobile={false}/>
@@ -74,13 +71,28 @@ function Navbar(props) {
 
     const browserView = (
         <nav className={navStyle + " flex items-center gap-x-4"}>
-            <SaltIcon type={props.type} isMobile={false}/>
-            <SidebarMenuHamburger type={props.type} isMobile={false}/>
-            <Menu type={props.type} isMobile={false}/>
-            <SearchMenu type={props.type} isMobile={false}/>
-            <CurrencySwitcher type={props.type} isMobile={false}/>
-            <SidebarMenuUser type={props.type} isMobile={false}/>
-            <SidebarMenuCart type={props.type} isMobile={false}/>
+            {
+                props.type === "mimoto" ?
+                    <>
+                        <SaltIcon type={props.type} isMobile={false}/>
+                        <CurrencySwitcher type={props.type} isMobile={false}/>
+                        <Menu type={props.type} isMobile={false}/>
+                        <SidebarMenuUser type={props.type} isMobile={false}/>
+                        <SearchMenu type={props.type} isMobile={false}/>
+                        <SidebarMenuCart type={props.type} isMobile={false}/>
+                    </>
+                    :
+                    <>
+                        <SaltIcon type={props.type} isMobile={false}/>
+                        <SidebarMenuHamburger type={props.type} isMobile={false}/>
+                        <Menu type={props.type} isMobile={false}/>
+                        <SearchMenu type={props.type} isMobile={false}/>
+                        <CurrencySwitcher type={props.type} isMobile={false}/>
+                        <SidebarMenuUser type={props.type} isMobile={false}/>
+                        <SidebarMenuCart type={props.type} isMobile={false}/>
+                    </>
+            }
+
         </nav>
     );
 
