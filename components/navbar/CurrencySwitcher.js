@@ -30,7 +30,7 @@ function CurrencySwitcher(props) {
 
     let height;
     switch (props.type) {
-        case "looksPage":
+        case "mimoto":
             height = "h-12"
             break;
         default:

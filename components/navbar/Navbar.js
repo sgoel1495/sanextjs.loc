@@ -15,8 +15,16 @@ import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 
 function Navbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const navStyle = "px-4 py-1 uppercase"
+    let navStyle = "px-4 py-1 uppercase"
     const iconHeightWeight = "30"
+
+    let menuType = "exploreNewArrivals"
+
+    switch (props.type) {
+        case "mimoto":
+            navStyle = "px-8 py-4 relative"
+            menuType = "getLooksData"
+    }
 
     const mobileView = <>
         <div className={navStyle} style={{background:"var(--very-light-pink)"}}>
@@ -66,13 +74,13 @@ function Navbar(props) {
 
     const browserView = (
         <nav className={navStyle + " flex items-center gap-x-4"}>
-            <SaltIcon isMobile={false}/>
-            <SidebarMenuHamburger isMobile={false}/>
-            <Menu source="exploreNewArrivals" isMobile={false}/>
-            <SearchMenu isMobile={false}/>
-            <CurrencySwitcher isMobile={false}/>
-            <SidebarMenuUser isMobile={false}/>
-            <SidebarMenuCart isMobile={false}/>
+            <SaltIcon type={props.type} isMobile={false}/>
+            <SidebarMenuHamburger type={props.type} isMobile={false}/>
+            <Menu type={props.type} isMobile={false}/>
+            <SearchMenu type={props.type} isMobile={false}/>
+            <CurrencySwitcher type={props.type} isMobile={false}/>
+            <SidebarMenuUser type={props.type} isMobile={false}/>
+            <SidebarMenuCart type={props.type} isMobile={false}/>
         </nav>
     );
 

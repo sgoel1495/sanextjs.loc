@@ -8,8 +8,7 @@
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
 import React, {Fragment, useContext, useEffect, useState} from "react";
-import InfoBand from "../info-band/InfoBand";
-import LooksNavbar from "../navbar/LookNavbar";
+import NavBar from "../navbar/Index";
 import AppWideContext from "../../store/AppWideContext";
 import Menu from "../navbar/Menu";
 import Footer from "../footer/Footer";
@@ -57,14 +56,7 @@ function ShopPage(props) {
     }, [resp]);
 
     // Nav Controller
-    const [navControl, setNavControl] = React.useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
-    }, []);
+
 
     /**
      * @todo API - Please tell the api which gives the tagline for categories << HArdcoded
@@ -143,13 +135,10 @@ function ShopPage(props) {
     return (
         <Fragment>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 hover:bg-white/95 transition-colors" + [navControl ? ' bg-white/95' : ' bg-white/90']}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
-            </div>
+            <NavBar type={"minimal"}/>
             <CategoryHeaderVideo category={category}/>
             {(data && data.hasOwnProperty("break_speed"))
-                ? <Menu source="shopCategory" isMobile={false} filterData={data}/>
+                ? <Menu source="minimal" isMobile={false} filterData={data}/>
                 : null
             }
             <BlockHeader

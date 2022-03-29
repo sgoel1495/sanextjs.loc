@@ -11,7 +11,7 @@ function SaltIcon(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     let sizeClass, logo;
     switch (props.type) {
-        case "looksPage":
+        case "mimoto":
             sizeClass = "h-12 w-24"
             logo = "SALT_logo.png"
             break;
@@ -34,7 +34,7 @@ function SaltIcon(props) {
     </div>;
 
     switch (props.type) {
-        case "looksPage":
+        case "mimoto":
             sizeClass = "h-12 w-24"
             logo = "SALT_logo.png"
             break;

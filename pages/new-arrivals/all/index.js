@@ -1,13 +1,12 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import PageHead from "../../../components/PageHead";
 import AppWideContext from "../../../store/AppWideContext";
-import InfoBand from "../../../components/info-band/InfoBand";
 import Footer from "../../../components/footer/Footer";
 import useApiCall from "../../../hooks/useApiCall";
 import appSettings from "../../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "../../../components/navbar/Navbar";
+import Navbar from "../../../components/navbar/Index";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
 import WishlistButton from "../../../components/common/WishListButton";
@@ -74,13 +73,6 @@ function NewArrivalsAllPage() {
             setData(resp.response);
     }, [resp]);
 
-    // Nav Controller
-    const [navControl, setNavControl] = React.useState(null);
-    const controller = () => setNavControl(window.scrollY > 0);
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const newArrivals = () => {
         let showArrivalsData = null;
@@ -137,10 +129,8 @@ function NewArrivalsAllPage() {
     const browserView = (
         <>
             <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/80']}>
-                <InfoBand/>
+
                 <Navbar isMobile={dataStore.mobile}/>
-            </div>
             <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
             <section className={`bg-[#E6E1DB] pb-20`}>
                 <BlockHeader

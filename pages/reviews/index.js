@@ -1,7 +1,6 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../components/PageHead";
-import InfoBand from "../../components/info-band/InfoBand";
-import Navbar from "../../components/navbar/Navbar";
+import Navbar from "../../components/navbar/Index";
 import AppWideContext from "../../store/AppWideContext";
 import Footer from "../../components/footer/Footer";
 import Link from "next/link";
@@ -12,12 +11,6 @@ import useApiCall from "../../hooks/useApiCall";
 function ReviewsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const [data, setData] = useState(null);
     const resp = useApiCall("reviews", dataStore.apiToken);
@@ -53,7 +46,7 @@ function ReviewsPage() {
                                 </p>
                                 <div className="flex items-center justify-between">
                                     <span className={`block relative w-6 h-6`}>
-                                        <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"} alt="fb" layout="fill" objectFit="contain" />
+                                        <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"} alt="fb" layout="fill" objectFit="contain"/>
                                     </span>
                                     <div>
                                         <p className={`text-right font-600 text-xs`}>- {review.post_user_name}</p>
@@ -73,10 +66,7 @@ function ReviewsPage() {
     return (
         <Fragment>
             <PageHead url="/reviews" id="reviews" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/60']}>
-                <InfoBand/>
-                <Navbar isMobile={dataStore.mobile}/>
-            </div>
+            <Navbar isMobile={dataStore.mobile}/>
             <div className="grid place-items-center mt-28 mb-10">
                 <div className={"border-[5px] border-black/10 py-3 px-6 uppercase tracking-wide"}>
                     <h4 className={`text-h4 font-600 text-center`}>Reviews</h4>

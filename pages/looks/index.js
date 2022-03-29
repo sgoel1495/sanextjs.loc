@@ -1,8 +1,6 @@
-import React, {Fragment, useContext, useEffect, useRef, useState} from 'react';
-import LooksNavbar from "../../components/navbar/LookNavbar";
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import PageHead from "../../components/PageHead";
 import AppWideContext from "../../store/AppWideContext";
-import InfoBand from "../../components/info-band/InfoBand";
 import Footer from "../../components/footer/Footer";
 import useApiCall from "../../hooks/useApiCall";
 import appSettings from "../../store/appSettings";
@@ -10,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BlockHeader from "../../components/common/blockHeader";
 import WishListButton from "../../components/common/WishListButton";
+import NavBar from "../../components/navbar";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -54,15 +53,6 @@ function LooksPage() {
         )
             setData(resp.response);
     }, [resp]);
-
-    // Nav Controller
-    const [navControl, setNavControl] = React.useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     React.useEffect(() => {
         if (expandedRef.current) {
@@ -230,10 +220,7 @@ function LooksPage() {
     const browserView = (
         <>
             <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
-            </div>
+            <NavBar type={"mimoto"}/>
             <section className={`bg-[#E6E1DB] py-20`}>
                 <BlockHeader
                     space={"py-5"}
