@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useEffect, useRef, useState} from 'react';
 import LooksNavbar from "../../components/navbar/LookNavbar";
 import PageHead from "../../components/PageHead";
 import AppWideContext from "../../store/AppWideContext";
@@ -32,6 +32,7 @@ function LooksPage() {
     const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState(null);
     const [expandLook, setExpandLook] = useState(null);
+    const expandedRef = useRef(null);
 
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
@@ -57,10 +58,22 @@ function LooksPage() {
     // Nav Controller
     const [navControl, setNavControl] = React.useState(false);
     const controller = () => setNavControl(window.scrollY > 0);
+
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
         return () => window.removeEventListener('scroll', controller)
     }, []);
+
+    React.useEffect(() => {
+        if (expandedRef.current) {
+            const element =
+                expandedRef.current.getBoundingClientRect().top + window.scrollY - document.getElementsByClassName("navigator")[0].getBoundingClientRect().bottom
+            window.scroll({
+                top: element,
+                behavior: "smooth"
+            })
+        }
+    }, [expandedRef.current, expandLook])
 
     /*
     each look has
@@ -152,7 +165,7 @@ function LooksPage() {
             );
         }
         return (
-            <div className={`col-span-3 relative`}>
+            <div className={`col-span-3 relative`} ref={expandedRef}>
                 <button
                     onClick={() => setExpandLook(null)}
                     className={`absolute top-0 right-0 uppercase float-right text-black/50 flex gap-x-2`}
@@ -182,9 +195,11 @@ function LooksPage() {
 
     const lookData = () => {
         let showLookData = null;
+        let look_ids = []
         if (!data || !data.hasOwnProperty("look") || data.look.length < 1) return null;
         else {
-            data.look.forEach(look => {
+            data.look.forEach((look, index) => {
+                look_ids.push(look.look_id)
                 showLookData = (
                     <>
                         {showLookData}
@@ -203,7 +218,7 @@ function LooksPage() {
                                 <p className={`uppercase text-sm`}>{'>'} Shop the look</p>
                             </div>
                         </div>
-                        {(expandLook && expandLook.look_id === look.look_id) ? expandData() : null}
+                        {(index % 3 === 2 && expandLook && look_ids.slice(index - 2, index + 1).includes(expandLook.look_id)) ? expandData() : null}
                     </>
                 );
             });

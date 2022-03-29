@@ -14,6 +14,7 @@ class MyDocument extends Document {
                 <Head/>
                 <body>
                 <div id="toastContainer" className={"sticky z-toast top-10 right-10 float-right"}/>
+                <div id="toastMobContainer" className={"fixed z-toast bottom-0 w-full"}/>
                 <div id="hamburger"></div>
                 <div id="userband"></div>
                 <div id="cartside"></div>
