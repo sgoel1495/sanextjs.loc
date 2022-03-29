@@ -102,7 +102,7 @@ const Index = () => {
                                     hour: 23,
                                     minute: 30
                                 }))).splitBy({minute: 30}).map((item, index) => {
-                                    return <option value={item.start.toFormat("T")}>{item.start.toFormat("t")}</option>
+                                    return <option value={item.start.toFormat("T")} key={index}>{item.start.toFormat("t")}</option>
                                 })
                             }
                         </select>
@@ -123,7 +123,7 @@ const Index = () => {
                         loading ?
                             <div className='py-1 w-full flex justify-center'>
                                 <span className="block relative w-14 aspect-square">
-                                    <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}/>
+                                    <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"}/>
                                 </span>
                             </div>
                             :
