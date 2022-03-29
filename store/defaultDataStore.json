@@ -10,7 +10,7 @@
     },
     {
       "category": "SHIRTS",
-      "link": "/shop-tops",
+      "link": "/shop-shirts",
       "new": false
     },
     {
@@ -67,7 +67,7 @@
     },
     {
       "category": "JEWELLERY",
-      "link": "/shop-jwellery",
+      "link": "/shop-jewellery",
       "new": true
     },
     {

@@ -9,23 +9,75 @@ import React from 'react';
 
 function CategoryHeaderVideo(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const category = props.category;
+    let category = props.category;
+
+    category = category.split("-")
+    let superText = ""
+    if (category.length > 1) {
+        superText = category[0];
+        category = category[1]
+    } else {
+        category = category[0]
+    }
+
+    let titleStyle = " text-right float-left"
+    let textStyle = "text-6xl"
+    let containerStyle = ""
+    let subText = ""
+    switch (category) {
+        case "skirts":
+            subText = "(Select 'T' as the size option and enter your measurements)"
+            titleStyle = " text-left float-right"
+            break;
+        case "pants":
+            subText = "(Select 'T' as the size option and enter your measurements)"
+            titleStyle = " text-left float-left pl-28"
+            break;
+        case "dresses":
+        case "belts":
+            titleStyle = " text-left float-right"
+            break;
+        case "tops":
+        case "sweaters":
+        case "shirts":
+        case "shorts":
+            titleStyle = " text-left float-left pl-28"
+            break;
+        case "tunics":
+            containerStyle = "flex justify-center items-center h-fit"
+            titleStyle = " text-center w-[23%]"
+            break;
+        case "jumpsuits":
+            containerStyle = "flex justify-center items-center h-fit"
+            titleStyle = " text-center"
+            break;
+        case "jewellery":
+        case "outerwear":
+            titleStyle = " text-left float-left pl-28"
+            textStyle = "text-5xl"
+            break;
+        case "masks":
+            titleStyle = " text-left float-left pl-28"
+    }
 
     return (
-        <section className={`relative mt-8`}>
-            <video autoPlay muted className={`w-full h-fit`} loop>
-                <source
-                    src={WEBASSETS + "/assets/videos/" + category + ".mp4"}
-                    type="video/mp4"
-                    poster={WEBASSETS + "/assets/videos/" + category + ".jpg"}
-                />
-                Your browser does not support video tag.
-            </video>
-            <div className={`absolute inset-0 flex items-center justify-start`}>
-                <div className={`bg-black pt-12 pb-6 pl-28 w-1/3 text-white font-cursive leading-none`}>
-                    <span className={`text-6xl`}>
-                        {category.toUpperCase()}
+        <section>
+            <span className={"relative block pt-[5.5rem] h-[54rem] overflow-hidden"}>
+                <video autoPlay muted className={`w-full h-fit`} loop style={{background: `url("${WEBASSETS}/assets/videos/${category}.jpg")`}}>
+                    <source
+                        src={WEBASSETS + "/assets/videos/" + category + ".mp4"}
+                        type="video/mp4"
+                    />
+                    Your browser does not support video tag.
+                </video>
+            </span>
+            <div className={`absolute inset-0 top-[40vh] h-fit ` + containerStyle}>
+                <div className={`bg-black pt-10 pb-4 px-[2vw] w-[32%] text-white leading-none ` + titleStyle}>
+                    {superText && <><span className={`block text-md uppercase font-semibold font-cursive`}>{superText}</span><br/></>}
+                    <span className={`block font-cursive uppercase ` + textStyle}>
+                        {category === "masks" ? <>COTTON<br/>MASKS</> : category}
                     </span>
+                    {subText && <span className={`block text-sm leading-6 font-light mb-4 mt-[-15px]`}>{subText}</span>}
                 </div>
             </div>
         </section>

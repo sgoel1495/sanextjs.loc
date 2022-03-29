@@ -25,7 +25,6 @@ const Index = () => {
                         if (item) {
                             const backgroundColorClass = `bg-[${item['img_bg_color']}]`;
                             const textColor = item['img_title_color'];
-                            console.log(item)
                             return (
                                 <div key={index} className={`py-4 ${backgroundColorClass}`}>
                                     <h3 className={`text-h3 font-900 uppercase tracking-widest mx-4`} style={{color: textColor}}>{item['img_title']}</h3>
