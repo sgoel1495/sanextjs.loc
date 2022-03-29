@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
+import {Swiper, SwiperSlide} from "swiper/react";
 import Link from 'next/link'
 
 const Index = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const resp = useApiCall("getMarketingData", dataStore.apiToken);
     const currCurrency = dataStore.currCurrency;
 
@@ -25,13 +25,16 @@ const Index = () => {
                         if (item) {
                             const backgroundColorClass = `bg-[${item['img_bg_color']}]`;
                             const textColor = item['img_title_color'];
+                            console.log(item)
                             return (
                                 <div key={index} className={`py-4 ${backgroundColorClass}`}>
-                                    <h3 className={`text-h3 font-900 uppercase tracking-widest mx-4`} style={{ color: textColor }}>{item['img_title']}</h3>
-                                    <h3 className={`text-h3 font-cursive italic tracking-wider mx-4 leading-none sentence`} style={{ color: textColor }}>{item['img_sub_title']}</h3>
-                                    <span className={"block relative w-full aspect-square -mt-5 mb-5"}>
-                                        <Image src={WEBASSETS + item['img_path']} alt='collection' layout={`fill`} objectFit={`cover`} />
-                                    </span>
+                                    <h3 className={`text-h3 font-900 uppercase tracking-widest mx-4`} style={{color: textColor}}>{item['img_title']}</h3>
+                                    <h3 className={`text-h3 font-cursive italic tracking-wider mx-4 leading-none sentence`} style={{color: textColor}}>{item['img_sub_title']}</h3>
+                                    <Link href={item['img_link']}>
+                                        <span className={"block relative w-full aspect-square -mt-5 mb-5"}>
+                                            <Image src={WEBASSETS + item['img_path']} alt='collection' layout={`fill`} objectFit={`cover`}/>
+                                        </span>
+                                    </Link>
                                     <p className='font-cursive italic leading-none text-2xl text-black/80 block text-center sentence'>{item['title']}</p>
                                     <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-600 tracking-widest'>{item['subtitle'][currCurrency]}</p>
                                     <div className={`py-5 zoomInSwiper`}>
@@ -50,7 +53,7 @@ const Index = () => {
                                                 return (
                                                     <SwiperSlide key={i}>
                                                         <Link href={item.products_links[i]}>
-                                                            <a className={"block flex flex-col items-center gap-y-2"} target="_blank" rel="noreferrer">
+                                                            <a className={"block flex flex-col items-center gap-y-2"}>
                                                                 <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
                                                                     <Image
                                                                         src={WEBASSETS + product}
