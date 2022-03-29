@@ -15,7 +15,7 @@ const Index = () => {
                 <div className={"grid grid-cols-2"}>
                     {
                         resp.response.data.sort((a, b) => a.serial_no - b.serial_no).map((item, index) => {
-                            return <a href={item.media_link} target={"_blank"}>
+                            return <a href={item.media_link} target={"_blank"} rel="noreferrer" key={index}>
                                 <span className={"block"}>{item.title}</span>
                                 <span className={"block relative"}>
                                     <Image src={WEBASSETS + item.mob_img} alt={item.media_name} layout={`fill`} objectFit={`cover`}/>

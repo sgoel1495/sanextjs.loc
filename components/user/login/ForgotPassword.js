@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import Loader from "../../common/loader";
+import Loader from "../../common/Loader";
 import {validateUsername} from "../../../helpers/loginSignUpHelpers";
 import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";

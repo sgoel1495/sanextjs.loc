@@ -2,7 +2,7 @@ import React, {useContext, useRef, useState} from 'react';
 import {validateUsername} from "../../../helpers/loginSignUpHelpers";
 import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
-import Loader from "../../common/loader";
+import Loader from "../../common/Loader";
 import Image from "next/image";
 
 const LoginForm = (props) => {

@@ -53,7 +53,7 @@ const Index = () => {
                                                 return (
                                                     <SwiperSlide key={i}>
                                                         <Link href={item.products_links[i]}>
-                                                            <a className={"block flex flex-col items-center gap-y-2"}>
+                                                            <span className={"block flex flex-col items-center gap-y-2"}>
                                                                 <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
                                                                     <Image
                                                                         src={WEBASSETS + product}
@@ -63,7 +63,7 @@ const Index = () => {
                                                                     />
                                                                 </span>
                                                                 <span className={"text-[10px] text-[#8c8987] uppercase"}>{item.products_name[i]}</span>
-                                                            </a>
+                                                            </span>
                                                         </Link>
                                                     </SwiperSlide>
                                                 )
