@@ -48,8 +48,8 @@ function RootPage() {
         <Preferences/>
         <AboutUs/>
         <OurStores/>
-        {/*<Media/>*/}
-        {/*<Reviews/>*/}
+        <Media/>
+        <Reviews/>
     </Fragment>;
 
     const browserView = <Fragment>
