@@ -27,7 +27,32 @@ function AboutUsPage() {
     }, []);
 
 
-    const mobileView = null;
+    const mobileView = (
+        <>
+            <section id={`radhika_story`} title={`Radhika Story`}>
+                <InspiredByTrueStory isMobile={dataStore.mobile}/>
+                <Radhika isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`our_design`} title={`Our Design`}>
+                <OurDesign isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`fabric`} title={`Fabric`}>
+                <Fabric isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`size_fit`} title={`Size Fit`}>
+                <SizeFit isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`affordable_luxury`} title={`Affordable Luxury`}>
+                <AffordableLuxury isMobile={dataStore.mobile} />
+            </section>
+            <section id={`finishing_details`} title={`Finishing Details`}>
+                <FinishingDetails isMobile={dataStore.mobile}/>
+            </section>
+            <section id={`why_salt`} title={`WhySalt`} className={`mb-10`}>
+                <WhySalt isMobile={dataStore.mobile}/>
+            </section>
+        </>
+    );
     const browserView = (
         <>
             <section id={`radhika_story`} title={`Radhika Story`}>
@@ -63,7 +88,7 @@ function AboutUsPage() {
                 <LooksNavbar isMobile={dataStore.mobile}/>
             </div>
             {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
         </Fragment>
     )
 

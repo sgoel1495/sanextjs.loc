@@ -77,13 +77,19 @@ function CancellationModificationsPage() {
             </Fragment>;
         });
         return (
-            <div className={'w-3/4 mx-auto my-20 grid grid-cols-2 gap-x-20'}>
+            dataStore.mobile ?
+            <div className={'w-3/4 mx-auto my-20 grid grid-cols-1 gap-x-20'}>
+                <div>Cancellation & Modifications</div>
                 {showSRData}
-            </div>
+            </div> :
+                <div className={'w-3/4 mx-auto my-20 grid grid-cols-2 gap-x-20'}>
+                    {showSRData}
+                </div>
         );
     }
 
-    const mobileView = null;
+    // const mobileView = null;
+    const mobileView = showSR(cancellationModificationsData);
     const browserView = showSR(cancellationModificationsData);
     return (
         <Fragment>

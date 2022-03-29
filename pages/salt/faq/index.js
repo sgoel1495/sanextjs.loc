@@ -80,7 +80,14 @@ function FaqPage() {
         return showFaqData;
     }
 
-    const mobileView = null;
+    const mobileView = (
+        <div className="w-3/4 mx-auto my-10 grid grid-cols-1 gap-x-36">
+            <span>FAQ</span>
+            <div className={`flex flex-col gap-y-2`}>
+                {showFaq("all")}
+            </div>
+        </div>
+    );
     const browserView = (
         <div className="w-3/4 mx-auto my-10 grid grid-cols-2 gap-x-36">
             <div className={`flex flex-col gap-y-2`}>
@@ -103,7 +110,7 @@ function FaqPage() {
             <section >
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
-            <Footer isMobile={dataStore.mobile}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
         </>
     )
 }
