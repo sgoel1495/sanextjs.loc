@@ -67,8 +67,8 @@ const Index = () => {
                                 break;
                         }
                         return (
-                            <Link href={`looks/#${item.look_id}`}>
-                                <div className={"relative h-full aspect-square overflow-hidden box-shadow-lg " + style} key={index}>
+                            <Link href={`looks/#${item.look_id}`} key={index}>
+                                <div className={"relative h-full aspect-square overflow-hidden box-shadow-lg " + style}>
                                     <Image src={WEBASSETS + item.img_path} alt='looks' layout={`fill`} objectFit={`cover`}/>
                                 </div>
                             </Link>
