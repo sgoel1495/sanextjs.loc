@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useState} from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
@@ -17,17 +17,17 @@ import LinkParser from "../../../components/common/LinkParser";
  * @constructor
  */
 
-const AnswerBlock = ({item}) => {
+const AnswerBlock = ({ item }) => {
     const main = (
         <div className={`${item.check ? 'flex-1' : null}`}>
-            <LinkParser para={item.para}/>
+            <LinkParser para={item.para} />
         </div>
     );
     const check = (
         <div className={`flex items-start gap-x-2`}>
             <span className="block w-5 h-5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
-                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"/>
+                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z" />
                 </svg>
             </span>
             {main}
@@ -38,7 +38,7 @@ const AnswerBlock = ({item}) => {
 
 function ShippingNReturnsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
     // NavBar Controls
     const [navControl, setNavControl] = useState(false);
@@ -58,7 +58,7 @@ function ShippingNReturnsPage() {
                 answersData = (
                     <>
                         {answersData}
-                        <AnswerBlock item={answer}/>
+                        <AnswerBlock item={answer} />
                     </>
                 );
             });
@@ -67,9 +67,9 @@ function ShippingNReturnsPage() {
                     {showSRData}
                     <Accordion
                         title={ele.question}
-                        titleIcon={<Image src={WEBASSETS + ele.icon} alt="question" layout={`fill`} objectFit={`cover`}/>}
+                        titleIcon={<Image src={WEBASSETS + ele.icon} alt="question" layout={`fill`} objectFit={`cover`} />}
                         titleStyle={"bg-black/10 py-4 px-6"}
-                        titleTextStyle={`text-h6 text-[#777] font-400 uppercase`}
+                        titleTextStyle={`text-[#777] font-400 uppercase ` + [dataStore.mobile ? 'text-sm font-bold tracking-wider' : 'text-h6']}
                         bodyStyle={"bg-black/5"}
                     >
                         <div className="px-6 py-4">
@@ -85,24 +85,24 @@ function ShippingNReturnsPage() {
 
     return (
         <Fragment>
-            <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile}/>
+            <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile} />
             <div className={"navigator fixed top-0 right-0 left-0 z-10 hover:bg-white/95 hover:shadow-lg bg-white/90"}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
+                <InfoBand />
+                <LooksNavbar isMobile={dataStore.mobile} />
             </div>
-            <CategoryHeaderImage category={category}/>
-            <section className={"container my-20 grid gap-x-20 "+[dataStore.mobile?"grid-cols-1":"grid-cols-2"]}>
-                {dataStore.mobile&&<span className={"block text-center text-2xl font-bold"}>Shipping & returns</span>}
+            <CategoryHeaderImage category={category} />
+            <section className={"container my-20 " + [dataStore.mobile ? " px-4" : " grid gap-x-20 grid-cols-2"]}>
+                {dataStore.mobile && <span className={"block text-center text-2xl font-bold capitalize"}>Shipping & returns</span>}
                 <div className={`flex flex-col gap-y-2`}>
-                    <p className={`text-xl text-center`}>Shipping Policy</p>
+                    <p className={`text-xl text-center mt-5 mb-2`}>Shipping Policy</p>
                     {showSR(shippingData)}
                 </div>
                 <div className={`flex flex-col gap-y-2`}>
-                    <p className={`text-xl text-center`}>Returns Policy</p>
+                    <p className={`text-xl text-center mt-5 mb-2`}>Returns Policy</p>
                     {showSR(returnsData)}
                 </div>
             </section>
-            <Footer isMobile={dataStore.mobile} minimal={true} color="#f5f5f5"/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color="#f5f5f5" />
         </Fragment>
     )
 }

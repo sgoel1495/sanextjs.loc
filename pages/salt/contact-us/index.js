@@ -1,11 +1,11 @@
-import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
+import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import PageHead from "../../../components/PageHead";
 import InfoBand from "../../../components/info-band/InfoBand";
 import LooksNavbar from "../../../components/navbar/LookNavbar";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
-import {GoogleMap, Marker, useJsApiLoader} from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Image from "next/image";
 
 
@@ -16,7 +16,7 @@ import Image from "next/image";
 
 function ContactUsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
     const category = "Contact Us";
 
     // NavBar Controls
@@ -37,7 +37,7 @@ function ContactUsPage() {
         lng: 77.086267
     };
 
-    const {isLoaded} = useJsApiLoader({
+    const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "AIzaSyCneIy_canWR3DwYcH-IR0Ho-CmQCA-VjY"
     });
@@ -54,8 +54,8 @@ function ContactUsPage() {
         setMap(null)
     }, []);
 
-    const mobileView = <section className="container my-20 grid grid-cols-1 gap-x-10 items-start justify-center">
-        <div className={`grid grid-cols-1 gap-y-8 text-center`}>
+    const mobileView = (
+        <section className="container my-20 flex flex-col gap-y-6 items-center text-center">
             <p className={`font-600`}>We Would Love To Hear From You!</p>
             <div className={`flex flex-col gap-y-4`}>
                 <p className={`font-600`}>Corporate Office</p>
@@ -79,10 +79,9 @@ function ContactUsPage() {
                 <p>care@saltattire.com</p>
                 <p>18002709515</p>
             </div>
-            <button className={`bg-black font-500 px-12 py-3 text-white uppercase`}>Contact Us</button>
-        </div>
-
-    </section>;
+            <button className={`bg-black font-500 px-12 py-3 text-white uppercase tracking-wider`}>Contact Us</button>
+        </section>
+    );
 
     const browserView = <section className="container my-20 grid grid-cols-2 gap-x-10 items-start justify-center">
         <div className={`grid grid-cols-2 gap-y-8 text-center`}>
@@ -121,7 +120,7 @@ function ContactUsPage() {
                 onLoad={onLoad}
                 onUnmount={onUnmount}
             >
-                <Marker position={center} title='Salt Store' icon={WEBASSETS + "/assets/images/salt_black.png"}/>
+                <Marker position={center} title='Salt Store' icon={WEBASSETS + "/assets/images/salt_black.png"} />
             </GoogleMap>
             : null
         }
@@ -129,14 +128,14 @@ function ContactUsPage() {
 
     return (
         <Fragment>
-            <PageHead url="/salt/contact-us" id="contactus" isMobile={dataStore.mobile}/>
+            <PageHead url="/salt/contact-us" id="contactus" isMobile={dataStore.mobile} />
             <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
+                <InfoBand />
+                <LooksNavbar isMobile={dataStore.mobile} />
             </div>
-            <CategoryHeaderImage category={category}/>
+            <CategoryHeaderImage category={category} />
             {dataStore.mobile ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"} />
         </Fragment>
     )
 
