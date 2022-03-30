@@ -144,7 +144,7 @@ function ShopPage(props) {
     return (
         <Fragment>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-            {navControl || <Header type={"mimoto"}/>}
+            {navControl || <Header type={"shopMenu"}/>}
             <CategoryHeaderVideo category={category}/>
             {navControl
                 ? <Header type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>

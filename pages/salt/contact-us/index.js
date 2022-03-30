@@ -119,7 +119,7 @@ function ContactUsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/contact-us" id="contactus" isMobile={dataStore.mobile} />
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category} />
             {dataStore.mobile ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"} />

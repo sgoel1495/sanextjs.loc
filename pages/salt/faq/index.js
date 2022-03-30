@@ -92,7 +92,7 @@ function FaqPage() {
     return (
         <>
             <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section >
                 {(dataStore.mobile) ? mobileView : browserView}

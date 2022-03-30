@@ -56,7 +56,7 @@ function FinishingDetailsPage(){
     return (
         <Fragment>
             <PageHead url="/salt/about-us/finishing-details" id="aboutusfinishingdetails" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

@@ -220,7 +220,7 @@ function LooksPage() {
     const browserView = (
         <>
             <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"}/>
             <section className={`bg-[#E6E1DB] py-20`}>
                 <BlockHeader
                     space={"py-5"}

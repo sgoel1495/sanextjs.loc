@@ -85,7 +85,7 @@ function CancellationModificationsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/cancellation-modifications" id="cancellationmodifications" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section>
                 {(dataStore.mobile) ? mobileView : browserView}

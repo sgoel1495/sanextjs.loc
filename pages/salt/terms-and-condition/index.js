@@ -517,7 +517,7 @@ function TermsAndConditionPage() {
     return (
         <Fragment>
             <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section className="my-20">
                 {(dataStore.mobile) ? mobileView : browserView}

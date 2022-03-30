@@ -130,7 +130,7 @@ function NewArrivalsAllPage() {
         <>
             <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={dataStore.mobile}/>
 
-                <Header isMobile={dataStore.mobile}/>
+                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
             <section className={`bg-[#E6E1DB] pb-20`}>
                 <BlockHeader

@@ -38,7 +38,7 @@ function WhyCustomTailoredClothingPage() {
         <Fragment>
             <PageHead url="/blog/about-salt/why-custom-tailored-clothing" id="why-custom-tailored-clothing" isMobile={dataStore.mobile}/>
 
-                <Header isMobile={dataStore.mobile}/>
+                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>);

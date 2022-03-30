@@ -104,7 +104,7 @@ function GiftcardsPage() {
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
-                <Header isMobile={dataStore.mobile}/>
+                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

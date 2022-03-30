@@ -38,8 +38,7 @@ function StylingServicePage(){
     return (
         <Fragment>
             <PageHead url="/blog/about-salt/styling-service" id="styling-service" isMobile={dataStore.mobile}/>
-
-                <Header isMobile={dataStore.mobile}/>
+                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>);

@@ -12,7 +12,13 @@ const Header = (props) => {
         };
     }, []);
 
-    const mobileView = <>
+    const mobileView =  props.type === "minimal" ?
+        <div className={"sticky top-0 z-10"}>
+            <InfoBand/>
+            <Navbar {...props}/>
+        </div>
+        :
+        <>
         <InfoBand/>
         <Navbar {...props}/>
     </>

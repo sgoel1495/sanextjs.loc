@@ -36,7 +36,7 @@ function SizeFitPage(){
     return (
         <Fragment>
             <PageHead url="/salt/about-us/size-fit" id="aboutussizefit" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>

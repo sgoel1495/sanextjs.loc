@@ -38,7 +38,7 @@ function NoInventoryNoMassProductionPage(){
     return (
         <Fragment>
             <PageHead url="/blog/about-salt/no-inventory-no-mass-production" id="no-inventory-no-mass-production" isMobile={dataStore.mobile}/>
-                <Header isMobile={dataStore.mobile}/>
+                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>);

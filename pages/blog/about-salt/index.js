@@ -54,7 +54,7 @@ function BlogAboutSaltPage() {
     return (
         <Fragment>
             <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={dataStore.mobile}/>
-            <Header isMobile={dataStore.mobile}/>
+            <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section className="container mb-10">
                 {(dataStore.mobile) ? mobileView : browserView}

@@ -44,7 +44,7 @@ function PrivacyPolicyPage() {
     return (
         <Fragment>
             <PageHead url="/salt/privacy-policy" id="privacypolicy" isMobile={dataStore.mobile} />
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category} />
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />

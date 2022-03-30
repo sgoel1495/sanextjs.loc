@@ -51,7 +51,7 @@ function Menu(props) {
      */
 
     switch (props.type) {
-        case "mimoto":
+        case "shopMenu":
             browserViewStyle = "flex flex-row-reverse justify-end items-center"
             data.categories.forEach((ele) => {
                 actualData.push({
@@ -71,7 +71,7 @@ function Menu(props) {
             });
             break;
         case "minimal":
-            newTagStyle="absolute top-0 left-[50%] translate-x-[-50%] mt-1"
+            newTagStyle = "absolute top-0 left-[50%] translate-x-[-50%] mt-1"
             browserViewStyle += " py-3.5 relative "
             data.categories.forEach((ele) => {
                 actualData.push({
@@ -115,11 +115,21 @@ function Menu(props) {
 
     let isAccessoryPage = data.accessories.findIndex((item) => item.link === "/" + props.category) !== -1
 
-    let mobileView = null;
-    let browserView = null;
+    let mobileView = <>
+        {actualData.map((item) => {
+            return <li key={item.id}>
+                <Link href={item.link}>
+                    <span>
+                        {item.category}
+                    </span>
+                </Link>
+            </li>
+        })}
+    </>;
+    let browserView;
 
     switch (props.type) {
-        case "mimoto":
+        case "shopMenu":
             const leadTextStyle = "block leading-none tracking-wider text-h5 font-500";
             const textStyle = "block leading-none tracking-wide text-black/50 text-sm";
             browserView = (

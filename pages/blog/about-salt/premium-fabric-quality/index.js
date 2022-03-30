@@ -37,7 +37,7 @@ function PremiumFabricQualityPage(){
     return (
         <Fragment>
             <PageHead url="/blog/about-salt/premium-fabric-quality" id="premium-fabric-quality" isMobile={dataStore.mobile}/>
-                <Header isMobile={dataStore.mobile}/>
+                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>);

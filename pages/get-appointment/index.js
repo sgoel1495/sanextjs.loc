@@ -95,7 +95,7 @@ function GetAppointmentPage() {
     return (
         <Fragment>
             <PageHead url="/salt/get-appointment" id="getappointment" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section className="container my-20 select-none">
                 {(dataStore.mobile) ? mobileView : browserView}

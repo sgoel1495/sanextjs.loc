@@ -74,7 +74,7 @@ function AboutUsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/about-us" id="aboutus" isMobile={dataStore.mobile}/>
-            <Header type={"mimoto"}/>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
         </Fragment>
