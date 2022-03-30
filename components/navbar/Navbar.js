@@ -69,32 +69,44 @@ function Navbar(props) {
         </div>
     </>;
 
-    const browserView = (
-        <nav className={navStyle + " flex items-center gap-x-4"}>
-            {
-                props.type === "mimoto" ?
-                    <>
-                        <SaltIcon type={props.type} isMobile={false}/>
-                        <CurrencySwitcher type={props.type} isMobile={false}/>
-                        <Menu type={props.type} isMobile={false}/>
-                        <SidebarMenuUser type={props.type} isMobile={false}/>
-                        <SearchMenu type={props.type} isMobile={false}/>
-                        <SidebarMenuCart type={props.type} isMobile={false}/>
-                    </>
-                    :
-                    <>
-                        <SaltIcon type={props.type} isMobile={false}/>
-                        <SidebarMenuHamburger type={props.type} isMobile={false}/>
-                        <Menu type={props.type} isMobile={false}/>
-                        <SearchMenu type={props.type} isMobile={false}/>
-                        <CurrencySwitcher type={props.type} isMobile={false}/>
-                        <SidebarMenuUser type={props.type} isMobile={false}/>
-                        <SidebarMenuCart type={props.type} isMobile={false}/>
-                    </>
-            }
+    let browserView
 
-        </nav>
-    );
+    switch (props.type) {
+        case "mimoto":
+            browserView =
+                <nav className={navStyle + " flex items-center gap-x-4"}>
+                    <SaltIcon type={props.type} isMobile={false}/>
+                    <CurrencySwitcher type={props.type} isMobile={false}/>
+                    <Menu type={props.type} isMobile={false}/>
+                    <SidebarMenuUser type={props.type} isMobile={false}/>
+                    <SearchMenu type={props.type} isMobile={false}/>
+                    <SidebarMenuCart type={props.type} isMobile={false}/>
+                </nav>
+            break;
+        case "minimal":
+            browserView =
+                <nav className={navStyle + " flex items-center gap-x-4"}>
+                    <SaltIcon type={props.type} isMobile={false}/>
+                    <SidebarMenuHamburger type={props.type} isMobile={false}/>
+                    <CurrencySwitcher type={props.type} isMobile={false}/>
+                    <Menu type={props.type} isMobile={false} filterData={props.filterData}/>
+                    <SearchMenu type={props.type} isMobile={false}/>
+                    <SidebarMenuCart type={props.type} isMobile={false}/>
+                </nav>
+            break;
+        default:
+            browserView =
+                <nav className={navStyle + " flex items-center gap-x-4"}>
+                    <SaltIcon type={props.type} isMobile={false}/>
+                    <SidebarMenuHamburger type={props.type} isMobile={false}/>
+                    <Menu type={props.type} isMobile={false}/>
+                    <SearchMenu type={props.type} isMobile={false}/>
+                    <CurrencySwitcher type={props.type} isMobile={false}/>
+                    <SidebarMenuUser type={props.type} isMobile={false}/>
+                    <SidebarMenuCart type={props.type} isMobile={false}/>
+                </nav>
+    }
+
 
     return props.isMobile ? mobileView : browserView
 

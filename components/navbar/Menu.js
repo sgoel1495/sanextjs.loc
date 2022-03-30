@@ -42,8 +42,8 @@ function Menu(props) {
 
 
     const actualData = [];
-    let browserViewStyle = "block px-3 mx-1 leading-none border-b border-transparent hover:border-black text-black/60";
-    let newTagStyle = ""
+    let browserViewStyle = "block px-3 mx-1 leading-none border-b text-black/60";
+    let newTagStyle = "ml-1"
     let categoriesList = null;
 
     /**
@@ -53,7 +53,6 @@ function Menu(props) {
     switch (props.type) {
         case "mimoto":
             browserViewStyle = "flex flex-row-reverse justify-end items-center"
-            newTagStyle = "p-[0.1rem] text-[8px] ml-1"
             data.categories.forEach((ele) => {
                 actualData.push({
                     id: ele.category,
@@ -72,6 +71,8 @@ function Menu(props) {
             });
             break;
         case "minimal":
+            newTagStyle="absolute top-0 left-[50%] translate-x-[-50%] mt-1"
+            browserViewStyle += " py-3.5 relative "
             data.categories.forEach((ele) => {
                 actualData.push({
                     id: ele.category,
@@ -101,8 +102,8 @@ function Menu(props) {
                     {categoriesList}
                     <div key={ele.category}>
                         <Link href={ele.link}>
-                            <a className={`font-600 ${browserViewStyle}`}>
-                                {ele.new && <span className={"bg-black text-xs text-white leading-none " + newTagStyle}>New</span>}
+                            <a className={`font-600 ${browserViewStyle}` + ["/" + props.category === ele.link ? " border-black" : " border-transparent hover:border-black"]}>
+                                {ele.new && <span className={"bg-black text-xs text-white leading-none p-[0.1rem] text-[8px] " + newTagStyle}>New</span>}
                                 {ele.category}
                             </a>
                         </Link>
@@ -111,6 +112,8 @@ function Menu(props) {
             );
         })
     }
+
+    let isAccessoryPage = data.accessories.findIndex((item) => item.link === "/" + props.category) !== -1
 
     let mobileView = null;
     let browserView = null;
@@ -179,7 +182,7 @@ function Menu(props) {
         default:
             browserView = (
                 <div className={`relative container`}>
-                    <ul className={"flex flex-wrap justify-center items-center uppercase font-600"}>
+                    <ul className={"flex flex-wrap justify-center items-end uppercase font-600"}>
                         <Fragment>
                             {
                                 (props.type !== "minimal") &&
@@ -192,14 +195,15 @@ function Menu(props) {
                                     </li>
                                     <li key="looks">
                                         <Link href={"/looks"}>
-                                            <a className={browserViewStyle}>Looks</a>
+                                            <a className={browserViewStyle + " border-transparent hover:border-black"}>Looks</a>
                                         </Link>
                                     </li>
                                 </>
                             }
                             {categoriesList}
                             <li key="accessories" className={"relative group"}>
-                                <span className={browserViewStyle + " group-hover:border-black"}>Accessories</span>
+                                <span
+                                    className={browserViewStyle + [isAccessoryPage ? " border-black" : " border-transparent hover:border-black"] + " group-hover:border-black"}>Accessories</span>
                                 <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
                             </li>
                         </Fragment>

@@ -164,7 +164,7 @@ function CategoryFilterSidebar(props) {
 
     const browserView = (
         <>
-            <button onClick={() => setShowSidebarMenu(true)} className={`absolute inset-y-0 right-0 py-2 text-sm font-500 uppercase leading-none flex items-end gap-x-1`}>
+            <button onClick={() => setShowSidebarMenu(true)} className={`absolute inset-y-0 right-0 py-2 text-sm font-500 uppercase leading-none flex items-center gap-x-1`}>
                 Filters
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-3 h-3" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>

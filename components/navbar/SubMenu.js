@@ -12,23 +12,18 @@ function SubMenu(props) {
     const mobileView = null;
     let browserView = null;
 
-    const showMenu = ()=>{
+    const showMenu = () => {
         let showMenuData = null;
-        if(props.menu == "accessories"){
-            props.data.forEach(ele=>{
+        if (props.menu == "accessories") {
+            props.data.forEach(ele => {
                 showMenuData = <Fragment>
                     {showMenuData}
                     <li key={generateHash()}>
                         <Link href={ele.link}>
-                            {(ele.new)
-                                ?<a className={"flex flex-col items-start px-4 py-2 border-b border-transparent hover:border-black leading-none"}>
-                                    <span className={"bg-black text-xs text-white leading-none"}>New</span>
-                                    {ele.category}
-                                </a>
-                                :<a className={"block px-4 py-2 border-b border-transparent hover:border-black"}>
-                                    {ele.category}
-                                </a>
-                            }
+                            <a className={"block px-4 py-2 border-b border-transparent hover:border-black flex flex-col items-center"}>
+                                {(ele.new) ? <span className={"bg-black text-[8px] text-white leading-none p-[0.1rem]"}>New</span> : ""}
+                                {ele.category}
+                            </a>
                         </Link>
                     </li>
                 </Fragment>;
