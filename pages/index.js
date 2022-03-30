@@ -2,7 +2,7 @@ import React, {Fragment, useContext, useEffect, useState} from 'react';
 import PageHead from '../components/PageHead';
 import AppWideContext from "../store/AppWideContext";
 import SafetyBlock from "../components/safety-block/SafetyBlock";
-import Navbar from "../components/navbar/Index";
+import Header from "../components/navbar/Header";
 import WhySalt from "../components/why-salt/WhySalt";
 import AboutSaltHomepage from "../components/about-salt/AboutSaltHomepage";
 import DesignBlock from "../components/design-block/DesignBlock";
@@ -60,7 +60,7 @@ function RootPage() {
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
-            <Navbar isMobile={dataStore.mobile}/>
+            <Header isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

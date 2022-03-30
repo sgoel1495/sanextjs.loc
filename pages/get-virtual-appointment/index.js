@@ -4,7 +4,7 @@ import CategoryHeaderImage from "../../components/common/CategoryHeaderImage";
 import Footer from "../../components/footer/Footer";
 import AppWideContext from "../../store/AppWideContext";
 import {Fragment, useContext, useEffect, useState} from "react";
-import NavBar from "../../components/navbar";
+import Header from "../../components/navbar/Header";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
@@ -82,7 +82,7 @@ function GetVirtualAppointmentPage() {
     return (
         <Fragment>
             <PageHead url="/salt/get-virtual-appointment" id="virtualappointment" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category}/>
             <section className="container my-20 select-none">
                 {(dataStore.mobile) ? mobileView : browserView}

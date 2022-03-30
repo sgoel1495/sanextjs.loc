@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BlockHeader from "../../components/common/blockHeader";
 import WishListButton from "../../components/common/WishListButton";
-import NavBar from "../../components/navbar";
+import Header from "../../components/navbar/Header";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -220,7 +220,7 @@ function LooksPage() {
     const browserView = (
         <>
             <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <section className={`bg-[#E6E1DB] py-20`}>
                 <BlockHeader
                     space={"py-5"}

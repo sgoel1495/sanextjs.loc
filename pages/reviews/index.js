@@ -1,6 +1,6 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../components/PageHead";
-import Navbar from "../../components/navbar/Index";
+import Header from "../../components/navbar/Header";
 import AppWideContext from "../../store/AppWideContext";
 import Footer from "../../components/footer/Footer";
 import Link from "next/link";
@@ -66,7 +66,7 @@ function ReviewsPage() {
     return (
         <Fragment>
             <PageHead url="/reviews" id="reviews" isMobile={dataStore.mobile}/>
-            <Navbar isMobile={dataStore.mobile}/>
+            <Header isMobile={dataStore.mobile}/>
             <div className="grid place-items-center mt-28 mb-10">
                 <div className={"border-[5px] border-black/10 py-3 px-6 uppercase tracking-wide"}>
                     <h4 className={`text-h4 font-600 text-center`}>Reviews</h4>

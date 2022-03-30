@@ -7,7 +7,7 @@ import cancellationModificationsData from "../../../store/cancellationModificati
 import Image from "next/image";
 import LinkParser from "../../../components/common/LinkParser";
 import Accordion from "../../../components/common/accordion";
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 /**
  * @todo @Sambhav pls do css
@@ -85,7 +85,7 @@ function CancellationModificationsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/cancellation-modifications" id="cancellationmodifications" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category}/>
             <section>
                 {(dataStore.mobile) ? mobileView : browserView}

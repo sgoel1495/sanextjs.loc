@@ -1,7 +1,7 @@
 import PageHead from "../../../components/PageHead";
 import AppWideContext from "../../../store/AppWideContext";
 import React, {Fragment, useContext, useEffect, useState} from "react";
-import Navbar from "../../../components/navbar/Index";
+import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Link from "next/link";
@@ -54,7 +54,7 @@ function BlogAboutSaltPage() {
     return (
         <Fragment>
             <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={dataStore.mobile}/>
-            <Navbar isMobile={dataStore.mobile}/>
+            <Header isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section className="container mb-10">
                 {(dataStore.mobile) ? mobileView : browserView}

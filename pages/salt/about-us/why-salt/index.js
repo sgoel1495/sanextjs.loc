@@ -10,7 +10,7 @@ import PageHead from "../../../../components/PageHead";
 import Footer from "../../../../components/footer/Footer";
 import AppWideContext from "../../../../store/AppWideContext";
 import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury";
-import NavBar from "../../../../components/navbar";
+import Header from "../../../../components/navbar/Header";
 
 
 function SizeFitPage() {
@@ -63,7 +63,7 @@ function SizeFitPage() {
     return (
         <Fragment>
             <PageHead url="/salt/about-us/our-design" id="aboutusourdesign" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

@@ -10,7 +10,7 @@ import SizeFit from "../../../components/about-salt/SizeFit";
 import FinishingDetails from "../../../components/about-salt/FinishingDetails";
 import WhySalt from "../../../components/about-salt/WhySalt";
 import AffordableLuxury from "../../../components/about-salt/AffordableLuxury";
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 
 function AboutUsPage() {
@@ -74,7 +74,7 @@ function AboutUsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/about-us" id="aboutus" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
         </Fragment>

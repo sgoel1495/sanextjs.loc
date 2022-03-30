@@ -3,7 +3,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 /**
  * @todo @Sambhav css
@@ -517,7 +517,7 @@ function TermsAndConditionPage() {
     return (
         <Fragment>
             <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category}/>
             <section className="my-20">
                 {(dataStore.mobile) ? mobileView : browserView}

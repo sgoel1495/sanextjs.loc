@@ -1,6 +1,6 @@
 import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../../../components/PageHead";
-import Navbar from "../../../../components/navbar/Index";
+import Header from "../../../../components/navbar/Header";
 import Footer from "../../../../components/footer/Footer";
 import AppWideContext from "../../../../store/AppWideContext";
 import StylingServices from "../../../../components/blog/StylingServices";
@@ -37,7 +37,7 @@ function FreeAlterationPage(){
     return (
         <Fragment>
             <PageHead url="/blog/about-salt/free-alteration" id="free-alteration" isMobile={dataStore.mobile}/>
-                <Navbar isMobile={dataStore.mobile}/>
+                <Header isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>);

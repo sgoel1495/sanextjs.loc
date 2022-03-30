@@ -2,7 +2,7 @@ import React from 'react';
 import InfoBand from "../info-band/InfoBand";
 import Navbar from "./Navbar";
 
-const Index = (props) => {
+const Header = (props) => {
     const [navControl, setNavControl] = React.useState(false);
     const controller = () => setNavControl(window.scrollY > 0);
     React.useEffect(() => {
@@ -31,4 +31,4 @@ const Index = (props) => {
     return props.isMobile ? mobileView : browserView
 };
 
-export default Index;
+export default Header;

@@ -3,7 +3,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 /**
  * @todo @Sambhav css
@@ -44,7 +44,7 @@ function PrivacyPolicyPage() {
     return (
         <Fragment>
             <PageHead url="/salt/privacy-policy" id="privacypolicy" isMobile={dataStore.mobile} />
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category} />
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />

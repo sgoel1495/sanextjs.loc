@@ -8,7 +8,6 @@
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
 import React, {Fragment, useContext, useEffect, useState} from "react";
-import NavBar from "../navbar/Index";
 import AppWideContext from "../../store/AppWideContext";
 import Menu from "../navbar/Menu";
 import Footer from "../footer/Footer";
@@ -18,7 +17,7 @@ import Link from "next/link";
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
 import WishListButton from "../common/WishListButton";
-import Navbar from "../../components/navbar/Index";
+import Header from "../navbar/Header";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -54,7 +53,7 @@ function ShopPage(props) {
      * @todo API issue. We have no idea about the number of products we should get. Please change the limit below accordingly
      */
 
-    const resp = useApiCall("getProducts", dataStore.apiToken, {category: category, limit: 100});
+    const resp = useApiCall("getProducts", dataStore.apiToken, {category: category, limit: 20});
     useEffect(() => {
         if (resp
             && resp.hasOwnProperty("status")
@@ -145,10 +144,10 @@ function ShopPage(props) {
     return (
         <Fragment>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-            {navControl || <NavBar type={"mimoto"}/>}
+            {navControl || <Header type={"mimoto"}/>}
             <CategoryHeaderVideo category={category}/>
             {navControl
-                ? <Navbar type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>
+                ? <Header type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>
                 : <Menu type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>
             }
             <BlockHeader

@@ -6,7 +6,7 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 import Accordion from "../../../components/common/accordion";
 import LinkParser from "../../../components/common/LinkParser";
 import faqData from "../../../store/faqData.json";
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 /**
  * @todo Pincode check
@@ -92,7 +92,7 @@ function FaqPage() {
     return (
         <>
             <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category}/>
             <section >
                 {(dataStore.mobile) ? mobileView : browserView}

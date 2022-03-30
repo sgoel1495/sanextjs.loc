@@ -8,7 +8,7 @@ import returnsData from "../../../store/returnsData.json";
 import Image from "next/image";
 import Accordion from "../../../components/common/accordion";
 import LinkParser from "../../../components/common/LinkParser";
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 /**
  * @todo @Sambhav pls do css
@@ -78,7 +78,7 @@ function ShippingNReturnsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile} />
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category} />
             <section className={"container my-20 " + [dataStore.mobile ? " px-4" : " grid gap-x-20 grid-cols-2"]}>
                 {dataStore.mobile && <span className={"block text-center text-2xl font-bold capitalize"}>Shipping & returns</span>}

@@ -4,7 +4,7 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 
 /**
@@ -119,7 +119,7 @@ function ContactUsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/contact-us" id="contactus" isMobile={dataStore.mobile} />
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category} />
             {dataStore.mobile ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"} />

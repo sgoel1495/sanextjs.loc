@@ -1,5 +1,5 @@
 import PageHead from "../../components/PageHead";
-import NavBar from "../../components/navbar/Index";
+import Header from "../../components/navbar/Header";
 import CategoryHeaderImage from "../../components/common/CategoryHeaderImage";
 import Footer from "../../components/footer/Footer";
 import AppWideContext from "../../store/AppWideContext";
@@ -95,7 +95,7 @@ function GetAppointmentPage() {
     return (
         <Fragment>
             <PageHead url="/salt/get-appointment" id="getappointment" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <CategoryHeaderImage category={category}/>
             <section className="container my-20 select-none">
                 {(dataStore.mobile) ? mobileView : browserView}

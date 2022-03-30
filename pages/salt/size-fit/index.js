@@ -9,7 +9,7 @@ import Fabric from "../../../components/about-salt/Fabric";
 import SizeFit from "../../../components/about-salt/SizeFit";
 import FinishingDetails from "../../../components/about-salt/FinishingDetails";
 import WhySalt from "../../../components/about-salt/WhySalt";
-import NavBar from "../../../components/navbar";
+import Header from "../../../components/navbar/Header";
 
 
 /**
@@ -36,7 +36,7 @@ function SizeFitPage(){
     return (
         <Fragment>
             <PageHead url="/salt/about-us/size-fit" id="aboutussizefit" isMobile={dataStore.mobile}/>
-            <NavBar type={"mimoto"}/>
+            <Header type={"mimoto"}/>
             <section className="container my-20 grid grid-cols-2 gap-x-10 gap-y-5">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>

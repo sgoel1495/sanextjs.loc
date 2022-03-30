@@ -6,7 +6,7 @@ import useApiCall from "../../../hooks/useApiCall";
 import appSettings from "../../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "../../../components/navbar/Index";
+import Header from "../../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
 import WishlistButton from "../../../components/common/WishListButton";
@@ -130,7 +130,7 @@ function NewArrivalsAllPage() {
         <>
             <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={dataStore.mobile}/>
 
-                <Navbar isMobile={dataStore.mobile}/>
+                <Header isMobile={dataStore.mobile}/>
             <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
             <section className={`bg-[#E6E1DB] pb-20`}>
                 <BlockHeader
