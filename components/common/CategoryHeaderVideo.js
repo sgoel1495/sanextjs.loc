@@ -5,12 +5,17 @@
  * @constructor
  */
 
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
 function CategoryHeaderVideo(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    let category = props.category;
+    const videoRef = useRef(null);
 
+    useEffect(() => {
+        videoRef.current?.load();
+    }, [props.category]);
+
+    let category = props.category;
     category = category.split("-")
     let superText = ""
     if (category.length > 1) {
@@ -63,7 +68,7 @@ function CategoryHeaderVideo(props) {
     return (
         <section>
             <span className={"relative block pt-[5.5rem] h-[54rem] overflow-hidden"}>
-                <video autoPlay muted className={`w-full h-fit`} loop style={{background: `url("${WEBASSETS}/assets/videos/${category}.jpg")`}}>
+                <video autoPlay muted className={`w-full h-fit`} loop style={{background: `no-repeat url("${WEBASSETS}/assets/videos/${category}.jpg")`}} ref={videoRef}>
                     <source
                         src={WEBASSETS + "/assets/videos/" + category + ".mp4"}
                         type="video/mp4"

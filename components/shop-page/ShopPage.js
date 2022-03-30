@@ -18,6 +18,7 @@ import Link from "next/link";
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
 import WishListButton from "../common/WishListButton";
+import Navbar from "../../components/navbar/Index";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -38,6 +39,15 @@ function ShopPage(props) {
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
+
+    const [navControl, setNavControl] = React.useState(false);
+    const controller = () => setNavControl(window.scrollY > window.innerHeight - 20);
+    React.useEffect(() => {
+        window.addEventListener("scroll", controller);
+        return () => {
+            window.removeEventListener('scroll', controller)
+        };
+    }, []);
 
     /**
      *
@@ -135,11 +145,11 @@ function ShopPage(props) {
     return (
         <Fragment>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-            <NavBar type={"minimal"}/>
+            {navControl || <NavBar type={"mimoto"}/>}
             <CategoryHeaderVideo category={category}/>
-            {(data && data.hasOwnProperty("break_speed"))
-                ? <Menu source="minimal" isMobile={false} filterData={data}/>
-                : null
+            {navControl
+                ? <Navbar type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>
+                : <Menu type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>
             }
             <BlockHeader
                 space={"py-5"}
