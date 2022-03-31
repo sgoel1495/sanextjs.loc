@@ -17,7 +17,7 @@ function PrivacyPolicyPage() {
     const category = "Privacy Policy";
 
     const mobileView = (
-        <div className='w-full px-[13%] mx-auto text-[#525252d6] my-10'>
+        <div className='w-full px-[13%] mx-auto text-[#525252d6] mt-10 mb-36'>
             <span className={"block text-2xl text-center text-black py-5"}>Privacy Policy</span>
             <p className={"tracking-[1px] text-justify text-[15px]"}>
                 We view protection of your privacy as a very important principle. This privacy policy (the &quot;Policy&quot;), is published pursuant to Section 43A of the Information Technology Act, 2000 (the
