@@ -21,25 +21,50 @@ SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay]);
 function HomePageHeaderSwiper(props) {
     const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const resp = useApiCall("getHomePageCarousal", dataStore.apiToken);
+    let imgs = [], links, transition_time;
+    let overlay = null;
+    if (props.page === "newArrival") {
+        if (props.slides) {
+            imgs = props.slides.imgs.map((img) => dataStore.mobile ? img.replace("web", "mob") : img.replace("mob", "web"))
+            links = props.slides.imgs_path.map((link) => "/" + link)
+            transition_time = props.slides.transition_time
+            overlay = <span className={"block relative h-full w-full z-20"}>
+                <Image
+                    src={WEBASSETS + (dataStore.mobile ? props.slides.foreground_path.replace("web", "mob").replace("v1","v2"):props.slides.foreground_path.replace("mob", "web").replace("v2","v1"))}
+                    alt={'header-overlay'}
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition="center top"
+                />
+            </span>
+        }
+    } else {
+        const resp = useApiCall("getHomePageCarousal", dataStore.apiToken);
+        if (resp && resp.status === 200) {
+            imgs = resp.response.data.web.imgs
+            links = resp.response.data.web.links
+            transition_time = resp.response.data.web.transition_time
+        }
+    }
 
-    if (resp && resp.status === 200)
+    if (imgs.length)
         return (
             <Swiper
                 slidesPerView={1}
                 autoplay={{
-                    "delay": resp.response.data.web.transition_time,
+                    "delay": transition_time,
                     "disableOnInteraction": false
                 }}
-                navigation={true}
+                navigation={!props.page}
                 effect="fade"
             >
-                {resp.response.data.web.imgs.map((item, index) => {
+                {imgs.map((item, index) => {
 
                     return (
                         <SwiperSlide key={index}>
-                            <Link href={resp.response.data.web.links[index]}>
-                                <span className={'block relative h-[100vh]'}>
+                            <Link href={links[index]}>
+                                <span className={'block relative h-[100vh] z-10'}>
+                                    {overlay}
                                     <Image
                                         src={WEBASSETS + item}
                                         alt={'header'}
@@ -53,7 +78,7 @@ function HomePageHeaderSwiper(props) {
                     )
                 })}
             </Swiper>
-        );
+        )
     else
         return <></>
 }

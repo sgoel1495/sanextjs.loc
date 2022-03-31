@@ -7,65 +7,93 @@
 
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useRef, useState} from "react";
 import NavBar from "../navbar/Index";
 import AppWideContext from "../../store/AppWideContext";
 import Menu from "../navbar/Menu";
 import Footer from "../footer/Footer";
-import appSettings from "../../store/appSettings";
-import useApiCall from "../../hooks/useApiCall";
-import Link from "next/link";
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
-import WishListButton from "../common/WishListButton";
 import Navbar from "../../components/navbar/Index";
-
-const ShopDataBlockImage = (props) => (
-    <span className={`block relative w-full h-full aspect-square`}>
-        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
-    </span>
-)
+import {apiDictionary} from "../../helpers/apiDictionary";
+import ProductCard from "./ProductCard";
 
 
 function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
-    const category = props.hpid.substr(5);
+    const [category, setCategory] = useState(props.hpid.substr(5));
     const {dataStore} = useContext(AppWideContext);
+    const loaderRef = useRef(null)
 
     const [data, setData] = useState(null);
-    const [expandShop, setExpandShop] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
 
     const [navControl, setNavControl] = React.useState(false);
     const controller = () => setNavControl(window.scrollY > window.innerHeight - 20);
+
+    const [pagination, setPagination] = useState({
+        limit: 30, skip: 0
+    })
+    const fetchData = useCallback((flag = true, io = null) => {
+        if (io) {
+            if (!io.isIntersecting)
+                return
+        }
+        if (data && flag) {
+            if (data.total_products_exist <= pagination.skip) {
+                return
+            }
+        }
+        setLoading(true)
+        const callObject = apiDictionary("getProducts", dataStore.apiToken, {category: category.replace("tailored-", ""), ...pagination});
+        fetch(callObject.url, callObject.fetcher)
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                if (data && flag)
+                    json.response.data = data.data.concat(json.response.data)
+                setData(json.response);
+                setPagination({
+                    skip: pagination.skip + pagination.limit,
+                    limit: pagination.limit
+                })
+            }).finally(() => {
+            setLoading(false);
+        });
+    }, [data, pagination, category])
+
     React.useEffect(() => {
+        const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        })
+        if (loaderRef && loaderRef.current) {
+            observer.observe(loaderRef.current)
+        }
         window.addEventListener("scroll", controller);
         return () => {
             window.removeEventListener('scroll', controller)
+            if (loaderRef && loaderRef.current)
+                observer.unobserve(loaderRef.current)
         };
-    }, []);
+    }, [loaderRef, fetchData]);
 
-    /**
-     *
-     * @todo API issue. We have no idea about the number of products we should get. Please change the limit below accordingly
-     */
 
-    const resp = useApiCall("getProducts", dataStore.apiToken, {category: category, limit: 100});
     useEffect(() => {
-        if (resp
-            && resp.hasOwnProperty("status")
-            && resp.status == 200
-            && resp.hasOwnProperty("response")
-            && resp.response.hasOwnProperty("data")
-        )
-            setData(resp.response);
-    }, [resp]);
+        setData(null)
+        setPagination({
+            limit: 30, skip: 0
+        })
+        setCategory(props.hpid.substr(5))
+    }, [props.hpid])
 
-    // Nav Controller
+    useEffect(() => {
+        fetchData(false)
+    }, [category])
 
 
     /**
@@ -90,58 +118,6 @@ function ShopPage(props) {
         },
     */
 
-    const shopData = () => {
-        let showShopData = null;
-        if (!data || !data.hasOwnProperty("data") || data.data.length < 1) return null;
-        else {
-            data.data.forEach(prod => {
-                showShopData = (
-                    <>
-                        {showShopData}
-                        <Link href={"/" + prod.asset_id}>
-                            <a className={`block bg-white text-center relative z-0`}>
-                                <div
-                                    onMouseEnter={() => {
-                                        setExpandShop(prod)
-                                    }}
-                                    onMouseLeave={() => {
-                                        setExpandShop(null)
-                                    }}
-                                    className={`group`}
-                                >
-                                    <WishListButton className={`absolute right-4 top-4 z-10`}/>
-                                    {(expandShop && prod.asset_id == expandShop.asset_id)
-                                        ? <ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + "/new.jpg"} alt={prod.name}/>
-                                        : <ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + "/mo.new.jpg"} alt={prod.name}/>
-                                    }
-                                    <div className="grid grid-cols-2 items-center h-16">
-                                        {(expandShop && prod.asset_id == expandShop.asset_id)
-                                            ? <>
-                                                <span className={`font-800`}>SIZE</span>
-                                                <div className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
-                                                    <span className={`uppercase`}>Add to bag</span>
-                                                    <p className={`text-xs`}>
-                                                        {currencySymbol}
-                                                        {(currCurrency == "inr") ? prod.price : prod.usd_price}
-                                                    </p>
-                                                </div>
-                                            </>
-                                            : <div className={`col-span-2`}>
-                                                <p className={`text-h5 font-500`}>{prod.name}</p>
-                                                <p className={`text-sm font-500`}>{prod.tag_line}</p>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </a>
-                        </Link>
-                    </>
-                );
-            });
-        }
-        return showShopData;
-    }
-
     return (
         <Fragment>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
@@ -159,7 +135,19 @@ function ShopPage(props) {
                 <h4 className={`text-h6 leading-none font-cursive italic font-600 text-black/70`}>{tag_line}</h4>
             </BlockHeader>
             <main className={`grid grid-cols-3 gap-5 container pb-20`}>
-                {(data) ? shopData() : null}
+                {
+                    data && data.data && data.data.map((prod, index) => {
+                        return <ProductCard prod={prod} key={index}/>
+                    })
+                }
+                <span className={"col-span-3 flex justify-center items-center"} ref={loaderRef}>
+                {
+                    loading &&
+                    <span className={"block relative w-14 aspect-square"}>
+                        <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"}/>
+                    </span>
+                }
+                </span>
             </main>
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>
