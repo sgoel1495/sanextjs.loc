@@ -158,7 +158,7 @@ function SidebarMenuUser(props) {
 
     let iconHeight;
     switch (props.type) {
-        case "mimoto":
+        case "shopMenu":
             iconHeight = "h-12 w-16"
             break;
         default:
@@ -170,7 +170,7 @@ function SidebarMenuUser(props) {
         <>
         <span onClick={() => setShowSidebarMenuUser(true)} className={`block relative w-6 ${iconHeight}`}>
             {
-                props.type === "mimoto" ?
+                props.type === "shopMenu" ?
                     <div className={"float-right text-right"}>
                         <span className={"block text-sm tracking-wide"}>Account</span>
                         <span className={"block text-[10px] tracking-wider"}>{dataStore.userData.contact||"Login/Signup"}</span>

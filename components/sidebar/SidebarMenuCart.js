@@ -261,7 +261,7 @@ function SidebarMenuCart(props) {
 
     let iconHeight;
     switch (props.type) {
-        case "mimoto":
+        case "shopMenu":
             iconHeight = "h-12"
             break;
         default:
