@@ -1,4 +1,4 @@
-import React, {createRef, Fragment, useContext, useEffect, useState} from "react";
+import React, {createRef, Fragment, useContext, useEffect, useRef, useState} from "react";
 import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../../components/about-salt/Radhika";
 import OurDesign from "../../../../components/about-salt/OurDesign";
@@ -17,12 +17,13 @@ function FabricPage() {
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
 
-    const scrollToRef = createRef();
-    useEffect(()=>{
+    const scrollToRef = useRef(null);
+    useEffect(() => {
         setTimeout(() => {
-            scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+            if (scrollToRef && scrollToRef.current)
+                scrollToRef.current.scrollIntoView({behavior: 'smooth'})
         }, 500)
-    },[scrollToRef]);
+    }, [scrollToRef]);
 
     const mobileView = null;
     const browserView = (
