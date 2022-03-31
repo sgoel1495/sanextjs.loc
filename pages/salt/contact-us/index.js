@@ -45,11 +45,11 @@ function ContactUsPage() {
     }, []);
 
     const mobileView = (
-        <section className="container my-20 flex flex-col gap-y-6 items-center text-center">
+        <section className="container mt-20 mb-48 flex flex-col gap-y-6 items-center text-center leading-5">
             <p className={`font-600`}>We Would Love To Hear From You!</p>
-            <div className={`flex flex-col gap-y-4`}>
+            <div className={`flex flex-col gap-y-4 mb-4`}>
                 <p className={`font-600`}>Corporate Office</p>
-                <div className="text-sm text-black/50 font-600">
+                <div className="text-xs text-black/50 font-600">
                     <p>Mon to Fri - 9:00 am to 7:00 pm</p>
                     <p className={`mb-4`}>Sat - 9:00 am to 2:00 pm</p>
                     <p>Plot 508, Udyog Vihar Phase V,</p>
@@ -58,18 +58,18 @@ function ContactUsPage() {
             </div>
             <div className={`flex flex-col gap-y-4`}>
                 <p className={`font-600`}>SALT Experience Store</p>
-                <div className="text-sm text-black/50 font-600">
+                <div className="text-xs text-black/50 font-600">
                     <p className={`mb-4`}>11:00 am to 8:30 pm</p>
                     <p>DLF Mega Mall (Shop No LG-51)</p>
                     <p>Golf Course Road, Gurugram, Haryana 122002</p>
                     <p>Open all 7 days</p>
                 </div>
             </div>
-            <div className={`text-black/50 font-600`}>
+            <div className={`text-black/50 font-600 text-sm`}>
                 <p>care@saltattire.com</p>
                 <p>18002709515</p>
             </div>
-            <button className={`bg-black font-500 px-12 py-3 text-white uppercase tracking-wider`}>Contact Us</button>
+            <button className={`bg-black font-500 px-12 py-4 text-white uppercase tracking-wider`}>Contact Us</button>
         </section>
     );
 
@@ -119,7 +119,7 @@ function ContactUsPage() {
     return (
         <Fragment>
             <PageHead url="/salt/contact-us" id="contactus" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
             <CategoryHeaderImage category={category} />
             {dataStore.mobile ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"} />
