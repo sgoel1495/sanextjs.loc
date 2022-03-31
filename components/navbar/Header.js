@@ -12,26 +12,25 @@ const Header = (props) => {
         };
     }, []);
 
-    const mobileView =  props.type === "minimal" ?
-        <div className={"sticky top-0 z-10"}>
-            <InfoBand/>
-            <Navbar {...props}/>
+    const mobileView = props.type === "minimal"
+        ? <div className={"fixed inset-x-0 top-0 z-10"}>
+            <InfoBand />
+            <Navbar {...props} />
         </div>
-        :
-        <>
-        <InfoBand/>
-        <Navbar {...props}/>
-    </>
+        : <>
+            <InfoBand />
+            <Navbar {...props} />
+        </>
     const browserView = props.type === "minimal" ?
         <div
             className={"navigator sticky top-0 z-10 bg-white"}>
-            <Navbar {...props}/>
+            <Navbar {...props} />
         </div>
         :
         <div
             className={"navigator z-10 duration-300 hover:bg-white transition-colors fixed top-0 right-0 left-0" + [navControl ? ' bg-white' : ' bg-white/60']}>
-            <InfoBand/>
-            <Navbar {...props}/>
+            <InfoBand />
+            <Navbar {...props} />
         </div>
 
     return props.isMobile ? mobileView : browserView

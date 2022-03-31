@@ -29,26 +29,26 @@ function Navbar(props) {
         case "shopMenu":
             browserView =
                 <nav className={navStyle + " flex items-center gap-x-4"}>
-                    <SaltIcon type={props.type} isMobile={false}/>
-                    <CurrencySwitcher type={props.type} isMobile={false}/>
-                    <Menu type={props.type} isMobile={false}/>
-                    <SidebarMenuUser type={props.type} isMobile={false}/>
-                    <SearchMenu type={props.type} isMobile={false}/>
-                    <SidebarMenuCart type={props.type} isMobile={false}/>
+                    <SaltIcon type={props.type} isMobile={false} />
+                    <CurrencySwitcher type={props.type} isMobile={false} />
+                    <Menu type={props.type} isMobile={false} />
+                    <SidebarMenuUser type={props.type} isMobile={false} />
+                    <SearchMenu type={props.type} isMobile={false} />
+                    <SidebarMenuCart type={props.type} isMobile={false} />
                 </nav>
             mobileView = <>
-                <div className={navStyle + " flex items-center justify-between"} style={{background: "var(--very-light-pink)"}}>
+                <div className={navStyle + " flex items-center justify-between"} style={{ background: "var(--very-light-pink)" }}>
                     <div className={"flex items-center"}>
-                        <SidebarMenuHamburger isMobile={false}/>
-                        <SaltIcon isMobile={true} type={props.type}/>
-                        <p className={'text-xs'}>BESPOKE &amp; <br/> CUSTOM CLOTHING</p>
+                        <SidebarMenuHamburger isMobile={false} />
+                        <SaltIcon isMobile={true} type={props.type} />
+                        <p className={'text-xs'}>BESPOKE &amp; <br /> CUSTOM CLOTHING</p>
                     </div>
                     <div className={"flex items-center"}>
-                        <SearchMenu isMobile={true}/>
-                        <SidebarMenuCart isMobile={true}/>
+                        <SearchMenu isMobile={true} />
+                        <SidebarMenuCart isMobile={true} />
                     </div>
                 </div>
-                <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{background: "var(--very-light-pink)"}}>
+                <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{ background: "var(--very-light-pink)" }}>
                     <ul className={"flex gap-5 justify-between overflow-x-scroll"}>
                         <li className={"sticky left-0"}>
                             <Link href={"/"}>Home</Link>
@@ -56,7 +56,7 @@ function Navbar(props) {
                         <li>
                             <Link href={"/new-arrivals/all"}>NEW IN</Link>
                         </li>
-                        <Menu isMobile={true}/>
+                        <Menu isMobile={true} />
                     </ul>
                 </div>
             </>;
@@ -64,84 +64,85 @@ function Navbar(props) {
         case "minimal":
             browserView =
                 <nav className={navStyle + " flex items-center gap-x-4"}>
-                    <SaltIcon type={props.type} isMobile={false}/>
-                    <SidebarMenuHamburger type={props.type} isMobile={false}/>
-                    <CurrencySwitcher type={props.type} isMobile={false}/>
-                    <Menu type={props.type} isMobile={false} filterData={props.filterData}/>
-                    <SearchMenu type={props.type} isMobile={false}/>
-                    <SidebarMenuCart type={props.type} isMobile={false}/>
+                    <SaltIcon type={props.type} isMobile={false} />
+                    <SidebarMenuHamburger type={props.type} isMobile={false} />
+                    <CurrencySwitcher type={props.type} isMobile={false} />
+                    <Menu type={props.type} isMobile={false} filterData={props.filterData} />
+                    <SearchMenu type={props.type} isMobile={false} />
+                    <SidebarMenuCart type={props.type} isMobile={false} />
                 </nav>
-            mobileView = <div className={"flex justify-between items-center bg-white/95 z-10"}>
-                <div className={"flex items-center justify-center"}>
-                    <Link href={"/homepage/signin"}>
-                        <a className={"relative block w-6 h-6"}>
-                            <Image src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" layout={`fill`} objectFit={`cover`}/>
-                        </a>
-                    </Link>
-                    <SearchMenu isMobile={true}/>
+            mobileView = (
+                <div className={"flex justify-between items-center bg-white/90 z-10 px-4"}>
+                    <div className={"inline-flex items-center gap-x-5"}>
+                        <Link href={"/homepage/signin"}>
+                            <a className={"relative block w-6 h-6"}>
+                                <Image src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" layout={`fill`} objectFit={`cover`} />
+                            </a>
+                        </Link>
+                        <SearchMenu isMobile={true} />
+                    </div>
+                    <div className={"flex-1 inline-flex justify-center"}>
+                        <SaltIcon type={props.type} isMobile={true} />
+                    </div>
+                    <div className={"inline-flex items-center gap-x-5"}>
+                        <SidebarMenuCart isMobile={true} />
+                        <SidebarMenuHamburger isMobile={false} />
+                    </div>
                 </div>
-
-                <div className={"flex items-center justify-center"}>
-                    <SaltIcon type={props.type} isMobile={true}/>
-                </div>
-                <div className={"flex items-center justify-center"}>
-                    <SidebarMenuCart isMobile={true}/>
-                    <SidebarMenuHamburger isMobile={false}/>
-                </div>
-            </div>;
+            );
             break;
         default:
             browserView =
                 <nav className={navStyle + " flex items-center gap-x-4"}>
-                    <SaltIcon type={props.type} isMobile={false}/>
-                    <SidebarMenuHamburger type={props.type} isMobile={false}/>
-                    <Menu type={props.type} isMobile={false}/>
-                    <SearchMenu type={props.type} isMobile={false}/>
-                    <CurrencySwitcher type={props.type} isMobile={false}/>
-                    <SidebarMenuUser type={props.type} isMobile={false}/>
-                    <SidebarMenuCart type={props.type} isMobile={false}/>
+                    <SaltIcon type={props.type} isMobile={false} />
+                    <SidebarMenuHamburger type={props.type} isMobile={false} />
+                    <Menu type={props.type} isMobile={false} />
+                    <SearchMenu type={props.type} isMobile={false} />
+                    <CurrencySwitcher type={props.type} isMobile={false} />
+                    <SidebarMenuUser type={props.type} isMobile={false} />
+                    <SidebarMenuCart type={props.type} isMobile={false} />
                 </nav>
             mobileView = <>
-                <div className={navStyle} style={{background: "var(--very-light-pink)"}}>
+                <div className={navStyle} style={{ background: "var(--very-light-pink)" }}>
                     <div className={"text-center mb-2"}>
                         <div className={"flex items-center justify-center"}>
-                            <SaltIcon type={props.type} isMobile={true}/>
-                            <CurrencySwitcher isMobile={true}/>
+                            <SaltIcon type={props.type} isMobile={true} />
+                            <CurrencySwitcher isMobile={true} />
                         </div>
                         <p className={'text-xs'}>BESPOKE &amp; CUSTOM CLOTHING</p>
                     </div>
                 </div>
-                <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{background: "var(--very-light-pink)"}}>
+                <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{ background: "var(--very-light-pink)" }}>
                     <ul className={"flex gap-5 justify-between"}>
                         <li>
-                            <SidebarMenuHamburger isMobile={false}/>
+                            <SidebarMenuHamburger isMobile={false} />
                         </li>
                         <li>
                             <Link href={"/homepage/signin"}>
                                 <a>
-                                    <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
+                                    <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" width={iconHeightWeight} height={iconHeightWeight} />
                                 </a>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/new-arrivals/all"}>
                                 <a>
-                                    <Image src={WEBASSETS + "/assets/images/new_icon.svg"} alt="new" width={iconHeightWeight} height={iconHeightWeight}/>
+                                    <Image src={WEBASSETS + "/assets/images/new_icon.svg"} alt="new" width={iconHeightWeight} height={iconHeightWeight} />
                                 </a>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/homepage/signin"}>
                                 <a>
-                                    <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav" width={iconHeightWeight} height={iconHeightWeight}/>
+                                    <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav" width={iconHeightWeight} height={iconHeightWeight} />
                                 </a>
                             </Link>
                         </li>
                         <li>
-                            <SearchMenu isMobile={true}/>
+                            <SearchMenu isMobile={true} />
                         </li>
                         <li>
-                            <SidebarMenuCart isMobile={true}/>
+                            <SidebarMenuCart isMobile={true} />
                         </li>
                     </ul>
                 </div>
