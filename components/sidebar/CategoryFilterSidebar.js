@@ -127,7 +127,7 @@ function CategoryFilterSidebar(props) {
     }
 
     useEffect(() => {
-        console.log("Props FilterData", props.filterData);
+        // console.log("Props FilterData", props.filterData);
         if (props.filterData
             && props.filterData.hasOwnProperty("filter_count")) {
             const ok = Object.keys(props.filterData.filter_count);
@@ -149,7 +149,7 @@ function CategoryFilterSidebar(props) {
             setCheckboxData(initData);
         }
     }, [props.filterData]);
-    console.log("INIT FILTER DATA", checkboxData);
+    // console.log("INIT FILTER DATA", checkboxData);
 
     useEffect(() => {
         if (showSidebarMenu) document.body.classList.add("scroll-overflow");

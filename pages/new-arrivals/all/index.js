@@ -1,15 +1,13 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PageHead from "../../../components/PageHead";
 import AppWideContext from "../../../store/AppWideContext";
 import Footer from "../../../components/footer/Footer";
-import useApiCall from "../../../hooks/useApiCall";
-import appSettings from "../../../store/appSettings";
 import Image from "next/image";
-import Link from "next/link";
 import Header from "../../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
-import WishlistButton from "../../../components/common/WishListButton";
+import {apiDictionary} from "../../../helpers/apiDictionary";
+import ProductCard from "../../../components/new-Arrivals/ProductCard";
 
 /**
  * @todo @team Swiper data
@@ -19,119 +17,82 @@ import WishlistButton from "../../../components/common/WishListButton";
  * @constructor
  */
 
-/*
-    each product has
-    category: "dresses"
-    in_stock: "true"
-    is_international: true
-    name: "Aadya"
-    price: 2850
-    tag_line: "Raw Silk Festive Fit & A-Line Dress"
-    usd_price: 50
-     */
-
-const ArrivalDataBlockImage = (props) => (
-    <span className={`block relative w-full h-full aspect-square`}>
-        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
-    </span>
-)
-
-// const data =[...Array(19).keys()]
-//
-// const renderData = data.reduce((all,one,i) => {
-//     const ch = Math.floor(i/3);
-//     all[ch] = [].concat((all[ch]||[]),one);
-//     return all
-// }, [])
-//
-// console.log(renderData);
 
 function NewArrivalsAllPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
-    const [data, setData] = useState(null);
-    const [isOver, setIsOver] = useState(false);
+    const loaderRef = useRef(null)
 
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const [data, setData] = useState(null);
+    const [carousal, setCarousal] = useState(null);
+    const [loading, setLoading] = useState(false);
+
 
     /**
      *
      * @todo API issue. We have no idea about the number of products we should get. Please change the limit below accordingly
      */
 
-    const resp = useApiCall("getLooksData", dataStore.apiToken, {look_id: "", limit: 10});
-    useEffect(() => {
-        if (resp
-            && resp.hasOwnProperty("status")
-            && resp.status == 200
-            && resp.hasOwnProperty("response")
-            && resp.response.hasOwnProperty("prod")
-            && resp.response.hasOwnProperty("look")
-        )
-            setData(resp.response);
-    }, [resp]);
-
-
-    const newArrivals = () => {
-        let showArrivalsData = null;
-        if (!data || !data.hasOwnProperty("prod") || !data.prod) return null;
-        else {
-            const keys = Object.keys(data.prod);
-            keys.forEach(key => {
-                const prod = data.prod[key];
-                const imgPath = WEBASSETS + "/assets/" + key + ((isOver == key) ? "/mo.new.jpg" : "/new.jpg");
-
-                const showProd = (
-                    <div className={`col-span-2`}>
-                        <p className={`text-h5 font-500`}>{prod.name}</p>
-                        <p className={`text-sm font-500`}>{prod.tag_line}</p>
-                    </div>
-                );
-
-                const showProdDetail = (
-                    <>
-                        <span className={`font-800`}>SIZE</span>
-                        <div className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
-                            <span className={`uppercase`}>Add to bag</span>
-                            <p className={`text-xs`}>
-                                {currencySymbol}
-                                {(currCurrency == "inr") ? prod.price : prod.usd_price}
-                            </p>
-                        </div>
-                    </>
-                );
-
-
-                showArrivalsData = (
-                    <>
-                        {showArrivalsData}
-                        <div onMouseEnter={() => setIsOver(key)} onMouseLeave={() => setIsOver(null)}>
-                            <Link href={"/" + key}>
-                                <a className={"block bg-white text-center relative z-0"}>
-                                    <WishlistButton className={`absolute right-4 top-4 z-10`}/>
-                                    <ArrivalDataBlockImage src={imgPath} alt={prod.name}/>
-                                    <div className="grid grid-cols-2 items-center h-16">
-                                        {(isOver == key) ? showProdDetail : showProd}
-                                    </div>
-                                </a>
-                            </Link>
-                        </div>
-                    </>
-                );
-            });
+    const [pagination, setPagination] = useState({
+        limit: 30, skip: 0
+    })
+    const fetchData = useCallback((flag = true, io = null) => {
+        if (io) {
+            if (!io.isIntersecting)
+                return
         }
-        return showArrivalsData;
-    }
+        if (data && flag) {
+            if (data.total_products_exist <= pagination.skip) {
+                return
+            }
+        }
+        setLoading(true)
+        const callObject = apiDictionary("getProducts", dataStore.apiToken, {category: "new-arrivals", ...pagination});
+        fetch(callObject.url, callObject.fetcher)
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                if (!flag)
+                    setCarousal(json.new_arr_carousal)
+                if (data && flag)
+                    json.response.data = data.data.concat(json.response.data)
+                setData(json.response);
+                setPagination({
+                    skip: pagination.skip + pagination.limit,
+                    limit: pagination.limit
+                })
+            }).finally(() => {
+            setLoading(false);
+        });
+    }, [data, pagination])
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        })
+        if (loaderRef && loaderRef.current) {
+            observer.observe(loaderRef.current)
+        }
+        return () => {
+            if (loaderRef && loaderRef.current)
+                observer.unobserve(loaderRef.current)
+        };
+    }, [loaderRef, fetchData]);
+
+    useEffect(() => {
+        fetchData(false)
+    }, [])
+
 
     const mobileView = null;
     const browserView = (
         <>
             <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={dataStore.mobile}/>
-
-                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
-            <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
+            <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
+            <HomePageHeaderSwiper page={"newArrival"} isMobile={dataStore.mobile} slides={carousal}/>
             <section className={`bg-[#E6E1DB] pb-20`}>
                 <BlockHeader
                     line
@@ -141,7 +102,19 @@ function NewArrivalsAllPage() {
                     <span className={"tracking-widest text-h4 uppercase"}>New Arrivals</span>
                 </BlockHeader>
                 <main className={`px-10 grid grid-cols-3 gap-10`}>
-                    {(data) ? newArrivals() : null}
+                    {
+                        data && data.data && data.data.map((prod, index) => {
+                            return <ProductCard prod={prod} key={index}/>
+                        })
+                    }
+                    <span className={"col-span-3 flex justify-center items-center"} ref={loaderRef}>
+                        {
+                            loading &&
+                            <span className={"block relative w-14 aspect-square"}>
+                                <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"}/>
+                            </span>
+                        }
+                </span>
                 </main>
             </section>
             <Footer isMobile={dataStore.mobile}/>
