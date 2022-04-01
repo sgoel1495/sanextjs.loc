@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
@@ -12,24 +12,24 @@ import Header from "../../../components/navbar/Header";
 
 
 function TermsAndConditionPage() {
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
     const category = "Terms & Conditions";
     const blockStyle = `flex flex-col gap-y-4`;
     const blockLeadStyle = `font-600`;
-    const mobileParaStyle = `mb-10`;
-    const mobileView =
-        (<div className='w-full px-[13%] mx-auto text-[#525252d6] text-justify'>
-            <span className={"block text-2xl text-center text-black py-5 font-700"}>Terms and Conditions</span>
-            <p className = {mobileParaStyle}>Welcome to <span className={`underline`}>saltattire.com</span> website (hereinafter
+    const mobileParaStyle = `mb-4`;
+    const mobileView = (
+        <div className='w-full px-[13%] mx-auto text-[#525252d6] text-justify mb-36'>
+            <span className={"block text-h3 mb-3 text-center text-black font-500"}>Terms & Conditions</span>
+            <p className={mobileParaStyle}>Welcome to <span className={`underline`}>saltattire.com</span> website (hereinafter
                 the &quot;Website&quot;).</p>
-            <p className = {mobileParaStyle}>
+            <p className={mobileParaStyle}>
                 PLEASE READ THE FOLLOWING TERMS AND CONDITIONS OF USE OF THE WEBSITE (HEREINAFTER THE &quot;TERMS OF
                 USE&quot;)
                 CAREFULLY BEFORE USING THE WEBSITE.
             </p>
-            <p className = {mobileParaStyle}>The Terms of Use govern the access to, and use of, the Website.</p>
-            <p className = {mobileParaStyle}>
+            <p className={mobileParaStyle}>The Terms of Use govern the access to, and use of, the Website.</p>
+            <p className={mobileParaStyle}>
                 Use of the Website implies the full acceptance of these Terms of Use and all guidelines and rules, and
                 acknowledgement of their relevant mandatory nature. You are only authorized to use the Website if you
                 agree
@@ -38,7 +38,7 @@ function TermsAndConditionPage() {
                 bound by these Terms of Use and to follow all applicable laws, you should not proceed with using the
                 Services.
             </p>
-            <p className = {mobileParaStyle}>
+            <p className={mobileParaStyle}>
                 Saltattire reserves the right, at its sole discretion, to modify these Terms of Use from time to time.
                 We
                 will post the revised Terms of Use on this Website and update the &quot;Last Updated&quot; date to
@@ -264,8 +264,6 @@ function TermsAndConditionPage() {
                 </p>
             </div>
         </div>);
-
-
 
     const browserView = (
         <div className={`flex flex-col gap-y-8 text-justify w-1/2 mx-auto text-[#777]`}>
@@ -516,13 +514,13 @@ function TermsAndConditionPage() {
 
     return (
         <Fragment>
-            <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
-            <CategoryHeaderImage category={category}/>
+            <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile} />
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            <CategoryHeaderImage category={category} />
             <section className="my-20">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />
         </Fragment>
     );
 }

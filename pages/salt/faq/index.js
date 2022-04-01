@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
@@ -14,17 +14,17 @@ import Header from "../../../components/navbar/Header";
  * @constructor
  */
 
-const AnswerBlock = ({item}) => {
+const AnswerBlock = ({ item }) => {
     const main = (
         <div className={`${item.check ? 'flex-1' : null}`}>
-            <LinkParser para={item.para}/>
+            <LinkParser para={item.para} />
         </div>
     );
     const check = (
         <div className={`flex items-start gap-x-2`}>
             <span className="block w-5 h-5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
-                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"/>
+                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z" />
                 </svg>
             </span>
             {main}
@@ -34,7 +34,7 @@ const AnswerBlock = ({item}) => {
 }
 
 function FaqPage() {
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
     const category = "FAQ";
 
@@ -47,7 +47,7 @@ function FaqPage() {
                     answersData = (
                         <>
                             {answersData}
-                            <AnswerBlock item={answer}/>
+                            <AnswerBlock item={answer} />
                         </>
                     );
                 });
@@ -72,8 +72,8 @@ function FaqPage() {
     }
 
     const mobileView = (
-        <div className="w-3/4 mx-auto my-10 grid grid-cols-1 gap-x-36">
-            <span>FAQ</span>
+        <div className={'px-5 flex flex-col gap-y-2 mt-4 mb-36'}>
+            <p className='text-center text-h2 leading-[1.25]'>FAQ</p>
             <div className={`flex flex-col gap-y-2`}>
                 {showFaq("all")}
             </div>
@@ -91,13 +91,13 @@ function FaqPage() {
     )
     return (
         <>
-            <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
-            <CategoryHeaderImage category={category}/>
+            <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile} />
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            <CategoryHeaderImage category={category} />
             <section >
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />
         </>
     )
 }
