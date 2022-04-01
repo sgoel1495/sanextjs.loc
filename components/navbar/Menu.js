@@ -1,8 +1,17 @@
 /**
- * @todo API issue The menu list has no order to follow from api side. Also we do not know where to get subcategories like accessories. Further the NEW tag on menu item cannot be set as no basis found.
- * @param {isMobile. source, filterData} props
- * @constructor
- */
+ *
+ * @param props
+ * type - String(optional) (possible values:[null,"minimal","shopMenu"])
+ *      null - default header of landing page
+ *      shopMenu - Web - Mimoto menu
+ *      shopMenu - Mobile - header for the shop-category page (e.g. /shop-shirts)
+ *      minimal - Web -  used for the menu below category video which replaces the shopMenu header and becomes sticky
+ *      minimal - Mobile - header for about us pages
+ * isMobile - Boolean(required)
+ * category - String(optional) - shows an underline below the category name in the menu
+ * filterData - JSON - for filter menu of shop page
+ * @returns {JSX.Element}
+ **/
 
 import Link from "next/link";
 import SubMenu from "./SubMenu";
