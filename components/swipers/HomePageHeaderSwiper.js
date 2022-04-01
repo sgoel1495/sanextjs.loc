@@ -23,6 +23,7 @@ function HomePageHeaderSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     let imgs = [], links, transition_time;
     let overlay = null;
+    let apiToken;
     if (props.page === "newArrival") {
         if (props.slides) {
             imgs = props.slides.imgs.map((img) => dataStore.mobile ? img.replace("web", "mob") : img.replace("mob", "web"))
@@ -30,7 +31,7 @@ function HomePageHeaderSwiper(props) {
             transition_time = props.slides.transition_time
             overlay = <span className={"block relative h-full w-full z-20"}>
                 <Image
-                    src={WEBASSETS + (dataStore.mobile ? props.slides.foreground_path.replace("web", "mob").replace("v1","v2"):props.slides.foreground_path.replace("mob", "web").replace("v2","v1"))}
+                    src={WEBASSETS + (dataStore.mobile ? props.slides.foreground_path.replace("web", "mob").replace("v1", "v2") : props.slides.foreground_path.replace("mob", "web").replace("v2", "v1"))}
                     alt={'header-overlay'}
                     layout="fill"
                     objectFit="cover"
@@ -39,12 +40,13 @@ function HomePageHeaderSwiper(props) {
             </span>
         }
     } else {
-        const resp = useApiCall("getHomePageCarousal", dataStore.apiToken);
-        if (resp && resp.status === 200) {
-            imgs = resp.response.data.web.imgs
-            links = resp.response.data.web.links
-            transition_time = resp.response.data.web.transition_time
-        }
+        apiToken = dataStore.apiToken
+    }
+    const resp = useApiCall("getHomePageCarousal", apiToken);
+    if (resp && resp.status === 200) {
+        imgs = resp.response.data.web.imgs
+        links = resp.response.data.web.links
+        transition_time = resp.response.data.web.transition_time
     }
 
     if (imgs.length)
