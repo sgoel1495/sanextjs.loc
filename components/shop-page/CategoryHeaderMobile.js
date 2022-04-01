@@ -43,7 +43,7 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal}
                     ? <div className="absolute inset-x-0 top-full shadow bg-[#2f2f2f] px-4  max-h-[200px] overflow-y-auto z-20">
                         {dropData.map((item, index) => {
                             return (
-                                <Link href={item.link}>
+                                <Link href={item.link} key={index}>
                                     <span className="block py-2.5 font-700 text-center uppercase text-white" key={index}>{item.category}</span>
                                 </Link>
                             )
