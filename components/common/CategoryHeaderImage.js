@@ -5,12 +5,12 @@
  * @constructor
  */
 
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import Image from "next/image";
 import AppWideContext from "../../store/AppWideContext";
 
 function CategoryHeaderImage(props) {
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const category = props.category;
     let showCategoryName = true;
@@ -22,7 +22,7 @@ function CategoryHeaderImage(props) {
             break;
         case "Shipping & Returns":
             imageSource = imageSource + "images/TnC.2.jpg";
-            imageClass="ml-[-72vw]"
+            imageClass = "ml-[-72vw]"
             break;
         case "Cancellation & Modifications":
             imageSource = imageSource + "images/TnC.2.jpg";
@@ -49,14 +49,22 @@ function CategoryHeaderImage(props) {
     }
 
     if (dataStore.mobile) {
-        return <span className={"block relative w-[100vw] aspect-[16/9] mt-[-4vw] "}>
-                        <Image src={imageSource} layout={`fill`} objectFit={`cover`} alt={category}/>
-                    </span>
+        return (
+            <div className={"relative w-full h-[300px]"}>
+                <Image
+                    src={imageSource}
+                    layout={`fill`}
+                    objectFit={`cover`}
+                    alt={category}
+                    objectPosition={"72% 32px"}
+                />
+            </div>
+        )
     }
     return (
         <section className={`relative mt-8`}>
             <span className={`block relative w-full h-[70vh]`}>
-                <Image src={imageSource} alt={category} layout={`fill`} objectFit={`cover`}/>
+                <Image src={imageSource} alt={category} layout={`fill`} objectFit={`cover`} />
             </span>
             {(showCategoryName)
                 ? <div className={`absolute inset-0 flex items-center justify-start`}>

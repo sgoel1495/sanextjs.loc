@@ -1,6 +1,5 @@
 import PageHead from "../../components/PageHead";
-import InfoBand from "../../components/info-band/InfoBand";
-import LooksNavbar from "../../components/navbar/LookNavbar";
+import Header from "../../components/navbar/Header";
 import CategoryHeaderImage from "../../components/common/CategoryHeaderImage";
 import Footer from "../../components/footer/Footer";
 import AppWideContext from "../../store/AppWideContext";
@@ -14,14 +13,6 @@ import React, {Fragment, useContext, useEffect, useState} from "react";
 
 function GetAppointmentPage() {
     const {dataStore} = useContext(AppWideContext);
-
-    // NavBar Controls
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const focusStyle = "focus:ring-offset-0 focus:ring-0"
     const labelStyle = "block mb-1 font-500";
@@ -104,10 +95,7 @@ function GetAppointmentPage() {
     return (
         <Fragment>
             <PageHead url="/salt/get-appointment" id="getappointment" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
-            </div>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
             <section className="container my-20 select-none">
                 {(dataStore.mobile) ? mobileView : browserView}

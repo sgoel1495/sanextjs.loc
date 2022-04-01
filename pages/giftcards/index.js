@@ -1,7 +1,6 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../components/PageHead";
-import InfoBand from "../../components/info-band/InfoBand";
-import Navbar from "../../components/navbar/Navbar";
+import Header from "../../components/navbar/Header";
 import Footer from "../../components/footer/Footer";
 import AppWideContext from "../../store/AppWideContext";
 import appSettings from "../../store/appSettings";
@@ -36,14 +35,6 @@ function GiftcardsPage() {
         )
             setData(resp.giftcards);
     }, [resp]);
-
-    // Nav Controller
-    const [navControl, setNavControl] = React.useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
 
     const showGiftCards = () => {
         let sgc = null;
@@ -113,10 +104,7 @@ function GiftcardsPage() {
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white' : ' bg-white/60']}>
-                <InfoBand/>
-                <Navbar isMobile={dataStore.mobile}/>
-            </div>
+                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

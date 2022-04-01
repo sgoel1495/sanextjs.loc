@@ -1,4 +1,4 @@
-import React, {createRef, Fragment, useContext, useEffect, useState} from "react";
+import React, {createRef, Fragment, useContext, useEffect, useRef, useState} from "react";
 import InspiredByTrueStory from "../../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../../components/about-salt/Radhika";
 import OurDesign from "../../../../components/about-salt/OurDesign";
@@ -7,31 +7,23 @@ import SizeFit from "../../../../components/about-salt/SizeFit";
 import FinishingDetails from "../../../../components/about-salt/FinishingDetails";
 import WhySalt from "../../../../components/about-salt/WhySalt";
 import PageHead from "../../../../components/PageHead";
-import InfoBand from "../../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../../components/navbar/LookNavbar";
 import Footer from "../../../../components/footer/Footer";
 import AppWideContext from "../../../../store/AppWideContext";
 import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury";
+import Header from "../../../../components/navbar/Header";
 
 
 function FabricPage() {
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
 
-    // NavBar Controls
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
+    const scrollToRef = useRef(null);
     useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
-
-    const scrollToRef = createRef();
-    useEffect(()=>{
         setTimeout(() => {
-            scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+            if (scrollToRef && scrollToRef.current)
+                scrollToRef.current.scrollIntoView({behavior: 'smooth'})
         }, 500)
-    },[scrollToRef]);
+    }, [scrollToRef]);
 
     const mobileView = null;
     const browserView = (
@@ -64,10 +56,7 @@ function FabricPage() {
     return (
         <Fragment>
             <PageHead url="/salt/about-us/fabric" id="aboutusfabric" isMobile={dataStore.mobile}/>
-            <div className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
-            </div>
+            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView}
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>

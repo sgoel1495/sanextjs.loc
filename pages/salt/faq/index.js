@@ -1,13 +1,12 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
-import InfoBand from "../../../components/info-band/InfoBand";
-import LooksNavbar from "../../../components/navbar/LookNavbar";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Accordion from "../../../components/common/accordion";
 import LinkParser from "../../../components/common/LinkParser";
 import faqData from "../../../store/faqData.json";
+import Header from "../../../components/navbar/Header";
 
 /**
  * @todo Pincode check
@@ -15,17 +14,17 @@ import faqData from "../../../store/faqData.json";
  * @constructor
  */
 
-const AnswerBlock = ({item}) => {
+const AnswerBlock = ({ item }) => {
     const main = (
         <div className={`${item.check ? 'flex-1' : null}`}>
-            <LinkParser para={item.para}/>
+            <LinkParser para={item.para} />
         </div>
     );
     const check = (
         <div className={`flex items-start gap-x-2`}>
             <span className="block w-5 h-5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
-                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"/>
+                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z" />
                 </svg>
             </span>
             {main}
@@ -35,15 +34,7 @@ const AnswerBlock = ({item}) => {
 }
 
 function FaqPage() {
-    const {dataStore} = useContext(AppWideContext);
-
-    // NavBar Controls
-    const [navControl, setNavControl] = useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => window.removeEventListener('scroll', controller)
-    }, []);
+    const { dataStore } = useContext(AppWideContext);
 
     const category = "FAQ";
 
@@ -56,7 +47,7 @@ function FaqPage() {
                     answersData = (
                         <>
                             {answersData}
-                            <AnswerBlock item={answer}/>
+                            <AnswerBlock item={answer} />
                         </>
                     );
                 });
@@ -80,7 +71,14 @@ function FaqPage() {
         return showFaqData;
     }
 
-    const mobileView = null;
+    const mobileView = (
+        <div className={'px-5 flex flex-col gap-y-2 mt-4 mb-36'}>
+            <p className='text-center text-h2 leading-[1.25]'>FAQ</p>
+            <div className={`flex flex-col gap-y-2`}>
+                {showFaq("all")}
+            </div>
+        </div>
+    );
     const browserView = (
         <div className="w-3/4 mx-auto my-10 grid grid-cols-2 gap-x-36">
             <div className={`flex flex-col gap-y-2`}>
@@ -93,17 +91,13 @@ function FaqPage() {
     )
     return (
         <>
-            <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile}/>
-            <div
-                className={"navigator fixed top-0 right-0 left-0 z-10 duration-300 hover:bg-white transition-colors" + [navControl ? ' bg-white/90' : ' bg-white/80']}>
-                <InfoBand/>
-                <LooksNavbar isMobile={dataStore.mobile}/>
-            </div>
-            <CategoryHeaderImage category={category}/>
+            <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile} />
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            <CategoryHeaderImage category={category} />
             <section >
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
-            <Footer isMobile={dataStore.mobile}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />
         </>
     )
 }

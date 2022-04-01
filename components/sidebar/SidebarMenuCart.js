@@ -261,15 +261,14 @@ function SidebarMenuCart(props) {
 
     let iconHeight;
     switch (props.type) {
-        case "looksPage":
+        case "shopMenu":
             iconHeight = "h-12"
             break;
         default:
             iconHeight = "h-6"
     }
 
-    const mobileView = null;
-    const browserView = (
+    return (
         <>
             <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <Image
@@ -283,8 +282,6 @@ function SidebarMenuCart(props) {
                 document.getElementById("cartside"))}
         </>
     );
-
-    return props.isMobile ? browserView : browserView
 }
 
 export default SidebarMenuCart;

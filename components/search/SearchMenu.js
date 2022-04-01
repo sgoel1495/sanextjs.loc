@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Image from "next/image";
 import ReactDom from "react-dom";
-import {useEffect, useState, useRef} from "react";
 
 /**
  * @params {isMobile} props
@@ -91,18 +90,16 @@ function SearchMenu(props) {
         setShowMenuSearch(false);
     }
 
-    const mobileView = null;
-
     let iconHeight;
     switch (props.type) {
-        case "looksPage":
+        case "shopMenu":
             iconHeight = "h-12"
             break;
         default:
             iconHeight = "h-6"
     }
 
-    const browserView = (
+    return (
         <>
             <span onClick={() => setShowMenuSearch(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <Image
@@ -117,9 +114,7 @@ function SearchMenu(props) {
                 document.getElementById("searchmenu"))
             }
         </>
-    );
-
-    return browserView
+    )
 
 }
 

@@ -10,7 +10,7 @@
     },
     {
       "category": "SHIRTS",
-      "link": "/shop-tops",
+      "link": "/shop-shirts",
       "new": false
     },
     {
@@ -41,17 +41,17 @@
     {
       "category": "JUMPSUITS",
       "link": "/shop-jumpsuits",
-      "new": false
+      "new": true
     },
     {
       "category": "SHORTS",
       "link": "/shop-shorts",
-      "new": false
+      "new": true
     },
     {
       "category": "SWEATERS",
       "link": "/shop-sweaters",
-      "new": false
+      "new": true
     }
   ],
   "accessories": [
@@ -67,7 +67,7 @@
     },
     {
       "category": "JEWELLERY",
-      "link": "/shop-jwellery",
+      "link": "/shop-jewellery",
       "new": true
     },
     {

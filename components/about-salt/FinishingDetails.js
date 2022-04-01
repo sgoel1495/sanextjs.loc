@@ -12,7 +12,51 @@ import ParallaxBlock from "../common/ParallaxBlock";
 function FinishingDetails(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const mobileView = null;
+    const mobileView = (
+        <>
+            <ParallaxBlock
+                bgImage={WEBASSETS + "/assets/images/mimoto-10.jpg"}
+                bodyStyle={`items-end`}
+            >
+                <div className="absolute top-28 right-10">
+                    <span className={`block relative h-10 w-10`}>
+                        <Image
+                            src={WEBASSETS + `/assets/images/salticon.png`}
+                            alt="salt icon"
+                            layout={`fill`}
+                            objectFit={`contain`}
+                        />
+                    </span>
+                </div>
+                <div className="bg-white/80 mr-8 py-5 p-2">
+                    <p className={`text-lg font-600 font-cursive italic text-[#794e4d] ml-4`}>Quality, Finishing & Details</p>
+                    <div className="bg-white p-2 text-xs leading-4">
+                        <p>We take utmost care in making the garment, right from using the best quality threads to the accessories, whether it be buttons, zippers, hooks, other
+                            elements. Apart from the fabric, design and fit, we go through strict quality control parameters to give you what you truly deserve. All our fabric is:
+                        </p>
+                        <p className='mb-4'>
+                            Pre-washed, to remove any stains and odor;
+                            Pre-shrunk, to ensure you will never have to face any shrinkage issue.
+                            Our shirts are designed to be gaping free.
+                            Pants and skirts are made with stretch fabric.
+                            And we offer tailored fitting for pants and skirts.
+                        </p>
+                        <p>To ensure our clothes are work-appropriate: All our clothing is modest with no plunging necklines or high slits that would make you uncomfortable at work. For any design that uses a sheer fabric, we provide you with a complimentary camisole.
+                        </p>
+                    </div>
+                </div>
+            </ParallaxBlock>
+            <div className={`h-[50vh] grid place-items-center content-center text-center font-600 font-cursive italic px-10 leading-4`}>
+                <p className={`text-sm text-black/70 mb-2`}>After exiting a few more stores dejected and trying her hand at online shopping, Radhika turns to her friends for advice.</p>
+                <p className={`text-lg mb-2 leading-6`}>“Where do you guys shop for business casuals in India?”,</p>
+                <p className={`text-sm text-black/70`}>And to her surprise, despite so many brands, everyone had the same issues as her; Design, Fabric, Fit, or the overall quality!</p>
+            </div>
+            <div className={`h-[80vh] grid place-items-center content-center text-center font-cursive italic`}>
+                <p className={`text-5xl`}>We hear you</p>
+                <p className={`text-5xl`}>Radhika!</p>
+            </div>
+        </>
+    );
     const browserView = (
         <>
             <ParallaxBlock

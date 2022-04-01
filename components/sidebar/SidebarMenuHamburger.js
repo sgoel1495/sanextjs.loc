@@ -387,7 +387,7 @@ function SidebarMenuHamburger(props) {
 
     let iconHeight;
     switch (props.type) {
-        case "looksPage":
+        case "shopMenu":
             iconHeight = "h-12"
             break;
         default:

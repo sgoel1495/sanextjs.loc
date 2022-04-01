@@ -40,7 +40,51 @@ function SizeFit(props) {
         )
     })
 
-    const mobileView = null;
+    const mobileView = <>
+        <ParallaxBlock
+            bgImage={WEBASSETS + "/assets/images/mimoto-8.jpg"}
+            bodyStyle={`items-start`}
+        >
+            <div className="absolute top-28 left-16">
+                    <span className={`block relative h-10 w-10`}>
+                        <Image
+                            src={WEBASSETS + `/assets/images/salticon.png`}
+                            alt="salt icon"
+                            layout={`fill`}
+                            objectFit={`contain`}
+                        />
+                    </span>
+            </div>
+            <div className={`bg-white/90 p-2 mr-6`}>
+                <p className={`font-cursive italic text-xl text-[#b7714f] mx-2`}>Size & Fit</p>
+                <div className="bg-white p-2 text-xs text-justify">
+                    <p>
+                        While conducting our research, we discovered that most brands in India often follow size charts of UK or US. This leads to undesired consequences in fit and the look of the
+                        clothing item. If you found a dress or a top which looked great on the hanger but after trying it on, the fit was not right, it was most likely a result of improper sizing.
+                    </p>
+                    <p>
+                        Our on ground team talked to over 500 women shoppers and understood their requirements for fit and comfort, especially when it comes to a professional setting and all-day
+                        clothing.
+                    </p>
+                    <p>We offer 3 kinds of fits: Fitted, Straight, Comfort.</p>
+                    <p>All our pants and skirts are tailored and are made from stretchable fabric. Our pants have elasticated waistbands at the back to fit your well on the waist and hips. Our
+                        dresses are
+                        made with stretch fabric with darts wherever required.</p>
+                </div>
+            </div>
+        </ParallaxBlock>
+        <div className={`h-screen grid content-start text-center pt-24 font-600 font-cursive italic px-8`}>
+            <p className={`text-black/50 font-sans font-600 mb-10 not-italic text-[11px]`}>Store C: (Popular Luxury Clothing Brand)</p>
+            <div className={`mb-5 leading-4`}>
+                <p className={`text-sm text-black/70`}>Radhika finally enters a high-end store. She tries out some tops and does like them.</p>
+                <p className={`text-xl`}>“This shirt fits well”</p>
+            </div>
+            <div ref={el => {GSAPBlockAnimation = el}} className='leading-4'>
+                <p className={`text-sm text-black/70`}>she thinks. Looks at the price tag</p>
+                <p className={`text-xl leading-6`}>“Wow! This is double the price of what I would pay even in New York”.</p>
+            </div>
+        </div>
+    </>;
     const browserView = (
         <>
             <ParallaxBlock

@@ -8,7 +8,7 @@ const ParallaxBlock = props => {
             strength={200}
         >
             <div className="h-screen">
-                <div className={`absolute inset-0 flex flex-col justify-center ${props.bodyStyle}`}>
+                <div className={`absolute inset-0 flex flex-col ${props.verticalAlign ? props.verticalAlign : 'justify-center'} ${props.bodyStyle}`}>
                     {props.children}
                 </div>
             </div>
