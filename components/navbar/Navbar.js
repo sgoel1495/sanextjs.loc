@@ -31,9 +31,11 @@ function Navbar(props) {
     }, [show])
 
     useEffect(() => {
-        window.addEventListener('scroll', toggleShow);
+        if (props.subMenu)
+            window.addEventListener('scroll', toggleShow);
         return () => {
-            window.removeEventListener('scroll', toggleShow);
+            if (props.subMenu)
+                window.removeEventListener('scroll', toggleShow);
         }
     }, [toggleShow])
 
@@ -82,7 +84,7 @@ function Navbar(props) {
                         <Menu isMobile={true}/>
                     </ul>
                     <div className={"absolute w-full  -mb-1 shadow-[7.1px_7.1px_14.6px_0.5px_rgb(0,0,0,0.08)] transition-[top] duration-700 ease-in-out"}
-                         style={{top: show ? menuRef.current.getBoundingClientRect().bottom-1 : 0, left: show ? 0 : -1000}} ref={subMenuRef}>
+                         style={{top: show ? menuRef.current.getBoundingClientRect().bottom - 1 : 0, left: show ? 0 : -1000}} ref={subMenuRef}>
                         {props.subMenu}
                     </div>
                 </div>
