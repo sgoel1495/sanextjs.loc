@@ -26,7 +26,7 @@ function ShopPage(props) {
     const {dataStore} = useContext(AppWideContext);
     const loaderRef = useRef(null)
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
 
 
@@ -48,19 +48,17 @@ function ShopPage(props) {
         }
         setLoading(true)
         const callObject = apiDictionary("getProducts", dataStore.apiToken, {category: category.replace("tailored-", ""), ...pagination});
-        fetch(callObject.url, callObject.fetcher)
-            .then(response => {
-                return response.json();
+        fetch(callObject.url, callObject.fetcher).then(response => {
+            return response.json();
+        }).then(json => {
+            if (data && flag)
+                json.response.data = data.data.concat(json.response.data)
+            setData(json.response);
+            setPagination({
+                skip: pagination.skip + pagination.limit,
+                limit: pagination.limit
             })
-            .then(json => {
-                if (data && flag)
-                    json.response.data = data.data.concat(json.response.data)
-                setData(json.response);
-                setPagination({
-                    skip: pagination.skip + pagination.limit,
-                    limit: pagination.limit
-                })
-            }).finally(() => {
+        }).finally(() => {
             setLoading(false);
         });
     }, [data, pagination, category])
@@ -106,13 +104,13 @@ function ShopPage(props) {
 
     if (dataStore.mobile) {
         return (
-                <MobileShopPage
-                    loaderRef={loaderRef}
-                    loading={loading}
-                    data={data}
-                    category={category}
-                    hpid={props.hpid}
-                />
+            <MobileShopPage
+                loaderRef={loaderRef}
+                loading={loading}
+                data={data}
+                category={category}
+                hpid={props.hpid}
+            />
         )
     } else return (
         <Fragment>
@@ -120,8 +118,8 @@ function ShopPage(props) {
             {navControl || <Header type={"shopMenu"}/>}
             <CategoryHeaderVideo category={category}/>
             {navControl
-                ? <Header type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>
-                : <Menu type={"minimal"} isMobile={false} filterData={data} category={props.hpid}/>
+                ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count:{}} category={props.hpid}/>
+                : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count:{}} category={props.hpid}/>
             }
             <BlockHeader
                 space={"py-5"}
@@ -140,7 +138,8 @@ function ShopPage(props) {
                 {
                     loading &&
                     <span className={"block relative w-14 aspect-square"}>
-                        <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"}/>
+                        <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
+                               alt={"loader"}/>
                     </span>
                 }
                 </span>

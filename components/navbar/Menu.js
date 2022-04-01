@@ -15,10 +15,9 @@
 
 import Link from "next/link";
 import SubMenu from "./SubMenu";
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
-import {NewTag} from "../common/Tags";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
 
 function Menu(props) {
