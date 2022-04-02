@@ -25,21 +25,20 @@ const ProductCard = ({ prod, isMobile, wide }) => {
             return <div className={"relative rounded-3xl bg-white overflow-hidden mx-10 my-6 shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]"}>
                 {prod.is_prod_new && <span className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
                 <Link href={"/" + prod.asset_id}>
-                    <a className={`block text-center z-0`} id={prod.asset_id}>
+                    <a className={`block z-0`} id={prod.asset_id}>
                         <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.name} />
-                        <div className={`grid grid-cols-2`}>
-                            <div>
-                                <p className={`text-h5 font-500`}>{prod.name}</p>
-                                <p className={`text-sm font-500`}>{prod.tag_line}</p>
+                        <div className={`flex px-5 items-center leading-none py-3`}>
+                            <div className='flex-1'>
+                                <p className={`font-600 font-cursive italic`}>{prod.name}</p>
+                                <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
                             </div>
-                            <div>
+                            <div className='inline-flex flex-col items-center'>
                                 <p className={`text-xs`}>
                                     {currencySymbol}
                                     {(currCurrency === "inr") ? prod.price : prod.usd_price}
                                 </p>
                                 <WishListButton />
                             </div>
-
                         </div>
                     </a>
                 </Link>
@@ -53,9 +52,9 @@ const ProductCard = ({ prod, isMobile, wide }) => {
                     <div className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
                         <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.name} potrait={true} />
                     </div>
-                    <div className={``}>
-                        <p className={`text-h5 font-500`}>{prod.name}</p>
-                        <p className={`text-sm font-500`}>{prod.tag_line}</p>
+                    <div className={`leading-none py-2`}>
+                        <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
+                        <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
                         <p className={`text-xs`}>
                             {currencySymbol}
                             {(currCurrency === "inr") ? prod.price : prod.usd_price}
