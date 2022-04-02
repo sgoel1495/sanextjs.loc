@@ -3,7 +3,7 @@ import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../PageHead";
 import useApiCall from "../../hooks/useApiCall";
 import appSettings from "../../store/appSettings";
-import NavBar from "../navbar";
+import NavBar from "../navbar/Navbar";
 
 /**
  * @param props has isMobile and hpid

@@ -1,8 +1,8 @@
 import Image from "next/image";
-import React, {Fragment, useState} from "react";
+import React, { Fragment, useState } from "react";
 import ReactDom from "react-dom";
 import Link from "next/link";
-import {NewTag} from "../common/Tags";
+import { NewTag } from "../common/Tags";
 import Accordion from "../common/accordion";
 
 /**
@@ -216,7 +216,7 @@ navigationData.push(
         title: `SHIPPING & RETURNS`,
         description: ``,
         link: `/salt/shipping-returns`,
-        style:"mt-12"
+        style: "mt-12"
     },
     {
         title: `CANCELLATION & MODIFICATIONS`,
@@ -257,10 +257,10 @@ navigationData.push(
 const SelfLink = (props) => {
     return (
         <Link href={props.link}>
-            <a className={`block px-4 py-3 text-black/70 hover:bg-black/5 ` + [props.style ? props.style:""]}>
+            <a className={`block px-4 py-3 text-black/70 hover:bg-black/5 ` + [props.style ? props.style : ""]}>
                 <span className={`block leading-none`}>
                     {props.title}
-                    {props.new && <NewTag/>}
+                    {props.new && <NewTag />}
                 </span>
                 {props.description && <span className="text-xs block leading-none">{props.description}</span>}
             </a>
@@ -280,7 +280,7 @@ const ChildLink = props => {
                 <>
                     <div className={`leading-none`}>
                         {props.title}
-                        {props.new && <NewTag/>}
+                        {props.new && <NewTag />}
                     </div>
                     {props.description && <span className="text-xs block leading-none">{props.description}</span>}
                 </>
@@ -288,14 +288,14 @@ const ChildLink = props => {
             titleStyle={`px-4 py-3 ${viewState ? 'bg-black/5' : 'group-hover:bg-black/5'}`}
             accordionIconOpen={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5}
-                     viewBox="0 0 24 24">
-                    <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
+                    viewBox="0 0 24 24">
+                    <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z" />
                 </svg>
             }
             accordionIconClose={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5}
-                     viewBox="0 0 24 24">
-                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/>
+                    viewBox="0 0 24 24">
+                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z" />
                 </svg>
             }
             bodyStyle={`ml-2 ${viewState ? 'my-2' : ''}`}
@@ -308,7 +308,7 @@ const ChildLink = props => {
                                 <Link href={item.link} key={index}>
                                     <a className={`block px-4 py-1 hover:bg-black/5 text-sm`}>
                                         {item.title}
-                                        {item.new && <NewTag/>}
+                                        {item.new && <NewTag />}
                                     </a>
                                 </Link>
                             </li>
@@ -322,7 +322,7 @@ const ChildLink = props => {
 
 function HamburgerModal(props) {
 
-    const {closeModal} = props;
+    const { closeModal } = props;
 
     return (
         <div className={`bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
@@ -335,7 +335,7 @@ function HamburgerModal(props) {
                     <button onClick={closeModal}>
                         <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} viewBox="0 0 24 24">
                             <path
-                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" />
                         </svg>
                     </button>
                 </div>
@@ -383,8 +383,6 @@ function SidebarMenuHamburger(props) {
     }
     const data = [];
 
-    const mobileView = null;
-
     let iconHeight;
     switch (props.type) {
         case "shopMenu":
@@ -394,19 +392,30 @@ function SidebarMenuHamburger(props) {
             iconHeight = "h-6"
     }
 
+    const mobileView = (
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="h-6 w-6">
+                <rect y="3" width="50" height="2" />
+                <rect y="17" width="50" height="2" />
+                <rect y="31" width="50" height="2" />
+                <rect y="45" width="50" height="2" />
+            </svg>
+        </div>
+    );
+
     const browserView = (
         <>
-            <span onClick={() => setShowSidebarMenu(true)}
-                  className={`block relative cursor-pointer w-6 ${iconHeight}`}>
+            <div onClick={() => setShowSidebarMenu(true)}
+                className={`relative cursor-pointer w-6 ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/menuicon_v1.png"}
                     alt="menuicon"
                     layout={`fill`}
                     objectFit={`contain`}
                 />
-            </span>
+            </div>
             {showSidebarMenu && ReactDom.createPortal(
-                <HamburgerModal data={data} closeModal={closeModal.bind(this)}/>,
+                <HamburgerModal data={data} closeModal={closeModal.bind(this)} />,
                 document.getElementById("hamburger"))}
         </>
     );
