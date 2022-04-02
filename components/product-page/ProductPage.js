@@ -1,7 +1,9 @@
 import AppWideContext from "../../store/AppWideContext";
-import {useContext, useEffect, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../PageHead";
 import useApiCall from "../../hooks/useApiCall";
+import appSettings from "../../store/appSettings";
+import NavBar from "../navbar";
 
 /**
  * @param props has isMobile and hpid
@@ -14,6 +16,10 @@ function ProductPage(props){
     const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState(null);
 
+    const currCurrency = dataStore.currCurrency;
+    const currencyData = appSettings("currency_data");
+    const currencySymbol = currencyData[currCurrency].curr_symbol;
+
     const resp = useApiCall("getProduct", dataStore.apiToken, {product_id:props.hpid});
     useEffect(() => {
         if (resp
@@ -25,13 +31,17 @@ function ProductPage(props){
             setData(resp.response);
     }, [resp]);
 
-
+    console.log(resp);
     const mobileView = null;
-    const browserView = null;
+    const browserView = <Fragment>
+
+
+    </Fragment>;
 
     return <div>
         <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-        Product Page
+        <div>6-10 day delivery</div>
+        <NavBar type={"minimal"}/>
         {(props.isMobile) ? mobileView:browserView }
     </div>;
 }
