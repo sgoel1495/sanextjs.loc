@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import WishlistButton from "../common/WishListButton";
-import appSettings from "../../store/appSettings";
-import AppWideContext from "../../store/AppWideContext";
+import WishlistButton from "../../common/WishListButton";
+import appSettings from "../../../store/appSettings";
+import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 
 const DetailsCard = ({data}) => {
