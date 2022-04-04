@@ -4,6 +4,7 @@ import PageHead from "../PageHead";
 import useApiCall from "../../hooks/useApiCall";
 import Header from "../navbar/Header";
 import DesktopView from "./desktop-view/DesktopView";
+import {apiDictionary} from "../../helpers/apiDictionary";
 
 /**
  * @param props has isMobile and hpid
@@ -24,19 +25,24 @@ function ProductPage(props) {
         }
     }, [])
 
-    const resp = useApiCall("getProduct", dataStore.apiToken, {product_id: props.hpid});
     useEffect(() => {
-        if (resp
-            && resp.hasOwnProperty("status")
-            && resp.status === 200
-            && resp.hasOwnProperty("response")
-        )
-            setData(resp.response);
-    }, [resp]);
+        fetchData();
+    }, [props.hpid]);
+
+    const fetchData = () =>{
+        const callObject = apiDictionary("getProduct", dataStore.apiToken, {product_id: props.hpid});
+
+        fetch(callObject.url, callObject.fetcher)
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                if (json && json.status === 200)
+                    setData(json.response);
+            })
+    }
 
 
-
-    console.log(resp)
     const mobileView = null;
 
     if (data)

@@ -5,6 +5,8 @@ import Image from "next/image";
 import ImageSwitcher from "./ImageSwitcher";
 import DetailsSection from "./DetailsSection";
 import Footer from "../../footer/Footer";
+import CompleteLook from "./sub-sections/CompleteLook";
+import ExploreSections from "./sub-sections/ExploreSections";
 
 const DesktopView = ({hpid, data}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -95,6 +97,62 @@ const DesktopView = ({hpid, data}) => {
                     <Image src={WEBASSETS + "/assets/images/why_shop_with_us.jpg"} layout={`fill`} objectFit={`cover`}/>
                 </span>
             </div>
+            {
+                data.paired_products && data.paired_products.length > 0 && data.paired_products.products && data.paired_products.products.length > 0 && <CompleteLook data={data}/>
+            }
+            {
+                data.pattern_no &&
+                <ExploreSections
+                    id={data.asset_id}
+                    title={"Similar In Style"}
+                    api={"getProducts"}
+                    query={{
+                        "category": "same-pattern",
+                        "skip": 0,
+                        "limit": 3,
+                        "category-name": data.pattern_no,
+                        "curr-product-id": data.asset_id
+                    }}
+                />
+            }
+            <ExploreSections
+                id={data.asset_id}
+                title={"Explore More " + data.category.toUpperCase()}
+                api={"getProducts"}
+                query={{
+                    "category": data.category,
+                    "skip": 0,
+                    "limit": 3,
+                }}
+                more={true}
+            />
+            {
+                data.fabric_code &&
+                <ExploreSections
+                    id={data.asset_id}
+                    title={"More Of This Color"}
+                    api={"getProducts"}
+                    query={{
+                        "category": "same-color",
+                        "skip": 0,
+                        "limit": 3,
+                        "category-name": data.fabric_code,
+                        "curr-product-id": data.asset_id
+                    }}
+                    more={true}
+                />
+            }
+            <ExploreSections
+                id={data.asset_id}
+                title={"NEW ARRIVALS"}
+                api={"getProducts"}
+                query={{
+                    "category": "new-arrivals",
+                    "skip": 0,
+                    "limit": 3,
+                }}
+                more={true}
+            />
             <Footer/>
         </div>
     );
