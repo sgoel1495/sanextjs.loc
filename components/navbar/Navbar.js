@@ -69,7 +69,7 @@ function Navbar(props) {
                     <SearchMenu isMobile={true} />
                     <SidebarMenuCart isMobile={true} />
                 </div>
-                <div className={"z-20 sticky top-0 pt-2 flex items-center bg-white"} ref={menuRef}>
+                <div className={"z-30 sticky top-0 pt-2 flex items-center bg-white"} ref={menuRef}>
                     <Link href={"/"} passHref>
                         <a className="block px-4">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 1024" className='w-5 h-5'>
@@ -86,8 +86,8 @@ function Navbar(props) {
                         </li>
                         <Menu isMobile={true} />
                     </ul>
-                    <div className={"absolute w-full  -mb-1 shadow-[7.1px_7.1px_14.6px_0.5px_rgb(0,0,0,0.08)] transition-[top] duration-700 ease-in-out"}
-                        style={{ top: show ? menuRef.current.getBoundingClientRect().bottom - 1 : 0, left: show ? 0 : -1000 }} ref={subMenuRef}>
+                    <div className={"absolute w-full shadow-[7.1px_7.1px_14.6px_0.5px_rgb(0,0,0,0.08)] transition-[top] duration-700 ease-in-out"}
+                        style={{ top: show ? menuRef.current.getBoundingClientRect().bottom - 5 : 0, left: show ? 0 : -1000 }} ref={subMenuRef}>
                         {props.subMenu}
                     </div>
                 </div>
