@@ -34,7 +34,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             body = {
                 product: {
                     token: apiToken,
-                    category: queryObject.category,
+                    ...queryObject,
                     skip: queryObject.skip || 0,
                     limit: queryObject.limit || 10
                 }

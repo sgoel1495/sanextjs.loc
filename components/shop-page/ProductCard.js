@@ -6,12 +6,12 @@ import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 
 const ShopDataBlockImage = (props) => (
-    <span className={`block relative w-full h-full ` + [props.potrait ? "aspect-[2/3]" : "aspect-square"]}>
-        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`} />
+    <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
+        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
     </span>
 )
 
-const ProductCard = ({ prod, isMobile, wide }) => {
+const ProductCard = ({ prod, isMobile, wide , portrait}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
@@ -50,7 +50,7 @@ const ProductCard = ({ prod, isMobile, wide }) => {
             <Link href={"/" + prod.asset_id}>
                 <a className={`block text-center z-0`} id={prod.asset_id}>
                     <div className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.name} potrait={true} />
+                        <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.name} portrait={true} />
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
@@ -82,7 +82,7 @@ const ProductCard = ({ prod, isMobile, wide }) => {
                     <WishListButton className={`absolute right-4 top-4 z-10`} />
                     <Link href={"/" + prod.asset_id}>
                         <a>
-                            <ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.new.jpg" : "/new.jpg")} alt={prod.name} />
+                            <ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.new.jpg" : "/new.jpg")} alt={prod.name} portrait={portrait}/>
                             <div className="grid grid-cols-2 items-center h-16">
                                 {expandShop
                                     ? <>

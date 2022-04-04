@@ -1,9 +1,9 @@
 import AppWideContext from "../../store/AppWideContext";
-import {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../PageHead";
-import useApiCall from "../../hooks/useApiCall";
-import appSettings from "../../store/appSettings";
-import NavBar from "../navbar/Navbar";
+import Header from "../navbar/Header";
+import DesktopView from "./desktop-view/DesktopView";
+import {apiDictionary} from "../../helpers/apiDictionary";
 
 /**
  * @param props has isMobile and hpid
@@ -11,38 +11,48 @@ import NavBar from "../navbar/Navbar";
  * @constructor
  */
 
-function ProductPage(props){
-    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+function ProductPage(props) {
     const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState(null);
 
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const [navControl, setNavControl] = React.useState(false);
+    const controller = () => setNavControl(window.scrollY > window.innerHeight / 2);
 
-    const resp = useApiCall("getProduct", dataStore.apiToken, {product_id:props.hpid});
     useEffect(() => {
-        if (resp
-            && resp.hasOwnProperty("status")
-            && resp.status == 200
-            && resp.hasOwnProperty("response")
-            && resp.response.hasOwnProperty("data")
-        )
-            setData(resp.response);
-    }, [resp]);
+        window.addEventListener("scroll", controller);
+        return () => {
+            window.removeEventListener('scroll', controller)
+        }
+    }, [])
 
-    console.log(resp);
+    useEffect(() => {
+        fetchData();
+    }, [props.hpid]);
+
+    const fetchData = () =>{
+        const callObject = apiDictionary("getProduct", dataStore.apiToken, {product_id: props.hpid});
+
+        fetch(callObject.url, callObject.fetcher)
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                if (json && json.status === 200)
+                    setData(json.response);
+            })
+    }
+
+
     const mobileView = null;
-    const browserView = <Fragment>
 
-
-    </Fragment>;
-
-    return <div>
-        <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-        <div>6-10 day delivery</div>
-        <NavBar type={"minimal"}/>
-        {(props.isMobile) ? mobileView:browserView }
-    </div>;
+    if (data)
+        return <div>
+            <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
+            <Header type={navControl ? "minimal" : "shopMenu"}/>
+            {(props.isMobile) ? mobileView : <DesktopView hpid={props.hpid} data={data}/>}
+        </div>;
+    else
+        return <></>
 }
+
 export default ProductPage;
