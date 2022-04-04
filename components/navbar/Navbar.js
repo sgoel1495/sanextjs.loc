@@ -37,7 +37,7 @@ function Navbar(props) {
             if (props.subMenu)
                 window.removeEventListener('scroll', toggleShow);
         }
-    }, [toggleShow])
+    }, [props.subMenu, toggleShow])
 
 
     let navStyle = "px-4 py-1 uppercase"
