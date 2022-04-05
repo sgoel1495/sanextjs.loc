@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import Image from "next/image";
-import AppWideContext from "../../../store/AppWideContext";
-import appSettings from "../../../store/appSettings";
+import AppWideContext from "../../../../store/AppWideContext";
+import appSettings from "../../../../store/appSettings";
 
 const DetailsSection = ({theme, data}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;

@@ -26,7 +26,7 @@ const ExploreSections = (props) => {
     useEffect(() => {
         fetchData()
     }, [props.id])
-    console.log(props.title, data)
+
     return (
         <div>
             <span className={"block"}>{props.title}</span>

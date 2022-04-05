@@ -4,6 +4,7 @@ import PageHead from "../PageHead";
 import Header from "../navbar/Header";
 import DesktopView from "./desktop-view/DesktopView";
 import {apiDictionary} from "../../helpers/apiDictionary";
+import MobileView from "./mobile-view/MobileView";
 
 /**
  * @param props has isMobile and hpid
@@ -29,7 +30,7 @@ function ProductPage(props) {
         fetchData();
     }, [props.hpid]);
 
-    const fetchData = () =>{
+    const fetchData = () => {
         const callObject = apiDictionary("getProduct", dataStore.apiToken, {product_id: props.hpid});
 
         fetch(callObject.url, callObject.fetcher)
@@ -42,14 +43,13 @@ function ProductPage(props) {
             })
     }
 
-
-    const mobileView = null;
+    console.log(data)
 
     if (data)
         return <div>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-            <Header type={navControl ? "minimal" : "shopMenu"}/>
-            {(props.isMobile) ? mobileView : <DesktopView hpid={props.hpid} data={data}/>}
+            <Header type={ !dataStore.mobile && navControl ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
+            {(props.isMobile) ? <MobileView hpid={props.hpid} data={data}/> : <DesktopView hpid={props.hpid} data={data}/>}
         </div>;
     else
         return <></>
