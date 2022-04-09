@@ -11,7 +11,7 @@ const LoginForm = (props) => {
     const username = useRef(null);
     const password = useRef(null);
     const [loading, setLoading] = useState(false);
-    const [optSent, setOTPSent] = useState(false)
+    const [otpSent, setOTPSent] = useState(false)
     const {dataStore, updateDataStore} = useContext(AppWideContext);
 
     React.useEffect(() => {
@@ -157,19 +157,19 @@ const LoginForm = (props) => {
                 ref={username}
                 placeholder="email/phone (required)"
                 className={`${inputStyle}`}
-                disabled={optSent}
+                disabled={otpSent}
             />
             <input
                 type="password"
                 name='password'
                 ref={password}
                 className={`${inputStyle}`}
-                placeholder={optSent ? "Enter your OTP" : "Enter your password"}
+                placeholder={otpSent ? "Enter your OTP" : "Enter your password"}
             />
             <div className={`col-span-2 flex items-center gap-x-8 justify-start`}>
                 <button
                     type="button"
-                    onClick={() => signInAction(optSent ? "verifyOTP" : "signIn")}
+                    onClick={() => signInAction(otpSent ? "verifyOTP" : "signIn")}
                     className={`${buttonStyle}`}
                     disabled={loading}
                 >
@@ -177,7 +177,7 @@ const LoginForm = (props) => {
                         loading ?
                             <Loader className="text-grey"/>
                             :
-                            optSent ? <>Verify OTP</> : <>Sign In</>
+                            otpSent ? <>Verify OTP</> : <>Sign In</>
                     }
                 </button>
                 <span>or</span>
@@ -191,12 +191,12 @@ const LoginForm = (props) => {
                         loading ?
                             <Loader className="text-grey"/>
                             :
-                            optSent ? <>Resend OTP</> : <>Login Using OTP</>
+                            otpSent ? <>Resend OTP</> : <>Login Using OTP</>
                     }
                 </button>
                 <button
                     type="button"
-                    onClick={() => optSent ? setOTPSent(false) : signInAction("facebook")}
+                    onClick={() => otpSent ? setOTPSent(false) : signInAction("facebook")}
                     className={`${buttonStyle} flex items-center gap-x-3`}
                     disabled={loading}
                 >
@@ -204,7 +204,7 @@ const LoginForm = (props) => {
                         loading ?
                             <Loader className="text-grey"/>
                             :
-                            optSent ? <>Back</> : <>
+                            otpSent ? <>Back</> : <>
                                 <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain"/>
                                 <span>LOGIN</span>
                             </>
