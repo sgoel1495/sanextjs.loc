@@ -184,7 +184,7 @@ function SidebarMenuUser(props) {
                         <Image
                             src={WEBASSETS + "/assets/images/usericon.png"}
                             className={"cursor-pointer"}
-                            alt="menuicon"
+                            alt="usericon"
                             layout={`fill`}
                             objectFit={`contain`}
                         />
