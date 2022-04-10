@@ -165,6 +165,7 @@ function SidebarMenuUser(props) {
             iconHeight = "h-6"
     }
 
+    console.log(dataStore.userData.contact);
     const mobileView = null;
     const browserView = (
         <>
@@ -191,7 +192,7 @@ function SidebarMenuUser(props) {
             }
             </span>
             {showSidebarMenuUser && ReactDom.createPortal(
-                dataStore.userData.contact ? <UserMenu closeModal={closeModal.bind(this)} /> : <UserLogin closeModal={closeModal.bind(this)}/>,
+                dataStore.userData.contact ? null : <UserLogin closeModal={closeModal.bind(this)}/>,
                 document.getElementById("userband"))}
         </>
     );
@@ -205,3 +206,9 @@ function SidebarMenuUser(props) {
 export default SidebarMenuUser;
 
 
+/*
+            {showSidebarMenuUser && ReactDom.createPortal(
+                dataStore.userData.contact ? <UserMenu closeModal={closeModal.bind(this)} /> : <UserLogin closeModal={closeModal.bind(this)}/>,
+                document.getElementById("userband"))}
+
+ */
