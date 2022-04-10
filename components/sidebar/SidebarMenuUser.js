@@ -3,7 +3,7 @@ import React, {useContext, useState} from "react";
 import ReactDom from "react-dom";
 import UserLogin from "../user/login/UserLogin";
 import AppWideContext from "../../store/AppWideContext";
-import UserMenu from "../user/UserMenu";
+import AccountMenu from "../user/AccountMenu";
 
 /**
  * @todo API login to be done.
@@ -70,7 +70,7 @@ function SidebarMenuUser(props) {
             }
             </span>
             {showSidebarMenuUser && ReactDom.createPortal(
-                dataStore.userData.contact ? null : <UserLogin closeModal={closeModal.bind(this)}/>,
+                dataStore.userData.contact ? <AccountMenu closeModal={closeModal.bind(this)} /> : <UserLogin closeModal={closeModal.bind(this)}/>,
                 document.getElementById("userband"))}
         </>
     );
@@ -82,11 +82,3 @@ function SidebarMenuUser(props) {
 }
 
 export default SidebarMenuUser;
-
-
-/*
-            {showSidebarMenuUser && ReactDom.createPortal(
-                dataStore.userData.contact ? <UserMenu closeModal={closeModal.bind(this)} /> : <UserLogin closeModal={closeModal.bind(this)}/>,
-                document.getElementById("userband"))}
-
- */
