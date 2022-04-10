@@ -14,7 +14,7 @@ function UserMenu(props){
   const mobileView = <div>
     <Link href="/homepage/cart">
       <a className={"leading-none"}>
-        <Image src={WEBASSETS + "/assets/images/user_icon.svg"} alt="cart" width="24" height="24"/>
+        <Image src={WEBASSETS + "/assets/images/user_icon.svg"} alt="usericon" width="24" height="24"/>
         <sup>0</sup>
       </a>
     </Link>
@@ -23,7 +23,7 @@ function UserMenu(props){
   const browserView = (
       <div>
         <Cart isMobile={false}/>
-        <Image src={WEBASSETS + "/assets/images/usericon.png"} alt="cart" width="24" height="24"/>
+        <Image src={WEBASSETS + "/assets/images/usericon.png"} alt="usericon" width="24" height="24"/>
         <sup>0</sup>
       </div>
   );

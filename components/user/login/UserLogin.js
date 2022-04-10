@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import ForgotPassword from "./ForgotPassword";
@@ -35,7 +35,7 @@ function UserLogin(props) {
             break;
     }
     const browserView = (
-        <div className={`bg-theme-900/50 fixed inset-0 z-20`} onClick={closeModal}>
+        <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-20`} onClick={closeModal}>
             <div
                 className="h-fit w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
                 onClick={(e) => e.stopPropagation()}
@@ -46,11 +46,32 @@ function UserLogin(props) {
                     </svg>
                 </button>
                 <div className={`flex items-center gap-x-4 text-sm uppercase text-black/60`}>
-                    <div className={active === 0 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(0)}>Sign In</div>
-                    <span>|</span>
-                    <div className={active === 1 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(1)}>Sign Up</div>
-                    <span>|</span>
-                    <div className={active === 2 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(2)}>Forgot your password?</div>
+                    {(active==0)
+                        ?<Fragment>
+                            <div className={active === 0 ? `underline text-black/80 cursor-default  font-bold` : 'cursor-pointer'} onClick={() => setActive(0)}>Sign In</div>
+                            <span>|</span>
+                            <div className={active === 1 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(1)}>Sign Up</div>
+                            <span>|</span>
+                            <div className={active === 2 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(2)}>Forgot your password?</div>
+                        </Fragment>
+                     :(active==1)
+                        ?<Fragment>
+                            <div className={active === 1 ? `underline text-black/80 cursor-default  font-bold` : 'cursor-pointer'} onClick={() => setActive(1)}>Sign Up</div>
+                            <span>|</span>
+                            <div className={active === 0 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(0)}>Sign In</div>
+                            <span>|</span>
+                            <div className={active === 2 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(2)}>Forgot your password?</div>
+                        </Fragment>
+                     :(active==2)
+                        ?<Fragment>
+                            <div className={active === 2 ? `underline text-black/80 cursor-default  font-bold` : 'cursor-pointer'} onClick={() => setActive(2)}>Forgot your password?</div>
+                            <span>|</span>
+                            <div className={active === 0 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(0)}>Sign In</div>
+                            <span>|</span>
+                            <div className={active === 1 ? `underline text-black/80 cursor-default` : 'cursor-pointer'} onClick={() => setActive(1)}>Sign Up</div>
+                        </Fragment>
+                      :null
+                    }
                 </div>
                 {ActiveForm}
                 <Toast show={show} hideToast={() => setShow(false)}>
