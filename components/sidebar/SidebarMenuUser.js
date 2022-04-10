@@ -191,7 +191,7 @@ function SidebarMenuUser(props) {
             }
             </span>
             {showSidebarMenuUser && ReactDom.createPortal(
-                dataStore.userData.contact ? <UserMenu closeModal={closeModal.bind(this)}/> : <UserLogin closeModal={closeModal.bind(this)}/>,
+                dataStore.userData.contact ? <UserMenu closeModal={closeModal.bind(this)} /> : <UserLogin closeModal={closeModal.bind(this)}/>,
                 document.getElementById("userband"))}
         </>
     );
