@@ -35,7 +35,7 @@ function UserLogin(props) {
             break;
     }
     const browserView = (
-        <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-20`} onClick={closeModal}>
+        <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-20`}>
             <div
                 className="h-fit w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
                 onClick={(e) => e.stopPropagation()}
