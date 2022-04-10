@@ -8,26 +8,25 @@ import OurShop from "../../our-shop";
 import CompleteLook from "./sub-sections/CompleteLook";
 import ExploreSection from "./sub-sections/ExploreSection";
 
-const MobileView = ({hpid, data}) => {
+const MobileView = ({ hpid, data }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     return (
         <>
             <div className={"bg-[#f6f1ef]"}>
                 <div className={"overflow-x-scroll"}>
                     <div className={"inline-flex"}>
-                        {
-                            data.images.map((image, index) => {
-                                return <span className={"relative w-[78vw] aspect-[2/3] border-4 border-white ml-4 my-2 shadow-md"} key={index}>
-                            <Image src={WEBASSETS + image} layout={`fill`} objectFit={`cover`}/>
-                        </span>
-                            })
-                        }
+                        {data.images.map((image, index) => {
+                            return (
+                                <span className={"relative w-[78vw] aspect-[2/3] border-4 border-white ml-4 my-2 shadow-md"} key={index}>
+                                    <Image src={WEBASSETS + image} layout={`fill`} alt='' objectFit={`cover`} />
+                                </span>
+                            )
+                        })}
                     </div>
                 </div>
-                <ProductDetails data={data}/>
-                <CompleteLook paired_products={data['paired_products']} id={data['asset_id']}/>
-                {
-                    data.pattern_no &&
+                <ProductDetails data={data} />
+                <CompleteLook paired_products={data['paired_products']} id={data['asset_id']} />
+                {data.pattern_no &&
                     <ExploreSection
                         id={data.asset_id}
                         title={"Similar Styles"}
@@ -54,8 +53,7 @@ const MobileView = ({hpid, data}) => {
                     }}
                     grid={true}
                 />
-                {
-                    data.fabric_code &&
+                {data.fabric_code &&
                     <ExploreSection
                         id={data.asset_id}
                         title={"Same Color"}
@@ -83,11 +81,11 @@ const MobileView = ({hpid, data}) => {
                     grid={true}
                     minimal={true}
                 />
-                <NewArrivalsSection/>
-                <AboutUs/>
-                <OurShop/>
+                <NewArrivalsSection />
+                <AboutUs />
+                <OurShop />
             </div>
-            <Footer isMobile={true}/>
+            <Footer isMobile={true} />
         </>
     );
 };
