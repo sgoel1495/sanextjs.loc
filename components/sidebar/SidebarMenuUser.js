@@ -14,7 +14,6 @@ import AccountMenu from "../user/AccountMenu";
 
 
 function SidebarMenuUser(props) {
-
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(false);
     const {dataStore, updateDataStore} = useContext(AppWideContext);
