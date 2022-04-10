@@ -111,7 +111,7 @@ function Menu(props) {
                     <div key={ele.category}>
                         <Link href={ele.link}>
                             <a className={`font-600 ${browserViewStyle}` + ["/" + props.category === ele.link ? " border-black" : " border-transparent hover:border-black"]}>
-                                {ele.new && <span className={"bg-black text-xs text-white leading-none p-[0.1rem] text-[8px] " + newTagStyle}>New</span>}
+                                {ele.new && <span className={"bg-black text-white leading-none p-[0.1rem] text-[8px] " + newTagStyle}>New</span>}
                                 {ele.category}
                             </a>
                         </Link>

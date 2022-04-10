@@ -61,7 +61,7 @@ function ShopPage(props) {
         }).finally(() => {
             setLoading(false);
         });
-    }, [data, pagination, category])
+    }, [data, dataStore.apiToken, category, pagination])
 
     React.useEffect(() => {
         const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
@@ -91,7 +91,7 @@ function ShopPage(props) {
 
     useEffect(() => {
         fetchData(false)
-    }, [category])
+    }, [category, fetchData])
 
 
     /**

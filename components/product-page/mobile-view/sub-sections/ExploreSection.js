@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import AppWideContext from "../../../../store/AppWideContext";
 import {apiDictionary} from "../../../../helpers/apiDictionary";
 import Image from "next/image";
@@ -16,7 +16,7 @@ const ExploreSection = (props) => {
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
 
-    const fetchData = () => {
+    const fetchData = useCallback(() => {
         const callObject = apiDictionary(props.api, dataStore.apiToken, props.query);
         fetch(callObject.url, callObject.fetcher)
             .then(response => {
@@ -30,11 +30,11 @@ const ExploreSection = (props) => {
                     }
                 }
             })
-    }
+    },[dataStore.apiToken, props.api, props.query, props.title])
 
     useEffect(() => {
         fetchData()
-    }, [props.id])
+    }, [fetchData, props.id])
 
     let body;
 
@@ -88,7 +88,7 @@ const ExploreSection = (props) => {
                     return (
                         <SwiperSlide key={i}>
                             <Link href={"/" + product.asset_id} passHref>
-                                <span className={"block flex flex-col items-center gap-y-2"}>
+                                <span className={"flex flex-col items-center gap-y-2"}>
                                     <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
                                         <Image
                                             src={WEBASSETS + "/assets/" + product.asset_id + "/thumb.png"}

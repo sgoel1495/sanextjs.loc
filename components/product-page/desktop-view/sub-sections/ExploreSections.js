@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import AppWideContext from "../../../../store/AppWideContext";
 import ProductCard from "../../../shop-page/ProductCard";
 import useApiCall from "../../../../hooks/useApiCall";
@@ -10,7 +10,7 @@ const ExploreSections = (props) => {
     const { dataStore } = useContext(AppWideContext);
     const [data, setData] = useState([])
 
-    const fetchData = () => {
+    const fetchData = useCallback(() => {
         const callObject = apiDictionary(props.api, dataStore.apiToken, props.query);
         fetch(callObject.url, callObject.fetcher)
             .then(response => {
@@ -20,11 +20,11 @@ const ExploreSections = (props) => {
                 if (json && json.status === 200)
                     setData(json.response.data);
             })
-    }
+    }, [dataStore.apiToken, props.api, props.query])
 
     useEffect(() => {
         fetchData()
-    }, [props.id])
+    }, [fetchData, props.id])
 
     return (
         <div>
@@ -36,8 +36,7 @@ const ExploreSections = (props) => {
                             <ProductCard prod={product} />
                         </div>
                     )
-                })
-                }
+                })}
             </div>
             {props.more && <div className='flex justify-center mb-12'>
                 <Link href={""}><a className='p-2 text-sm uppercase bg-black/70 text-white'>&gt;&nbsp;&nbsp;click here to load more&nbsp;&nbsp;&lt;</a></Link>
