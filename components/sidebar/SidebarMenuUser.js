@@ -22,7 +22,7 @@ function SidebarMenuUser(props) {
         let userData = localStorage.getItem("userData");
         if (userData)
             updateDataStore("userData", JSON.parse(userData))
-    }, [])
+    }, [updateDataStore])
 
     React.useEffect(() => {
         if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");

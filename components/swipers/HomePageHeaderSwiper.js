@@ -64,7 +64,7 @@ function HomePageHeaderSwiper(props) {
 
                     return (
                         <SwiperSlide key={index}>
-                            <Link href={links[index]}>
+                            <Link href={links[index]} passHref>
                                 <span className={'block relative h-[100vh] z-10'}>
                                     {overlay}
                                     <Image

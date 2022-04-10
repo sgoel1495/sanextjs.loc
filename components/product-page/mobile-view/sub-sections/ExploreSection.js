@@ -87,7 +87,7 @@ const ExploreSection = (props) => {
                 {data.map((product, i) => {
                     return (
                         <SwiperSlide key={i}>
-                            <Link href={"/" + product.asset_id}>
+                            <Link href={"/" + product.asset_id} passHref>
                                 <span className={"block flex flex-col items-center gap-y-2"}>
                                     <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
                                         <Image
