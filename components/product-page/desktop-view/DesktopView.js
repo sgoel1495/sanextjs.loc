@@ -40,7 +40,7 @@ const DesktopView = ({ hpid, data }) => {
                     {data.name}
                 </div>
                 <div className={"absolute top-[15%] right-[12.5%] w-60"}>
-                    <DetailsCard data={data} />
+                    <DetailsCard data={data} hpid={hpid} />
                 </div>
             </div>
             <span className={"block relative aspect-[320/159] w-full"}>

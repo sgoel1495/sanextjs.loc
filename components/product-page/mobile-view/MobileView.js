@@ -24,7 +24,7 @@ const MobileView = ({ hpid, data }) => {
                         })}
                     </div>
                 </div>
-                <ProductDetails data={data} />
+                <ProductDetails data={data} hpid={hpid}/>
                 <CompleteLook paired_products={data['paired_products']} id={data['asset_id']} />
                 {data.pattern_no &&
                     <ExploreSection

@@ -18,6 +18,7 @@ function Logout() {
         };
         updateDataStore("userData", userData);
         updateDataStore("userWallet", userWallet);
+        updateDataStore("userFavs", []);
         router.replace("/");
     }, []);
     return <Fragment>Logging out ...</Fragment>;

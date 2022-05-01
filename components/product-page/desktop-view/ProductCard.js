@@ -33,7 +33,7 @@ const ProductCard = ({prod, isMobile, wide, portrait}) => {
                     }}
                     className={`group`}
                 >
-                    <WishListButton className={`absolute right-4 top-4 z-10`}/>
+                    <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id}/>
                     <ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.thumb.jpg" : "/thumb.jpg")} alt={prod.name} portrait={portrait}/>
                     <div className="grid grid-cols-2 items-center h-16">
                         {expandShop

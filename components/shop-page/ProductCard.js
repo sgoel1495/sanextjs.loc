@@ -37,7 +37,7 @@ const ProductCard = ({ prod, isMobile, wide , portrait}) => {
                                     {currencySymbol}
                                     {(currCurrency === "inr") ? prod.price : prod.usd_price}
                                 </p>
-                                <WishListButton />
+                                <WishListButton pid={prod.asset_id}/>
                             </div>
                         </div>
                     </a>
@@ -45,7 +45,7 @@ const ProductCard = ({ prod, isMobile, wide , portrait}) => {
             </div>
         }
         return <div className={"relative"}>
-            <WishListButton className={`absolute left-2 top-2 z-10`} />
+            <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id}/>
             {prod.is_prod_new && <span className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 -left-2 font-bold"}>NEW</span>}
             <Link href={"/" + prod.asset_id}>
                 <a className={`block text-center z-0`} id={prod.asset_id}>
@@ -79,7 +79,7 @@ const ProductCard = ({ prod, isMobile, wide , portrait}) => {
                     }}
                     className={`group`}
                 >
-                    <WishListButton className={`absolute right-4 top-4 z-10`} />
+                    <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id}/>
                     <Link href={"/" + prod.asset_id}>
                         <a>
                             <ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.new.jpg" : "/new.jpg")} alt={prod.name} portrait={portrait}/>
