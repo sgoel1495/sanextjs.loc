@@ -15,8 +15,8 @@ import AccountMenu from "../user/AccountMenu";
 
 function SidebarMenuUser(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(false);
     const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(dataStore.showSidebarMenuUser);
 
     useEffect(() => {
         if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
@@ -24,7 +24,13 @@ function SidebarMenuUser(props) {
     }, [showSidebarMenuUser])
 
     const closeModal = () => {
+        updateDataStore("showSidebarMenuUser",false);
         setShowSidebarMenuUser(false);
+    }
+
+    const openModal = ()=>{
+        updateDataStore("showSidebarMenuUser",false);
+        setShowSidebarMenuUser(true);
     }
 
     let iconHeight;
@@ -39,7 +45,7 @@ function SidebarMenuUser(props) {
     const mobileView = null;
     const browserView = (
         <>
-        <span onClick={() => setShowSidebarMenuUser(true)} className={`block relative w-6 ${iconHeight}`}>
+        <span onClick={openModal} className={`block relative w-6 ${iconHeight}`}>
             {
                 props.type === "shopMenu" ?
                     <div className={"float-right text-right"}>

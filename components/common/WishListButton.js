@@ -1,6 +1,7 @@
 import React, {useContext, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
+import {useRouter} from "next/router";
 
 /**
  * @NoteG the favs of a user are available in api
@@ -11,6 +12,7 @@ import {apiCall} from "../../helpers/apiCall";
  */
 
 const WishListButton = (props) => {
+    const router=useRouter();
     const {dataStore,updateDataStore} = useContext(AppWideContext);
     const [pidChecked,setPidChecked]=useState(dataStore.userFavs.includes(props.pid));
     const addRemoveFav = async ()=>{
@@ -38,6 +40,7 @@ const WishListButton = (props) => {
             }
         } else {
             //login required
+            router.push("/login");
         }
     };
 
