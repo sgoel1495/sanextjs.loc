@@ -1,9 +1,10 @@
 import Image from "next/image";
-import React, { Fragment, useState } from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import ReactDom from "react-dom";
 import Link from "next/link";
-import { NewTag } from "../common/Tags";
+import {NewTag} from "../common/Tags";
 import Accordion from "../common/accordion";
+import AppWideContext from "../../store/AppWideContext";
 
 /**
  * @todo account signin pending
@@ -11,13 +12,9 @@ import Accordion from "../common/accordion";
  * @constructor
  */
 
-const navigationData = [];
-navigationData.push(
-    {
-        title: `ACCOUNT`,
-        description: `Login/Signup`,
-        link: `#`
-    },
+
+const navigationDataInit = [];
+navigationDataInit.push(
     {
         title: `NEW ARRIVALS`,
         description: `Recently Launched`,
@@ -260,7 +257,7 @@ const SelfLink = (props) => {
             <a className={`block px-4 py-3 text-black/70 hover:bg-black/5 ` + [props.style ? props.style : ""]}>
                 <span className={`block leading-none`}>
                     {props.title}
-                    {props.new && <NewTag />}
+                    {props.new && <NewTag/>}
                 </span>
                 {props.description && <span className="text-xs block leading-none">{props.description}</span>}
             </a>
@@ -280,7 +277,7 @@ const ChildLink = props => {
                 <>
                     <div className={`leading-none`}>
                         {props.title}
-                        {props.new && <NewTag />}
+                        {props.new && <NewTag/>}
                     </div>
                     {props.description && <span className="text-xs block leading-none">{props.description}</span>}
                 </>
@@ -288,14 +285,14 @@ const ChildLink = props => {
             titleStyle={`px-4 py-3 ${viewState ? 'bg-black/5' : 'group-hover:bg-black/5'}`}
             accordionIconOpen={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5}
-                    viewBox="0 0 24 24">
-                    <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z" />
+                     viewBox="0 0 24 24">
+                    <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
                 </svg>
             }
             accordionIconClose={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5}
-                    viewBox="0 0 24 24">
-                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z" />
+                     viewBox="0 0 24 24">
+                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/>
                 </svg>
             }
             bodyStyle={`ml-2 ${viewState ? 'my-2' : ''}`}
@@ -308,7 +305,7 @@ const ChildLink = props => {
                                 <Link href={item.link} key={index}>
                                     <a className={`block px-4 py-1 hover:bg-black/5 text-sm`}>
                                         {item.title}
-                                        {item.new && <NewTag />}
+                                        {item.new && <NewTag/>}
                                     </a>
                                 </Link>
                             </li>
@@ -322,10 +319,11 @@ const ChildLink = props => {
 
 function HamburgerModal(props) {
 
-    const { closeModal } = props;
+    const {closeModal} = props;
 
-    return (
-        <div className={`bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
+    return <Fragment>
+        {(props.data && props.data.length>0)
+        ?<div className={`bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
             <div
                 className="max-w-[300px] h-full bg-white overflow-x-hidden flex flex-col"
                 onClick={(e) => e.stopPropagation()}
@@ -335,12 +333,12 @@ function HamburgerModal(props) {
                     <button onClick={closeModal}>
                         <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} viewBox="0 0 24 24">
                             <path
-                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" />
+                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
                         </svg>
                     </button>
                 </div>
                 <div className={`flex-1 overflow-y-auto font-500 pb-40`}>
-                    {navigationData.map((item, index) => (
+                    {props.data.map((item, index) => (
                         <>
                             {item.child
                                 ? <ChildLink
@@ -364,24 +362,77 @@ function HamburgerModal(props) {
                 </div>
             </div>
         </div>
-    );
+        :null}
+    </Fragment>;
 }
 
 
 function SidebarMenuHamburger(props) {
-
+    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [showSidebarMenu, setShowSidebarMenu] = useState(false);
 
-    React.useEffect(() => {
+    const [navigationData,setNavigationData] = useState([]);
+    const [showSidebarMenu, setShowSidebarMenu] = useState(false);
+    useEffect(() => {
         if (showSidebarMenu) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
-    }, [showSidebarMenu])
+    }, [showSidebarMenu]);
+
+    useEffect(() => {
+        if (dataStore && dataStore.hasOwnProperty("userData") && dataStore.userData.contact!=null) {
+            setNavigationData([
+                {
+                    title: dataStore.userData.contact,
+                    description: ``,
+                    link: `#`,
+                    child: [
+                        {
+                            title: `MY PROFILE`,
+                            link: `/users/profile`
+                        },
+                        {
+                            title: `MY ORDERS`,
+                            link: `/users/orderhistory`
+                        },
+                        {
+                            title: `MY WALLET`,
+                            link: `/users/wallet`
+                        },
+                        {
+                            title: `REDEEM VOUCHER`,
+                            link: `/users/wallet`
+                        },
+                        {
+                            title: `MY FAVOURITES`,
+                            link: `/users/favourites`
+                        },
+                        {
+                            title: `MY MEASUREMENTS`,
+                            link: `/users/measurements`
+                        },
+                        {
+                            title: `MY REFERRAL`,
+                            link: `/users/my-referral`
+                        },
+                        {
+                            title: `LOGOUT`,
+                            link: `/users/logout`
+                        }
+                    ]
+                }, ...navigationDataInit]);
+        } else {
+            setNavigationData([
+                {
+                    title: `ACCOUNT`,
+                    description: `Login/Signup`,
+                    link: `#`
+                }, ...navigationDataInit]);
+        }
+    }, [dataStore.userData.contact]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);
     }
-    const data = [];
 
     let iconHeight;
     switch (props.type) {
@@ -395,30 +446,32 @@ function SidebarMenuHamburger(props) {
     const mobileView = (
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="h-6 w-6">
-                <rect y="3" width="50" height="2" />
-                <rect y="17" width="50" height="2" />
-                <rect y="31" width="50" height="2" />
-                <rect y="45" width="50" height="2" />
+                <rect y="3" width="50" height="2"/>
+                <rect y="17" width="50" height="2"/>
+                <rect y="31" width="50" height="2"/>
+                <rect y="45" width="50" height="2"/>
             </svg>
         </div>
     );
 
-    const browserView = (
-        <>
-            <div onClick={() => setShowSidebarMenu(true)}
-                className={`relative cursor-pointer w-6 ${iconHeight}`}>
-                <Image
-                    src={WEBASSETS + "/assets/images/menuicon_v1.png"}
-                    alt="menuicon"
-                    layout={`fill`}
-                    objectFit={`contain`}
-                />
-            </div>
-            {showSidebarMenu && ReactDom.createPortal(
-                <HamburgerModal data={data} closeModal={closeModal.bind(this)} />,
-                document.getElementById("hamburger"))}
-        </>
-    );
+    const browserView = <Fragment>
+        {(navigationData.length > 0)
+            ? <Fragment>
+                <div onClick={() => setShowSidebarMenu(true)}
+                     className={`relative cursor-pointer w-6 ${iconHeight}`}>
+                    <Image
+                        src={WEBASSETS + "/assets/images/menuicon_v1.png"}
+                        alt="menuicon"
+                        layout={`fill`}
+                        objectFit={`contain`}
+                    />
+                </div>
+                {showSidebarMenu && ReactDom.createPortal(
+                    <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)}/>,
+                    document.getElementById("hamburger"))}
+            </Fragment>
+            : <Fragment>TeaCii Loading</Fragment>}
+    </Fragment>;
 
     return props.isMobile ? mobileView : browserView
 }
