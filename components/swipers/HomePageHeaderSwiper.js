@@ -4,7 +4,7 @@
  * @constructor
  */
 
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState, useContext, Fragment} from 'react';
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import 'swiper/css/effect-fade';
@@ -61,9 +61,9 @@ function HomePageHeaderSwiper(props) {
                 effect="fade"
             >
                 {imgs.map((item, index) => {
-
-                    return (
-                        <SwiperSlide key={index}>
+                    return <Fragment>
+                        {(links[index] && links[index]!="")
+                        ?<SwiperSlide key={index}>
                             <Link href={links[index]} passHref>
                                 <span className={'block relative h-[100vh] z-10'}>
                                     {overlay}
@@ -77,7 +77,8 @@ function HomePageHeaderSwiper(props) {
                                 </span>
                             </Link>
                         </SwiperSlide>
-                    )
+                        :null}
+                    </Fragment>
                 })}
             </Swiper>
         )

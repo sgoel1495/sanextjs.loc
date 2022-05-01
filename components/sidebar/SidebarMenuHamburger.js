@@ -384,7 +384,7 @@ function SidebarMenuHamburger(props) {
             navigationData = [
                 {
                     title: dataStore.userData.contact,
-                    description: `Username`,
+                    description: ``,
                     link: `#`,
                     child: [
                         {
