@@ -4,6 +4,7 @@ import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
+import {apiCall} from "../../../helpers/apiCall";
 
 const LoginForm = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -18,14 +19,22 @@ const LoginForm = (props) => {
         loadFbLoginApi()
     }, [])
 
-    const saveUserDataAfterSuccessfulLogin = (username) => {
+    const saveUserDataAfterSuccessfulLogin = async (username) => {
         let userData = {
             contact: username
-        }
+        };
+        const resp = await apiCall("userWallet", dataStore.apiToken, { contact: username });
+        let userWallet = {
+            "email": "",
+            "phone_number": "",
+            "user_name": "",
+            "wallet_amount": 0,
+            "usd_wallet_amount": 0
+        };
+        if (resp.hasOwnProperty("response"))
+            userWallet = resp.response;
         updateDataStore("userData", userData);
-        localStorage.setItem("userData", JSON.stringify(userData));
-        //lets get more data about the customers and store it.
-
+        updateDataStore("userWallet", userWallet);
     }
 
     const loadFbLoginApi = () => {

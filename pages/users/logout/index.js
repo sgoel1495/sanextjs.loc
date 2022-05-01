@@ -9,8 +9,15 @@ function Logout() {
         const userData={
             "contact": null
         };
+        const userWallet= {
+            "email": "",
+                "phone_number": "",
+                "user_name": "",
+                "wallet_amount": 0,
+                "usd_wallet_amount": 0
+        };
         updateDataStore("userData", userData);
-        localStorage.setItem("userData", JSON.stringify(userData));
+        updateDataStore("userWallet", userWallet);
         router.replace("/");
     }, []);
     return <Fragment>Logging out ...</Fragment>;

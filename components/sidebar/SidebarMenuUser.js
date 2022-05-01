@@ -19,12 +19,6 @@ function SidebarMenuUser(props) {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
 
     useEffect(() => {
-        let userData = localStorage.getItem("userData");
-        if (userData && dataStore.hasOwnProperty(userData) && dataStore.userData.contact==null)
-            updateDataStore("userData", JSON.parse(userData))
-    }, [])
-
-    useEffect(() => {
         if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
     }, [showSidebarMenuUser])
@@ -42,7 +36,6 @@ function SidebarMenuUser(props) {
             iconHeight = "h-6"
     }
 
-    console.log(dataStore.userData.contact);
     const mobileView = null;
     const browserView = (
         <>
@@ -54,9 +47,9 @@ function SidebarMenuUser(props) {
                         <span className={"block text-[10px] tracking-wider"}>{dataStore.userData.contact||"Login/Signup"}</span>
                     </div>
                     :
-                    dataStore.userData.contact ?
+                    (dataStore.userWallet.user_name!=="") ?
                         <div className="rounded-full bg-slate-400 text-center cursor-pointer">
-                            <span className="text-sm text-white font-600 text-center">{dataStore.userData.contact[0].toUpperCase()}</span>
+                            <span className="text-sm text-white font-600 text-center">{dataStore.userWallet.user_name[0].toUpperCase()}</span>
                         </div>
                         :
                         <Image

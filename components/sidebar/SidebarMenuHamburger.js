@@ -379,10 +379,10 @@ function SidebarMenuHamburger(props) {
     }, [showSidebarMenu]);
 
     useEffect(() => {
-        if (dataStore && dataStore.hasOwnProperty("userData") && dataStore.userData.contact!=null) {
+        if (dataStore && dataStore.hasOwnProperty("userWallet") && dataStore.userWallet.user_name!="") {
             setNavigationData([
                 {
-                    title: dataStore.userData.contact,
+                    title: dataStore.userWallet.user_name,
                     description: ``,
                     link: `#`,
                     child: [
@@ -428,7 +428,7 @@ function SidebarMenuHamburger(props) {
                     link: `#`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userData.contact]);
+    }, [dataStore.userWallet.user_name]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);

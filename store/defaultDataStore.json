@@ -78,5 +78,13 @@
   ],
   "userData": {
     "contact": null
+  },
+  "userWallet": {
+    "email": "",
+    "phone_number": "",
+    "user_name": "",
+    "wallet_amount": 0,
+    "usd_wallet_amount": 0
   }
+
 }

@@ -3,6 +3,7 @@ import Loader from "../../common/Loader";
 import {validateEmail} from "../../../helpers/loginSignUpHelpers";
 import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
+import {apiCall} from "../../../helpers/apiCall";
 
 const SignUpForm = (props) => {
 
@@ -24,12 +25,22 @@ const SignUpForm = (props) => {
         confirm_password: ''
     })
 
-    const saveUserDataAfterSuccessfulLogin = (username) => {
+    const saveUserDataAfterSuccessfulLogin = async (username) => {
         let userData = {
             contact: username
         }
+        const resp = await apiCall("userWallet", dataStore.apiToken, { contact: username });
+        let userWallet = {
+            "email": "",
+            "phone_number": "",
+            "user_name": "",
+            "wallet_amount": 0,
+            "usd_wallet_amount": 0
+        };
+        if (resp.hasOwnProperty("response"))
+            userWallet = resp.response;
         updateDataStore("userData", userData);
-        localStorage.setItem("userData", JSON.stringify(userData));
+        updateDataStore("userWallet", userWallet);
     }
 
     const validateData = () => {

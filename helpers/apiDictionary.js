@@ -147,6 +147,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "userWallet":
+            url += "/get_user_wallet";
+            body = {
+                token: apiToken,
+                contact: queryObject.contact
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "forgotPassword":
             url += "/reset_password";
             body = {
