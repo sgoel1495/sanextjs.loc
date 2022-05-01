@@ -35,7 +35,7 @@ function SidebarMenuUser(props) {
         default:
             iconHeight = "h-6"
     }
-
+    
     const mobileView = null;
     const browserView = (
         <>
@@ -44,7 +44,7 @@ function SidebarMenuUser(props) {
                 props.type === "shopMenu" ?
                     <div className={"float-right text-right"}>
                         <span className={"block text-sm tracking-wide"}>Account</span>
-                        <span className={"block text-[10px] tracking-wider"}>{dataStore.userData.contact||"Login/Signup"}</span>
+                        <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userData.contact||"Login/Signup"}</span>
                     </div>
                     :
                     (dataStore.userWallet.user_name!=="") ?

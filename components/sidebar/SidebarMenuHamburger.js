@@ -284,14 +284,12 @@ const ChildLink = props => {
             }
             titleStyle={`px-4 py-3 ${viewState ? 'bg-black/5' : 'group-hover:bg-black/5'}`}
             accordionIconOpen={
-                <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5}
-                     viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
                     <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
                 </svg>
             }
             accordionIconClose={
-                <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5}
-                     viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
                     <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/>
                 </svg>
             }
@@ -323,7 +321,7 @@ function HamburgerModal(props) {
 
     return <Fragment>
         {(props.data && props.data.length>0)
-        ?<div className={`bg-theme-900/50 fixed top-0 left-0 z-20 h-full w-full`} onClick={closeModal}>
+        ?<div className={`bg-theme-900/50 fixed top-0 left-0 z-50 h-full w-full`} onClick={closeModal}>
             <div
                 className="max-w-[300px] h-full bg-white overflow-x-hidden flex flex-col"
                 onClick={(e) => e.stopPropagation()}
