@@ -369,19 +369,18 @@ function HamburgerModal(props) {
 
 function SidebarMenuHamburger(props) {
     const {dataStore} = useContext(AppWideContext);
-
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+
+    const [navigationData,setNavigationData] = useState([]);
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
-    let navigationData = [];
     useEffect(() => {
         if (showSidebarMenu) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
     }, [showSidebarMenu]);
 
     useEffect(() => {
-        if (dataStore && dataStore.hasOwnProperty("userData") && dataStore.userData.hasOwnProperty("contact")
-            && dataStore.userData.contact!=null) {
-            navigationData = [
+        if (dataStore && dataStore.hasOwnProperty("userData") && dataStore.userData.contact!=null) {
+            setNavigationData([
                 {
                     title: dataStore.userData.contact,
                     description: ``,
@@ -420,17 +419,16 @@ function SidebarMenuHamburger(props) {
                             link: `/users/logout`
                         }
                     ]
-                }, ...navigationDataInit];
+                }, ...navigationDataInit]);
         } else {
-            navigationData = [
+            setNavigationData([
                 {
                     title: `ACCOUNT`,
                     description: `Login/Signup`,
                     link: `#`
-                }, ...navigationDataInit];
+                }, ...navigationDataInit]);
         }
-        console.log(navigationData);
-    }, [JSON.stringify(dataStore)]);
+    }, [dataStore.userData.contact]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);
@@ -472,7 +470,7 @@ function SidebarMenuHamburger(props) {
                     <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)}/>,
                     document.getElementById("hamburger"))}
             </Fragment>
-            : <Fragment>Loading</Fragment>}
+            : <Fragment>TeaCii Loading</Fragment>}
     </Fragment>;
 
     return props.isMobile ? mobileView : browserView

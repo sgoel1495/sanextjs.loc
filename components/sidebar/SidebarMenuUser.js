@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import ReactDom from "react-dom";
 import UserLogin from "../user/login/UserLogin";
 import AppWideContext from "../../store/AppWideContext";
@@ -18,13 +18,13 @@ function SidebarMenuUser(props) {
     const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(false);
     const {dataStore, updateDataStore} = useContext(AppWideContext);
 
-    React.useEffect(() => {
+    useEffect(() => {
         let userData = localStorage.getItem("userData");
-        if (userData)
+        if (userData && dataStore.hasOwnProperty(userData) && dataStore.userData.contact==null)
             updateDataStore("userData", JSON.parse(userData))
-    }, [updateDataStore])
+    }, [])
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
     }, [showSidebarMenuUser])

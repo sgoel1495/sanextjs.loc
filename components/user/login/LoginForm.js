@@ -24,6 +24,8 @@ const LoginForm = (props) => {
         }
         updateDataStore("userData", userData);
         localStorage.setItem("userData", JSON.stringify(userData));
+        //lets get more data about the customers and store it.
+
     }
 
     const loadFbLoginApi = () => {
