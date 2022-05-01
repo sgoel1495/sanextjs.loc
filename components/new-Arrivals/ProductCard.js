@@ -41,7 +41,7 @@ const ProductCard = ({prod}) => {
     return <div onMouseEnter={() => setIsOver(true)} onMouseLeave={() => setIsOver(false)}>
         <Link href={"/" + prod.asset_id}>
             <a className={"block bg-white text-center relative z-0"}>
-                <WishlistButton className={`absolute right-4 top-4 z-10`}/>
+                <WishlistButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id}/>
                 <ArrivalDataBlockImage src={imgPath} alt={prod.name}/>
                 <div className="grid grid-cols-2 items-center h-16">
                     {isOver ? showProdDetail : showProd}

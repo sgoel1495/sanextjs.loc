@@ -151,7 +151,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_user_wallet";
             body = {
                 token: apiToken,
-                contact: queryObject.contact
+                ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
@@ -250,6 +250,26 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
 
         case "bookAppointmentMob":
             url += "/book_appointment_mob";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "addToFav":
+            url += "/add_to_fav";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "removeFromFav":
+            url += "/remove_from_fav";
             body = {
                 token: apiToken,
                 ...queryObject

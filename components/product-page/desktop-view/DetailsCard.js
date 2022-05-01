@@ -4,7 +4,7 @@ import appSettings from "../../../store/appSettings";
 import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 
-const DetailsCard = ({ data }) => {
+const DetailsCard = ({ data, hpid }) => {
     const { dataStore } = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
@@ -15,7 +15,7 @@ const DetailsCard = ({ data }) => {
                 <div className={"flex items-center justify-between text-black/60 text-sm font-500 mb-4"}>
                     <span>{currencySymbol} {currCurrency === "inr" ? data.price : data.usd_price}</span>
                     <div className='flex items-center gap-2'>
-                        <WishlistButton />
+                        <WishlistButton pid={hpid}/>
                         <span>Icon</span>
                     </div>
                 </div>

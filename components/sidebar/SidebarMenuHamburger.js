@@ -423,7 +423,7 @@ function SidebarMenuHamburger(props) {
                 {
                     title: `ACCOUNT`,
                     description: `Login/Signup`,
-                    link: `#`
+                    link: `login`
                 }, ...navigationDataInit]);
         }
     }, [dataStore.userWallet.user_name]);

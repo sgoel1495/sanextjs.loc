@@ -5,7 +5,7 @@ import appSettings from "../../../../store/appSettings";
 import Image from "next/image";
 import Accordion from "../../../common/accordion";
 
-const ProductDetails = ({ data }) => {
+const ProductDetails = ({ data,hpid }) => {
 
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
@@ -30,7 +30,7 @@ const ProductDetails = ({ data }) => {
                         <p className={"text-sm uppercase font-300"}>{data.tag_line}</p>
                     </div>
                     <div className={"text-right leading-none"}>
-                        <WishListButton />
+                        <WishListButton pid={hpid}/>
                         <p className={""}>{currencySymbol} {currCurrency === "inr" ? data.price : data.usd_price}</p>
                         <p className={"text-[8px]"}>INCLUSIVE OF TAXES</p>
                     </div>
