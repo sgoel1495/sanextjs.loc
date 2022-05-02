@@ -39,8 +39,22 @@ const SignUpForm = (props) => {
         };
         if (resp.hasOwnProperty("response"))
             userWallet = resp.response;
+        const resp1 = await apiCall("userServe", dataStore.apiToken, { contact: username });
+        let userServe = {
+            "email": "",
+            "phone_number": "",
+            "user_name": "",
+            "favorites": [],
+            "cart": {},
+            "ref_id": null,
+            "temp_user_id": ""
+        };
+        if (resp1.hasOwnProperty("response"))
+            userServe = resp1.response;
+        console.log("--------",userServe);
         updateDataStore("userData", userData);
         updateDataStore("userWallet", userWallet);
+        updateDataStore("userServe", userServe);
     }
 
     const validateData = () => {
