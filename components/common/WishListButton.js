@@ -14,15 +14,16 @@ import {useRouter} from "next/router";
 const WishListButton = (props) => {
     const router=useRouter();
     const {dataStore,updateDataStore} = useContext(AppWideContext);
-    const [pidChecked,setPidChecked]=useState(dataStore.userFavs.includes(props.pid));
+    const [pidChecked,setPidChecked]=useState(dataStore.userServe.favorites.includes(props.pid));
     const addRemoveFav = async ()=>{
         if(dataStore.userData.contact!=null) {
+            const oldUserServe=dataStore.userServe;
             if (pidChecked) {
                 //remove
-                const newFavs = dataStore.userFavs.filter((value, index, arr) => {
+                oldUserServe.favorites = dataStore.userServe.favorites.filter((value, index, arr) => {
                     return (value != props.pid)
                 });
-                updateDataStore("userFavs", newFavs);
+                updateDataStore("userServe", oldUserServe);
                 const resp = await apiCall("removeFromFav", dataStore.apiToken, {
                     product: props.pid,
                     email: dataStore.userData.contact
@@ -30,8 +31,8 @@ const WishListButton = (props) => {
                 setPidChecked(false);
             } else {
                 //add
-                const newFavs = [props.pid, ...dataStore.userFavs];
-                updateDataStore("userFavs", newFavs);
+                oldUserServe.favorites = [props.pid, ...dataStore.userServe.favorites];
+                updateDataStore("userServe", oldUserServe);
                 const resp = await apiCall("addToFav", dataStore.apiToken, {
                     product: props.pid,
                     email: dataStore.userData.contact

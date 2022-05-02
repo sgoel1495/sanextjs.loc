@@ -278,6 +278,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "userServe":
+            url += "/remove_from_fav";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         default:
             url = null;
             break;
