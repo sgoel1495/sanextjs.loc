@@ -7,14 +7,14 @@
 
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
-import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useRef, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Menu from "../navbar/Menu";
 import Footer from "../footer/Footer";
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
 import Header from "../navbar/Header";
-import { apiDictionary } from "../../helpers/apiDictionary";
+import {apiDictionary} from "../../helpers/apiDictionary";
 import ProductCard from "./ProductCard";
 import MobileShopPage from "./MobileShopPage";
 
@@ -23,7 +23,7 @@ function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
     const [category, setCategory] = useState(props.hpid.substr(5));
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const loaderRef = useRef(null)
 
     const [data, setData] = useState({});
@@ -36,6 +36,7 @@ function ShopPage(props) {
     const [pagination, setPagination] = useState({
         limit: 30, skip: 0
     })
+
     const fetchData = useCallback((flag = true, io = null) => {
         if (io) {
             if (!io.isIntersecting)
@@ -47,7 +48,7 @@ function ShopPage(props) {
             }
         }
         setLoading(true)
-        const callObject = apiDictionary("getProducts", dataStore.apiToken, { category: category.replace("tailored-", ""), ...pagination });
+        const callObject = apiDictionary("getProducts", dataStore.apiToken, {category: category.replace("tailored-", ""), ...pagination});
         fetch(callObject.url, callObject.fetcher).then(response => {
             return response.json();
         }).then(json => {
@@ -89,9 +90,10 @@ function ShopPage(props) {
         setCategory(props.hpid.substr(5))
     }, [props.hpid])
 
+    //don not put fetchData in the dependency array
     useEffect(() => {
         fetchData(false)
-    }, [category, fetchData])
+    }, [category])
 
 
     /**
@@ -114,12 +116,12 @@ function ShopPage(props) {
         )
     } else return (
         <Fragment>
-            <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile} />
-            {navControl || <Header type={"shopMenu"} />}
-            <CategoryHeaderVideo category={category} />
+            <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
+            {navControl || <Header type={"shopMenu"}/>}
+            <CategoryHeaderVideo category={category}/>
             {navControl
-                ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}} category={props.hpid} />
-                : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}} category={props.hpid} />
+                ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}} category={props.hpid}/>
+                : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}} category={props.hpid}/>
             }
             <BlockHeader
                 space={"py-5"}
@@ -130,17 +132,17 @@ function ShopPage(props) {
             </BlockHeader>
             <main className={`grid grid-cols-3 gap-5 container pb-20`}>
                 {data && data.data && data.data.map((prod, index) => {
-                    return <ProductCard prod={prod} key={index} />
+                    return <ProductCard prod={prod} key={index}/>
                 })}
                 <span className={"col-span-3 flex justify-center items-center"} ref={loaderRef}>
                     {loading &&
-                        <span className={"block relative w-14 aspect-square"}>
-                            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"} />
+                    <span className={"block relative w-14 aspect-square"}>
+                            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"}/>
                         </span>
                     }
                 </span>
             </main>
-            <Footer isMobile={dataStore.mobile} />
+            <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     );
 }
