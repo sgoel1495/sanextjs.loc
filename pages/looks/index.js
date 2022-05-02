@@ -197,7 +197,7 @@ function LooksPage() {
                             onClick={() => setExpandLook(look)}
                             className={`relative group cursor-pointer z-0`}
                         >
-                            <WishListButton className={`absolute right-4 top-4 z-10`} />
+                            <WishListButton className={`absolute right-4 top-4 z-10`} pid={look.look_id}/>
                             <LookDataBlockImage src={WEBASSETS + look.img_path} alt={look.name} />
                             <div className={"hidden group-hover:grid place-items-center absolute inset-0 opacity-95 text-white text-center font-600 tracking-wider"}
                                 style={{ background: look.bg_color }}>

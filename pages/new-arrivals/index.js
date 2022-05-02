@@ -1,7 +1,3 @@
 import React from 'react';
-
-function NewArriavalsIndex() {
-    return (<>NewArriavalsIndex</>);
-}
-
-export default NewArriavalsIndex;
+import NewArrivalsAllPage from './all/index'
+export default NewArrivalsAllPage;

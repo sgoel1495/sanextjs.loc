@@ -41,7 +41,7 @@ function NewArrivalsBlock(props){
                     {sgc}
                     <Link href="/sale/Sweaters-Sale-Flurry-V-NeckSleevelessSweater">
                         <a className={"block bg-white text-center relative z-0 group border-b"}>
-                            <WishListButton className={`absolute right-4 top-4 z-10`}/>
+                            <WishListButton className={`absolute right-4 top-4 z-10`} pid="Sweaters-Sale-Flurry-V-NeckSleevelessSweater"/>
                             <ImageBlock src={WEBASSETS + "/assets/Dresses-Crimson-Dream-FauxWrapPleatedMidiDress/new.jpg"} alt="Dresses-Crimson-Dream-FauxWrapPleatedMidiDress" />
                             <div className="relative h-16 leading-none flex items-center">
                                 <div className={`bg-white w-full`}>

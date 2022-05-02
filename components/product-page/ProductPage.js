@@ -1,7 +1,10 @@
 import AppWideContext from "../../store/AppWideContext";
-import {useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState, useCallback } from "react";
 import PageHead from "../PageHead";
-import useApiCall from "../../hooks/useApiCall";
+import Header from "../navbar/Header";
+import DesktopView from "./desktop-view/DesktopView";
+import { apiDictionary } from "../../helpers/apiDictionary";
+import MobileView from "./mobile-view/MobileView";
 
 /**
  * @param props has isMobile and hpid
@@ -9,30 +12,48 @@ import useApiCall from "../../hooks/useApiCall";
  * @constructor
  */
 
-function ProductPage(props){
-    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+function ProductPage(props) {
+    const { dataStore } = useContext(AppWideContext);
     const [data, setData] = useState(null);
 
-    const resp = useApiCall("getProduct", dataStore.apiToken, {product_id:props.hpid});
+    const [navControl, setNavControl] = React.useState(false);
+    const controller = () => setNavControl(window.scrollY > window.innerHeight / 2);
+
+    const fetchData = useCallback(() => {
+        const callObject = apiDictionary("getProduct", dataStore.apiToken, { product_id: props.hpid });
+
+        fetch(callObject.url, callObject.fetcher)
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                if (json && json.status === 200)
+                    setData(json.response);
+            })
+    }, [dataStore.apiToken, props.hpid])
+
     useEffect(() => {
-        if (resp
-            && resp.hasOwnProperty("status")
-            && resp.status == 200
-            && resp.hasOwnProperty("response")
-            && resp.response.hasOwnProperty("data")
-        )
-            setData(resp.response);
-    }, [resp]);
+        window.addEventListener("scroll", controller);
+        return () => {
+            window.removeEventListener('scroll', controller)
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData, props.hpid]);
 
 
-    const mobileView = null;
-    const browserView = null;
+    console.log(data)
 
-    return <div>
-        <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-        Product Page
-        {(props.isMobile) ? mobileView:browserView }
-    </div>;
+    if (data)
+        return <div>
+            <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile} />
+            <Header type={!dataStore.mobile && navControl ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            {(props.isMobile) ? <MobileView hpid={props.hpid} data={data} /> : <DesktopView hpid={props.hpid} data={data} />}
+        </div>;
+    else
+        return <></>
 }
+
 export default ProductPage;

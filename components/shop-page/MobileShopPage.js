@@ -22,12 +22,10 @@ const MobileShopPage = ({data, loading, loaderRef, category, hpid}) => {
     return (
         <>
             <PageHead url={"/" + hpid} id={hpid} isMobile={dataStore.mobile}/>
-            <Header type={"shopMenu"} isMobile={true} category={hpid}
-                    subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} minimal={true}/>}/>
+            <Header type={"shopMenu"} isMobile={true} category={hpid} subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} minimal={true}/>}/>
             <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout}/>
             <main className={`grid grid-cols-${activeLayout} gap-5 container py-5 px-5 bg-[#faf4f0]`}>
-                {
-                    data && data.data && data.data.map((prod, index) => {
+                {data && data.data && data.data.map((prod, index) => {
                         if (index % 8 === 7) {
                             let keyIndex = ((index + 1) / 8) - 1
                             if (keyIndex > -1 && keyIndex < breakSpeedKeys.length) {
@@ -35,9 +33,9 @@ const MobileShopPage = ({data, loading, loaderRef, category, hpid}) => {
                                 return <>
                                     <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"}/>
                                     <div className={`col-span-${activeLayout} -mx-5 mt-6`}>
-                                        <span className={`block uppercase px-2.5`}>shop by {breakSpeedKeys[keyIndex]}</span>
+                                        <p className={`font-900 text-sm tracking-widest uppercase px-4 mb-2`}>shop by {breakSpeedKeys[keyIndex]}</p>
                                         <div className={"flex overflow-x-scroll"}>
-                                            {Object.keys(breakSpeed).map((key, index) => (<div key={index} className={"pb-3 " + [index === 0 ? "mx-2.5" : "mr-2.5"]}>
+                                            {Object.keys(breakSpeed).map((key, index) => (<div key={index} className={"pb-3 " + [index === 0 ? "mx-4" : "mr-4"]}>
                                                 <span className={"block h-24 aspect-square relative border-2 border-white rounded-[35%] overflow-hidden"}>
                                                     <Image src={WEBASSETS + "/assets/" + breakSpeed[key] + "/square-crop.jpg"} layout={"fill"} objectFit={`cover`} alt={key}/>
                                                 </span>
@@ -53,8 +51,7 @@ const MobileShopPage = ({data, loading, loaderRef, category, hpid}) => {
                     })
                 }
                 <span className={`col-span-${activeLayout} flex justify-center items-center`} ref={loaderRef}>
-                        {
-                            loading &&
+                        {loading &&
                             <span className={"block relative w-14 aspect-square"}>
                                 <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"}/>
                             </span>

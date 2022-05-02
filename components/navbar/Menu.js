@@ -15,20 +15,20 @@
 
 import Link from "next/link";
 import SubMenu from "./SubMenu";
-import React, {Fragment, useContext, useState} from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
 
 function Menu(props) {
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
-    const data = {categories: dataStore.categories, accessories: dataStore.accessories}
+    const data = { categories: dataStore.categories, accessories: dataStore.accessories }
     const [showShop, setShowShop] = useState(false);
     const [showMimoto, setShowMimoto] = useState(false);
 
     //mimoto data
-    const resp = useApiCall("getMimotoCollection", dataStore.apiToken, {skip: 0, limit: 50});
+    const resp = useApiCall("getMimotoCollection", dataStore.apiToken, { skip: 0, limit: 50 });
 
     let mimotoList = null;
     if (resp && resp.status === 200) {
@@ -111,7 +111,7 @@ function Menu(props) {
                     <div key={ele.category}>
                         <Link href={ele.link}>
                             <a className={`font-600 ${browserViewStyle}` + ["/" + props.category === ele.link ? " border-black" : " border-transparent hover:border-black"]}>
-                                {ele.new && <span className={"bg-black text-xs text-white leading-none p-[0.1rem] text-[8px] " + newTagStyle}>New</span>}
+                                {ele.new && <span className={"bg-black text-white leading-none p-[0.1rem] text-[8px] " + newTagStyle}>New</span>}
                                 {ele.category}
                             </a>
                         </Link>
@@ -125,13 +125,15 @@ function Menu(props) {
 
     let mobileView = <>
         {actualData.map((item) => {
-            return <li key={item.id}>
-                <Link href={item.link}>
-                    <span>
-                        {item.category}
-                    </span>
-                </Link>
-            </li>
+            return (
+                <li key={item.id}>
+                    <Link href={item.link} passHref>
+                        <span>
+                            {item.category}
+                        </span>
+                    </Link>
+                </li>
+            )
         })}
     </>;
     let browserView;
@@ -193,7 +195,7 @@ function Menu(props) {
                     {showShop && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[200px]`}>
 
                     </div>}
-                    {showMimoto && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[300px]`}/>}
+                    {showMimoto && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[300px]`} />}
                 </>
             )
             break;
@@ -222,13 +224,13 @@ function Menu(props) {
                             <li key="accessories" className={"relative group"}>
                                 <span
                                     className={browserViewStyle + [isAccessoryPage ? " border-black" : " border-transparent hover:border-black"] + " group-hover:border-black"}>Accessories</span>
-                                <SubMenu isMobile={false} menu="accessories" data={data.accessories}/>
+                                <SubMenu isMobile={false} menu="accessories" data={data.accessories} />
                             </li>
                         </Fragment>
 
                     </ul>
                     {(props.type === "minimal")
-                        ? <CategoryFilterSidebar isMobile={props.isMobile} filterData={props.filterData}/>
+                        ? <CategoryFilterSidebar isMobile={props.isMobile} filterData={props.filterData} />
                         : null
                     }
                 </div>

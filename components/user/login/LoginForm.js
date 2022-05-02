@@ -1,9 +1,10 @@
-import React, {useContext, useRef, useState} from 'react';
-import {validateUsername} from "../../../helpers/loginSignUpHelpers";
-import {apiDictionary} from "../../../helpers/apiDictionary";
+import React, { useContext, useRef, useState } from 'react';
+import { validateUsername } from "../../../helpers/loginSignUpHelpers";
+import { apiDictionary } from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
+import {apiCall} from "../../../helpers/apiCall";
 
 const LoginForm = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -11,19 +12,29 @@ const LoginForm = (props) => {
     const username = useRef(null);
     const password = useRef(null);
     const [loading, setLoading] = useState(false);
-    const [optSent, setOTPSent] = useState(false)
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const [otpSent, setOTPSent] = useState(false)
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
 
     React.useEffect(() => {
         loadFbLoginApi()
     }, [])
 
-    const saveUserDataAfterSuccessfulLogin = (username) => {
+    const saveUserDataAfterSuccessfulLogin = async (username) => {
         let userData = {
             contact: username
-        }
+        };
+        const resp = await apiCall("userWallet", dataStore.apiToken, { contact: username });
+        let userWallet = {
+            "email": "",
+            "phone_number": "",
+            "user_name": "",
+            "wallet_amount": 0,
+            "usd_wallet_amount": 0
+        };
+        if (resp.hasOwnProperty("response"))
+            userWallet = resp.response;
         updateDataStore("userData", userData);
-        localStorage.setItem("userData", JSON.stringify(userData));
+        updateDataStore("userWallet", userWallet);
     }
 
     const loadFbLoginApi = () => {
@@ -90,7 +101,7 @@ const LoginForm = (props) => {
 
         const loginOtp = (uname, otp) => {
             setLoading(true)
-            let api = apiDictionary("userOTPLogin", dataStore.apiToken, {username: uname, otp: otp})
+            let api = apiDictionary("userOTPLogin", dataStore.apiToken, { username: uname, otp: otp })
             fetch(api.url, api.fetcher).then((response) => {
                 if (response.status === 200) {
                     response.json().then(data => {
@@ -108,7 +119,7 @@ const LoginForm = (props) => {
 
         const statusChangeCallback = (response) => {
             if (response.status === 'connected') {
-                window.FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender'}, function (response) {
+                window.FB.api('/me', { locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender' }, function (response) {
                     saveUserDataAfterSuccessfulLogin(response.email)
                     console.log('FB ID:' + response.id + 'Name:' + response.first_name + ',' + response.last_name + 'Email:' + response.email + 'Gender:' + response.gender)
                 })
@@ -126,7 +137,7 @@ const LoginForm = (props) => {
         const handleFBLogin = () => {
             window.FB.login((resp) => {
                 checkLoginState()
-            }, {scope: 'public_profile,email'});
+            }, { scope: 'public_profile,email' });
         }
 
         switch (action) {
@@ -157,27 +168,27 @@ const LoginForm = (props) => {
                 ref={username}
                 placeholder="email/phone (required)"
                 className={`${inputStyle}`}
-                disabled={optSent}
+                disabled={otpSent}
             />
             <input
                 type="password"
                 name='password'
                 ref={password}
                 className={`${inputStyle}`}
-                placeholder={optSent ? "Enter your OTP" : "Enter your password"}
+                placeholder={otpSent ? "Enter your OTP" : "Enter your password"}
             />
             <div className={`col-span-2 flex items-center gap-x-8 justify-start`}>
                 <button
                     type="button"
-                    onClick={() => signInAction(optSent ? "verifyOTP" : "signIn")}
+                    onClick={() => signInAction(otpSent ? "verifyOTP" : "signIn")}
                     className={`${buttonStyle}`}
                     disabled={loading}
                 >
                     {
                         loading ?
-                            <Loader className="text-grey"/>
+                            <Loader className="text-grey" />
                             :
-                            optSent ? <>Verify OTP</> : <>Sign In</>
+                            otpSent ? <>Verify OTP</> : <>Sign In</>
                     }
                 </button>
                 <span>or</span>
@@ -189,23 +200,23 @@ const LoginForm = (props) => {
                 >
                     {
                         loading ?
-                            <Loader className="text-grey"/>
+                            <Loader className="text-grey" />
                             :
-                            optSent ? <>Resend OTP</> : <>Login Using OTP</>
+                            otpSent ? <>Resend OTP</> : <>Login Using OTP</>
                     }
                 </button>
                 <button
                     type="button"
-                    onClick={() => optSent ? setOTPSent(false) : signInAction("facebook")}
+                    onClick={() => otpSent ? setOTPSent(false) : signInAction("facebook")}
                     className={`${buttonStyle} flex items-center gap-x-3`}
                     disabled={loading}
                 >
                     {
                         loading ?
-                            <Loader className="text-grey"/>
+                            <Loader className="text-grey" />
                             :
-                            optSent ? <>Back</> : <>
-                                <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain"/>
+                            otpSent ? <>Back</> : <>
+                                <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain" />
                                 <span>LOGIN</span>
                             </>
 

@@ -45,7 +45,7 @@ function GiftcardsPage() {
                         <>
                             {sgc}
                             <div className={"block bg-white text-center relative z-0 group"}>
-                                <WishListButton className={`absolute right-4 top-4 z-10`}/>
+                                <WishListButton className={`absolute right-4 top-4 z-10`} pid={card.asset_id}/>
                                 <ImageBlock src={WEBASSETS + card.look_thumb} alt={card.display_name}/>
                                 <div className="flex items-center justify-center h-16 relative">
                                     <p className={`font-cursive text-2xl`}>{card.display_name}</p>

@@ -36,6 +36,7 @@ function ShopPage(props) {
     const [pagination, setPagination] = useState({
         limit: 30, skip: 0
     })
+
     const fetchData = useCallback((flag = true, io = null) => {
         if (io) {
             if (!io.isIntersecting)
@@ -61,7 +62,7 @@ function ShopPage(props) {
         }).finally(() => {
             setLoading(false);
         });
-    }, [data, pagination, category])
+    }, [data, dataStore.apiToken, category, pagination])
 
     React.useEffect(() => {
         const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
@@ -89,6 +90,7 @@ function ShopPage(props) {
         setCategory(props.hpid.substr(5))
     }, [props.hpid])
 
+    //don not put fetchData in the dependency array
     useEffect(() => {
         fetchData(false)
     }, [category])
@@ -118,8 +120,8 @@ function ShopPage(props) {
             {navControl || <Header type={"shopMenu"}/>}
             <CategoryHeaderVideo category={category}/>
             {navControl
-                ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count:{}} category={props.hpid}/>
-                : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count:{}} category={props.hpid}/>
+                ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}} category={props.hpid}/>
+                : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}} category={props.hpid}/>
             }
             <BlockHeader
                 space={"py-5"}
@@ -129,19 +131,15 @@ function ShopPage(props) {
                 <h4 className={`text-h6 leading-none font-cursive italic font-600 text-black/70`}>{tag_line}</h4>
             </BlockHeader>
             <main className={`grid grid-cols-3 gap-5 container pb-20`}>
-                {
-                    data && data.data && data.data.map((prod, index) => {
-                        return <ProductCard prod={prod} key={index}/>
-                    })
-                }
+                {data && data.data && data.data.map((prod, index) => {
+                    return <ProductCard prod={prod} key={index}/>
+                })}
                 <span className={"col-span-3 flex justify-center items-center"} ref={loaderRef}>
-                {
-                    loading &&
+                    {loading &&
                     <span className={"block relative w-14 aspect-square"}>
-                        <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                               alt={"loader"}/>
-                    </span>
-                }
+                            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"}/>
+                        </span>
+                    }
                 </span>
             </main>
             <Footer isMobile={dataStore.mobile}/>
