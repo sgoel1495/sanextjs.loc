@@ -51,7 +51,7 @@ const SignUpForm = (props) => {
         };
         if (resp1.hasOwnProperty("response"))
             userServe = resp1.response;
-        console.log(userServe);
+        console.log("--------",userServe);
         updateDataStore("userData", userData);
         updateDataStore("userWallet", userWallet);
         updateDataStore("userServe", userServe);

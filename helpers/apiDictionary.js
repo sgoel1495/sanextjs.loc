@@ -279,7 +279,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "userServe":
-            url += "/remove_from_fav";
+            url += "/user_serve";
             body = {
                 token: apiToken,
                 ...queryObject
