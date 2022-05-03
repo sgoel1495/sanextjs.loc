@@ -95,5 +95,32 @@
     "cart": {},
     "ref_id": null,
     "temp_user_id": ""
+  },
+  "userAddresses": [
+    {
+      "name": "test",
+      "lastname": "test",
+      "email": "shailaja.s@algowire.com",
+      "phone": 1234567890,
+      "address": "abc block",
+      "landmark": "",
+      "country": "india",
+      "zip_code": 110096,
+      "state": "Delhi",
+      "city": "New Delhi"
+    }
+  ],
+  "defaultAddress":    {
+    "name": "test",
+    "lastname": "test",
+    "email": "shailaja.s@algowire.com",
+    "phone": 1234567890,
+    "address": "abc block",
+    "landmark": "",
+    "country": "india",
+    "zip_code": 110096,
+    "state": "Delhi",
+    "city": "New Delhi"
   }
+
 }
