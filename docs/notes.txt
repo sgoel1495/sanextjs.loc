@@ -1,0 +1,2 @@
+User to login in test server
+prankur.g@algowire.com / 123456

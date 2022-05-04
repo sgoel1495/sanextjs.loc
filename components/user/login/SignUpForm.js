@@ -4,6 +4,8 @@ import { validateEmail } from "../../../helpers/loginSignUpHelpers";
 import { apiDictionary } from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import {apiCall} from "../../../helpers/apiCall";
+import "../../../helpers/updateUserDataAfterLogin";
+import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
 
 const SignUpForm = (props) => {
 
@@ -26,35 +28,10 @@ const SignUpForm = (props) => {
     })
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        let userData = {
-            contact: username
-        }
-        const resp = await apiCall("userWallet", dataStore.apiToken, { contact: username });
-        let userWallet = {
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "wallet_amount": 0,
-            "usd_wallet_amount": 0
-        };
-        if (resp.hasOwnProperty("response"))
-            userWallet = resp.response;
-        const resp1 = await apiCall("userServe", dataStore.apiToken, { contact: username });
-        let userServe = {
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "favorites": [],
-            "cart": {},
-            "ref_id": null,
-            "temp_user_id": ""
-        };
-        if (resp1.hasOwnProperty("response"))
-            userServe = resp1.response;
-        console.log("--------",userServe);
-        updateDataStore("userData", userData);
-        updateDataStore("userWallet", userWallet);
-        updateDataStore("userServe", userServe);
+        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken);
+        Object.keys(updateData).forEach((key)=>{
+            updateDataStore(key, updateData[key]);
+        })
     }
 
     const validateData = () => {

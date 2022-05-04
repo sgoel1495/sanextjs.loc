@@ -95,5 +95,8 @@
     "cart": {},
     "ref_id": null,
     "temp_user_id": ""
-  }
+  },
+  "userAddresses": [],
+  "defaultAddress": null
+
 }

@@ -5,6 +5,8 @@ import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
 import {apiCall} from "../../../helpers/apiCall";
+import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+
 
 const LoginForm = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -20,39 +22,10 @@ const LoginForm = (props) => {
     }, [])
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        let userData = {
-            contact: username
-        }
-        const resp = await apiCall("userWallet", dataStore.apiToken, { contact: username });
-        let userWallet = {
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "wallet_amount": 0,
-            "usd_wallet_amount": 0
-        };
-        if (resp.hasOwnProperty("response"))
-            userWallet = resp.response;
-        const resp1 = await apiCall("userServe", dataStore.apiToken, { contact: username });
-        let userServe = {
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "favorites": [],
-            "cart": {},
-            "ref_id": null,
-            "temp_user_id": ""
-        };
-        if (resp1.hasOwnProperty("response"))
-            userServe = resp1.response;
-        console.log(resp1.response);
-
-        console.log(JSON.stringify(userData));
-        console.log(JSON.stringify(userWallet));
-        console.log(JSON.stringify(userServe));
-        updateDataStore("userData", userData);
-        updateDataStore("userWallet", userWallet);
-        updateDataStore("userServe", userServe);
+        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken);
+        Object.keys(updateData).forEach((key)=>{
+            updateDataStore(key, updateData[key]);
+        })
     }
 
     const loadFbLoginApi = () => {
