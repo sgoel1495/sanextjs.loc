@@ -10,8 +10,13 @@ function AddressBookInformation(props) {
         <div>Default Shipping Address</div>
         {(dataStore.defaultAddress)?<div>
             <div>{dataStore.defaultAddress.name}</div>
-            <div>{dataStore.defaultAddress.address}</div>
-            <div>{dataStore.defaultAddress.city}, {dataStore.defaultAddress.state}, {dataStore.defaultAddress.zip_code}, </div>
+            <div>{dataStore.defaultAddress.address}
+                {(dataStore.defaultAddress.landmark=="")
+                    ?null
+                    :<span>, {dataStore.defaultAddress.landmark}</span>
+                }
+            </div>
+            <div>{dataStore.defaultAddress.city}, {dataStore.defaultAddress.state}, {dataStore.defaultAddress.zip_code} </div>
             <div>T:{dataStore.defaultAddress.phone}</div>
         </div>
             :<div>
