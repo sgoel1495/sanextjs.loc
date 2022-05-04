@@ -23,6 +23,7 @@ const LoginForm = (props) => {
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
         const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken);
+        console.log("reached here",updateData);
         Object.keys(updateData).forEach((key)=>{
             updateDataStore(key, updateData[key]);
         })

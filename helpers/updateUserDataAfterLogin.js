@@ -4,7 +4,7 @@ export async function updateUserDataAfterLogin(username, apiToken){
     let userData = {
         contact: username
     }
-    const resp = await apiCall("userWallet", apiToken, { contact: username });
+    const walletCall = await apiCall("userWallet", apiToken, { contact: username });
 
     let userWallet = {
         "email": "",
@@ -13,10 +13,10 @@ export async function updateUserDataAfterLogin(username, apiToken){
         "wallet_amount": 0,
         "usd_wallet_amount": 0
     };
-    if (resp.hasOwnProperty("response"))
-        userWallet = resp.response;
+    if (walletCall.hasOwnProperty("response") && walletCall.response)
+        userWallet = walletCall.response;
 
-    const resp1 = await apiCall("userServe", apiToken, { contact: username });
+    const serveCall = await apiCall("userServe", apiToken, { contact: username });
     let userServe = {
         "email": "",
         "phone_number": "",
@@ -26,17 +26,19 @@ export async function updateUserDataAfterLogin(username, apiToken){
         "ref_id": null,
         "temp_user_id": ""
     };
-    if (resp1.hasOwnProperty("response"))
-        userServe = resp1.response;
+    if (serveCall.hasOwnProperty("response") && serveCall.response)
+        userServe = serveCall.response;
 
-    const resp2 = await apiCall("userAddresses", apiToken, {
+    const addressCall = await apiCall("userAddresses", apiToken, {
         "user":{
             email: username
         }
     });
+
     let userAddresses = [];
-    if (resp2.hasOwnProperty("response"))
-        userAddresses = [...resp2.response];
+    if (addressCall.hasOwnProperty("response") && addressCall.response)
+        userAddresses = [...addressCall.response];
+
 
     console.log(userData);
     console.log(userWallet);
