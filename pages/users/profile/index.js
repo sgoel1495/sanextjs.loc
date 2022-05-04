@@ -26,7 +26,7 @@ function ProfilePage(){
 
 
     return  <Fragment>
-        <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
+        <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
         <Header type={"shopMenu"}/>
         {(dataStore.mobile) ? mobileView : browserView}
     </Fragment>

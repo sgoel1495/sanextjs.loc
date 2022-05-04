@@ -1,5 +1,5 @@
 import {Fragment} from "react";
-import Link from "next";
+import Link from "next/link";
 
 function UsersSideMenu(props){
     const links=[

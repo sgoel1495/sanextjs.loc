@@ -1,5 +1,6 @@
 import AppWideContext from "../../store/AppWideContext";
-import Link from "next";
+import Link from "next/link";
+import {useContext} from "react";
 
 function DefaultAddressBookInformation(props) {
     const {dataStore} = useContext(AppWideContext);
