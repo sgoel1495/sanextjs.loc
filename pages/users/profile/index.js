@@ -4,7 +4,7 @@ import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import UsersSideMenu from "../../../components/user/UsersSideMenu";
 import ContactInformation from "../../../components/user/ContactInformation";
-import AddressBookInformation from "../../../components/user/AddressBookInformation";
+import DefaultAddressBookInformation from "../../../components/user/DefaultAddressBookInformation";
 import {useRouter} from "next/router";
 
 function ProfilePage(){
@@ -20,7 +20,7 @@ function ProfilePage(){
                 <ContactInformation mobile={false}/>
             </div>
             <div>
-                <AddressBookInformation mobile={false}/>
+                <DefaultAddressBookInformation mobile={false}/>
             </div>
         </Fragment>;
 

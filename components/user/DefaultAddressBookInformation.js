@@ -1,7 +1,7 @@
 import AppWideContext from "../../store/AppWideContext";
 import Link from "next";
 
-function AddressBookInformation(props) {
+function DefaultAddressBookInformation(props) {
     const {dataStore} = useContext(AppWideContext);
 
     const mobileView = null;
@@ -29,7 +29,7 @@ function AddressBookInformation(props) {
 
     return (props.mobile) ? mobileView : browserView;
 }
-export default AddressBookInformation;
+export default DefaultAddressBookInformation;
 
 /*
   "defaultAddress":    {
