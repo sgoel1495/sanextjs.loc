@@ -20,7 +20,7 @@ function ProfilePage() {
                 <UsersSideMenu mobile={false} />
                 <div className="pl-8 flex-[3] flex flex-col items-start gap-10">
                     <ContactInformation mobile={false} />
-                    <DefaultAddressBookInformation mobile={false} />
+                    <DefaultAddressBookInformation mobile={false} manage={true}/>
                 </div>
             </div>
         );

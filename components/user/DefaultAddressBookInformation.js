@@ -1,9 +1,9 @@
 import AppWideContext from "../../store/AppWideContext";
 import Link from "next/link";
-import { useContext } from "react";
+import {useContext} from "react";
 
 function DefaultAddressBookInformation(props) {
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
 
     const mobileView = null;
     const browserView = (
@@ -24,14 +24,18 @@ function DefaultAddressBookInformation(props) {
                 </div>
                 : <p className="text-[#777] mb-10 font-500">You have not set a default shipping address.</p>
             }
-            <Link href="/users/addressbook">
-                <a className="bg-black px-4 py-2 block text-white uppercase text-sm font-500 tracking-wide shadow-md">MANAGE ADDRESSES</a>
-            </Link>
+            {(props.manage)
+                ? <Link href="/users/addressbook">
+                    <a className="bg-black px-4 py-2 block text-white uppercase text-sm font-500 tracking-wide shadow-md">MANAGE
+                        ADDRESSES</a>
+                </Link>
+                : null}
         </div>
     );
 
     return (props.mobile) ? mobileView : browserView;
 }
+
 export default DefaultAddressBookInformation;
 
 /*
