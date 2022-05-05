@@ -19,8 +19,10 @@ function AddressBook() {
         return (
             <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
                 <UsersSideMenu mobile={false} />
-                <div className="pl-8 flex-[3] flex flex-col items-start gap-10">
-                    <DefaultAddressBookInformation mobile={false} manage={false}/>
+                <div className="pl-8 flex-[3] flex flex-col items-start gap-4">
+                    <p className="text-[28px]">Default Addresses</p>
+                    <DefaultAddressBookInformation mobile={false} manage={false} />
+                    <p className="text-[28px] mt-4">Additional Addresses</p>
                     <DisplayAdditionalAddresses mobile={false} />
                 </div>
             </div>

@@ -16,9 +16,9 @@ function ProfilePage() {
     const mobileView = null;
     const browserView = () => {
         return (
-            <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
+            <div className="xl:w-3/5 mx-auto flex divide-x gap-x-7 mt-28">
                 <UsersSideMenu mobile={false} />
-                <div className="pl-8 flex-[3] flex flex-col items-start gap-10">
+                <div className="pl-7 flex-[3] flex flex-col items-start gap-10">
                     <ContactInformation mobile={false} />
                     <DefaultAddressBookInformation mobile={false} manage={true}/>
                 </div>

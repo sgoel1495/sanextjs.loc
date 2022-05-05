@@ -30,7 +30,9 @@ function AddAddressPage() {
         return (
             <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
                 <UsersSideMenu mobile={false} />
-                <AddressForm index={-1} address={address}/>
+                <div className="pl-8 flex-[3]">
+                    <AddressForm index={-1} address={address} />
+                </div>
             </div>
         );
     }

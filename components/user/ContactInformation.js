@@ -8,7 +8,7 @@ function ContactInformation(props) {
     const mobileView = null;
     const browserView = (
         <div className="p-4 bg-[#f1f2f3] w-1/2">
-            <p className="text-xl font-500 mb-2">Contact Information</p>
+            <p className="text-xl font-500 mb-2 mt-1">Contact Information</p>
             <p className="font-700">{dataStore.userServe.user_name}</p>
             <p className="text-[#777]">{dataStore.userServe.email}</p>
             <div className="flex gap-2">

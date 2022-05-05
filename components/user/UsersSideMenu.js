@@ -25,13 +25,13 @@ function UsersSideMenu(props) {
                 {returnValue}
                 <li key={index}>
                     <Link href={link.link}>
-                        <a className={'block hover:bg-[#f1f2f3] py-2 tracking-wide text-[#555] font-500 ' + [router.asPath == link.link ? "bg-[#f1f2f3]" : null]} >{link.title}</a>
+                        <a className={'block hover:bg-[#f1f2f3] py-2 tracking-wide text-[#555] text-[15px] font-500 ' + [router.asPath == link.link ? "bg-[#f1f2f3]" : null]} >{link.title}</a>
                     </Link>
                 </li>
             </Fragment>;
         })
         return (
-            <ul className="flex-1">
+            <ul className="flex-1 py-3">
                 {returnValue}
             </ul>
         );

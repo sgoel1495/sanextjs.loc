@@ -1,9 +1,9 @@
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import AppWideContext from "../../store/AppWideContext";
-import {Fragment, useContext, useEffect, useState} from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import validator from "validator/es";
 import Toast from "../common/Toast";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 
 /**
  * there is no processing for default or company at present
@@ -16,13 +16,13 @@ const statesAndCities = require('../../store/statesAndCities.json');
 
 function AddressForm(props) {
     const router = useRouter();
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [address, setAddress] = useState(props.address);
     const [company, setCompany] = useState(null);
     const [isDefault, setIsDefault] = useState(false);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-    const [refresh,setRefresh]=useState(true);
+    const [refresh, setRefresh] = useState(true);
 
     /*
         useEffect(()=>{
@@ -103,29 +103,29 @@ function AddressForm(props) {
         });
         states.sort();
         cities.sort();
-        return {states, cities};
+        return { states, cities };
     }
 
     const statesOptions = () => {
         let returnValue = null;
-        const {states} = sncList();
+        const { states } = sncList();
         states.forEach(state => {
-                returnValue = <Fragment>
-                    {returnValue}
-                    <option value={state}>{state}</option>
-                </Fragment>;
+            returnValue = <Fragment>
+                {returnValue}
+                <option value={state}>{state}</option>
+            </Fragment>;
         });
         return returnValue;
     }
 
     const citiesOptions = () => {
         let returnValue = null;
-        const {cities} = sncList();
+        const { cities } = sncList();
         cities.forEach(city => {
-                returnValue = <Fragment>
-                    {returnValue}
-                    <option value={city}>{city}</option>
-                </Fragment>;
+            returnValue = <Fragment>
+                {returnValue}
+                <option value={city}>{city}</option>
+            </Fragment>;
         });
         return returnValue;
     }
@@ -137,59 +137,103 @@ function AddressForm(props) {
     }
     console.log("Helooo ", address, props.address);
 
+    const labelClass = "block text-[14px] mb-1";
+    const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
+    const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
+
     const mobileView = null;
     const browserView = <div>
         {(address)
             ? <div>
                 <div>
                     {(props.index == -1)
-                        ? <div>Add New Address</div>
-                        : <div>Edit Address</div>}
+                        ? <p className="text-[28px] mb-5">Add New Address</p>
+                        : <p className="text-[28px] mb-5">Edit Address</p>
+                    }
                 </div>
-                <label htmlFor="name">First Name</label>
-                <input type="text" name="name" id="name" value={address.name}
-                       onChange={e => updateAddressValue("name", e.target.value)}/>
-                <label htmlFor="lastname">Last Name</label>
-                <input type="text" name="lastname" id="lastname" value={address.lastname}
-                       onChange={e => updateAddressValue("lastname", e.target.value)}/>
-                <label htmlFor="company">Company</label>
-                <input type="text" name="company" id="company" value={company}
-                       onChange={e => setCompany(e.target.value)}/>
-                <label htmlFor="phone">Telephone</label>
-                <input type="number" name="phone" id="phone" value={address.phone}
-                       onChange={e => updateAddressValue("phone", e.target.value)}/>
-                <label htmlFor="address">Address Line 1</label>
-                <input type="text" name="address" id="address" value={address.address}
-                       onChange={e => updateAddressValue("address", e.target.value)}/>
-                <label htmlFor="landmark">Address Line 2</label>
-                <input type="text" name="landmark" id="landmark" value={address.landmark}
-                       onChange={e => updateAddressValue("landmark", e.target.value)}/>
-                <label htmlFor="country">Country</label>
-                <input name="country" id="country" value={address.country} disabled={true}
-                       onChange={e => updateAddressValue("country", e.target.value)}/>
-                <label htmlFor="state">State/Province</label>
-                <select name="state" id="state" value={address.state}
-                        onChange={e => updateAddressValue("state", e.target.value)}
-                        placeholder="Please select region, state or province">
-                    {statesOptions()}
-                </select>
-                <label htmlFor="city">City</label>
-                <select name="city" id="city" value={address.city}
-                        onChange={e => updateAddressValue("city", e.target.value)}
-                        placeholder="Please select your city">
-                    {citiesOptions()}
-                </select>
-                <label htmlFor="zip_code">Zip/Postal Code</label>
-                <input type="text" name="zip_code" id="zip_code" value={address.zip_code}
-                       onChange={e => updateAddressValue("zip_code", e.target.value)}/>
-                <label>
-                    <input type="checkbox" name="default" id="default" checked={isDefault}
-                           onChange={e => setIsDefault(e.target.checked)}/>
-                    Use as my default shipping address
-                </label>
-                <div onClick={saveAndReturn}>
+                <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555]">
+                    <div>
+                        <label className={labelClass} htmlFor="name">First Name</label>
+                        <input className={inputClass} type="text" name="name" id="name" value={address.name} onChange={e => updateAddressValue("name", e.target.value)} />
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="lastname">Last Name</label>
+                        <input className={inputClass} type="text" name="lastname" id="lastname" value={address.lastname} onChange={e => updateAddressValue("lastname", e.target.value)} />
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="company">Company</label>
+                        <input className={inputClass} type="text" name="company" id="company" value={company} onChange={e => setCompany(e.target.value)} />
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="phone">Telephone</label>
+                        <input className={inputClass} type="number" name="phone" id="phone" value={address.phone} onChange={e => updateAddressValue("phone", e.target.value)} />
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="address">Address Line 1</label>
+                        <input className={inputClass} type="text" name="address" id="address" value={address.address} onChange={e => updateAddressValue("address", e.target.value)} />
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="landmark">Address Line 2</label>
+                        <input className={inputClass} type="text" name="landmark" id="landmark" value={address.landmark} onChange={e => updateAddressValue("landmark", e.target.value)} />
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="country">Country</label>
+                        <input className={inputClass} name="country" id="country" value={address.country} disabled={true} onChange={e => updateAddressValue("country", e.target.value)} />
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="state">State/Province</label>
+                        <select
+                            className={inputClass}
+                            name="state"
+                            id="state"
+                            value={address.state}
+                            onChange={e => updateAddressValue("state", e.target.value)}
+                            placeholder="Please select region, state or province"
+                        >
+                            {statesOptions()}
+                        </select>
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="city">City</label>
+                        <select
+                            className={inputClass}
+                            name="city"
+                            id="city"
+                            value={address.city}
+                            onChange={e => updateAddressValue("city", e.target.value)}
+                            placeholder="Please select your city"
+                        >
+                            {citiesOptions()}
+                        </select>
+                    </div>
+                    <div>
+                        <label className={labelClass} htmlFor="zip_code">Zip/Postal Code</label>
+                        <input
+                            className={inputClass}
+                            type="text"
+                            name="zip_code"
+                            id="zip_code"
+                            value={address.zip_code}
+                            onChange={e => updateAddressValue("zip_code", e.target.value)}
+                        />
+                    </div>
+                    <div className="flex gap-2 items-center">
+                        <input
+                            className="focus:ring-transparent text-[#616161] rounded mb-1 cursor-pointer"
+                            type="checkbox"
+                            name="default"
+                            id="default"
+                            checked={isDefault}
+                            onChange={e => setIsDefault(e.target.checked)}
+                        />
+                        <label className={labelClass}>
+                            Use as my default shipping address
+                        </label>
+                    </div>
+                </div>
+                <button className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md mt-6" onClick={saveAndReturn}>
                     Save Address
-                </div>
+                </button>
                 <Toast show={show} hideToast={() => setShow(false)}>
                     <span>{message}</span>
                 </Toast>
