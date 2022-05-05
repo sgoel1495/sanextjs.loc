@@ -26,7 +26,8 @@
     "react-parallax": "^3.3.0",
     "sass": "^1.49.9",
     "swiper": "^7.4.1",
-    "tailwind-scrollbar-hide": "^1.1.7"
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.1",

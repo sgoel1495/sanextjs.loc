@@ -1,0 +1,376 @@
+City	State
+Ahmedabad	Gujarat
+Surat	Gujarat
+Vadodra	Gujarat
+Rajkot	Gujarat
+Bhavnagar	Gujarat
+Jamnagar	Gujarat
+Junagadh	Gujarat
+Gandhinagar	Gujarat
+Gandhidam	Gujarat
+Anand	Gujarat
+Navsari	Gujarat
+Nadiad	Gujarat
+Bharuch	Gujarat
+Mehsana	Gujarat
+Bhuj	Gujarat
+Porbandar	Gujarat
+Valsad	Gujarat
+Vapi	Gujarat
+Somnath	Gujarat
+Patan	Gujarat
+Jodhpur	Rajasthan
+Jaipur	Rajasthan
+Kota	Rajasthan
+Bhiwadi	Rajasthan
+Bikaner	Rajasthan
+Udaipur	Rajasthan
+Ajmer	Rajasthan
+Bhilwar	Rajasthan
+Alwar	Rajasthan
+Sikar	Rajasthan
+Bharatpur	Rajasthan
+Pali	Rajasthan
+Sri Ganganagar	Rajasthan
+Hanumangarh	Rajasthan
+Beawar	Rajasthan
+Pune	Maharashtra
+Nagpur	Maharashtra
+Nashik	Maharashtra
+Thane	Maharashtra
+Aurangabad	Maharashtra
+Solapur	Maharashtra
+Jalgaon	Maharashtra
+Amravati	Maharashtra
+Kolhapur	Maharashtra
+Ulhasnagar	Maharashtra
+Malegaon	Maharashtra
+Latur	Maharashtra
+Dhule	Maharashtra
+Ahmednagar	Maharashtra
+Miraj	Maharashtra
+Chandrapur	Maharashtra
+Jalna	Maharashtra
+Navi Mumbai	Maharashtra
+Satara	Maharashtra
+Kamptee	Maharashtra
+Gondia	Maharashtra
+Achlapur	Maharashtra
+Nandurbar	Maharashtra
+Wardha	Maharashtra
+Hingaghat	Maharashtra
+Dhar	Karnataka
+Hubballi-Dharwad	Karnataka
+Mysuru	Karnataka
+Kalaburagi	Karnataka
+Mangaluru	Karnataka
+Belagavi	Karnataka
+Ballari	Karnataka
+Vijayapura	Karnataka
+Shivamogga	Karnataka
+Raichur	Karnataka
+Bidar	Karnataka
+Hospet	Karnataka
+Robertsonpet	Karnataka
+Hassan	Karnataka
+Bhadravati	Karnataka
+Chitradurga	Karnataka
+Udupi	Karnataka
+Kolar	Karnataka
+Mandya	Karnataka
+Chikmagalur	Karnataka
+Gangavati	Karnataka
+Ranebennuru	Karnataka
+Kasaragod	Kerala
+Kannur	Kerala
+Alappuza	Kerala
+Ernakulam	Kerala
+Idukki	Kerala
+Kollam	Kerala
+Kottayam	Kerala
+Kozikode	Kerala
+Malappuram	Kerala
+Palakkad	Kerala
+Pathanamthitta	Kerala
+Thiruvananthapuram	Kerala
+Thrissur	Kerala
+Wayanad	Kerala
+Coimbatore	Tamil Nadu
+Madurai	Tamil Nadu
+Tiruchirappalli	Tamil Nadu
+Tiruppur	Tamil Nadu
+Salem	Tamil Nadu
+Erode	Tamil Nadu
+Vellore	Tamil Nadu
+Thoothukkudi	Tamil Nadu
+Dindigul	Tamil Nadu
+Thanjavur	Tamil Nadu
+Ranipet	Tamil Nadu
+Karur	Tamil Nadu
+Nagercoil	Tamil Nadu
+Kanchipuram	Tamil Nadu
+Karaikkudi	Tamil Nadu
+Neyveli	Tamil Nadu
+Cuddalore	Tamil Nadu
+Tiruvannamalai	Tamil Nadu
+Pollachi	Tamil Nadu
+Pudukkottai	Tamil Nadu
+Vaniyambadi	Tamil Nadu
+Ambur	Tamil Nadu
+Nagapattinam	Tamil Nadu
+Visakhapatnam	Andhra Pradesh
+Vijayawada	Andhra Pradesh
+Guntur	Andhra Pradesh
+Nellore	Andhra Pradesh
+Kurnool	Andhra Pradesh
+Kakinada	Andhra Pradesh
+Kadapa	Andhra Pradesh
+Tirupati	Andhra Pradesh
+Anantapuram	Andhra Pradesh
+Vizianagaram	Andhra Pradesh
+Eluru	Andhra Pradesh
+Nadyal	Andhra Pradesh
+Ongole	Andhra Pradesh
+Adoni	Andhra Pradesh
+Madanapalle	Andhra Pradesh
+Machilipatnam	Andhra Pradesh
+Tenali	Andhra Pradesh
+Proddatur	Andhra Pradesh
+Chittor	Andhra Pradesh
+Hindupur	Andhra Pradesh
+Srikakulam	Andhra Pradesh
+Bhimavaram	Andhra Pradesh
+Gudivada	Andhra Pradesh
+Guntakal	Andhra Pradesh
+Dharamavaram	Andhra Pradesh
+Tadipatri	Andhra Pradesh
+Mangalagiri	Andhra Pradesh
+Warangal	Telangana
+Nizamabad	Telangana
+Khammam	Telangana
+Karimnagar	Telangana
+Ramagundam	Telangana
+Mahabubnagar	Telangana
+Nalgonda	Telangana
+Adilabad	Telangana
+Suryapet	Telangana
+Siddipet	Telangana
+Miryalaguda	Telangana
+Jagtial	Telangana
+Indore	Madhya Pradesh
+Bhopal	Madhya Pradesh
+Jablapur	Madhya Pradesh
+Gwalior	Madhya Pradesh
+Ujjain	Madhya Pradesh
+Sagar	Madhya Pradesh
+Dewas	Madhya Pradesh
+Satna	Madhya Pradesh
+Ratlam	Madhya Pradesh
+Rewa	Madhya Pradesh
+Murwara	Madhya Pradesh
+Singrauli	Madhya Pradesh
+Burhanpur	Madhya Pradesh
+Khandwa	Madhya Pradesh
+Bhind	Madhya Pradesh
+Chhindwara	Madhya Pradesh
+Guna	Madhya Pradesh
+Shivpur	Madhya Pradesh
+Vidisha	Madhya Pradesh
+Chhatarpur	Madhya Pradesh
+Damoh	Madhya Pradesh
+Mandsaur	Madhya Pradesh
+Khargone	Madhya Pradesh
+Neemuch	Madhya Pradesh
+Pithapur	Madhya Pradesh
+Narmadapuram	Madhya Pradesh
+Itarsi	Madhya Pradesh
+Sehore	Madhya Pradesh
+Morena	Madhya Pradesh
+Betul	Madhya Pradesh
+Seoni	Madhya Pradesh
+Datia	Madhya Pradesh
+Nagda	Madhya Pradesh
+Dindori	Madhya Pradesh
+Raipur	Chhattisgarh
+Durg	Chhattisgarh
+Rajnandgaon	Chhattisgarh
+Raigarh	Chhattisgarh
+Korba	Chhattisgarh
+Jagdalpur	Chhattisgarh
+Dhamtari	Chhattisgarh
+Chirmiri	Chhattisgarh
+Bilaspur	Chhattisgarh
+Bhilai	Chhattisgarh
+Ambikapur	Chhattisgarh
+Mahasamund	Chhattisgarh
+Koriya	Chhattisgarh
+Bhubaneshwar	Odisha
+Cuttack	Odisha
+Rourkela	Odisha
+Berhampur	Odisha
+Samalpur	Odisha
+Puri	Odisha
+Balasore	Odisha
+Bhadrak	Odisha
+Baripada	Odisha
+Kolkata	West Bengal
+Asansol	West Bengal
+Siliguri	West Bengal
+Durgapur	West Bengal
+Bardhaman	West Bengal
+Malda City	West Bengal
+Baharampur	West Bengal
+Shantipur	West Bengal
+Ranaghat	West Bengal
+Haldia	West Bengal
+Krishnanagar	West Bengal
+Jalpaiguri	West Bengal
+Balurghat	West Bengal
+Bankura	West Bengal
+Darjeeling	West Bengal
+Alipurduar	West Bengal
+Purulia	West Bengal
+Jangipur	West Bengal
+Bangaon	West Bengal
+Cooch Behar	West Bengal
+Patna	Bihar
+Gaya	Bihar
+Bhagalpur	Bihar
+Muzaffarpur	Bihar
+Purina	Bihar
+Begusarai	Bihar
+Katihar	Bihar
+Munger	Bihar
+Chhapra	Bihar
+Danapur	Bihar
+Hajipur	Bihar
+Dehri	Bihar
+Siwan	Bihar
+Motihari	Bihar
+Nawada	Bihar
+Bagaha	Bihar
+Buxar	Bihar
+Sitamarhi	Bihar
+Jamalpur	Bihar
+Jehanabad	Bihar
+Aurangabad	Bihar
+Jamshedpur	Bihar
+Dhanbad	Bihar
+Ranchi	Bihar
+Bokaro	Bihar
+Deoghar	Bihar
+Phusro	Bihar
+Hazaribagh	Bihar
+Giridih	Bihar
+Ramgarh	Bihar
+Medininagar	Bihar
+Chirkunda	Bihar
+Meerut	Uttar Pradesh
+Saharanpur	Uttar Pradesh
+Ghaziabad	Uttar Pradesh
+Noida	Uttar Pradesh
+Aligarh	Uttar Pradesh
+Agra	Uttar Pradesh
+Moradabad	Uttar Pradesh
+Bareily	Uttar Pradesh
+Etawah	Uttar Pradesh
+Jhansi	Uttar Pradesh
+Lucknow	Uttar Pradesh
+Kanpur	Uttar Pradesh
+Prayagraj	Uttar Pradesh
+Varanasi	Uttar Pradesh
+Ayodhya	Uttar Pradesh
+Basti	Uttar Pradesh
+Gorakhpur	Uttar Pradesh
+Faridabad	Haryana
+Gurugram	Haryana
+Panipat	Haryana
+Ambala	Haryana
+Yamunagar	Haryana
+Rohtak	Haryana
+Sonipat	Haryana
+Bhiwani	Haryana
+Ludhiana	Punjab
+Amritsar	Punjab
+Jalandhar	Punjab
+Patiala	Punjab
+Bathinda	Punjab
+Mohali	Punjab
+Batala	Punjab
+Pathankot	Punjab
+Firozpur	Punjab
+Malerkotla	Punjab
+Khanna	Punjab
+Muktsar	Punjab
+Sunam	Punjab
+Srinagar	Jammu And Kashmir
+Jammu	Jammu And Kashmir
+Anantnag	Jammu And Kashmir
+Shimla	Himachal Pradesh
+Dharamshala	Himachal Pradesh
+Solan	Himachal Pradesh
+Palampur	Himachal Pradesh
+Sundarnagar	Himachal Pradesh
+Kullu	Himachal Pradesh
+Manali	Himachal Pradesh
+Dalhousie	Himachal Pradesh
+Rohru	Himachal Pradesh
+Jawalamukhi	Himachal Pradesh
+Indora	Himachal Pradesh
+Kasauli	Himachal Pradesh
+Naina Devi	Himachal Pradesh
+Kotkhai	Himachal Pradesh
+Narkanda	Himachal Pradesh
+Sarkaghat	Himachal Pradesh
+Una	Himachal Pradesh
+Dehradun	Uttarakhand
+Haridwar	Uttarakhand
+Roorke	Uttarakhand
+Rishikesh	Uttarakhand
+Kashipur	Uttarakhand
+Hadwani	Uttarakhand
+Rudrapur	Uttarakhand
+Gangtok	Sikkim
+Namchi	Sikkim
+Udalguri	Assam
+Karimganj	Assam
+Cachar	Assam
+Kampur	Assam
+Dhubri	Assam
+Sivasagar	Assam
+Guwahati	Assam
+Silchar	Assam
+Jorhat	Assam
+Papum Pare	Arunachal Pradesh
+Changlang	Arunachal Pradesh
+Lohit	Arunachal Pradesh
+West Siang	Arunachal Pradesh
+Tirap	Arunachal Pradesh
+East Siang	Arunachal Pradesh
+Kuma Kurg	Arunachal Pradesh
+Dimapur	Nagaland
+Kiphire	Nagaland
+Kohima	Nagaland
+Longleng	Nagaland
+Mon	Nagaland
+Phek	Nagaland
+Tuensang	Nagaland
+Wokha	Nagaland
+Noklak	Nagaland
+Chandel	Manipur
+Imphal East	Manipur
+Imphal West	Manipur
+Senapati	Manipur
+Thoubal	Manipur
+Churachandpur	Manipur
+Dhalai	Tripura
+North Tripura	Tripura
+South Tripura	Tripura
+West Tripura	Tripura
+Mamit	Mizoram
+Aizawal	Mizoram
+Kolasib	Mizoram
+Champhai	Mizoram
+Serchhip	Mizoram
+Saiha	Mizoram
+Lawngtlai	Mizoram
