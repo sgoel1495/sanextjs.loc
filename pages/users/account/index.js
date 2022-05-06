@@ -1,5 +1,5 @@
-function UserAccount() {
+function UserAccountPage() {
     return "User Account";
 }
 
-export default UserAccount;
+export default UserAccountPage;
