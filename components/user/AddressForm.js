@@ -88,6 +88,45 @@ function AddressForm(props) {
             }
         } else {
             //case update
+            /*
+            {
+  "user" : { "email" : "shailaja.s@algowire.com"
+            },
+   "address" : { "name" : "test",
+   "lastname" : "test",
+   "email" : "shailaja.s@algowire.com",
+   "phone" : 1111111111,
+   "address" : "Abc block",
+   "landmark" : "near landmark",
+   "zip_code" : 110096,
+   "city" : "New Delhi",
+   "state" : "Delhi",
+   "country" : "India",
+   "index" : 0
+   },
+  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+}
+             */
+            const resp = await apiCall("updateAddressBook", dataStore.apiToken, {
+                "user": {
+                    email: dataStore.userData.contact
+                },
+                "address": {...address,"index":props.index}
+            });
+            if (resp.status !== 200) {
+                setMessage("Something went wrong. Please try again or contact administrator");
+                setShow(true);
+            } else {
+                const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
+                    "user": {
+                        email: dataStore.userData.contact
+                    }
+                });
+                if (addressCall.hasOwnProperty("response") && addressCall.response) {
+                    updateDataStore("userAddresses", [...addressCall.response]);
+                    router.back();
+                }
+            }
         }
 
     }
@@ -135,7 +174,6 @@ function AddressForm(props) {
         setAddress(address);
         setRefresh(!refresh);
     }
-    console.log("Helooo ", address, props.address);
 
     const labelClass = "block text-[14px] mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
