@@ -25,7 +25,12 @@ function MyApp({Component, pageProps}) {
     useEffect(()=>{
         if(isMobile!=dataStoreDefault.mobile)
             updateDataStore("mobile",isMobile);
-    },[dataStoreDefault.mobile, updateDataStore]);
+        if(dataStore.userData.contact==null){
+            const userServe=dataStore.userServe;
+            userServe.temp_user_id = Date.now().toString();
+            updateDataStore("userServe",userServe);
+        }
+    },[dataStoreDefault.mobile]);
 
     return (
         <AppWideContext.Provider value={{
