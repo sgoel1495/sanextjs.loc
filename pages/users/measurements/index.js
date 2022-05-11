@@ -1,12 +1,11 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
-import UsersSideMenu from "../../../components/user/UsersSideMenu";
-import ContactInformation from "../../../components/user/ContactInformation";
-import DefaultAddressBookInformation from "../../../components/user/DefaultAddressBookInformation";
 import { useRouter } from "next/router";
-import DisplayAdditionalAddresses from "../../../components/user/login/DisplayAdditionalAddresses";
+import Link from "next/link";
+import UsersSideMenu from "../../../components/user/UsersSideMenu";
+import MeasurementBlock from "../../../components/user/MeasurementBlock";
 
 function MeasurementsPage() {
     const router = useRouter();
@@ -14,19 +13,44 @@ function MeasurementsPage() {
     if (dataStore.userData.contact == null)
         router.replace("/"); //illegal direct access
 
+    const measurementKeys = Object.keys(dataStore.userMeasurements);
+
+    const measurementBlocks = ()=>{
+        let returnValue = null;
+        measurementKeys.forEach((key,index)=>{
+            returnValue=<Fragment>
+                {returnValue}
+                <MeasurementBlock measurement={dataStore.userMeasurements[key]} index={index} mobile={dataStore.mobile} />
+            </Fragment>
+        });
+    }
+
     const mobileView = null;
-    const browserView = () => {
-        return (
+    const browserView = ()=>{
+        return <Fragment>
+            <UsersSideMenu mobile={false} />
             <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
-                <UsersSideMenu mobile={false} />
-                <div className="pl-8 flex-[3] flex flex-col items-start gap-4">
-                    <p className="text-[28px]">Default Addresses</p>
-                    <DefaultAddressBookInformation mobile={false} manage={false} />
-                    <p className="text-[28px] mt-4">Additional Addresses</p>
-                    <DisplayAdditionalAddresses mobile={false} />
+                <p className="text-[28px]">Measurement Summary</p>
+                <div>
+                    <div>
+                        <div>User Id: {dataStore.userData.contact}</div>
+                        <div>Total Measurement(s): {measurementKeys.length}</div>
+                    </div>
+                    <div>
+                        <Link href="/users/measurements/add">
+                            <a>ADD NEW</a>
+                        </Link>
+                    </div>
                 </div>
+                {(measurementKeys.length>0)
+                    ?<Fragment>
+                        <p className="text-[28px] mt-4">Measurements</p>
+                        <div>{measurementBlocks()}</div>
+                    </Fragment>
+                    :null
+                }
             </div>
-        );
+        </Fragment>
     }
 
 
