@@ -4,3 +4,7 @@ prankur.g@algowire.com / 123456
 User to login in LIVE server
 Username : varun@algowire.com
 Password : 12345678
+
+TeaCii Test User
+jomapps.jb@gmail.com
+cenario
