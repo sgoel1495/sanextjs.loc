@@ -8,7 +8,7 @@ import DefaultAddressBookInformation from "../../../components/user/DefaultAddre
 import { useRouter } from "next/router";
 import DisplayAdditionalAddresses from "../../../components/user/login/DisplayAdditionalAddresses";
 
-function AddressBook() {
+function AddressBookPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
     if (dataStore.userData.contact == null)
@@ -39,4 +39,4 @@ function AddressBook() {
     )
 }
 
-export default AddressBook;
+export default AddressBookPage;
