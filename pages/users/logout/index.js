@@ -25,9 +25,13 @@ function Logout() {
             "ref_id": null,
             "temp_user_id": ""
         };
+        const userMeasurements={};
+
         updateDataStore("userData", userData);
         updateDataStore("userWallet", userWallet);
         updateDataStore("userServe", userServe);
+        updateDataStore("userServe", userServe);
+        updateDataStore("userServe", userMeasurements);
         router.replace("/");
     }, []);
     return <Fragment>Logging out ...</Fragment>;

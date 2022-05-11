@@ -39,17 +39,31 @@ export async function updateUserDataAfterLogin(username, apiToken){
     if (addressCall.hasOwnProperty("response") && addressCall.response)
         userAddresses = [...addressCall.response];
 
+    const measurementCall = await apiCall("userMeasurements", apiToken, {
+        "user":{
+            email: username,
+            is_guest: false,
+            temp_user_id: userServe.temp_user_id
+        }
+    });
+
+    let userMeasurements = {};
+    if (measurementCall.hasOwnProperty("response") && measurementCall.response)
+        userMeasurements = measurementCall.response;
+
 
     console.log(userData);
     console.log(userWallet);
     console.log(userServe);
     console.log(userAddresses);
+    console.log(userMeasurements);
 
     return {
         "userData":userData,
         "userWallet":userWallet,
         "userServe":userServe,
-        "userAddresses":userAddresses
+        "userAddresses":userAddresses,
+        "userMeasurements":userMeasurements
     }
 }
 

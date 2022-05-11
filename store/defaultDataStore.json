@@ -97,6 +97,7 @@
     "temp_user_id": ""
   },
   "userAddresses": [],
-  "defaultAddress": null
+  "defaultAddress": null,
+  "userMeasurements": {}
 
 }
