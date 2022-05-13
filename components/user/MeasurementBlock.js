@@ -1,7 +1,7 @@
-import {Fragment} from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 
-function MeasurementBlock({measurement,index,mobile}) {
+function MeasurementBlock({ measurement, index, mobile }) {
     //<MeasurementBlock measurement={dataStore.userMeasurements[key]} index={index} mobile={dataStore.mobile} />
     const mobileView = null;
     const browserView = <Fragment>
@@ -18,10 +18,10 @@ function MeasurementBlock({measurement,index,mobile}) {
             <div>Others: {measurement.others}</div>
         </div>
         <div>
-            <Link href={"/users/measurements/edit/"+index.toString()}><a>EDIT</a></Link>
+            <Link href={"/users/measurements/edit/" + index.toString()}><a>EDIT</a></Link>
         </div>
         <div>
-            <Link href={"/users/measurements/delete/"+index.toString()}><a>DELETE</a></Link>
+            <Link href={"/users/measurements/delete/" + index.toString()}><a>DELETE</a></Link>
         </div>
     </Fragment>
 
