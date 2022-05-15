@@ -2,28 +2,17 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import AppWideContext from "../../../../store/AppWideContext";
 import UsersSideMenu from "../../../../components/user/UsersSideMenu";
-import AddressForm from "../../../../components/user/AddressForm";
+import MeasurementForm from "../../../../components/user/MeasurementForm";
 import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";
 
-function AddAddressPage() {
+function AddMeasurementPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
     if (dataStore.userData.contact == null)
         router.replace("/"); //illegal direct access
 
-    const address = {
-        "name": "",
-        "lastname": "",
-        "email": dataStore.userData.contact,
-        "phone": dataStore.userServe.phone_number,
-        "address": "",
-        "landmark": "",
-        "country": "India",
-        "zip_code": "",
-        "state": "",
-        "city": ""
-    }
+    const measurement = require("../../../../store/emptyMeasurement.json");
 
     const mobileView = null;
     const browserView = () => {
@@ -31,7 +20,7 @@ function AddAddressPage() {
             <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
                 <UsersSideMenu mobile={false} />
                 <div className="pl-8 flex-[3]">
-                    <AddressForm index={-1} address={address} />
+                    <MeasurementForm index={-1} measurement={measurement} />
                 </div>
             </div>
         );
@@ -47,4 +36,4 @@ function AddAddressPage() {
     )
 }
 
-export default AddAddressPage;
+export default AddMeasurementPage;
