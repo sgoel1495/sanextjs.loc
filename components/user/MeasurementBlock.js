@@ -1,12 +1,11 @@
 import { Fragment } from "react";
-import Link from "next/link";
 
-function MeasurementBlock({ measurement, index, mobile }) {
+function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mobile }) {
     //<MeasurementBlock measurement={dataStore.userMeasurements[key]} index={index} mobile={dataStore.mobile} />
     const mobileView = null;
     const browserView = <Fragment>
         <div>
-            <div>{index}. Measurement Profile</div>
+            <div>{index+1}. Measurement Profile</div>
             <div>Measurement ID: {measurement.measure_id}</div>
             <div>Bust: {measurement.bust}</div>
             <div>Waist: {measurement.waist}</div>
@@ -17,11 +16,11 @@ function MeasurementBlock({ measurement, index, mobile }) {
             <div>Shoulder: {measurement.shoulder}</div>
             <div>Others: {measurement.others}</div>
         </div>
-        <div>
-            <Link href={"/users/measurements/edit/" + index.toString()}><a>EDIT</a></Link>
+        <div onClick={showModal(measurement)}>
+            EDIT
         </div>
-        <div>
-            <Link href={"/users/measurements/delete/" + index.toString()}><a>DELETE</a></Link>
+        <div onClick={deleteMeasurement(measurement.measure_id)}>
+            DELETE
         </div>
     </Fragment>
 
