@@ -1,23 +1,7 @@
 import {Fragment, useState} from "react";
 
-function MeasurementModal2({closeModal, isMobile, measurement, setMeasurement, lastModal, nextModal, saveModal}) {
+function MeasurementModal2({closeModal, isMobile, measurement, setMeasurement, lastModal, nextModal}) {
     const [refresh, setRefresh] = useState(true);
-    const labelMessage = {
-        "bust": {"offFocus": "BUST", "onFocus": "(MEASURE AROUND THE FULLEST PART OF YOUR CHEST)"},
-        "waist": {
-            "offFocus": "WAIST",
-            "onFocus": "(MEASURE ACROSS THE NATURAL CURVE OF YOUR WAIST. THIS IS USUALLY ABOVE THE BELLY BUTTON)"
-        },
-        "wearing_waist": {
-            "offFocus": "WEARING WAIST",
-            "onFocus": "(MEASURE WHERE PANTS NORMALLY SIT. THIS IS USUALLY ON OR BELOW THE BELLY BUTTON)"
-        },
-        "hips": {"offFocus": "HIPS", "onFocus": "(MEASURE AT THE FULLEST PART OF YOUR HIPS)"}
-    }
-    const [bust, setBust] = useState(bust.offFocus);
-    const [waist, setWaist] = useState(waist.offFocus);
-    const [wearing_waist, setWearing_waist] = useState(wearing_waist.offFocus);
-    const [hips, setHips] = useState(hips.offFocus);
 
     const updateValues = (key, value) => {
         measurement[key] = value;
@@ -228,12 +212,12 @@ function MeasurementModal2({closeModal, isMobile, measurement, setMeasurement, l
         <div>
             <div onClick={lastModal()}>
                 &lt; BACK
+                <span>FIT DETAILS</span>
             </div>
-            <span>REVIEW</span>
             <div onClick={nextModal()}>
                 NEXT &gt;
+                <span>REVIEW</span>
             </div>
-            <span>REVIEW</span>
         </div>
     </Fragment>
 

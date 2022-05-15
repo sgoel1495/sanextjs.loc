@@ -158,7 +158,6 @@ function MeasurementsPage() {
                         measurement={currentMeasurement}
                         setMeasurement={setCurrentMeasurement.bind(this)}
                         nextModal={nextModal.bind(this)}
-                        saveModal={saveModal.bind(this)}
                     />,
                     document.getElementById("measurementmodal"))
             }
@@ -171,7 +170,6 @@ function MeasurementsPage() {
                         setMeasurement={setCurrentMeasurement.bind(this)}
                         nextModal={nextModal.bind(this)}
                         lastModal={lastModal.bind(this)}
-                        saveModal={saveModal.bind(this)}
                     />,
                     document.getElementById("measurementmodal"))
             }
@@ -181,7 +179,6 @@ function MeasurementsPage() {
                         closeModal={closeModal.bind(this)}
                         isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
-                        setMeasurement={setCurrentMeasurement.bind(this)}
                         lastModal={lastModal.bind(this)}
                         saveModal={saveModal.bind(this)}
                     />,

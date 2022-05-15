@@ -1,6 +1,6 @@
 import {Fragment, useState} from "react";
 
-function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, nextModal, saveModal}){
+function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, nextModal}){
     const [refresh,setRefresh]=useState(true);
     const labelMessage = {
         "bust": {"offFocus":"BUST","onFocus":"(MEASURE AROUND THE FULLEST PART OF YOUR CHEST)"},
@@ -145,8 +145,8 @@ function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, n
             ANY PARTICULAR BODY PART YOU BOTHER ABOUT?
             <div onClick={nextModal()}>
                 NEXT &gt;
+                <span>Size Review</span>
             </div>
-            <span>Size Review</span>
         </div>
     </Fragment>
 
