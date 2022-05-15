@@ -8,6 +8,9 @@ import UsersSideMenu from "../../../components/user/UsersSideMenu";
 import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import ReactDom from "react-dom";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
+import MeasurementModal1 from "../../../components/user/MeasurementModal1";
+import MeasurementModal2 from "../../../components/user/MeasurementModal2";
+import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 
 function MeasurementsPage() {
     const router = useRouter();
@@ -151,11 +154,10 @@ function MeasurementsPage() {
                 ReactDom.createPortal(
                     <MeasurementModal1
                         closeModal={closeModal.bind(this)}
-                        isMobile={props.isMobile}
+                        isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
                         setMeasurement={setCurrentMeasurement.bind(this)}
                         nextModal={nextModal.bind(this)}
-                        lastModal={lastModal.bind(this)}
                         saveModal={saveModal.bind(this)}
                     />,
                     document.getElementById("measurementmodal"))
@@ -164,7 +166,7 @@ function MeasurementsPage() {
                 ReactDom.createPortal(
                     <MeasurementModal2
                         closeModal={closeModal.bind(this)}
-                        isMobile={props.isMobile}
+                        isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
                         setMeasurement={setCurrentMeasurement.bind(this)}
                         nextModal={nextModal.bind(this)}
@@ -177,10 +179,9 @@ function MeasurementsPage() {
                 ReactDom.createPortal(
                     <MeasurementModal3
                         closeModal={closeModal.bind(this)}
-                        isMobile={props.isMobile}
+                        isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
                         setMeasurement={setCurrentMeasurement.bind(this)}
-                        nextModal={nextModal.bind(this)}
                         lastModal={lastModal.bind(this)}
                         saveModal={saveModal.bind(this)}
                     />,
