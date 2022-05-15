@@ -92,6 +92,7 @@ function MeasurementModal2({closeModal, isMobile, measurement, setMeasurement, l
 
     const mobileView = null;
     const browserView = <Fragment>
+        <div onClick={closeModal}>X</div>
         <div>
             Step 2/3
             <span>SIZE REVIEW</span>
@@ -210,11 +211,11 @@ function MeasurementModal2({closeModal, isMobile, measurement, setMeasurement, l
         </div>
 
         <div>
-            <div onClick={lastModal()}>
+            <div onClick={lastModal}>
                 &lt; BACK
                 <span>FIT DETAILS</span>
             </div>
-            <div onClick={nextModal()}>
+            <div onClick={nextModal}>
                 NEXT &gt;
                 <span>REVIEW</span>
             </div>

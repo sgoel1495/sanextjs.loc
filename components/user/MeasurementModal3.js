@@ -4,6 +4,7 @@ function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveMo
 
     const mobileView = null;
     const browserView = <Fragment>
+        <div onClick={closeModal}>X</div>
         <div>
             Review
             <span>YOUR TAILORED FIT</span>
@@ -21,11 +22,11 @@ function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveMo
         </div>
 
         <div>
-            <div onClick={lastModal()}>
+            <div onClick={lastModal}>
                 &lt; BACK
                 <span>SIZE REVIEW</span>
             </div>
-            <div onClick={saveModal()}>SAVE</div>
+            <div onClick={saveModal}>SAVE</div>
         </div>
     </Fragment>
 
