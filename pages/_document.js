@@ -19,6 +19,7 @@ class MyDocument extends Document {
                 <div id="userband"></div>
                 <div id="cartside"></div>
                 <div id="searchmenu"></div>
+                <div id="measurementmodal"></div>
                 <div id="bottomDrawer"></div>
                 <Main/>
                 <NextScript/>
