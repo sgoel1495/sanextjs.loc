@@ -144,7 +144,7 @@ function MeasurementsPage() {
         </Fragment>
     }
 
-
+    console.log("MEASUREMENT",currentMeasurement);
     return (
         <Fragment>
             <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
