@@ -11,18 +11,6 @@ function MeasurementsDeletePage(){
     if( !measurementId || dataStore.userData.contact==null || !dataStore.userAddresses.length < (measurementId+1) )
         router.replace("/"); // no illegal access
 
-    /*
-    {
-   "user" : { "email" : "",
-     "is_guest" : true,
-     "temp_user_id" : "1599477182"
-   },
-   "measurments" : {
-       "measure_id": "1576481216959_m"
-   },
-  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
-}
-     */
     const measurementKeys = Object.keys(dataStore.userMeasurements);
 
     const processOnLoad = async ()=> {
