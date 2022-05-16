@@ -1,6 +1,6 @@
 import {Fragment, useState} from "react";
 
-function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, nextModal}){
+function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nextModal}){
     const [refresh,setRefresh]=useState(true);
     const labelMessage = {
         "bust": {"offFocus":"BUST","onFocus":"(MEASURE AROUND THE FULLEST PART OF YOUR CHEST)"},
@@ -13,64 +13,86 @@ function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, n
     const [wearing_waist,setWearing_waist]=useState(labelMessage.wearing_waist.offFocus);
     const [hips,setHips]=useState(labelMessage.hips.offFocus);
 
-    const updateValues=(key, value)=>{
-        measurement[key]=value;
-        setMeasurement(measurement);
-        setRefresh(refresh);
-    }
+    const heightF=["4","5","6"]
     const heightFOptions = ()=>{
-        return <Fragment>
-            <option value="">Select Ft</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
+        let returnValues = <option value="">Select Ft</option>;
+        heightF.forEach(hf => {
+            returnValues = <Fragment>
+                {returnValues}
+                <option value={hf}>{hf}</option>
+            </Fragment>
+        })
+
+        returnValues = <Fragment>
+            {returnValues}
             <option value="custom">Other</option>
         </Fragment>
+
+        return returnValues;
     }
 
+    const heightI=[
+        "0","1","2","3","4","5","6","7","8","9",
+        "10","11"
+    ]
     const heightIOptions = ()=>{
-        let returnValues=<option value="">Select Inch</option>
-        for(let x=0;x<12;x++)
-            returnValues=<Fragment>
+        let returnValues = <option value="">Select Inch</option>;
+        heightI.forEach(hf => {
+            returnValues = <Fragment>
                 {returnValues}
-                <option value={x.toString()}>{x}</option>
+                <option value={hf}>{hf}</option>
             </Fragment>
+        })
 
-        return returnValues
+        returnValues = <Fragment>
+            {returnValues}
+            <option value="custom">Other</option>
+        </Fragment>
+
+        return returnValues;
     }
-
+    const shoulder=[
+        "13","13.5","14","14.5","15","15.5","16","16.5","17"
+    ]
     const shoulderOptions = ()=>{
-        let returnValues=<option value="">Select</option>
-        for(let x=13;x<17.5;x+=0.5)
-            returnValues=<Fragment>
+        let returnValues = <option value="">Select</option>;
+        shoulder.forEach(hf => {
+            returnValues = <Fragment>
                 {returnValues}
-                <option value={x.toString()}>{x}</option>
+                <option value={hf}>{hf}</option>
             </Fragment>
+        })
 
-        returnValues=<Fragment>
+        returnValues = <Fragment>
             {returnValues}
             <option value="custom">Other</option>
         </Fragment>
 
-        return returnValues
+        return returnValues;
     }
 
-
+    const biceps=[
+        "10","11","12","13","14","15","16","17","18","19","20"
+    ]
     const bicepsOptions = ()=>{
-        let returnValues=<option value="">Select</option>
-        for(let x=10;x<21;x++)
-            returnValues=<Fragment>
+        let returnValues = <option value="">Select</option>;
+        biceps.forEach(hf => {
+            returnValues = <Fragment>
                 {returnValues}
-                <option value={x.toString()}>{x}</option>
+                <option value={hf}>{hf}</option>
             </Fragment>
+        })
 
-        returnValues=<Fragment>
+        returnValues = <Fragment>
             {returnValues}
             <option value="custom">Other</option>
         </Fragment>
 
-        return returnValues
+        return returnValues;
     }
+
+    console.log("Shoulder",measurement.shoulder);
+    console.log("Biceps",measurement.bisceps);
 
     const mobileView = null;
     const browserView = <Fragment>
@@ -84,7 +106,7 @@ function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, n
             <select name="height_f" value={measurement.height_f} onChange={e=>updateValues("height_f",e.target.value)}>
                 {heightFOptions()}
             </select>
-            {(measurement.height_f=="custom")
+            {(measurement.height_f=="custom" || (measurement.height_f!="" && !heightF.includes(measurement.height_f)))
                 ?<input name="height_f_o" type="text" value={(measurement.height_f=="custom")?"":measurement.height_f}
                         onChange={e=>updateValues("height_f",e.target.value)} />
                 :null
@@ -98,7 +120,7 @@ function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, n
             <select name="shoulder" value={measurement.shoulder} onChange={e=>updateValues("shoulder",e.target.value)}>
                 {shoulderOptions()}
             </select>
-            {(measurement.shoulder=="custom")
+            {(measurement.shoulder=="custom" || (measurement.shoulder=="" && !shoulder.includes(measurement.shoulder)))
                 ?<input name="shoulder_o" type="text" value={(measurement.shoulder=="custom")?"":measurement.shoulder}
                         onChange={e=>updateValues("shoulder",e.target.value)} />
                 :null
@@ -116,7 +138,7 @@ function MeasurementModal1({closeModal, isMobile, measurement, setMeasurement, n
             <select name="biceps" value={measurement.biceps} onChange={e=>updateValues("biceps",e.target.value)}>
                 {bicepsOptions()}
             </select>
-            {(measurement.biceps=="custom")
+            {(measurement.biceps=="custom" || (measurement.biceps!="" && !biceps.includes(measurement.biceps)))
                 ?<input name="biceps_o" type="text" value={(measurement.biceps=="custom")?"":measurement.biceps}
                         onChange={e=>updateValues("biceps",e.target.value)} />
                 :null
