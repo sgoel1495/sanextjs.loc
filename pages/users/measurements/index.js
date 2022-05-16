@@ -22,6 +22,12 @@ function MeasurementsPage() {
     const [showModal2,setShowModal2]=useState(false);
     const [showModal3,setShowModal3]=useState(false);
     const [currentMeasurement,setCurrentMeasurement]=useState(null);
+    const [refresh,setRefresh]=useState(true);
+    const updateValues=(key, value)=>{
+        currentMeasurement[key]=value;
+        setCurrentMeasurement(currentMeasurement);
+        setRefresh(!refresh);
+    }
 
     const measurementKeys = Object.keys(dataStore.userMeasurements);
 
@@ -35,7 +41,8 @@ function MeasurementsPage() {
                     showModal={showModal.bind(this)}
                     deleteMeasurement={deleteMeasurement.bind(this)}
                     index={index}
-                    mobile={dataStore.mobile} />
+                    mobile={dataStore.mobile}
+                />
             </Fragment>
         });
     }
@@ -65,31 +72,24 @@ function MeasurementsPage() {
     }
 
     const getNewKey=()=>{
-        const baseKey = dataStore.userServe.temp_user_id;
-        let newKey="";
-        if(dataStore.userData.contact){
-            //Logged in
-            let currentKey=0;
-            for(let x=1;x<100;x++){
-                newKey=baseKey.toString()+"_"+x.toString();
-                if(!measurementKeys.includes(newKey))
-                    break;
-            }
-        } else {
-            // logged out get from local
+        const baseKey = dataStore.userServe.temp_user_id || Date.now();
 
+        let newKey="";
+        for(let x=1;x<100;x++){
+            newKey=baseKey+"_"+x.toString();
+            if(!measurementKeys.includes(newKey))
+                break;
         }
         return newKey;
     }
 
-    const showModal =(m=null)=>{
-        if(m!=null)
-            setCurrentMeasurement(m);
-        else {
-            const emptyMeasurement = require("../../../store/emptyMeasurement.json");
+    const emptyMeasurement = require("../../../store/emptyMeasurement.json");
+    const showModal =(m)=>{
+        if(emptyMeasurement.measure_id=="")
             emptyMeasurement.measure_id= getNewKey();
-            setCurrentMeasurement(emptyMeasurement);
-        }
+        console.log("Setting Measurement",emptyMeasurement);
+        setCurrentMeasurement(emptyMeasurement);
+
         setShowModal1(true);
     }
 
@@ -113,6 +113,8 @@ function MeasurementsPage() {
         updateDataStore("userMeasurements",dataStore.userMeasurements);
     }
 
+    console.log("Current Measurements",currentMeasurement)
+
     const mobileView = null;
     const browserView = () => {
         return <Fragment>
@@ -125,7 +127,7 @@ function MeasurementsPage() {
                             <p>User Id: {dataStore.userData.contact}</p>
                             <p>Total Measurement(s): {measurementKeys.length}</p>
                         </div>
-                        <div className="flex-1 bg-[#f1f2f3] grid place-items-center" onClick={showModal}>
+                        <div className="flex-1 bg-[#f1f2f3] grid place-items-center" onClick={()=>showModal(emptyMeasurement)}>
                             <span className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2">ADD NEW</span>
                         </div>
                     </div>
@@ -156,8 +158,8 @@ function MeasurementsPage() {
                         closeModal={closeModal.bind(this)}
                         isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
-                        setMeasurement={setCurrentMeasurement.bind(this)}
                         nextModal={nextModal.bind(this)}
+                        updateValues={updateValues.bind(this)}
                     />,
                     document.getElementById("measurementmodal"))
             }
@@ -167,9 +169,9 @@ function MeasurementsPage() {
                         closeModal={closeModal.bind(this)}
                         isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
-                        setMeasurement={setCurrentMeasurement.bind(this)}
                         nextModal={nextModal.bind(this)}
                         lastModal={lastModal.bind(this)}
+                        updateValues={updateValues.bind(this)}
                     />,
                     document.getElementById("measurementmodal"))
             }

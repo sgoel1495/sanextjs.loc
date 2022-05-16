@@ -1,6 +1,6 @@
 import {apiCall} from "./apiCall";
 
-export async function updateUserDataAfterLogin(username, apiToken){
+export async function updateUserDataAfterLogin(username, apiToken, currentUserMeasurements){
     let userData = {
         contact: username
     }
@@ -39,6 +39,20 @@ export async function updateUserDataAfterLogin(username, apiToken){
     if (addressCall.hasOwnProperty("response") && addressCall.response)
         userAddresses = [...addressCall.response];
 
+    // we may have measurements so we need to add first.
+    const measurementKeys = Object.keys(currentUserMeasurements);
+    const tempId = userServe.temp_user_id || Date.now()
+    for(const key in measurementKeys){
+        await apiCall("addMeasurements", apiToken, {
+            "user": {
+                email: username,
+                is_guest: false,
+                temp_user_id: tempId
+            },
+            "measurments":currentUserMeasurements[key]
+        })
+    }
+
     const measurementCall = await apiCall("userMeasurements", apiToken, {
         "user":{
             email: username,
@@ -49,7 +63,7 @@ export async function updateUserDataAfterLogin(username, apiToken){
 
     let userMeasurements = {};
     if (measurementCall.hasOwnProperty("response") && measurementCall.response)
-        userMeasurements = measurementCall.response;
+        userMeasurements = measurementCall.response
 
 
     console.log(userData);
