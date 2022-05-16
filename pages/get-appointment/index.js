@@ -48,20 +48,23 @@ function GetAppointmentPage() {
         return returnValue
     }
 
-    const bookAppointment = async ()=>{
-        /*
-        date:"",time:"", lastname:"",phonenumber:"",message:"",storelocation:"dlfmegamall",
-            firstname:"",shoppedbefore:"",somethingspecific:""
+    const updateData=(key,value)=>{
+        formData[key]=value;
+        setFormData(formData)
+    }
 
-         */
+    const bookAppointment = async ()=>{
         let valid=true;
+        let missingKeys="";
         Object.keys(formData).forEach(key=>{
             if(key!=="message" && key!=="somethingspecific")
-                if(formData[key]=="")
+                if(formData[key]==""){
                     valid=false
+                    missingKeys+=" "+key
+                }
         })
         if(!valid){
-            setMsg("Please fill all fields.")
+            setMsg("Please fill all fields. "+missingKeys)
             setShow(true)
         } else {
             const query={
@@ -102,30 +105,30 @@ function GetAppointmentPage() {
                 <div className={`grid grid-cols-2 gap-x-10 gap-y-8`}>
                     <div>
                         <label className={labelStyle} htmlFor="date">Choose Date</label>
-                        <input className={inputStyle} id="date" type="datetime-local" placeholder="dd/mm/yy"/>
+                        <input className={inputStyle} id="date" type="datetime-local" onChange={e=>updateData("date",e.target.value)}/>
                     </div>
                     <div>
                         <label className={labelStyle} htmlFor="time">Preferred Time</label>
-                        <select className={inputStyle}  value={formData.time} id="time" >
+                        <select className={inputStyle}  value={formData.time} id="time" onChange={e=>updateData("time",e.target.value)}>
                             <option value="">Please Select</option>
                             {timeOptions()}
                         </select>
                     </div>
                     <div className={`col-span-2`}>
                         <label className={labelStyle} htmlFor="lastname">Last Name</label>
-                        <input className={inputStyle} id="lastname" type="text"/>
+                        <input className={inputStyle} id="lastname" type="text" onChange={e=>updateData("lastname",e.target.value)}/>
                     </div>
                     <div className={`col-span-2`}>
                         <label className={labelStyle} htmlFor="phonenumber">Phone Number</label>
-                        <input className={inputStyle} id="phonenumber" type="tel"/>
+                        <input className={inputStyle} id="phonenumber" type="tel" onChange={e=>updateData("phonenumber",e.target.value)}/>
                     </div>
                     <div className={`col-span-2`}>
                         <label className={labelStyle} htmlFor="message">Anything you would like to tell us?</label>
-                        <textarea className={textareaStyle} id="message" placeholder="Optional..."/>
+                        <textarea className={textareaStyle} id="message" placeholder="Optional..." onChange={e=>updateData("message",e.target.value)}/>
                     </div>
                     <div className={`col-span-2`}>
                         <label className={labelStyle} htmlFor="storelocation">Select Store Location</label>
-                        <select className={inputStyle} id="storelocation">
+                        <select className={inputStyle} id="storelocation" onChange={e=>updateData("storelocation",e.target.value)}>
                             <option value="dlfmegamall">DLF MEGA MALL</option>
                         </select>
                     </div>
@@ -133,15 +136,15 @@ function GetAppointmentPage() {
                 <div className={`flex flex-col gap-y-8`}>
                     <div>
                         <label className={labelStyle} htmlFor="firstname">First Name</label>
-                        <input className={inputStyle} id="firstname" type="text"/>
+                        <input className={inputStyle} id="firstname" type="text" onChange={e=>updateData("firstname",e.target.value)}/>
                     </div>
                     <div>
                         <label className={labelStyle} htmlFor="email">Email</label>
-                        <input className={inputStyle} id="email" type="email"/>
+                        <input className={inputStyle} id="email" type="email" onChange={e=>updateData("email",e.target.value)}/>
                     </div>
                     <div>
                         <label className={labelStyle} htmlFor="shoppedbefore">Have you shopped with us before?</label>
-                        <select className={inputStyle} id="shoppedbefore">
+                        <select className={inputStyle} id="shoppedbefore" onChange={e=>updateData("shoppedbefore",e.target.value)}>
                             <option value="">Please Select</option>
                             <option value="yes">Yes</option>
                             <option value="no">No</option>
@@ -149,11 +152,11 @@ function GetAppointmentPage() {
                     </div>
                     <div>
                         <label className={labelStyle} htmlFor="somethingspecific">Anything you would like to tell us?</label>
-                        <textarea className={textareaStyle} id="somethingspecific" placeholder="Optional" />
+                        <textarea className={textareaStyle} id="somethingspecific" placeholder="Optional"  onChange={e=>updateData("somethingspecific",e.target.value)}/>
                     </div>
                 </div>
                 <div className={`col-span-2  mt-10 flex justify-center`}>
-                    <button className={`bg-black text-white font-500 text-sm tracking-wide py-3 px-16`}>
+                    <button className={`bg-black text-white font-500 text-sm tracking-wide py-3 px-16`} onClick={bookAppointment}>
                         BOOK AN APPOINTMENT
                     </button>
                 </div>
