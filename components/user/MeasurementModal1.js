@@ -120,7 +120,7 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
             <select name="shoulder" value={measurement.shoulder} onChange={e=>updateValues("shoulder",e.target.value)}>
                 {shoulderOptions()}
             </select>
-            {(measurement.shoulder=="custom" || (measurement.shoulder=="" && !shoulder.includes(measurement.shoulder)))
+            {(measurement.shoulder=="custom" || (measurement.shoulder!="" && !shoulder.includes(measurement.shoulder)))
                 ?<input name="shoulder_o" type="text" value={(measurement.shoulder=="custom")?"":measurement.shoulder}
                         onChange={e=>updateValues("shoulder",e.target.value)} />
                 :null

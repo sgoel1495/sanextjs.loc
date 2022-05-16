@@ -75,19 +75,14 @@ function MeasurementsPage() {
         const baseKey = dataStore.userServe.temp_user_id || Date.now();
 
         let newKey="";
-        if(dataStore.userData.contact){
-            //Logged in
-            for(let x=1;x<100;x++){
-                newKey=baseKey+"_"+x.toString();
-                if(!measurementKeys.includes(newKey))
-                    break;
-            }
-        } else {
-            // logged out get from local
-
+        for(let x=1;x<100;x++){
+            newKey=baseKey+"_"+x.toString();
+            if(!measurementKeys.includes(newKey))
+                break;
         }
         return newKey;
     }
+
     const emptyMeasurement = require("../../../store/emptyMeasurement.json");
     const showModal =(m)=>{
         if(emptyMeasurement.measure_id=="")
