@@ -62,6 +62,12 @@ function GetAppointmentPage() {
                     valid=false
                     missingKeys+=" "+key
                 }
+            if(formData[key]=="phonenumber")
+                formData[key]=formData[key].replace("+","")
+            if(formData[key]=="time")
+                formData[key]=formData[key].replace(" AM","")
+            if(formData[key]=="time")
+                formData[key]=formData[key].replace(" PM","")
         })
         if(!valid){
             setMsg("Please fill all fields. "+missingKeys)
@@ -78,7 +84,9 @@ function GetAppointmentPage() {
                     "is_custome":(dataStore.userData.contact)?"yes":"no",
                     "is_fitting":"Message: "+formData.message+" Specific: "+formData.somethingspecific
             }
+            console.log("query",query)
             const resp = await apiCall("bookAppointmentMob",dataStore.apiToken,query);
+            console.log("result",resp)
             if(resp.response && resp.response=="Done"){
                 setMsg("Appointment done")
                 setShow(true);
@@ -105,7 +113,7 @@ function GetAppointmentPage() {
                 <div className={`grid grid-cols-2 gap-x-10 gap-y-8`}>
                     <div>
                         <label className={labelStyle} htmlFor="date">Choose Date</label>
-                        <input className={inputStyle} id="date" type="datetime-local" onChange={e=>updateData("date",e.target.value)}/>
+                        <input className={inputStyle} id="date" type="date" onChange={e=>updateData("date",e.target.value)}/>
                     </div>
                     <div>
                         <label className={labelStyle} htmlFor="time">Preferred Time</label>
@@ -155,12 +163,12 @@ function GetAppointmentPage() {
                         <textarea className={textareaStyle} id="somethingspecific" placeholder="Optional"  onChange={e=>updateData("somethingspecific",e.target.value)}/>
                     </div>
                 </div>
-                <div className={`col-span-2  mt-10 flex justify-center`}>
-                    <button className={`bg-black text-white font-500 text-sm tracking-wide py-3 px-16`} onClick={bookAppointment}>
-                        BOOK AN APPOINTMENT
-                    </button>
-                </div>
             </form>
+            <div className={`col-span-2  mt-10 flex justify-center`}>
+                <button className={`bg-black text-white font-500 text-sm tracking-wide py-3 px-16`} onClick={bookAppointment}>
+                    BOOK AN APPOINTMENT
+                </button>
+            </div>
         </>
     );
 
