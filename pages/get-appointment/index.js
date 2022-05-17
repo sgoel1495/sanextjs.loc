@@ -84,9 +84,9 @@ function GetAppointmentPage() {
                     "is_custome":(dataStore.userData.contact)?"yes":"no",
                     "is_fitting":"Message: "+formData.message+" Specific: "+formData.somethingspecific
             }
-            console.log("query",query)
+
             const resp = await apiCall("bookAppointmentMob",dataStore.apiToken,query);
-            console.log("result",resp)
+
             if(resp.response && resp.response=="Done"){
                 setMsg("Appointment done")
                 setShow(true);
