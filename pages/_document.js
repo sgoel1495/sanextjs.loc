@@ -10,8 +10,11 @@ class MyDocument extends Document {
 
     render() {
         return (
-            <Html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-                <Head/>
+            <Html lang="en" xmlns="http://www.w3.org/1999/xhtml"  class="js fa-events-icons-ready" >
+                <Head>
+                    <link href="/static/css/bot_css/botui.min.css" rel="stylesheet" key="botui"/>
+                    <link href="/static/css/bot_css/botui-theme-default.css" rel="stylesheet" key="bottheme"/>
+                </Head>
                 <body>
                 <div id="toastContainer" className={"sticky z-toast top-10 right-10 float-right"}/>
                 <div id="toastMobContainer" className={"fixed z-toast bottom-0 w-full"}/>
@@ -23,6 +26,17 @@ class MyDocument extends Document {
                 <div id="bottomDrawer"></div>
                 <Main/>
                 <NextScript/>
+                <div id="my-botui-app">
+                    <div className="botui botui-container">
+                        <div className="botui-messages-container">
+                            <div className="header-div">
+                                <div><span id="salt-logo"><img src="/assets/images/saltlogo-white.png" /></span> <span
+                                    id="close-chat-btn"><img src="/assets/images/close-white.png" /></span></div>
+                            </div>
+                        </div>
+                        <div className="botui-actions-container"></div>
+                    </div>
+                </div>
                 </body>
             </Html>
         );

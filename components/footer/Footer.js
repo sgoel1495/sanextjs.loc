@@ -281,7 +281,7 @@ function Footer(props) {
                     </ul>
                 </div>
             </div>
-            <div className="px-4 flex items-center justify-center">
+            <div className="px-4 flex items-center justify-center" id="my-botui-app-btn">
                 <button className={"px-12 py-4 bg-black text-white uppercase tracking-wider"}>Contact Us</button>
             </div>
             <div className={"px-4 mb-2 mt-4"}>
