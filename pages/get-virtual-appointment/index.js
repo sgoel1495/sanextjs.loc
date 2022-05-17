@@ -6,6 +6,7 @@ import AppWideContext from "../../store/AppWideContext";
 import {Fragment, useContext, useEffect, useState} from "react";
 import Header from "../../components/navbar/Header";
 import {apiCall} from "../../helpers/apiCall";
+import Toast from "../../components/common/Toast";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
@@ -168,6 +169,11 @@ function GetVirtualAppointmentPage() {
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>
+            <Toast show={show} hideToast={() => {
+                setShow(false)
+            }}>
+                <p>{msg}</p>
+            </Toast>
         </Fragment>
     )
 
