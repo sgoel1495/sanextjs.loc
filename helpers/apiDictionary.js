@@ -374,6 +374,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+
+        case "cityByZipcode":
+            url += "/users/get_city_by_zipcode";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         default:
             url = null;
             break;

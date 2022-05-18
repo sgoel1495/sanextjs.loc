@@ -1,14 +1,26 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState} from 'react';
 import WishlistButton from "../../common/WishListButton";
 import appSettings from "../../../store/appSettings";
 import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
+import {apiCall} from "../../../helpers/apiCall";
 
 const DetailsCard = ({ data, hpid }) => {
     const { dataStore } = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const [deliveryAvailable,setDeliveryAvailable] = useState(null);
+    const [pincode,setPinCode] = useState(null);
+
+    const checkDelivery = async ()=>{
+        if(pincode==null)
+            return;
+        const resp = await apiCall("cityByZipcode",dataStore.apiToken,{zipcode:pincode});
+        setDeliveryAvailable( (resp.response_data && resp.response_data.city)?true:false )
+    }
+
+
     return (
         <div>
             <div className={"bg-white p-4 shadow-xl"}>
@@ -67,9 +79,27 @@ const DetailsCard = ({ data, hpid }) => {
             <div className={"bg-white mt-2 border-4 border-black/10 p-1"}>
                 <p className={"text-[10px] tracking-tight font-600 mb-1"}> Please enter PIN to check delivery availability.</p>
                 <div className={"inline-flex justify-between"}>
-                    <input placeholder={"Enter pincode"} className='border border-black text-sm w-3/5 placeholder:text-black font-500' />
-                    <button className={"bg-black text-white uppercase text-sm px-2"}>Submit</button>
+                    <input placeholder={"Enter pincode"} type="number"
+                           className='border border-black text-sm w-3/5 placeholder:text-black font-500'
+                           onChange={e=>setPinCode(e.target.value)}
+                    />
+                    <button
+                        className={"bg-black text-white uppercase text-sm px-2"}
+                        onClick={checkDelivery}
+                    >Submit</button>
                 </div>
+                {(deliveryAvailable==null)
+                    ?null
+                    :(deliveryAvailable)
+                    ?<div>Delivery Available!</div>
+                    :<div>
+                    Sorry! Delivery not available to this location.
+                    <Link href="/salt/contact-us">
+                    <a> Contact Us </a>
+                    </Link>
+                    if you do not see your pincode.
+                    </div>
+                }
             </div>
         </div>
     );
