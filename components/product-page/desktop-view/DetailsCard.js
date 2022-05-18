@@ -44,7 +44,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <p className={"text-sm text-black/50 font-500"}>{data.tag_line}</p>
                 </div>
                 <div className={"flex justify-between font-600 mb-4 text-black/60"}>
-                    {[26, 28, 30, 32, 34, 36].map((item, index) => {
+                    {["XS","S","M","L","XL","XXL"].map((item, index) => {
                         if (index > 0)
                             return <>
                                 <span className={""} key={"div" + index}>|</span>
@@ -73,6 +73,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <span className='leading-none'>+</span>
                     <p className={"uppercase text-sm"}>product details</p>
                 </div>
+                <div className="flex items-center justify-center mb-5">5.0 ★ ★ ★ ★ ★</div>
                 <div>
                     <span className={"block"}>More Colors</span>
                     <div className={"flex"}>
