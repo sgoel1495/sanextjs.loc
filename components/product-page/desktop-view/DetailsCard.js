@@ -4,6 +4,9 @@ import appSettings from "../../../store/appSettings";
 import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import {apiCall} from "../../../helpers/apiCall";
+import ReactDom from "react-dom";
+import MeasurementModal1 from "../../user/MeasurementModal1";
+import SizeGuide from "../SizeGuide";
 
 const DetailsCard = ({ data, hpid }) => {
     const { dataStore } = useContext(AppWideContext);
@@ -12,6 +15,12 @@ const DetailsCard = ({ data, hpid }) => {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [deliveryAvailable,setDeliveryAvailable] = useState(null);
     const [pincode,setPinCode] = useState(null);
+    const [showModal,setShowModal]=useState(false);
+
+    const closeModal = ()=> {
+        setShowModal(false);
+    }
+
 
     const checkDelivery = async ()=>{
         if(pincode==null)
@@ -19,7 +28,6 @@ const DetailsCard = ({ data, hpid }) => {
         const resp = await apiCall("cityByZipcode",dataStore.apiToken,{zipcode:pincode});
         setDeliveryAvailable( (resp.response_data && resp.response_data.city)?true:false )
     }
-
 
     return (
         <div>
@@ -45,7 +53,12 @@ const DetailsCard = ({ data, hpid }) => {
                         return <span className={""} key={index}>{item}</span>
                     })}
                 </div>
-                <p className={"text-sm text-center uppercase mb-2 text-black/60 font-500 text-xs"}>size guide</p>
+                <p
+                    className={"text-sm text-center uppercase mb-2 text-black/60 font-500 text-xs"}
+                    onClick={()=>setShowModal(true)}
+                >
+                    size guide
+                </p>
                 <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"}>
                     <span className={"uppercase underline"}>tailor it</span>
                     <span className={""}>/</span>
@@ -94,13 +107,18 @@ const DetailsCard = ({ data, hpid }) => {
                     ?<div>Delivery Available!</div>
                     :<div>
                     Sorry! Delivery not available to this location.
-                    <Link href="/salt/contact-us">
-                    <a> Contact Us </a>
-                    </Link>
+                            <Link href="/salt/contact-us">
+                                <a> Contact Us </a>
+                            </Link>
                     if you do not see your pincode.
                     </div>
                 }
             </div>
+            {showModal &&
+                ReactDom.createPortal(
+                    <SizeGuide closeModal={closeModal.bind(this)} isMobile={dataStore.isMobile} />,
+                    document.getElementById("measurementmodal"))
+            }
         </div>
     );
 };
