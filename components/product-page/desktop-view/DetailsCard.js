@@ -1,14 +1,34 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState} from 'react';
 import WishlistButton from "../../common/WishListButton";
 import appSettings from "../../../store/appSettings";
 import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
+import {apiCall} from "../../../helpers/apiCall";
+import ReactDom from "react-dom";
+import MeasurementModal1 from "../../user/MeasurementModal1";
+import SizeGuide from "../SizeGuide";
 
 const DetailsCard = ({ data, hpid }) => {
     const { dataStore } = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const [deliveryAvailable,setDeliveryAvailable] = useState(null);
+    const [pincode,setPinCode] = useState(null);
+    const [showModal,setShowModal]=useState(false);
+
+    const closeModal = ()=> {
+        setShowModal(false);
+    }
+
+
+    const checkDelivery = async ()=>{
+        if(pincode==null)
+            return;
+        const resp = await apiCall("cityByZipcode",dataStore.apiToken,{zipcode:pincode});
+        setDeliveryAvailable( (resp.response_data && resp.response_data.city)?true:false )
+    }
+
     return (
         <div>
             <div className={"bg-white p-4 shadow-xl"}>
@@ -24,7 +44,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <p className={"text-sm text-black/50 font-500"}>{data.tag_line}</p>
                 </div>
                 <div className={"flex justify-between font-600 mb-4 text-black/60"}>
-                    {[26, 28, 30, 32, 34, 36].map((item, index) => {
+                    {["XS","S","M","L","XL","XXL"].map((item, index) => {
                         if (index > 0)
                             return <>
                                 <span className={""} key={"div" + index}>|</span>
@@ -33,7 +53,12 @@ const DetailsCard = ({ data, hpid }) => {
                         return <span className={""} key={index}>{item}</span>
                     })}
                 </div>
-                <p className={"text-sm text-center uppercase mb-2 text-black/60 font-500 text-xs"}>size guide</p>
+                <p
+                    className={"text-sm text-center uppercase mb-2 text-black/60 font-500 text-xs"}
+                    onClick={()=>setShowModal(true)}
+                >
+                    size guide
+                </p>
                 <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"}>
                     <span className={"uppercase underline"}>tailor it</span>
                     <span className={""}>/</span>
@@ -48,6 +73,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <span className='leading-none'>+</span>
                     <p className={"uppercase text-sm"}>product details</p>
                 </div>
+                <div className="flex items-center justify-center mb-5">5.0 ★ ★ ★ ★ ★</div>
                 <div>
                     <span className={"block"}>More Colors</span>
                     <div className={"flex"}>
@@ -67,10 +93,33 @@ const DetailsCard = ({ data, hpid }) => {
             <div className={"bg-white mt-2 border-4 border-black/10 p-1"}>
                 <p className={"text-[10px] tracking-tight font-600 mb-1"}> Please enter PIN to check delivery availability.</p>
                 <div className={"inline-flex justify-between"}>
-                    <input placeholder={"Enter pincode"} className='border border-black text-sm w-3/5 placeholder:text-black font-500' />
-                    <button className={"bg-black text-white uppercase text-sm px-2"}>Submit</button>
+                    <input placeholder={"Enter pincode"} type="number"
+                           className='border border-black text-sm w-3/5 placeholder:text-black font-500'
+                           onChange={e=>setPinCode(e.target.value)}
+                    />
+                    <button
+                        className={"bg-black text-white uppercase text-sm px-2"}
+                        onClick={checkDelivery}
+                    >Submit</button>
                 </div>
+                {(deliveryAvailable==null)
+                    ?null
+                    :(deliveryAvailable)
+                    ?<div>Delivery Available!</div>
+                    :<div>
+                    Sorry! Delivery not available to this location.
+                            <Link href="/salt/contact-us">
+                                <a> Contact Us </a>
+                            </Link>
+                    if you do not see your pincode.
+                    </div>
+                }
             </div>
+            {showModal &&
+                ReactDom.createPortal(
+                    <SizeGuide closeModal={closeModal.bind(this)} isMobile={dataStore.isMobile} />,
+                    document.getElementById("measurementmodal"))
+            }
         </div>
     );
 };

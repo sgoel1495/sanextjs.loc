@@ -396,7 +396,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-
         default:
             url = null;
             break;
