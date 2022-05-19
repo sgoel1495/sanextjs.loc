@@ -98,16 +98,18 @@ const DetailsCard = ({ data, hpid }) => {
             dress_length : ""
         }
 
-        const resp = apiCall("addToCart",dataStore.apiToken,{user:userO,cart:cart})
-        if(resp.response && resp.response.msg) {
+        const resp = await apiCall("addToCart",dataStore.apiToken,{user:userO,cart:cart})
+        if(resp.response && resp.response=="success") {
             setToastMsg("Added to Cart")
             setShowToast(true)
+            // refresh the cart
+            const respCart = await apiCall("getCart",dataStore.apiToken,{user:userO})
+            if(respCart.response && Array.isArray(respCart.response))
+                updateDataStore("userCart",respCart.response)
+            console.log("Cart",respCart)
         }
+        console.log("ADD TO CART RESP",resp)
 
-        // refresh the cart
-        const respCart = apiCall("getCart",dataStore.apiToken,{user:userO})
-        if(respCart.response && Array.isArray(respCart.response))
-            updateDataStore("userCart",respCart.response)
     }
 
     return (

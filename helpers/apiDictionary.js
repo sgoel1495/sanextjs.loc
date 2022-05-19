@@ -398,7 +398,27 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "getCart":
-            url += "/getCart";
+            url += "/get_cart";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "updateCart":
+            url += "/update_cart";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "removeCart":
+            url += "/update_cart";
             body = {
                 token: apiToken,
                 ...queryObject

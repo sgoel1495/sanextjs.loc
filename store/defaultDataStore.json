@@ -1,6 +1,7 @@
 {
   "mobile": false,
   "currCurrency": "inr",
+  "currSymbol": "₹",
   "apiToken": null,
   "categories": [
     {

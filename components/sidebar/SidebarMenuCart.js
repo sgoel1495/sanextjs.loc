@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import ReactDom from "react-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Autoplay} from "swiper";
 import "swiper/css";
+import AppWideContext from "../../store/AppWideContext";
+import {apiCall} from "../../helpers/apiCall";
 
 SwiperCore.use([Autoplay]);
 
@@ -15,9 +17,7 @@ SwiperCore.use([Autoplay]);
  */
 
 function CartModal(props) {
-    /*
-    @Sambhav Please complete the modal as you see correct
-     */
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const {closeModal} = props;
 
     const imageClass = "block relative w-40 h-40";
@@ -206,6 +206,129 @@ function CartModal(props) {
         )
     }
 
+    /*
+    {
+      "product_id": "Tops-Rooh-PinkShirtTop",
+      "size": "S",
+      "qty": "1",
+      "is_sale": "false",
+      "is_tailor": "false",
+      "sleeve_length": "",
+      "dress_length": "",
+      "cart_id": "Tops-Rooh-PinkShirtTop+S",
+      "asset_id": "/assets/Tops-Rooh-PinkShirtTop/thumb.jpg",
+      "tag_line": "Pink Shirt Top",
+      "color": {
+        "name": "pink",
+        "code": "#fff"
+      },
+      "name": "Rooh",
+      "price": 1850.0,
+      "usd_price": 26
+    }
+  ]
+}
+     */
+    const userO = {
+        email: (dataStore.userData.contact)?dataStore.userData.contact:"",
+        is_guest: (dataStore.userData.contact)?true:false,
+        temp_user_id: dataStore.userServe.temp_user_id
+    }
+
+    const refreshCart=async ()=>{
+        //retrieve from api and update
+        let userCart = [];
+        const cartCall = await apiCall("getCart", dataStore.apiToken, {"user":userO});
+        if (cartCall.response && Array.isArray(cartCall.response) )
+            userCart = [...cartCall.response];
+        updateDataStore("userCart",userCart)
+    }
+
+    const changeQty=async (i,n)=>{
+        if(n==1){
+            // increase
+            dataStore.userCart[i].qty=(parseInt(dataStore.userCart[i].qty)+1).toString();
+        } else if(n==-1){
+            const cv=parseInt(dataStore.userCart[i].qty)
+            if(cv>1)
+                dataStore.userCart[i].qty=(cv-1).toString();
+        }
+        //update in api
+        /*
+        {
+  "user" : { "email" : "",
+     "is_guest" : true,
+     "temp_user_id" : "1599477182"
+  },
+  "product" : { "product_cart_id" : "Tops-Colva-NotchNeckLinenTop+M",
+  "qty" : "2"},
+  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+}
+         */
+        const updateProduct={
+            product_cart_id:dataStore.userCart[i].product_cart_id,
+            qty:dataStore.userCart[i].qty
+        }
+        await apiCall("updateCart", dataStore.apiToken, {"user":userO,product:updateProduct});
+        await refreshCart()
+    }
+
+    const removeFromCart=async (i)=>{
+        /*
+        {
+  "user" : { "email" : "",
+     "is_guest" : true,
+     "temp_user_id" : "1599477182"
+   },
+  "product" : { "product_cart_id" : "Tops-Colva-NotchNeckLinenTop+M" },
+  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+}
+         */
+        const updateProduct={
+            product_cart_id:dataStore.userCart[i].product_cart_id
+        }
+        const updateCall= await apiCall("removeCart", dataStore.apiToken, {"user":userO,product:updateProduct});
+        await refreshCart()
+    }
+
+    const productCartView=()=>{
+        let returnValues=null;
+        dataStore.userCart.forEach((p,index)=>{
+            returnValues=<Fragment>
+                {returnValues}
+                <div>
+                    <div>
+                        <Image src={WEBASSETS+p.asset_id} alt={p.cart_id}
+                                id={p.cart_id+index.toString()}
+                                layout="fill"
+                                objectFit="cover"
+                        />
+                    </div>
+                    <div>
+                        <div onClick={()=>removeFromCart(index)}>
+                            X
+                        </div>
+                        <div>{p.name}</div>
+                        <div>{p.tag_line}</div>
+                        <div>COLOR:{p.color.name}</div>
+                        <div>SIZE:{p.size}</div>
+                        <div>
+                            Qty
+                            <div onClick={()=>changeQty(index,-1)}>-</div>
+                            <div>{p.qty}</div>
+                            <div onClick={()=>changeQty(index,1)}>+</div>
+                        </div>
+                        <div>
+                            {dataStore.currSymbol} {(dataStore.currCurrency=="inr")?p.price:p.usd_price}
+                        </div>
+                    </div>
+                </div>
+            </Fragment>
+        })
+
+        return returnValues
+    }
+
     const mobileView = null;
 
     const browserView = (
@@ -221,6 +344,13 @@ function CartModal(props) {
                 </button>
                 <div className={`text-center font-600 tracking-wider mb-10`}>
                     <p className={`text-sm mb-6`}>YOUR CART</p>
+                    {(dataStore.userCart.length>0)
+                        ?<Fragment>
+                            <div>CHECKOUT</div>
+                            {productCartView()}
+                        </Fragment>
+                        :null
+                    }
                     <span className={`block relative w-16 h-16 mx-auto mb-4`}>
                         <Image
                             id="emptycart"
@@ -235,6 +365,10 @@ function CartModal(props) {
                     <Link href="/new-arrivals/all">
                         <a className="underline uppercase text-sm">Continue Shopping</a>
                     </Link>
+                    {(dataStore.userCart.length>0)
+                        ?<div>CHECKOUT</div>
+                        :null
+                    }
                 </div>
                 {returnPolicy}
                 {mediaBuzz()}
