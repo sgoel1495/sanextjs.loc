@@ -13,7 +13,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
         "wallet_amount": 0,
         "usd_wallet_amount": 0
     };
-    if (walletCall.hasOwnProperty("response") && walletCall.response)
+    if (walletCall.hasOwnProperty("response") && walletCall.response && walletCall.response.email)
         userWallet = walletCall.response;
 
     const serveCall = await apiCall("userServe", apiToken, { contact: username });
@@ -26,7 +26,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
         "ref_id": null,
         "temp_user_id": ""
     };
-    if (serveCall.hasOwnProperty("response") && serveCall.response)
+    if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email)
         userServe = serveCall.response;
 
     const addressCall = await apiCall("userAddresses", apiToken, {
@@ -36,7 +36,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
     });
 
     let userAddresses = [];
-    if (addressCall.hasOwnProperty("response") && addressCall.response)
+    if (addressCall.hasOwnProperty("response") && addressCall.response && Array.isArray(addressCall.response) )
         userAddresses = [...addressCall.response];
 
     // we may have measurements so we need to add first.
@@ -57,12 +57,12 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
         "user":{
             email: username,
             is_guest: false,
-            temp_user_id: userServe.temp_user_id
+            temp_user_id: tempId
         }
     });
 
     let userMeasurements = {};
-    if (measurementCall.hasOwnProperty("response") && measurementCall.response)
+    if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length>0)
         userMeasurements = measurementCall.response
 
 
