@@ -1,9 +1,12 @@
 import {apiCall} from "./apiCall";
 
-export async function updateUserDataAfterLogin(username, apiToken, currentUserMeasurements){
+export async function updateUserDataAfterLogin(username, apiToken, currentUserMeasurements, currentCart){
+    //==================== user Data
     let userData = {
         contact: username
     }
+
+    //==================== user Wallet
     const walletCall = await apiCall("userWallet", apiToken, { contact: username });
 
     let userWallet = {
@@ -16,6 +19,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
     if (walletCall.hasOwnProperty("response") && walletCall.response && walletCall.response.email)
         userWallet = walletCall.response;
 
+    //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, { contact: username });
     let userServe = {
         "email": "",
@@ -24,41 +28,50 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
         "favorites": [],
         "cart": {},
         "ref_id": null,
-        "temp_user_id": ""
+        "temp_user_id": Date.now()
     };
     if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email)
         userServe = serveCall.response;
 
+    //==================== user Address
     const addressCall = await apiCall("userAddresses", apiToken, {
         "user":{
             email: username
         }
     });
+    const tempId = userServe.temp_user_id || Date.now()
+    const userO = {
+        email: username,
+        is_guest: false,
+        temp_user_id: tempId
+    }
 
     let userAddresses = [];
     if (addressCall.hasOwnProperty("response") && addressCall.response && Array.isArray(addressCall.response) )
         userAddresses = [...addressCall.response];
 
+    // @TODO Conflict on the cart data structure.
+    //==================== user Cart
+    // we may have products that we need to add to user
+    // there are two types of cart products tailored and not.
+
+    let userCart = [];
+    const cartCall = await apiCall("getCart", apiToken, {"user":userO});
+    if (cartCall.response && Array.isArray(cartCall.response) )
+        userCart = [...cartCall.response];
+
+    //==================== user Measurement
     // we may have measurements so we need to add first.
     const measurementKeys = Object.keys(currentUserMeasurements);
-    const tempId = userServe.temp_user_id || Date.now()
     for(const key in measurementKeys){
         await apiCall("addMeasurements", apiToken, {
-            "user": {
-                email: username,
-                is_guest: false,
-                temp_user_id: tempId
-            },
+            "user": userO,
             "measurments":currentUserMeasurements[key]
         })
     }
 
     const measurementCall = await apiCall("userMeasurements", apiToken, {
-        "user":{
-            email: username,
-            is_guest: false,
-            temp_user_id: tempId
-        }
+        "user":userO
     });
 
     let userMeasurements = {};
@@ -70,6 +83,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
     console.log(userWallet);
     console.log(userServe);
     console.log(userAddresses);
+    console.log(userCart);
     console.log(userMeasurements);
 
     return {

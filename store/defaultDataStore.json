@@ -98,6 +98,6 @@
   },
   "userAddresses": [],
   "defaultAddress": null,
-  "userMeasurements": {}
-
+  "userMeasurements": {},
+  "userCart": []
 }

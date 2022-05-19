@@ -386,8 +386,19 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== CART
+            //same link for adding tailored and non tailored
         case "addToCart":
             url += "/add_to_cart";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getCart":
+            url += "/getCart";
             body = {
                 token: apiToken,
                 ...queryObject

@@ -4,7 +4,6 @@ import { apiDictionary } from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
-import {apiCall} from "../../../helpers/apiCall";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
 
 
@@ -23,7 +22,7 @@ const LoginForm = (props) => {
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
         const existingUserMeasurements = dataStore.userMeasurements || {};
-        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,existingUserMeasurements);
+        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,existingUserMeasurements,dataStore.userCart);
         console.log("reached here",updateData);
         Object.keys(updateData).forEach((key)=>{
             updateDataStore(key, updateData[key]);
