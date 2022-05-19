@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, { Fragment, useContext, useState } from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
@@ -18,13 +18,13 @@ function MeasurementsPage() {
     if (dataStore.userData.contact == null)
         router.replace("/"); //illegal direct access
 
-    const [showModal1,setShowModal1]=useState(false);
-    const [showModal2,setShowModal2]=useState(false);
-    const [showModal3,setShowModal3]=useState(false);
-    const [currentMeasurement,setCurrentMeasurement]=useState(null);
-    const [refresh,setRefresh]=useState(true);
-    const updateValues=(key, value)=>{
-        currentMeasurement[key]=value;
+    const [showModal1, setShowModal1] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
+    const [showModal3, setShowModal3] = useState(false);
+    const [currentMeasurement, setCurrentMeasurement] = useState(null);
+    const [refresh, setRefresh] = useState(true);
+    const updateValues = (key, value) => {
+        currentMeasurement[key] = value;
         setCurrentMeasurement(currentMeasurement);
         setRefresh(!refresh);
     }
@@ -47,73 +47,73 @@ function MeasurementsPage() {
         });
     }
 
-    const nextModal = ()=>{
-        if(showModal1){
+    const nextModal = () => {
+        if (showModal1) {
             setShowModal1(false);
             setShowModal2(true);
             setShowModal3(false);
-        } else if(showModal2){
+        } else if (showModal2) {
             setShowModal1(false);
             setShowModal2(false);
             setShowModal3(true);
         }
     }
 
-    const lastModal = ()=>{
-        if(showModal2){
+    const lastModal = () => {
+        if (showModal2) {
             setShowModal1(true);
             setShowModal2(false);
             setShowModal3(false);
-        } else if(showModal3){
+        } else if (showModal3) {
             setShowModal1(false);
             setShowModal2(true);
             setShowModal3(false);
         }
     }
 
-    const getNewKey=()=>{
+    const getNewKey = () => {
         const baseKey = dataStore.userServe.temp_user_id || Date.now();
 
-        let newKey="";
-        for(let x=1;x<100;x++){
-            newKey=baseKey+"_"+x.toString();
-            if(!measurementKeys.includes(newKey))
+        let newKey = "";
+        for (let x = 1; x < 100; x++) {
+            newKey = baseKey + "_" + x.toString();
+            if (!measurementKeys.includes(newKey))
                 break;
         }
         return newKey;
     }
 
     const emptyMeasurement = require("../../../store/emptyMeasurement.json");
-    const showModal =(m)=>{
-        if(emptyMeasurement.measure_id=="")
-            emptyMeasurement.measure_id= getNewKey();
-        console.log("Setting Measurement",emptyMeasurement);
+    const showModal = (m) => {
+        if (emptyMeasurement.measure_id == "")
+            emptyMeasurement.measure_id = getNewKey();
+        console.log("Setting Measurement", emptyMeasurement);
         setCurrentMeasurement(emptyMeasurement);
 
         setShowModal1(true);
     }
 
-    const closeModal = ()=> {
+    const closeModal = () => {
         setShowModal1(false);
         setShowModal2(false);
         setShowModal3(false);
         setCurrentMeasurement(null);
     }
 
-    const saveModal=()=>{
-        if(currentMeasurement){
-            dataStore.userMeasurements[currentMeasurement.measure_id]=currentMeasurement
-            updateDataStore("userMeasurements",dataStore.userMeasurements)
+    const saveModal = () => {
+        if (currentMeasurement) {
+            dataStore.userMeasurements[currentMeasurement.measure_id] = currentMeasurement
+            updateDataStore("userMeasurements", dataStore.userMeasurements)
         }
         closeModal()
     }
 
-    const deleteMeasurement=(m)=>{
+    const deleteMeasurement = (m) => {
         delete dataStore.userMeasurements[m];
-        updateDataStore("userMeasurements",dataStore.userMeasurements);
+        updateDataStore("userMeasurements", dataStore.userMeasurements);
     }
 
-    console.log("Current Measurements",currentMeasurement)
+    console.log("Current Measurements", currentMeasurement)
 
     const mobileView = null;
     const browserView = () => {
@@ -127,8 +127,8 @@ function MeasurementsPage() {
                             <p>User Id: {dataStore.userData.contact}</p>
                             <p>Total Measurement(s): {measurementKeys.length}</p>
                         </div>
-                        <div className="flex-1 bg-[#f1f2f3] grid place-items-center" onClick={()=>showModal(emptyMeasurement)}>
-                            <span className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2">ADD NEW</span>
+                        <div className="flex-1 bg-[#f1f2f3] grid place-items-center" >
+                            <button className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => showModal(emptyMeasurement)}>ADD NEW</button>
                         </div>
                     </div>
                     <div>
@@ -146,7 +146,7 @@ function MeasurementsPage() {
         </Fragment>
     }
 
-    console.log("MEASUREMENT",currentMeasurement);
+    console.log("MEASUREMENT", currentMeasurement);
     return (
         <Fragment>
             <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />

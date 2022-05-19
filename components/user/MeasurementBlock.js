@@ -5,7 +5,7 @@ function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mo
     const mobileView = null;
     const browserView = <Fragment>
         <div>
-            <div>{index+1}. Measurement Profile</div>
+            <div>{index + 1}. Measurement Profile</div>
             <div>Measurement ID: {measurement.measure_id}</div>
             <div>Bust: {measurement.bust}</div>
             <div>Waist: {measurement.waist}</div>
