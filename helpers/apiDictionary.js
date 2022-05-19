@@ -375,7 +375,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-            //====================== CART
+        case "cityByZipcode":
+            url += "/users/get_city_by_zipcode";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        //====================== CART
         case "addToCart":
             url += "/add_to_cart";
             body = {
