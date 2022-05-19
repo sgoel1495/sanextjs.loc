@@ -386,6 +386,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== CART
+            //same link for adding tailored and non tailored
         case "addToCart":
             url += "/add_to_cart";
             body = {

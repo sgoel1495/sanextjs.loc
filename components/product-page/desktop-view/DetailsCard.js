@@ -8,6 +8,14 @@ import ReactDom from "react-dom";
 import MeasurementModal1 from "../../user/MeasurementModal1";
 import SizeGuide from "../SizeGuide";
 
+/**
+ * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
+ * @param data
+ * @param hpid
+ * @returns {JSX.Element}
+ * @constructor
+ */
+
 const DetailsCard = ({ data, hpid }) => {
     const { dataStore } = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
@@ -16,6 +24,7 @@ const DetailsCard = ({ data, hpid }) => {
     const [deliveryAvailable,setDeliveryAvailable] = useState(null);
     const [pincode,setPinCode] = useState(null);
     const [showModal,setShowModal]=useState(false);
+    const [selectedSize,setSelectedSize]=useState(null);
 
     const closeModal = ()=> {
         setShowModal(false);
@@ -43,14 +52,15 @@ const DetailsCard = ({ data, hpid }) => {
                     <p className={"text-2xl"}>{data.name}</p>
                     <p className={"text-sm text-black/50 font-500"}>{data.tag_line}</p>
                 </div>
+
                 <div className={"flex justify-between font-600 mb-4 text-black/60"}>
                     {["XS","S","M","L","XL","XXL"].map((item, index) => {
                         if (index > 0)
                             return <>
                                 <span className={""} key={"div" + index}>|</span>
-                                <span className={""} key={index}>{item}</span>
+                                <span className={(selectedSize==item)?"":""} key={index} onClick={()=>setSelectedSize(item)}>{item}</span>
                             </>
-                        return <span className={""} key={index}>{item}</span>
+                        return <span className={(selectedSize==item)?"":""} key={index}  onClick={()=>setSelectedSize(item)}>{item}</span>
                     })}
                 </div>
                 <p
