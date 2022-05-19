@@ -7,6 +7,7 @@ import {apiCall} from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
 import MeasurementModal1 from "../../user/MeasurementModal1";
 import SizeGuide from "../SizeGuide";
+import Toast from "../../common/Toast";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -17,7 +18,7 @@ import SizeGuide from "../SizeGuide";
  */
 
 const DetailsCard = ({ data, hpid }) => {
-    const { dataStore } = useContext(AppWideContext);
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
@@ -25,6 +26,9 @@ const DetailsCard = ({ data, hpid }) => {
     const [pincode,setPinCode] = useState(null);
     const [showModal,setShowModal]=useState(false);
     const [selectedSize,setSelectedSize]=useState(null);
+    //for toast
+    const [toastMsg,setToastMsg]=useState(null);
+    const [showToast,setShowToast]=useState(false);
 
     const closeModal = ()=> {
         setShowModal(false);
@@ -36,6 +40,70 @@ const DetailsCard = ({ data, hpid }) => {
             return;
         const resp = await apiCall("cityByZipcode",dataStore.apiToken,{zipcode:pincode});
         setDeliveryAvailable( (resp.response_data && resp.response_data.city)?true:false )
+    }
+
+    const addToCart=async ()=>{
+        //check if there is a size
+        if(selectedSize==null || selectedSize==""){
+            setToastMsg("Please select a size first")
+            setShowToast(true)
+            return
+        }
+        // lets add to cart
+        /*
+        "{
+   ""user"" : { ""email"" : """",
+     ""is_guest"" : true,
+     ""temp_user_id"" : ""1599477182""
+   },
+   ""cart"" : { ""product_id"" : ""Tops-Colva-NotchNeckLinenTop"",
+       ""size"" : ""M"",
+       ""qty"" : ""1"",
+       ""is_sale"" : ""false"",
+       ""is_tailor"" : ""false"",
+       ""sleeve_length"" : """",
+       ""dress_length"" : """"
+   },
+  ""token"" : ""b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0""
+}"
+
+         */
+        let userO = null;
+        let tempId=null;
+        if(!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id==""){
+            tempId=Date.now()
+            dataStore.userServe.temp_user_id=tempId
+            updateDataStore("userServe",dataStore.userServe)
+        } else
+            tempId=dataStore.userServe.temp_user_id
+
+        if(dataStore.userData.contact){
+            userO={ email : dataStore.userData.contact,
+                is_guest : false,
+                temp_user_id : tempId
+            }
+        } else {
+            userO={ email : "",
+                is_guest : true,
+                temp_user_id : tempId
+            }
+        }
+
+        const cart={ product_id : hpid,
+            size : selectedSize,
+            qty : "1",
+            is_sale : false,
+            is_tailor : false,
+            sleeve_length : "",
+            dress_length : ""
+        }
+
+        const resp = apiCall("addToCart",dataStore.apiToken,{user:userO,cart:cart})
+        if(resp.response && resp.response.msg) {
+            setToastMsg("Added to Cart")
+            setShowToast(true)
+        }
+
     }
 
     return (
@@ -75,7 +143,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <span className={"uppercase underline"}>customise</span>
                 </div>
                 <div className="flex items-center justify-center mb-5">
-                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3">
+                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={addToCart}>
                         i&lsquo;ll take it
                     </button>
                 </div>
@@ -130,6 +198,11 @@ const DetailsCard = ({ data, hpid }) => {
                     <SizeGuide closeModal={closeModal.bind(this)} isMobile={dataStore.isMobile} />,
                     document.getElementById("measurementmodal"))
             }
+            <Toast show={showToast} hideToast={() => {
+                setShowToast(false)
+            }}>
+                <p>{toastMsg}</p>
+            </Toast>
         </div>
     );
 };
