@@ -104,6 +104,10 @@ const DetailsCard = ({ data, hpid }) => {
             setShowToast(true)
         }
 
+        // refresh the cart
+        const respCart = apiCall("getCart",dataStore.apiToken,{user:userO})
+        if(respCart.response && Array.isArray(respCart.response))
+            updateDataStore("userCart",respCart.response)
     }
 
     return (
