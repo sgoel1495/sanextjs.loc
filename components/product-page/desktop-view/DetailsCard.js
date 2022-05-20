@@ -137,7 +137,7 @@ const DetailsCard = ({ data, hpid }) => {
         updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
     const saveModal = async () => {
-        //@TODO Buy this
+
         if(currentMeasurement.measure_id==""){
             // add new
             currentMeasurement.measure_id = getNewKey();
@@ -159,6 +159,10 @@ const DetailsCard = ({ data, hpid }) => {
         setCurrentMeasurementProduct(p)
         closeModal()
         addNewModal(p.measurement)
+    }
+
+    const addTailorToCart=async ()=>{
+
     }
 
     const checkDelivery = async ()=>{
@@ -375,6 +379,7 @@ const DetailsCard = ({ data, hpid }) => {
                         measurement={currentMeasurement}
                         lastModal={lastModal.bind(this)}
                         saveModal={saveModal.bind(this)}
+                        addTailorToCart={addTailorToCart.bind(this)}
                         product={currentProduct}
                     />,
                     document.getElementById("measurementmodal"))

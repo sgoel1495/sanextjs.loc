@@ -5,6 +5,7 @@ import Image from "next/image";
 
 function MeasurementModal0 ({ closeModal, isMobile, addNew, pastOrders, measureProduct }) {
     const { dataStore, updateDataStore } = useContext(AppWideContext)
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS
     const getCategory=(i)=>{
         const splitItem = i.split("-")
         return splitItem[0]
