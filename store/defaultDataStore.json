@@ -100,5 +100,6 @@
   "userAddresses": [],
   "defaultAddress": null,
   "userMeasurements": {},
-  "userCart": []
+  "userCart": [],
+  "userOrderHistory": {}
 }

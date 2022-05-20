@@ -17,7 +17,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
         "usd_wallet_amount": 0
     };
     if (walletCall.hasOwnProperty("response") && walletCall.response && walletCall.response.email)
-        userWallet = walletCall.response;
+        userWallet = {...walletCall.response};
 
     //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, { contact: username });
@@ -31,7 +31,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
         "temp_user_id": Date.now()
     };
     if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email)
-        userServe = serveCall.response;
+        userServe = {...serveCall.response};
 
     //==================== user Address
     const addressCall = await apiCall("userAddresses", apiToken, {
@@ -67,7 +67,16 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
 
     let userMeasurements = {};
     if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length>0)
-        userMeasurements = measurementCall.response
+        userMeasurements = {...measurementCall.response}
+
+    //==================== user Measurement
+    const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
+        "user":{contact:username}
+    });
+
+    let userOrderHistory = {};
+    if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && Object.keys(orderHistoryCall.response).length>0)
+        userOrderHistory = {...orderHistoryCall.response}
 
 
     console.log(userData);
@@ -76,6 +85,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
     console.log(userAddresses);
     console.log(userCart);
     console.log(userMeasurements);
+    console.log(userOrderHistory);
 
     return {
         "userData":userData,

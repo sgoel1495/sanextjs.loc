@@ -427,6 +427,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+
+            //====================== ORDERS
+        case "orderHistory":
+            url += "/get_user_orderhistory";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         default:
             url = null;
             break;
