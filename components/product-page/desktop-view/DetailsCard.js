@@ -24,14 +24,14 @@ const DetailsCard = ({ data, hpid }) => {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [deliveryAvailable,setDeliveryAvailable] = useState(null);
     const [pincode,setPinCode] = useState(null);
-    const [showModal,setShowModal]=useState(false);
+    const [measurementModal,setMeasurementModal]=useState(false);
     const [selectedSize,setSelectedSize]=useState(null);
     //for toast
     const [toastMsg,setToastMsg]=useState(null);
     const [showToast,setShowToast]=useState(false);
 
     const closeModal = ()=> {
-        setShowModal(false);
+        setMeasurementModal(false);
     }
 
 
@@ -199,7 +199,7 @@ const DetailsCard = ({ data, hpid }) => {
                     </div>
                 }
             </div>
-            {showModal &&
+            {measurementModal &&
                 ReactDom.createPortal(
                     <SizeGuide closeModal={closeModal.bind(this)} isMobile={dataStore.isMobile} />,
                     document.getElementById("measurementmodal"))
