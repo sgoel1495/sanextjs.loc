@@ -211,6 +211,7 @@ function MeasurementsPage() {
                         nextModal={nextModal.bind(this)}
                         lastModal={lastModal.bind(this)}
                         updateValues={updateValues.bind(this)}
+                        product={null}
                     />,
                     document.getElementById("measurementmodal"))
             }

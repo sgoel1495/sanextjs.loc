@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 
-function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, nextModal }) {
+function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, nextModal, product }) {
     const [refresh, setRefresh] = useState(true);
     const labelMessage = {
         "bust": { "offFocus": "BUST", "onFocus": "(MEASURE AROUND THE FULLEST PART OF YOUR CHEST)" },
