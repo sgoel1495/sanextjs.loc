@@ -198,6 +198,7 @@ function MeasurementsPage() {
                         measurement={currentMeasurement}
                         nextModal={nextModal.bind(this)}
                         updateValues={updateValues.bind(this)}
+                        product={null}
                     />,
                     document.getElementById("measurementmodal"))
             }
@@ -221,6 +222,7 @@ function MeasurementsPage() {
                         measurement={currentMeasurement}
                         lastModal={lastModal.bind(this)}
                         saveModal={saveModal.bind(this)}
+                        product={null}
                     />,
                     document.getElementById("measurementmodal"))
             }
