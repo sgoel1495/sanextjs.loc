@@ -61,15 +61,6 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
         userCart = [...cartCall.response];
 
     //==================== user Measurement
-    // we may have measurements so we need to add first.
-    const measurementKeys = Object.keys(currentUserMeasurements);
-    for(const key in measurementKeys){
-        await apiCall("addMeasurements", apiToken, {
-            "user": userO,
-            "measurments":currentUserMeasurements[key]
-        })
-    }
-
     const measurementCall = await apiCall("userMeasurements", apiToken, {
         "user":userO
     });

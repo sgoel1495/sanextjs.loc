@@ -5,7 +5,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import {apiCall} from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
-import MeasurementModal1 from "../../user/MeasurementModal1";
+//import MeasurementModal1 from "../../user/MeasurementModal1";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
 
@@ -24,15 +24,11 @@ const DetailsCard = ({ data, hpid }) => {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [deliveryAvailable,setDeliveryAvailable] = useState(null);
     const [pincode,setPinCode] = useState(null);
-    const [showModal,setShowModal]=useState(false);
+    const [sizeModal,setSizeModal]=useState(false);
     const [selectedSize,setSelectedSize]=useState(null);
     //for toast
     const [toastMsg,setToastMsg]=useState(null);
     const [showToast,setShowToast]=useState(false);
-
-    const closeModal = ()=> {
-        setShowModal(false);
-    }
 
 
     const checkDelivery = async ()=>{
@@ -139,7 +135,7 @@ const DetailsCard = ({ data, hpid }) => {
                 </div>
                 <p
                     className={"text-sm text-center uppercase mb-2 text-black/60 font-500 text-xs"}
-                    onClick={()=>setShowModal(true)}
+                    onClick={()=>setSizeModal(true)}
                 >
                     size guide
                 </p>
@@ -199,9 +195,9 @@ const DetailsCard = ({ data, hpid }) => {
                     </div>
                 }
             </div>
-            {showModal &&
+            {sizeModal &&
                 ReactDom.createPortal(
-                    <SizeGuide closeModal={closeModal.bind(this)} isMobile={dataStore.isMobile} />,
+                    <SizeGuide closeModal={()=>setSizeModal(false)} isMobile={dataStore.isMobile} />,
                     document.getElementById("measurementmodal"))
             }
             <Toast show={showToast} hideToast={() => {
