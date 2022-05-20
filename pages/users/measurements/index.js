@@ -3,7 +3,6 @@ import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import UsersSideMenu from "../../../components/user/UsersSideMenu";
 import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import ReactDom from "react-dom";
@@ -93,7 +92,7 @@ function MeasurementsPage() {
         }
         return userO
     }
-    const emptyMeasurement = require("../../../store/emptyMeasurement.json");
+
     const showModal = (m) => {
         console.log("Setting Measurement", m);
         setCurrentMeasurement(m);
