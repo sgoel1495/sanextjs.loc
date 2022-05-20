@@ -11,6 +11,7 @@ import emptyMeasurement from "../../../store/emptyMeasurement.json";
 import MeasurementModal1 from "../../../components/user/MeasurementModal1";
 import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
+import {apiCall} from "../../../helpers/apiCall";
 
 function MeasurementsPage() {
     const router = useRouter();
@@ -83,10 +84,17 @@ function MeasurementsPage() {
         return newKey;
     }
 
+    const getUserO=()=>{
+        const tempId = dataStore.userServe.temp_user_id || Date.now()
+        const userO = {
+            email: (dataStore.userData.contact)?dataStore.userData.contact:"",
+            is_guest: !!(dataStore.userData.contact),
+            temp_user_id: tempId
+        }
+        return userO
+    }
     const emptyMeasurement = require("../../../store/emptyMeasurement.json");
     const showModal = (m) => {
-        if (m.measure_id == "")
-            m.measure_id = getNewKey();
         console.log("Setting Measurement", m);
         setCurrentMeasurement(m);
 
@@ -100,17 +108,48 @@ function MeasurementsPage() {
         setCurrentMeasurement(null);
     }
 
-    const saveModal = () => {
-        if (currentMeasurement) {
-            dataStore.userMeasurements[currentMeasurement.measure_id] = currentMeasurement
-            updateDataStore("userMeasurements", dataStore.userMeasurements)
+    const saveModal = async () => {
+        if(currentMeasurement.measure_id==""){
+            // add new
+            currentMeasurement.measure_id = getNewKey();
+        } else {
+            //case update - we simply remove and add
+            await delMeasurement(currentMeasurement)
         }
+        await apiCall("addMeasurements", dataStore.apiToken, {
+            "user": getUserO(),
+            "measurments":currentMeasurement
+        })
+
+        // update DataStore
+        await refreshDataStore()
         closeModal()
     }
 
-    const deleteMeasurement = (m) => {
-        delete dataStore.userMeasurements[m];
-        updateDataStore("userMeasurements", dataStore.userMeasurements);
+    const delMeasurement=async (m)=>{
+        //only delete. no refresh
+        await apiCall("removeMeasurements", dataStore.apiToken, {
+            user: getUserO(),
+            measurments :{
+                measure_id: m.measure_id
+            }
+        });
+    }
+
+    const deleteMeasurement = async (m) => {
+        await delMeasurement(m)
+        await refreshDataStore()
+    }
+
+    const refreshDataStore=async ()=>{
+        const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
+            "user":getUserO()
+        });
+
+        let userMeasurements = {};
+        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length>0)
+            userMeasurements = measurementCall.response
+        updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
 
     console.log("Current Measurements", currentMeasurement)
