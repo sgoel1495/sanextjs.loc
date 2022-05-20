@@ -85,10 +85,10 @@ function MeasurementsPage() {
 
     const emptyMeasurement = require("../../../store/emptyMeasurement.json");
     const showModal = (m) => {
-        if (emptyMeasurement.measure_id == "")
-            emptyMeasurement.measure_id = getNewKey();
-        console.log("Setting Measurement", emptyMeasurement);
-        setCurrentMeasurement(emptyMeasurement);
+        if (m.measure_id == "")
+            m.measure_id = getNewKey();
+        console.log("Setting Measurement", m);
+        setCurrentMeasurement(m);
 
         setShowModal1(true);
     }
