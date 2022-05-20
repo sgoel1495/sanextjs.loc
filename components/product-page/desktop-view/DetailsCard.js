@@ -5,7 +5,12 @@ import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import {apiCall} from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
-//import MeasurementModal1 from "../../user/MeasurementModal1";
+import emptyMeasurement from "../../../store/emptyMeasurement.json"
+import MeasurementModal0 from "../../../components/user/MeasurementModal0"
+import MeasurementModal1 from "../../../components/user/MeasurementModal1";
+import MeasurementModal2 from "../../../components/user/MeasurementModal2";
+import MeasurementModal3 from "../../../components/user/MeasurementModal3";
+import PastOrdersMeasurementModal from "../../../components/user/PastOrdersMeasurementModal";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
 
@@ -18,18 +23,136 @@ import Toast from "../../common/Toast";
  */
 
 const DetailsCard = ({ data, hpid }) => {
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
+    const { dataStore, updateDataStore } = useContext(AppWideContext)
+    const currCurrency = dataStore.currCurrency
+    const currencyData = appSettings("currency_data")
     const currencySymbol = currencyData[currCurrency].curr_symbol;
-    const [deliveryAvailable,setDeliveryAvailable] = useState(null);
-    const [pincode,setPinCode] = useState(null);
-    const [sizeModal,setSizeModal]=useState(false);
-    const [selectedSize,setSelectedSize]=useState(null);
+    const [deliveryAvailable,setDeliveryAvailable] = useState(null)
+    const [pincode,setPinCode] = useState(null)
+    const [sizeModal,setSizeModal]=useState(false)
+    const [selectedSize,setSelectedSize]=useState(null)
+    const [refresh,setRefresh]=useState(false)
     //for toast
-    const [toastMsg,setToastMsg]=useState(null);
-    const [showToast,setShowToast]=useState(false);
+    const [toastMsg,setToastMsg]=useState(null)
+    const [showToast,setShowToast]=useState(false)
 
+    //for tailored model
+    const [showModal0, setShowModal0] = useState(false)
+    const [showModal1, setShowModal1] = useState(false)
+    const [showModal2, setShowModal2] = useState(false)
+    const [showModal3, setShowModal3] = useState(false)
+    const [showModalPastOrders, setShowModalPastOrders] = useState(false)
+    const [currentProduct, setCurrentProduct] = useState(null)
+    const [currentMeasurement, setCurrentMeasurement] = useState(null)
+    const measurementKeys = Object.keys(dataStore.userMeasurements)
+    const nextModal = () => {
+        if (showModal0) {
+            setShowModal0(false)
+            setShowModal1(true)
+            setShowModal2(false)
+            setShowModal3(false)
+        } else if (showModal1) {
+            setShowModal0(false);
+            setShowModal1(false);
+            setShowModal2(true);
+            setShowModal3(false);
+        } else if (showModal2) {
+            setShowModal0(false);
+            setShowModal1(false);
+            setShowModal2(false);
+            setShowModal3(true);
+        }
+    }
+    const lastModal = () => {
+        if (showModal1) {
+            setShowModal0(true);
+            setShowModal1(false);
+            setShowModal2(false);
+            setShowModal3(false);
+        } else if (showModal2) {
+            setShowModal0(false);
+            setShowModal1(true);
+            setShowModal2(false);
+            setShowModal3(false);
+        } else if (showModal3) {
+            setShowModal1(false);
+            setShowModal1(false);
+            setShowModal2(true);
+            setShowModal3(false);
+        }
+    }
+    const getNewKey = () => {
+        const baseKey = dataStore.userServe.temp_user_id || Date.now();
+
+        let newKey = "";
+        for (let x = 1; x < 100; x++) {
+            newKey = baseKey + "_" + x.toString();
+            if (!measurementKeys.includes(newKey))
+                break;
+        }
+        return newKey;
+    }
+    const getUserO=()=>{
+        const tempId = dataStore.userServe.temp_user_id || Date.now()
+        const userO = {
+            email: (dataStore.userData.contact)?dataStore.userData.contact:"",
+            is_guest: !!(dataStore.userData.contact),
+            temp_user_id: tempId
+        }
+        return userO
+    }
+    const addNewModal = (m) => {
+        setCurrentProduct(data)
+        setCurrentMeasurement(emptyMeasurement);
+        nextModal()
+    }
+    const pastOrdersModal = ()=>{
+        setShowModal0(false)
+        setShowModal1(false)
+        setShowModal2(false)
+        setShowModal3(false)
+        setShowModalPastOrders(true)
+    }
+    const closeModal = ()=>{
+        setShowModal0(false)
+        setShowModal1(false)
+        setShowModal2(false)
+        setShowModal3(false)
+        setShowModalPastOrders(false)
+    }
+    const updateValues = (key, value) => {
+        currentMeasurement[key] = value;
+        setCurrentMeasurement(currentMeasurement);
+        setRefresh(!refresh);
+    }
+    const refreshDataStore=async ()=>{
+        const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
+            "user":getUserO()
+        });
+
+        let userMeasurements = {};
+        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length>0)
+            userMeasurements = measurementCall.response
+        updateDataStore("userMeasurements", dataStore.userMeasurements)
+    }
+    const saveModal = async () => {
+        //@TODO Buy this
+        if(currentMeasurement.measure_id==""){
+            // add new
+            currentMeasurement.measure_id = getNewKey();
+        } else {
+            //case update - we simply remove and add
+            await delMeasurement(currentMeasurement)
+        }
+        await apiCall("addMeasurements", dataStore.apiToken, {
+            "user": getUserO(),
+            "measurments":currentMeasurement
+        })
+
+        // update DataStore
+        await refreshDataStore()
+        closeModal()
+    }
 
     const checkDelivery = async ()=>{
         if(pincode==null)
@@ -198,6 +321,67 @@ const DetailsCard = ({ data, hpid }) => {
             {sizeModal &&
                 ReactDom.createPortal(
                     <SizeGuide closeModal={()=>setSizeModal(false)} isMobile={dataStore.isMobile} />,
+                    document.getElementById("measurementmodal"))
+            }
+            {showModal0 &&
+                ReactDom.createPortal(
+                    <MeasurementModal1
+                        closeModal={closeModal.bind(this)}
+                        isMobile={dataStore.isMobile}
+                        addNew={addNewModal.bind(this)}
+                        pastOrders={pastOrdersModal.bind(this)}
+                    />,
+                    document.getElementById("measurementmodal"))
+            }
+            {showModal1 &&
+                ReactDom.createPortal(
+                    <MeasurementModal1
+                        closeModal={closeModal.bind(this)}
+                        isMobile={dataStore.isMobile}
+                        measurement={currentMeasurement}
+                        lastModal={lastModal.bind(this)}
+                        nextModal={nextModal.bind(this)}
+                        updateValues={updateValues.bind(this)}
+                        product={currentProduct}
+                    />,
+                    document.getElementById("measurementmodal"))
+            }
+            {showModal2 &&
+                ReactDom.createPortal(
+                    <MeasurementModal2
+                        closeModal={closeModal.bind(this)}
+                        isMobile={dataStore.isMobile}
+                        measurement={currentMeasurement}
+                        nextModal={nextModal.bind(this)}
+                        lastModal={lastModal.bind(this)}
+                        updateValues={updateValues.bind(this)}
+                        product={currentProduct}
+                    />,
+                    document.getElementById("measurementmodal"))
+            }
+            {showModal3 &&
+                ReactDom.createPortal(
+                    <MeasurementModal3
+                        closeModal={closeModal.bind(this)}
+                        isMobile={dataStore.isMobile}
+                        measurement={currentMeasurement}
+                        lastModal={lastModal.bind(this)}
+                        saveModal={saveModal.bind(this)}
+                        product={currentProduct}
+                    />,
+                    document.getElementById("measurementmodal"))
+            }
+
+            {showModalPastOrders &&
+                ReactDom.createPortal(
+                    <MeasurementModal3
+                        closeModal={closeModal.bind(this)}
+                        isMobile={dataStore.isMobile}
+                        measurement={currentMeasurement}
+                        lastModal={lastModal.bind(this)}
+                        saveModal={saveModal.bind(this)}
+                        product={currentProduct}
+                    />,
                     document.getElementById("measurementmodal"))
             }
             <Toast show={showToast} hideToast={() => {

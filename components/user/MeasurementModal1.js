@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 
-function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, nextModal }) {
+function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, nextModal, lastModal, product }) {
     const [refresh, setRefresh] = useState(true);
     const labelMessage = {
         "bust": { "offFocus": "BUST", "onFocus": "(MEASURE AROUND THE FULLEST PART OF YOUR CHEST)" },
@@ -180,12 +180,26 @@ function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, ne
                         <p className="font-700 text-[#555]">ANY PARTICULAR BODY PART YOU BOTHER ABOUT?</p>
                     </div>
                 </div>
-                <div className="bg-white py-3 text-center flex flex-col items-center" >
-                    <div className="cursor-pointer font-600 text-[#777]" onClick={nextModal}>
-                        <button className="font-600">NEXT &gt;</button>
-                        <p className="text-xs uppercase">Size Review</p>
+                {(product)
+                    ?<div className="bg-white text-center grid grid-cols-2">
+                        <div className="bg-white text-center grid grid-cols-2">
+                            <div className="bg-[#606060] py-2 cursor-pointer text-white" onClick={lastModal}>
+                                <button className="font-600">&lt; BACK</button>
+                                <p className="text-xs uppercase">SELECT MEASUREMENTS</p>
+                            </div>
+                            <div className="cursor-pointer font-600 text-[#777]" onClick={nextModal}>
+                                <button className="font-600">NEXT &gt;</button>
+                                <p className="text-xs uppercase">SIZE REVIEW</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    :<div className="bg-white py-3 text-center flex flex-col items-center">
+                        <div className="cursor-pointer font-600 text-[#777]" onClick={nextModal}>
+                            <button className="font-600">NEXT &gt;</button>
+                            <p className="text-xs uppercase">Size Review</p>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     )

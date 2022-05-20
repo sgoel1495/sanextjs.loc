@@ -196,6 +196,7 @@ function MeasurementsPage() {
                         closeModal={closeModal.bind(this)}
                         isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
+                        lastModal={null}
                         nextModal={nextModal.bind(this)}
                         updateValues={updateValues.bind(this)}
                         product={null}
@@ -211,6 +212,7 @@ function MeasurementsPage() {
                         nextModal={nextModal.bind(this)}
                         lastModal={lastModal.bind(this)}
                         updateValues={updateValues.bind(this)}
+                        product={null}
                     />,
                     document.getElementById("measurementmodal"))
             }
