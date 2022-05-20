@@ -1,11 +1,11 @@
-import { Fragment, useState } from "react";
-
-function MeasurementModal3({ closeModal, isMobile, measurement, lastModal, saveModal }) {
+function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveModal, product}) {
 
     const mobileView = null;
     const browserView = (
-        <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[5%] px-[10%]" onClick={closeModal}>
-            <div className="bg-white border-2 border-black relative h-[720px] w-[920px] flex flex-col" onClick={e => e.stopPropagation()}>
+        <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[5%] px-[10%]"
+             onClick={closeModal}>
+            <div className="bg-white border-2 border-black relative h-[720px] w-[920px] flex flex-col"
+                 onClick={e => e.stopPropagation()}>
                 <div className="overflow-auto flex-1">
                     <button className="absolute top-0 right-8 text-2xl z-50" onClick={closeModal}>X</button>
                     <div className="text-center mt-5 mb-8">
@@ -24,19 +24,41 @@ function MeasurementModal3({ closeModal, isMobile, measurement, lastModal, saveM
                         <p>OTHERS : {measurement.others}</p>
                     </div>
                 </div>
-                <div className="bg-white text-center grid grid-cols-2">
-                    <div className="bg-[#606060] py-2 cursor-pointer text-white grid place-items-center align-content-center" onClick={lastModal}>
-                        <button className="font-600">&lt; BACK</button>
-                        <p className="text-xs uppercase">SIZE REVIEW</p>
+                {(product)
+                    ? <div className="bg-white text-center grid grid-cols-2">
+                        <div
+                            className="bg-[#606060] py-2 cursor-pointer text-white grid place-items-center align-content-center"
+                            onClick={lastModal}>
+                            <button className="font-600">&lt; BACK</button>
+                            <p className="text-xs uppercase">SIZE REVIEW</p>
+                        </div>
+                        <div
+                            className="cursor-pointer  py-2  font-600 text-[#777] grid place-items-center align-content-center"
+                            onClick={saveModal}>
+                            <button className="font-600">NEXT &gt;</button>
+                            <p className="text-xs uppercase">BUY NOW</p>
+
+                        </div>
                     </div>
-                    <div className="cursor-pointer  py-2  font-600 text-[#777] grid place-items-center align-content-center" onClick={saveModal}>
-                        <button className="font-600 text-xl">SAVE</button>
+                    : <div className="bg-white text-center grid grid-cols-2">
+                        <div
+                            className="bg-[#606060] py-2 cursor-pointer text-white grid place-items-center align-content-center"
+                            onClick={lastModal}>
+                            <button className="font-600">&lt; BACK</button>
+                            <p className="text-xs uppercase">SIZE REVIEW</p>
+                        </div>
+                        <div
+                            className="cursor-pointer  py-2  font-600 text-[#777] grid place-items-center align-content-center"
+                            onClick={saveModal}>
+                            <button className="font-600 text-xl">SAVE</button>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     );
 
     return (isMobile) ? mobileView : browserView;
 }
+
 export default MeasurementModal3;

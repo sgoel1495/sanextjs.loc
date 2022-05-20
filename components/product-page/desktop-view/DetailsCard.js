@@ -339,6 +339,7 @@ const DetailsCard = ({ data, hpid }) => {
                         closeModal={closeModal.bind(this)}
                         isMobile={dataStore.isMobile}
                         measurement={currentMeasurement}
+                        lastModal={lastModal.bind(this)}
                         nextModal={nextModal.bind(this)}
                         updateValues={updateValues.bind(this)}
                         product={currentProduct}
