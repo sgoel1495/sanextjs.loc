@@ -43,6 +43,7 @@ const DetailsCard = ({ data, hpid }) => {
     const [showModal3, setShowModal3] = useState(false)
     const [showModalPastOrders, setShowModalPastOrders] = useState(false)
     const [currentProduct, setCurrentProduct] = useState(null)
+    const [currentMeasureProduct, setCurrentMeasurementProduct] = useState(null)
     const [currentMeasurement, setCurrentMeasurement] = useState(null)
     const measurementKeys = Object.keys(dataStore.userMeasurements)
     const nextModal = () => {
@@ -103,7 +104,7 @@ const DetailsCard = ({ data, hpid }) => {
     }
     const addNewModal = (m) => {
         setCurrentProduct(data)
-        setCurrentMeasurement(emptyMeasurement);
+        setCurrentMeasurement(m);
         nextModal()
     }
     const pastOrdersModal = ()=>{
@@ -152,6 +153,12 @@ const DetailsCard = ({ data, hpid }) => {
         // update DataStore
         await refreshDataStore()
         closeModal()
+    }
+    const sizeByProduct = (p)=>{
+        //p is the item
+        setCurrentMeasurementProduct(p)
+        closeModal()
+        addNewModal(p.measurement)
     }
 
     const checkDelivery = async ()=>{
@@ -262,7 +269,7 @@ const DetailsCard = ({ data, hpid }) => {
                 >
                     size guide
                 </p>
-                <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"}>
+                <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={()=>setShowModal0(true)}>
                     <span className={"uppercase underline"}>tailor it</span>
                     <span className={""}>/</span>
                     <span className={"uppercase underline"}>customise</span>
@@ -325,11 +332,12 @@ const DetailsCard = ({ data, hpid }) => {
             }
             {showModal0 &&
                 ReactDom.createPortal(
-                    <MeasurementModal1
+                    <MeasurementModal0
                         closeModal={closeModal.bind(this)}
                         isMobile={dataStore.isMobile}
                         addNew={addNewModal.bind(this)}
                         pastOrders={pastOrdersModal.bind(this)}
+                        measureProduct={currentMeasureProduct}
                     />,
                     document.getElementById("measurementmodal"))
             }
@@ -377,10 +385,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <MeasurementModal3
                         closeModal={closeModal.bind(this)}
                         isMobile={dataStore.isMobile}
-                        measurement={currentMeasurement}
-                        lastModal={lastModal.bind(this)}
-                        saveModal={saveModal.bind(this)}
-                        product={currentProduct}
+                        sizeByProduct={sizeByProduct.bind(this)}
                     />,
                     document.getElementById("measurementmodal"))
             }
