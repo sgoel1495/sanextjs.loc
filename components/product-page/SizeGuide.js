@@ -18,19 +18,19 @@ function SizeGuide({closeModal, isMobile}) {
                     BUST HIPS LENGTH SHOULDER
                 </div>
                 <div>
-                    XS 32" 35" 23" 13.5"
+                    XS 32&quot; 35&quot; 23&quot; 13.5&quot;
                 </div>
                 <div>
-                    S 34" 37" 23" 14"
+                    S 34&quot; 37&quot; 23&quot; 14&quot;
                 </div>
                 <div>
-                    M 36" 39" 24" 14.5"
+                    M 36&quot; 39&quot; 24&quot; 14.5&quot;
                 </div>
                 <div>
-                    L 38" 41" 24" 15"
+                    L 38&quot; 41&quot; 24&quot; 15&quot;
                 </div>
                 <div>
-                    XXL 42" 45" 26" 16"
+                    XXL 42&quot; 45&quot; 26&quot; 16&quot;
                 </div>
             </Fragment>
         })
@@ -48,24 +48,24 @@ function SizeGuide({closeModal, isMobile}) {
                     BUST WAIST HIPS LENGTH SHOULDER THIGH
                 </div>
                 <div>
-                    XS 32" 26" 35" Standard lengths
+                    XS 32&quot; 26&quot; 35&quot; Standard lengths
                     fit average heights
-                    of 5'2" to 5'4" 13.5" 21"
+                    of 5&apos;2&quot; to 5&apos;4&quot; 13.5&quot; 21&quot;
                 </div>
                 <div>
-                    S 34" 28" 37" 14" 22"
+                    S 34&quot; 28&quot; 37&quot; 14&quot; 22&quot;
                 </div>
                 <div>
-                    M 36" 30" 39" 14.5" 23"
+                    M 36&quot; 30&quot; 39&quot; 14.5&quot; 23&quot;
                 </div>
                 <div>
-                    L 38" 32" 41" 15" 24"
+                    L 38&quot; 32&quot; 41&quot; 15&quot; 24&quot;
                 </div>
                 <div>
-                    XL 40" 34" 43" 15.5" 24"
+                    XL 40&quot; 34&quot; 43&quot; 15.5&quot; 24&quot;
                 </div>
                 <div>
-                    XXL 42" 36" 45" 16" 25"
+                    XXL 42&quot; 36&quot; 45&quot; 16&quot; 25&quot;
                 </div>
             </Fragment>
         })
@@ -80,22 +80,22 @@ function SizeGuide({closeModal, isMobile}) {
                 WAIST HIPS LENGTH
             </div>
             <div>
-                XS 26" 35" 21"
+                XS 26&quot; 35&quot; 21&quot;
             </div>
             <div>
-                S 28" 37" 22"
+                S 28&quot; 37&quot; 22&quot;
             </div>
             <div>
-                M 30" 39" 23"
+                M 30&quot; 39&quot; 23&quot;
             </div>
             <div>
-                L 32" 41" 24"
+                L 32&quot; 41&quot; 24&quot;
             </div>
             <div>
-                XL 34" 43" 25"
+                XL 34&quot; 43&quot; 25&quot;
             </div>
             <div>
-                XXL 36" 45" 26"
+                XXL 36&quot; 45&quot; 26&quot;
             </div>
         </Fragment>
     }
@@ -108,16 +108,16 @@ function SizeGuide({closeModal, isMobile}) {
                 FITS WAIST
             </div>
             <div>
-                S28" to 32"
+                S28&quot; to 32&quot;
             </div>
             <div>
-                M32" to 36"
+                M32&quot; to 36&quot;
             </div>
             <div>
-                L34" to 38"
+                L34&quot; to 38&quot;
             </div>
             <div>
-                XL36" to 40"
+                XL36&quot; to 40&quot;
             </div>
         </Fragment>
     }

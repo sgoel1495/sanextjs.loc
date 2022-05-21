@@ -22,17 +22,16 @@ function MyApp({Component, pageProps}) {
         setDataStore({...dataStore});
         setRefresh(!refresh);
     },[dataStore, refresh])
-    /*
-    const botuiScripts = ()=>{
-        return null;
-        return <Fragment>
-            <Script src="/static/js/bot_js/vue.min.js"/>
-            <Script src="/static/js/bot_js/botui_v1.min.js"/>
-            <Script src="/static/js/bot_js/moment.js"/>
-            <Script src="/static/js/bot_js/script1.js"/>
-        </Fragment>
-    }
-    */
+
+    const facebookBlock = <Fragment>
+        <Script src="https://connect.facebook.net/en_US/all.js?hash=c3e73dbaa85ad58c8934ca9e6c6f542c"
+                crossOrigin="anonymous" />
+        <Script src="https://connect.facebook.net/signals/config/159270414641031?v=2.9.60&amp;r=stable" async=""/>
+        <Script async="" src="https://connect.facebook.net/en_US/fbevents.js"/>
+
+        <Script id="facebook-jssdk" src="https://connect.facebook.net/en_US/all.js"/>
+    </Fragment>
+
     useEffect(()=>{
         if(isMobile!=dataStoreDefault.mobile)
             updateDataStore("mobile",isMobile);
@@ -49,12 +48,7 @@ function MyApp({Component, pageProps}) {
         }}>
             <Component {...pageProps} />
         </AppWideContext.Provider>
-        <Script src="https://connect.facebook.net/en_US/all.js?hash=c3e73dbaa85ad58c8934ca9e6c6f542c"
-                crossOrigin="anonymous" />
-        <Script src="https://connect.facebook.net/signals/config/159270414641031?v=2.9.60&amp;r=stable" async=""/>
-        <Script async="" src="https://connect.facebook.net/en_US/fbevents.js"/>
-
-        <Script id="facebook-jssdk" src="https://connect.facebook.net/en_US/all.js"/>
+        {facebookBlock}
         <Script type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "http://www.schema.org",
@@ -126,7 +120,6 @@ function MyApp({Component, pageProps}) {
                 "telephone": "18002709515"
             }
         }) }}/>
-        {botuiScripts()}
 
     </Fragment>
 }
