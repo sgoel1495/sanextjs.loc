@@ -22,7 +22,7 @@ function MyApp({Component, pageProps}) {
         setDataStore({...dataStore});
         setRefresh(!refresh);
     },[dataStore, refresh])
-
+    /*
     const botuiScripts = ()=>{
         return null;
         return <Fragment>
@@ -32,7 +32,7 @@ function MyApp({Component, pageProps}) {
             <Script src="/static/js/bot_js/script1.js"/>
         </Fragment>
     }
-
+    */
     useEffect(()=>{
         if(isMobile!=dataStoreDefault.mobile)
             updateDataStore("mobile",isMobile);
