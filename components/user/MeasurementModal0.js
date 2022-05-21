@@ -21,7 +21,8 @@ function MeasurementModal0 ({ closeModal, isMobile, addNew, pastOrders, measureP
                     ?<div onClick={pastOrders}>
                         <div>({getCategory(measureProduct.asset_id)}) {measureProduct.name}</div>
                         <div>
-                            <Image src={WEBASSETS+"/assets/"+measureProduct.asset_id+"/thumb.mob.jpg"} layout={`fill`} objectFit={`cover`} />
+                            <Image src={WEBASSETS+"/assets/"+measureProduct.asset_id+"/thumb.mob.jpg"}
+                                   layout={`fill`} objectFit={`cover`} alt={measureProduct.asset_id}/>
                         </div>
                         <div>
                             <div>{getCategory(measureProduct.asset_id)}:</div>

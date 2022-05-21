@@ -35,7 +35,7 @@ function AddressBookDeleteByIdPage(){
 
     useEffect(()=>{
         processOnLoad();
-    },[]);
+    },[]);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <Fragment>Deleting Address</Fragment>;
 }

@@ -33,7 +33,7 @@ function Logout() {
         updateDataStore("userServe", userServe);
         updateDataStore("userServe", userMeasurements);
         router.replace("/");
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     return <Fragment>Logging out ...</Fragment>;
 }
 
