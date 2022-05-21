@@ -40,7 +40,7 @@ function MyApp({Component, pageProps}) {
             userServe.temp_user_id = Date.now().toString();
             updateDataStore("userServe",userServe);
         }
-    },[dataStoreDefault.mobile]);
+    },[dataStoreDefault.mobile,dataStore.userData.contact,updateDataStore]);
 
     return <Fragment>
         <AppWideContext.Provider value={{
