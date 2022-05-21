@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import AppWideContext from "../../store/AppWideContext";
 import { Fragment, useContext, useEffect, useState } from "react";
-import validator from "validator/es";
+import validator from "validator";
 import Toast from "../common/Toast";
 import { apiCall } from "../../helpers/apiCall";
 
