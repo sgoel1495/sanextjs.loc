@@ -48,7 +48,6 @@ function MyApp({Component, pageProps}) {
         }}>
             <Component {...pageProps} />
         </AppWideContext.Provider>
-        {facebookBlock}
         <Script type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "http://www.schema.org",
