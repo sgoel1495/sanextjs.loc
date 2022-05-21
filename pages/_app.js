@@ -55,14 +55,14 @@ function MyApp({Component, pageProps}) {
             "name": "Salt Attire",
             "url": "https://saltattire.com/"
         }) }} id="ld1"/>
-        <script type="application/ld+json"
+        <Script type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 "@context": "http://www.schema.org",
                 "@type": "Organization",
                 "name": "Salt Attire",
                 "url": "https://saltattire.com/",
                 "logo": "https://saltattire.com/assets/SALT_logo.png"
-        }) }}/>
+        }) }} id="ld2"/>
         <Script type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 "@context": "http://www.schema.org",
@@ -93,8 +93,8 @@ function MyApp({Component, pageProps}) {
                 "ratingValue": "4.6",
                 "reviewCount": "5"
             }
-        }) }}  id="ld2"/>
-        <script type="application/ld+json"
+        }) }}  id="ld3"/>
+        <Script type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 "@context": "http://www.schema.org",
                 "@type": "LocalBusiness",
@@ -118,7 +118,7 @@ function MyApp({Component, pageProps}) {
                 "contactType": "Customer Service",
                 "telephone": "18002709515"
             }
-        }) }}  id="ld3"/>
+        }) }}  id="ld4"/>
 
     </Fragment>
 }

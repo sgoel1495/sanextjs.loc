@@ -1,6 +1,11 @@
 import Head from 'next/head';
 import {Fragment} from 'react';
 import getHeaderData from '../helpers/getHeaderData';
+import Script from 'next/script'
+import seoLogoScript1 from "./seo/seoLogoScript1.json";
+import seoLogoScript2 from "./seo/seoLogoScript2.json";
+import seoReviewScript from "./seo/seoReviewScript.json";
+import seoContactScript from "./seo/seoContactScript.json";
 
 /**
  *
@@ -16,32 +21,8 @@ function PageHead(props) {
 
   const headerObject = getHeaderData(props.url, props.id);
 
-  return (
+  return <Fragment>
     <Head>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(seoLogoScript1)
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(seoLogoScript2)
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(seoReviewScript)
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(seoContactScript)
-        }}
-      />
       <meta name="geo.region" content="IN-HR"/>
       <meta name="geo.placename" content="Gurugram"/>
       <meta name="geo.position" content="28.503091;77.081748"/>
@@ -82,7 +63,31 @@ function PageHead(props) {
         </Fragment>
         : null}
     </Head>
-  )
+    <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(seoLogoScript1)
+        }}
+        id={"ophld1"}/>
+    <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(seoLogoScript2)
+        }}
+        id={"ophld2"}/>
+    <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(seoReviewScript)
+        }}
+        id={"ophld3"}/>
+    <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(seoContactScript)
+        }}
+        id={"ophld4"}/>
+  </Fragment>
 }
 
 export default PageHead;
