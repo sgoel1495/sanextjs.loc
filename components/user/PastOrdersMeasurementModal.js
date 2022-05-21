@@ -20,7 +20,8 @@ function PastOrdersMeasurementModal ({ closeModal, isMobile, sizeByProduct }){
                         {returnValues}
                         <div onClick={()=>sizeByProduct(i)}>
                             <div>
-                                <Image src={WEBASSETS+"/assets/"+i.asset_id+"/thumb.mob.jpg"} layout={`fill`} objectFit={`cover`} />
+                                <Image src={WEBASSETS+"/assets/"+i.asset_id+"/thumb.mob.jpg"}
+                                       layout={`fill`} objectFit={`cover`} alt={i.asset_id}/>
                             </div>
                             <div>
                                 <div>{getCategory(i.asset_id)}:</div>

@@ -426,7 +426,7 @@ function SidebarMenuHamburger(props) {
                     link: `login`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userWallet.user_name]);
+    }, [dataStore.userWallet.user_name,dataStore]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);

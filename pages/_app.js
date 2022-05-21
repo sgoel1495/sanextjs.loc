@@ -40,7 +40,7 @@ function MyApp({Component, pageProps}) {
             userServe.temp_user_id = Date.now().toString();
             updateDataStore("userServe",userServe);
         }
-    },[dataStoreDefault.mobile,dataStore.userData.contact,updateDataStore]);
+    },[dataStoreDefault.mobile,dataStore.userData.contact,updateDataStore,dataStore.userServe]);
 
     return <Fragment>
         <AppWideContext.Provider value={{
@@ -54,7 +54,7 @@ function MyApp({Component, pageProps}) {
             "@type": "WebSite",
             "name": "Salt Attire",
             "url": "https://saltattire.com/"
-        }) }}/>
+        }) }} id="ld1"/>
         <script type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 "@context": "http://www.schema.org",
@@ -93,7 +93,7 @@ function MyApp({Component, pageProps}) {
                 "ratingValue": "4.6",
                 "reviewCount": "5"
             }
-        }) }}/>
+        }) }}  id="ld2"/>
         <script type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify({
                 "@context": "http://www.schema.org",
@@ -118,7 +118,7 @@ function MyApp({Component, pageProps}) {
                 "contactType": "Customer Service",
                 "telephone": "18002709515"
             }
-        }) }}/>
+        }) }}  id="ld3"/>
 
     </Fragment>
 }

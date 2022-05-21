@@ -29,7 +29,7 @@ function MeasurementForm(props) {
         } else {
             setMeasurement(dataStore.userMeasurements[props.index]);
         }
-    },[dataStore.userMeasurements.toString()])
+    },[dataStore.userMeasurements.toString(),props.index])// eslint-disable-line react-hooks/exhaustive-deps
 
     console.log("Current Measurement",measurement);
 
