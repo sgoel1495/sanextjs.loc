@@ -29,6 +29,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...getFetcher};
             break;
 
+        //------------------------PRODUCTS
         case "getProducts":
             url += "/get_products";
             body = {
@@ -78,6 +79,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        //------------------------General
         case "getTopStrip":
             url += "/home/get_homepage_top_strip";
             body = {
@@ -105,6 +107,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        //------------------------USER
         case "userLogin":
             url += "/login_user";
             body = {
@@ -147,22 +150,22 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        case "userWallet":
-            url += "/get_user_wallet";
-            body = {
-                token: apiToken,
-                ...queryObject
-            };
-            postFetcher.body = JSON.stringify(body);
-            finalFetcher = {...postFetcher}
-            break;
-
         case "forgotPassword":
             url += "/reset_password";
             body = {
                 token: apiToken,
                 contact: queryObject.username,
 
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "userServe":
+            url += "/user_serve";
+            body = {
+                token: apiToken,
+                ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
@@ -258,6 +261,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+            //===================== WALLET
+        case "userWallet":
+            url += "/get_user_wallet";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        //===================== FAVORITES
         case "addToFav":
             url += "/add_to_fav";
             body = {
@@ -270,6 +285,152 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
 
         case "removeFromFav":
             url += "/remove_from_fav";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        //===================== Addresses
+        case "userAddresses":
+            url += "/get_address_book";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "addAddressBook":
+            url += "/add_address_book";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "removeAddressBook":
+            url += "/remove_address_book";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "updateAddressBook":
+            url += "/update_address_book";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        //===================== Measurements
+        case "userMeasurements":
+            url += "/get_measurment_profile";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "addMeasurements":
+            url += "/add_measurment_profile";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "removeMeasurements":
+            url += "/remove_measurment_profile";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "updateMeasurements":
+            url += "/update_measurment_profile";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "cityByZipcode":
+            url += "/users/get_city_by_zipcode";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        //====================== CART
+            //same link for adding tailored and non tailored
+        case "addToCart":
+            url += "/add_to_cart";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getCart":
+            url += "/get_cart";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "updateCart":
+            url += "/update_cart";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "removeCart":
+            url += "/update_cart";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+
+            //====================== ORDERS
+        case "orderHistory":
+            url += "/get_user_orderhistory";
             body = {
                 token: apiToken,
                 ...queryObject

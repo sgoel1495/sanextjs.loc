@@ -4,7 +4,8 @@ import { apiDictionary } from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
-import {apiCall} from "../../../helpers/apiCall";
+import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+
 
 const LoginForm = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -20,21 +21,12 @@ const LoginForm = (props) => {
     }, [])
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        let userData = {
-            contact: username
-        };
-        const resp = await apiCall("userWallet", dataStore.apiToken, { contact: username });
-        let userWallet = {
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "wallet_amount": 0,
-            "usd_wallet_amount": 0
-        };
-        if (resp.hasOwnProperty("response"))
-            userWallet = resp.response;
-        updateDataStore("userData", userData);
-        updateDataStore("userWallet", userWallet);
+        const existingUserMeasurements = dataStore.userMeasurements || {};
+        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,existingUserMeasurements,dataStore.userCart);
+        console.log("reached here",updateData);
+        Object.keys(updateData).forEach((key)=>{
+            updateDataStore(key, updateData[key]);
+        })
     }
 
     const loadFbLoginApi = () => {

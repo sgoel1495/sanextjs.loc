@@ -1,6 +1,7 @@
 {
   "mobile": false,
   "currCurrency": "inr",
+  "currSymbol": "₹",
   "apiToken": null,
   "categories": [
     {
@@ -86,6 +87,19 @@
     "wallet_amount": 0,
     "usd_wallet_amount": 0
   },
-  "userFavs": [],
-  "showSidebarMenuUser": false
+  "showSidebarMenuUser": false,
+  "userServe":{
+    "email": "",
+    "phone_number": "",
+    "user_name": "",
+    "favorites": [],
+    "cart": {},
+    "ref_id": null,
+    "temp_user_id": ""
+  },
+  "userAddresses": [],
+  "defaultAddress": null,
+  "userMeasurements": {},
+  "userCart": [],
+  "userOrderHistory": {}
 }

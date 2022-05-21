@@ -28,6 +28,11 @@ function CurrencySwitcher(props) {
         </Fragment>;
     })
 
+    const updateCurrency = (c)=>{
+        updateDataStore("currCurrency", c)
+        updateDataStore("currSymbol",currencyData[c].curr_symbol)
+    }
+
     let height;
     switch (props.type) {
         case "shopMenu":
@@ -43,7 +48,7 @@ function CurrencySwitcher(props) {
                 id="currency-switcher"
                 className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
                 value={currCurrency}
-                onChange={(event) => updateDataStore("currCurrency", event.target.value)}
+                onChange={e=>updateCurrency(e.target.value)}
             >
                 {options}
             </select>

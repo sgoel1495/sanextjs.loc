@@ -16,9 +16,22 @@ function Logout() {
                 "wallet_amount": 0,
                 "usd_wallet_amount": 0
         };
+        const userServe={
+            "email": "",
+            "phone_number": "",
+            "user_name": "",
+            "favorites": [],
+            "cart": {},
+            "ref_id": null,
+            "temp_user_id": ""
+        };
+        const userMeasurements={};
+
         updateDataStore("userData", userData);
         updateDataStore("userWallet", userWallet);
-        updateDataStore("userFavs", []);
+        updateDataStore("userServe", userServe);
+        updateDataStore("userServe", userServe);
+        updateDataStore("userServe", userMeasurements);
         router.replace("/");
     }, []);
     return <Fragment>Logging out ...</Fragment>;

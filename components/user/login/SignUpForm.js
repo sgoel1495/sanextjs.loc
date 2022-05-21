@@ -4,6 +4,8 @@ import { validateEmail } from "../../../helpers/loginSignUpHelpers";
 import { apiDictionary } from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import {apiCall} from "../../../helpers/apiCall";
+import "../../../helpers/updateUserDataAfterLogin";
+import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
 
 const SignUpForm = (props) => {
 
@@ -26,21 +28,11 @@ const SignUpForm = (props) => {
     })
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        let userData = {
-            contact: username
-        }
-        const resp = await apiCall("userWallet", dataStore.apiToken, { contact: username });
-        let userWallet = {
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "wallet_amount": 0,
-            "usd_wallet_amount": 0
-        };
-        if (resp.hasOwnProperty("response"))
-            userWallet = resp.response;
-        updateDataStore("userData", userData);
-        updateDataStore("userWallet", userWallet);
+        const existingUserMeasurements = dataStore.userMeasurements || {};
+        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,existingUserMeasurements,dataStore.userCart);
+        Object.keys(updateData).forEach((key)=>{
+            updateDataStore(key, updateData[key]);
+        })
     }
 
     const validateData = () => {

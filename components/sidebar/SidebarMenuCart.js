@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import ReactDom from "react-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Autoplay} from "swiper";
 import "swiper/css";
+import AppWideContext from "../../store/AppWideContext";
+import {apiCall} from "../../helpers/apiCall";
 
 SwiperCore.use([Autoplay]);
 
@@ -15,10 +17,12 @@ SwiperCore.use([Autoplay]);
  */
 
 function CartModal(props) {
-    /*
-    @Sambhav Please complete the modal as you see correct
-     */
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const {closeModal} = props;
+    const [tailoredProduct, setTailoredProduct] = useState(null)
+    const [showEditTailored, setShowEditTailored] = useState(false)
+    const [showViewTailored, setShowViewTailored] = useState(false)
+
 
     const imageClass = "block relative w-40 h-40";
     const blockHeader = "border-4 border-theme-200 p-2 uppercase mb-5 tracking-wide"
@@ -53,7 +57,8 @@ function CartModal(props) {
                             <SwiperSlide key={index}>
                                 <div className={`p-2 bg-theme-50 border border-theme-200`}>
                                     <span className={`block relative w-full h-64`}>
-                                        <Image src={WEBASSETS + `/assets/faq/S${index + 1}.jpg`} alt="return policy" layout="fill" objectFit="cover"/>
+                                        <Image src={WEBASSETS + `/assets/faq/S${index + 1}.jpg`} alt="return policy"
+                                               layout="fill" objectFit="cover"/>
                                     </span>
                                 </div>
                             </SwiperSlide>
@@ -189,7 +194,8 @@ function CartModal(props) {
                                     <div className="flex items-center justify-between">
                                         <Link href={item.link}>
                                             <a className={`block relative w-8 h-8`}>
-                                                <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"} alt={`Facebook Link`} layout="fill" objectFit="contain"/>
+                                                <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"}
+                                                       alt={`Facebook Link`} layout="fill" objectFit="contain"/>
                                             </a>
                                         </Link>
                                         <div>
@@ -206,22 +212,195 @@ function CartModal(props) {
         )
     }
 
+    /*
+    {
+      "product_id": "Tops-Rooh-PinkShirtTop",
+      "size": "S",
+      "qty": "1",
+      "is_sale": "false",
+      "is_tailor": "false",
+      "sleeve_length": "",
+      "dress_length": "",
+      "cart_id": "Tops-Rooh-PinkShirtTop+S",
+      "asset_id": "/assets/Tops-Rooh-PinkShirtTop/thumb.jpg",
+      "tag_line": "Pink Shirt Top",
+      "color": {
+        "name": "pink",
+        "code": "#fff"
+      },
+      "name": "Rooh",
+      "price": 1850.0,
+      "usd_price": 26
+    }
+  ]
+}
+     */
+    const userO = {
+        email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
+        is_guest: (dataStore.userData.contact) ? true : false,
+        temp_user_id: dataStore.userServe.temp_user_id
+    }
+
+    const refreshCart = async () => {
+        //retrieve from api and update
+        let userCart = [];
+        const cartCall = await apiCall("getCart", dataStore.apiToken, {"user": userO});
+        if (cartCall.response && Array.isArray(cartCall.response))
+            userCart = [...cartCall.response];
+        updateDataStore("userCart", userCart)
+    }
+
+    const changeQty = async (i, n) => {
+        if (n == 1) {
+            // increase
+            dataStore.userCart[i].qty = (parseInt(dataStore.userCart[i].qty) + 1).toString();
+        } else if (n == -1) {
+            const cv = parseInt(dataStore.userCart[i].qty)
+            if (cv > 1)
+                dataStore.userCart[i].qty = (cv - 1).toString();
+        }
+        //update in api
+        const updateProduct = {
+            product_cart_id: dataStore.userCart[i].product_cart_id,
+            qty: dataStore.userCart[i].qty
+        }
+        await apiCall("updateCart", dataStore.apiToken, {"user": userO, product: updateProduct});
+        await refreshCart()
+    }
+
+    const removeFromCart = async (i) => {
+        const updateProduct = {
+            product_cart_id: dataStore.userCart[i].product_cart_id
+        }
+        const updateCall = await apiCall("removeCart", dataStore.apiToken, {"user": userO, product: updateProduct});
+        await refreshCart()
+    }
+
+    const productCartView = () => {
+        let returnValues = null;
+        dataStore.userCart.forEach((p, index) => {
+            if (p.is_tailor == "false")
+                returnValues = <Fragment>
+                    {returnValues}
+                    <div>
+                        <div>
+                            <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
+                                   id={p.cart_id + index.toString()}
+                                   layout="fill"
+                                   objectFit="cover"
+                            />
+                        </div>
+                        <div>
+                            <div onClick={() => removeFromCart(index)}>
+                                X
+                            </div>
+                            <div>{p.name}</div>
+                            <div>{p.tag_line}</div>
+                            <div>COLOR:{p.color.name}</div>
+                            <div>SIZE:{p.size}</div>
+                            <div>
+                                Qty
+                                <div onClick={() => changeQty(index, -1)}>-</div>
+                                <div>{p.qty}</div>
+                                <div onClick={() => changeQty(index, 1)}>+</div>
+                            </div>
+                            <div>
+                                {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                            </div>
+                        </div>
+                    </div>
+                </Fragment>
+
+            else
+                returnValues = <Fragment>
+                    {returnValues}
+                    <div>
+                        <div>
+                            <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
+                                   id={p.cart_id + index.toString()}
+                                   layout="fill"
+                                   objectFit="cover"
+                            />
+                        </div>
+                        <div>
+                            <div onClick={() => removeFromCart(index)}>
+                                X
+                            </div>
+                            <div>{p.name}</div>
+                            <div>{p.tag_line}</div>
+                            <div>COLOR:{p.color.name}</div>
+                            <div>SIZE:TAILORED</div>
+                            <div>
+                                <span onClick={() => quickEditTailored(p)}>EDIT</span>
+                                <span onClick={() => quickViewTailored(p)}>VIEW</span>
+                            </div>
+                            <div>
+                                Qty
+                                <div onClick={() => changeQty(index, -1)}>-</div>
+                                <div>{p.qty}</div>
+                                <div onClick={() => changeQty(index, 1)}>+</div>
+                            </div>
+                            <div>
+                                {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                            </div>
+                        </div>
+                    </div>
+                </Fragment>
+        })
+
+        return returnValues
+    }
+
+    const quickEditTailored = (p) => {
+        setTailoredProduct(p)
+        setShowEditTailored(true)
+    }
+
+    const quickViewTailored = (p) => {
+        setTailoredProduct(p)
+        setShowViewTailored(true)
+    }
+
+    const updateTailored=(key,value)=>{
+        tailoredProduct[key]=value
+        setTailoredProduct(tailoredProduct)
+    }
+
+    const closeTailored=()=>{
+        setShowEditTailored(false)
+        setShowViewTailored(false)
+    }
+
+    const saveTailored=()=>{
+        //@TODO CART UPDATE FOR TAILORED
+        closeTailored()
+    }
+
     const mobileView = null;
 
-    const browserView = (
-        <div className={`bg-theme-900/50 fixed inset-0 z-20`} onClick={closeModal}>
-            <div
-                className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden ml-auto p-4"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <button className={`w-8 h-8 float-right`} onClick={closeModal}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} viewBox="0 0 24 24">
-                        <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
-                    </svg>
-                </button>
-                <div className={`text-center font-600 tracking-wider mb-10`}>
-                    <p className={`text-sm mb-6`}>YOUR CART</p>
-                    <span className={`block relative w-16 h-16 mx-auto mb-4`}>
+    const browserView = () => {
+        let returnValue =
+            <div className={`bg-theme-900/50 fixed inset-0 z-20`} onClick={closeModal}>
+                <div
+                    className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden ml-auto p-4"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <button className={`w-8 h-8 float-right`} onClick={closeModal}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} viewBox="0 0 24 24">
+                            <path
+                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                        </svg>
+                    </button>
+                    <div className={`text-center font-600 tracking-wider mb-10`}>
+                        <p className={`text-sm mb-6`}>YOUR CART</p>
+                        {(dataStore.userCart.length > 0)
+                            ? <Fragment>
+                                <div>CHECKOUT</div>
+                                {productCartView()}
+                            </Fragment>
+                            : null
+                        }
+                        <span className={`block relative w-16 h-16 mx-auto mb-4`}>
                         <Image
                             id="emptycart"
                             src={WEBASSETS + "/assets/images/empty_bag.png"}
@@ -230,20 +409,99 @@ function CartModal(props) {
                             objectFit="cover"
                         />
                     </span>
-                    <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
-                    <p className={`text-sm mb-4`}>There is nothing in your cart. Let&apos;s add some items.</p>
-                    <Link href="/new-arrivals/all">
-                        <a className="underline uppercase text-sm">Continue Shopping</a>
-                    </Link>
+                        <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
+                        <p className={`text-sm mb-4`}>There is nothing in your cart. Let&apos;s add some items.</p>
+                        <Link href="/new-arrivals/all">
+                            <a className="underline uppercase text-sm">Continue Shopping</a>
+                        </Link>
+                        {(dataStore.userCart.length > 0)
+                            ? <div>CHECKOUT</div>
+                            : null
+                        }
+                    </div>
+                    {returnPolicy}
+                    {mediaBuzz()}
+                    {testimonials()}
                 </div>
-                {returnPolicy}
-                {mediaBuzz()}
-                {testimonials()}
             </div>
-        </div>)
-    ;
 
-    return props.isMobile ? mobileView : browserView
+        if (showEditTailored || showViewTailored) {
+            returnValue = <div>
+                <div onClick={closeTailored}>X</div>
+                <div>
+                    {(showEditTailored)?<div>Edit</div>:null}
+                    {(showViewTailored)?<div>View</div>:null}
+                </div>
+                <div>{tailoredProduct.name}</div>
+                <div>MEASUREMENTS (INCHES)</div>
+                <div>
+                    <div>
+                        <label htmlFor="bust">BUST</label>
+                        <input type="number" name="bust"
+                               onChange={(showEditTailored?(e)=>{updateTailored("bust",e.target.value)}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    <div>
+                        <label htmlFor="waist">WAIST</label>
+                        <input type="number" name="waist"
+                               onChange={(showEditTailored?(e)=>{updateTailored("waist",e.target.value)}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    <div>
+                        <label htmlFor="wearing_waist">WEARING WAIST / STOMACH</label>
+                        <input type="number" name="wearing_waist"
+                               onChange={(showEditTailored?(e)=>{updateTailored("wearing_waist",e.target.value)}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    <div>
+                        <label htmlFor="hips">HIPS</label>
+                        <input type="number" name="hips"
+                               onChange={(showEditTailored?(e)=>{updateTailored("hips",e.target.value)}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    <div>
+                        <label htmlFor="biceps">BICEPS</label>
+                        <input type="number" name="biceps"
+                               onChange={(showEditTailored?(e)=>{updateTailored("biceps",e.target.value)}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    <div>
+                        <label htmlFor="height_f">Height</label>
+                        <input type="text" name="height_f"
+                               onChange={(showEditTailored?(e)=>{updateTailored("height_f",e.target.value+" ft")}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                        <input type="text" name="height_i"
+                               onChange={(showEditTailored?(e)=>{updateTailored("height_i",e.target.value+" inch")}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    <div>
+                        <label htmlFor="shoulder">SHOULDER</label>
+                        <input type="number" name="shoulder"
+                               onChange={(showEditTailored?(e)=>{updateTailored("shoulder",e.target.value)}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    <div>
+                        <label htmlFor="others">OTHERS</label>
+                        <input type="text" name="others"
+                               onChange={(showEditTailored?(e)=>{updateTailored("others",e.target.value)}:()=>void 0)}
+                               disabled={!!(showViewTailored)} />
+                    </div>
+                    {(showEditTailored)
+                        ?<div onClick={saveTailored}>SAVE</div>
+                        :null
+                    }
+                    {(showViewTailored)
+                        ?<div onClick={closeTailored}>CLOSE</div>
+                        :null
+                    }
+                </div>
+            </div>
+        }
+
+        return returnValue
+    };
+
+    return props.isMobile ? mobileView : browserView()
 }
 
 
@@ -270,7 +528,8 @@ function SidebarMenuCart(props) {
 
     return (
         <>
-            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
+            <span onClick={() => setShowSidebarMenuCart(true)}
+                  className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
                     alt="carticon"

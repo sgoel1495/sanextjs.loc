@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 
 /**
@@ -10,12 +10,18 @@ import AppWideContext from "../../store/AppWideContext";
 
 function AccountMenu(props) {
     const { dataStore } = useContext(AppWideContext);
+    const [topSpace, setTopSpace] = useState();
+
+    useEffect(() => {
+        const topHeight = document.getElementsByClassName("navigator")[0];
+        setTopSpace(topHeight.offsetHeight);
+    }, [])
 
     const mobileView = null;
 
     const browserView = (
         <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-10`} onClick={props.closeModal}>
-            <div className="bg-white h-fit py-20 flex flex-col items-end text-xs uppercase font-500 pr-20" onClick={e => e.stopPropagation()}>
+            <div className={"bg-white h-fit pb-20 flex flex-col items-end text-xs uppercase font-500 pr-20"} style={{ paddingTop: topSpace + 10 + 'px' }} onClick={e => e.stopPropagation()}>
                 <Link href="/users/profile">
                     <a>My Profile</a>
                 </Link>
@@ -44,6 +50,7 @@ function AccountMenu(props) {
         </div>
     );
 
+    if(topSpace == undefined) return null;
     return props.isMobile ? mobileView : browserView
 
 }

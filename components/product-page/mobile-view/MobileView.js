@@ -2,9 +2,9 @@ import React from 'react';
 import Image from "next/image";
 import ProductDetails from "./sub-sections/ProductDetails";
 import Footer from "../../footer/Footer";
-import NewArrivalsSection from "../../new-Arrivals";
-import AboutUs from "../../about-us-section";
-import OurShop from "../../our-shop";
+import NewArrivalsSection from "../../new-Arrivals/Index";
+import AboutUs from "../../about-us-section/Index";
+import OurShop from "../../our-shop/Index";
 import CompleteLook from "./sub-sections/CompleteLook";
 import ExploreSection from "./sub-sections/ExploreSection";
 

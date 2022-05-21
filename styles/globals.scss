@@ -42,7 +42,14 @@ body.scroll-overflow .navigator {
     background: black;
 }
 
-
+.measurementBlock1__sizes{
+    background-image: url('https://saltattire.com/assets/images/illustration.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
 
 /* For Mobiles */
 @media only screen and (max-width: 450px) {}
