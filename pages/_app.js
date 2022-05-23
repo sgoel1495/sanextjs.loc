@@ -40,7 +40,7 @@ function MyApp({Component, pageProps}) {
             userServe.temp_user_id = Date.now().toString();
             updateDataStore("userServe",userServe);
         }
-    },[dataStoreDefault.mobile,dataStore.userData.contact,updateDataStore,dataStore.userServe]);
+    },[dataStoreDefault.mobile,dataStore.userData.contact]);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <Fragment>
         <AppWideContext.Provider value={{

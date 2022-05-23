@@ -274,9 +274,9 @@ const DetailsCard = ({ data, hpid }) => {
                     size guide
                 </p>
                 <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={()=>setShowModal0(true)}>
-                    <span className={"uppercase underline"}>tailor it</span>
+                    <span className={"uppercase underline cursor-pointer"}>tailor it</span>
                     <span className={""}>/</span>
-                    <span className={"uppercase underline"}>customise</span>
+                    <span className={"uppercase underline cursor-pointer"}>customise</span>
                 </div>
                 <div className="flex items-center justify-center mb-5">
                     <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={addToCart}>
