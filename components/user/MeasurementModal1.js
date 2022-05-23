@@ -181,19 +181,17 @@ function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, ne
                     </div>
                 </div>
                 {(product)
-                    ?<div className="bg-white text-center grid grid-cols-2">
-                        <div className="bg-white text-center grid grid-cols-2">
-                            <div className="bg-[#606060] py-2 cursor-pointer text-white" onClick={lastModal}>
-                                <button className="font-600">&lt; BACK</button>
-                                <p className="text-xs uppercase">SELECT MEASUREMENTS</p>
-                            </div>
-                            <div className="cursor-pointer font-600 text-[#777]" onClick={nextModal}>
-                                <button className="font-600">NEXT &gt;</button>
-                                <p className="text-xs uppercase">SIZE REVIEW</p>
-                            </div>
+                    ? <div className="bg-white text-center grid grid-cols-2">
+                        <div className="bg-[#606060] py-2 cursor-pointer text-white" onClick={lastModal}>
+                            <button className="font-600">&lt; BACK</button>
+                            <p className="text-xs uppercase">SELECT MEASUREMENTS</p>
+                        </div>
+                        <div className="cursor-pointer font-600 text-[#777]" onClick={nextModal}>
+                            <button className="font-600">NEXT &gt;</button>
+                            <p className="text-xs uppercase">SIZE REVIEW</p>
                         </div>
                     </div>
-                    :<div className="bg-white py-3 text-center flex flex-col items-center">
+                    : <div className="bg-white py-3 text-center flex flex-col items-center">
                         <div className="cursor-pointer font-600 text-[#777]" onClick={nextModal}>
                             <button className="font-600">NEXT &gt;</button>
                             <p className="text-xs uppercase">Size Review</p>

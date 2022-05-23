@@ -10,7 +10,7 @@ class MyDocument extends Document {
 
     render() {
         return (
-            <Html lang="en" xmlns="http://www.w3.org/1999/xhtml"  class="js fa-events-icons-ready" >
+            <Html lang="en" xmlns="http://www.w3.org/1999/xhtml"  className="js fa-events-icons-ready" >
                 <Head />
                 <body>
                 <div id="toastContainer" className={"sticky z-toast top-10 right-10 float-right"}/>
