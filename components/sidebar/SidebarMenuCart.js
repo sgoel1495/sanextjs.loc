@@ -280,72 +280,84 @@ function CartModal(props) {
         let returnValues = null;
         dataStore.userCart.forEach((p, index) => {
             if (p.is_tailor == "false")
-                returnValues = <Fragment>
-                    {returnValues}
+                returnValues = (
                     <div>
-                        <div className="relative">
-                            <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
-                                id={p.cart_id + index.toString()}
-                                layout="fill"
-                                objectFit="cover"
-                            />
-                        </div>
+                        {returnValues}
                         <div>
-                            <div onClick={() => removeFromCart(index)}>
-                                X
+                            <div className="border p-1">
+                                <div className="relative h-40 aspect-[9/16]">
+                                    <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
+                                        id={p.cart_id + index.toString()}
+                                        layout="fill"
+                                        objectFit="cover"
+                                    />
+                                </div>
                             </div>
-                            <div>{p.name}</div>
-                            <div>{p.tag_line}</div>
-                            <div>COLOR:{p.color.name}</div>
-                            <div>SIZE:{p.size}</div>
-                            <div>
-                                Qty
-                                <div onClick={() => changeQty(index, -1)}>-</div>
-                                <div>{p.qty}</div>
-                                <div onClick={() => changeQty(index, 1)}>+</div>
-                            </div>
-                            <div>
-                                {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                            <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
+                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X</button>
+                                <div>
+                                    <p className="font-600 text-sm leading-none">{p.name}</p>
+                                    <p className="text-[10px]">{p.tag_line}</p>
+                                </div>
+                                <div className="text-[#777] uppercase">
+                                    <p className="text-[10px]">COLOR:{p.color.name}</p>
+                                    <p className="text-[10px]">SIZE:{p.size}</p>
+                                </div>
+                                <div className="inline-flex gap-4 text-sm items-center">
+                                    Qty
+                                    <div className="text-[#555]" onClick={() => changeQty(index, -1)}>-</div>
+                                    <div>{p.qty}</div>
+                                    <div className="text-[#555]" onClick={() => changeQty(index, 1)}>+</div>
+                                </div>
+                                <p className="text-right text-[#777] text-xs">
+                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                                </p>
                             </div>
                         </div>
                     </div>
-                </Fragment>
+                )
 
             else
-                returnValues = <Fragment>
-                    {returnValues}
+                returnValues = (
                     <div>
-                        <div>
-                            <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
-                                id={p.cart_id + index.toString()}
-                                layout="fill"
-                                objectFit="cover"
-                            />
-                        </div>
-                        <div>
-                            <div onClick={() => removeFromCart(index)}>
-                                X
+                        {returnValues}
+                        <div className="flex gap-x-2 items-center">
+                            <div className="border p-1">
+                                <div className="relative h-40 aspect-[9/16]">
+                                    <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
+                                        id={p.cart_id + index.toString()}
+                                        layout="fill"
+                                        objectFit="cover"
+                                    />
+                                </div>
                             </div>
-                            <div>{p.name}</div>
-                            <div>{p.tag_line}</div>
-                            <div>COLOR:{p.color.name}</div>
-                            <div>SIZE:TAILORED</div>
-                            <div>
-                                <span onClick={() => quickEditTailored(p)}>EDIT</span>
-                                <span onClick={() => quickViewTailored(p)}>VIEW</span>
-                            </div>
-                            <div>
-                                Qty
-                                <div onClick={() => changeQty(index, -1)}>-</div>
-                                <div>{p.qty}</div>
-                                <div onClick={() => changeQty(index, 1)}>+</div>
-                            </div>
-                            <div>
-                                {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                            <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
+                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X</button>
+                                <div>
+                                    <p className="font-600 text-sm leading-none">{p.name}</p>
+                                    <p className="text-[10px]">{p.tag_line}</p>
+                                </div>
+                                <div className="text-[#777] uppercase">
+                                    <p className="text-[10px]">COLOR:{p.color.name}</p>
+                                    <p className="text-[10px]">SIZE:TAILORED</p>
+                                </div>
+                                {/* <div>
+                                    <span onClick={() => quickEditTailored(p)}>EDIT</span>
+                                    <span onClick={() => quickViewTailored(p)}>VIEW</span>
+                                </div> */}
+                                <div className="inline-flex gap-4 text-sm items-center">
+                                    Qty:
+                                    <div className="text-[#555]" onClick={() => changeQty(index, -1)}>-</div>
+                                    <div>{p.qty}</div>
+                                    <div className="text-[#555]" onClick={() => changeQty(index, 1)}>+</div>
+                                </div>
+                                <p className="text-right text-[#777] text-xs">
+                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                                </p>
                             </div>
                         </div>
                     </div>
-                </Fragment>
+                )
         })
 
         return returnValues
@@ -380,7 +392,7 @@ function CartModal(props) {
 
     const browserView = () => {
         let returnValue =
-            <div className={`bg-theme-900/50 fixed inset-0 z-20`} onClick={closeModal}>
+            <div className={`bg-theme-900/50 fixed inset-0 z-50`} onClick={closeModal}>
                 <div
                     className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden ml-auto p-4"
                     onClick={(e) => e.stopPropagation()}
