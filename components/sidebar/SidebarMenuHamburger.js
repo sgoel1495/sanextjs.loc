@@ -426,7 +426,7 @@ function SidebarMenuHamburger(props) {
                     link: `login`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userWallet.user_name,dataStore]);
+    }, [dataStore.userWallet.user_name]);// eslint-disable-line react-hooks/exhaustive-deps
 
     const closeModal = () => {
         setShowSidebarMenu(false);
