@@ -377,7 +377,7 @@ function SidebarMenuHamburger(props) {
     }, [showSidebarMenu]);
 
     useEffect(() => {
-        if (dataStore && dataStore.hasOwnProperty("userWallet") && dataStore.userWallet.user_name!="") {
+        if (dataStore.userData.contact!=null) {
             setNavigationData([
                 {
                     title: dataStore.userWallet.user_name,
@@ -426,7 +426,7 @@ function SidebarMenuHamburger(props) {
                     link: `login`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userWallet.user_name]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [dataStore.userData.contact]);// eslint-disable-line react-hooks/exhaustive-deps
 
     const closeModal = () => {
         setShowSidebarMenu(false);
