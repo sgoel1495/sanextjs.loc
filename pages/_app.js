@@ -14,6 +14,16 @@ import dataStoreDefault from "../store/defaultDataStore.json";
 
 function MyApp({Component, pageProps}) {
     const dataStoreDefault = require('../store/defaultDataStore.json');
+    const userServe={
+        "email": "",
+        "phone_number": "",
+        "user_name": "",
+        "favorites": [],
+        "cart": {},
+        "ref_id": null,
+        "temp_user_id": Date.now().toString()
+    }
+    dataStoreDefault.userServe = userServe
     //dataStoreDefault.apiToken = pageProps.apiToken;
     const [dataStore, setDataStore] = useState(dataStoreDefault);
     const [refresh, setRefresh] = useState(true);
@@ -32,24 +42,6 @@ function MyApp({Component, pageProps}) {
 
         <Script id="facebook-jssdk" src="https://connect.facebook.net/en_US/all.js"/>
     </Fragment>
-
-    useEffect(()=>{
-        if(isMobile!=dataStoreDefault.mobile)
-            updateDataStore("mobile",isMobile);
-    },[dataStoreDefault.mobile,updateDataStore])
-
-    useEffect(()=>{
-        const userServe={
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "favorites": [],
-            "cart": {},
-            "ref_id": null,
-            "temp_user_id": Date.now().toString()
-        }
-        updateDataStore("userServe",userServe)
-    },[updateDataStore]);
 
     return <Fragment>
         <AppWideContext.Provider value={{
