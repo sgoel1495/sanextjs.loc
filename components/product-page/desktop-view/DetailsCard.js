@@ -285,7 +285,7 @@ const DetailsCard = ({ data, hpid }) => {
                 </div>
                 <div className={"flex items-center"}>
                     <span className='leading-none'>+</span>
-                    <p className={"uppercase text-sm"}>product details</p>
+                    <a href='#product_details' className={"uppercase text-sm"}>product details</a>
                 </div>
                 <div className="flex items-center justify-center mb-5">5.0 ★ ★ ★ ★ ★</div>
                 <div>
