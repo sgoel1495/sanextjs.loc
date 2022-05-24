@@ -9,6 +9,10 @@
     html {
         -webkit-tap-highlight-color: transparent;
     }
+
+    html,body{
+        scroll-behavior: smooth;
+    }
 }
 
 /* Only Css common to whole project */
