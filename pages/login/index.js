@@ -9,7 +9,7 @@ function LogInPage() {
     useEffect(() => {
         updateDataStore("showSidebarMenuUser", true);
         router.back();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [updateDataStore,router])
     return <Fragment></Fragment>;
 }
 

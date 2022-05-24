@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ParallaxBlock from "../common/ParallaxBlock";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
@@ -13,23 +13,27 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 function Fabric(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    let oldValue, newValue = 0;
+    //let oldValue, newValue = 0;
+    const [oldValue,setOldValue]=useState(0)
     const [scrollDirection, setScrollDirection] = React.useState(false);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    function scrollController(_e){
-        newValue = window.pageYOffset;
-        if (oldValue < newValue) {
-            setScrollDirection(true)
-        } else if (oldValue > newValue) {
-            setScrollDirection(false)
-        }
-        oldValue = newValue;
-    }
-
     React.useEffect(() => {
+        const scrollController= (_e)=>{
+            const newValue = window.scrollY
+            if (oldValue < newValue) {
+                setScrollDirection(true)
+                setOldValue(newValue)
+            } else if (oldValue > newValue) {
+                setScrollDirection(false)
+                setOldValue(newValue)
+            }
+        }
         window.addEventListener('scroll', scrollController);
-    }, [scrollController, scrollDirection]);
+
+        return ()=>{
+            window.removeEventListener("scroll",scrollController)
+        }
+    }, [oldValue]);
 
     // GSAP Animation
     gsap.registerPlugin(ScrollTrigger);

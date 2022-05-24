@@ -10,8 +10,10 @@ import { useRouter } from "next/router";
 function UsersProfilePage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
-    if (dataStore.userData.contact == null)
-        router.replace("/"); //illegal direct access
+    useEffect(()=>{
+        if (dataStore.userData.contact == null)
+            router.replace("/"); //illegal direct access
+    },[dataStore.userData.contact,router])
 
     const mobileView = null;
     const browserView = () => {

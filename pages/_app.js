@@ -36,7 +36,7 @@ function MyApp({Component, pageProps}) {
     useEffect(()=>{
         if(isMobile!=dataStoreDefault.mobile)
             updateDataStore("mobile",isMobile);
-    },[dataStoreDefault.mobile])
+    },[dataStoreDefault.mobile,updateDataStore])
 
     useEffect(()=>{
         const userServe={
@@ -49,7 +49,7 @@ function MyApp({Component, pageProps}) {
             "temp_user_id": Date.now().toString()
         }
         updateDataStore("userServe",userServe)
-    },[]);
+    },[updateDataStore]);
 
     return <Fragment>
         <AppWideContext.Provider value={{

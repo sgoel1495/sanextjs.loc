@@ -420,7 +420,7 @@ function SidebarMenuHamburger(props) {
                     link: `login`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userData.contact]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [dataStore.userData.contact,dataStore.userWallet.user_name]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);
