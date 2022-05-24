@@ -1,7 +1,7 @@
 import React from 'react';
 
 function LookIDPage() {
-    return ( <>LookIDPage</> );
+    return <>LookIDPage</>
 }
 
 export default LookIDPage;

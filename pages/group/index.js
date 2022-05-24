@@ -1,7 +1,7 @@
 
-function Group(){
+function GroupPage(){
 
-    return null;
+    return <>Group Page</>
 }
 
-export default Group;
+export default GroupPage;

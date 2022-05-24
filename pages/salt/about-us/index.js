@@ -13,7 +13,7 @@ import AffordableLuxury from "../../../components/about-salt/AffordableLuxury";
 import Header from "../../../components/navbar/Header";
 
 
-function AboutUsPage() {
+function SaltAboutUsPage() {
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
 
@@ -82,4 +82,4 @@ function AboutUsPage() {
 
 }
 
-export default AboutUsPage;
+export default SaltAboutUsPage;

@@ -13,7 +13,7 @@ import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury
 import Header from "../../../../components/navbar/Header";
 
 
-function OurDesignPage(){
+function SaltOurDesignPage(){
     const {dataStore} = useContext(AppWideContext);
 
     const scrollToRef = createRef();
@@ -63,4 +63,4 @@ function OurDesignPage(){
 
 }
 
-export default OurDesignPage;
+export default SaltOurDesignPage;

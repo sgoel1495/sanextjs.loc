@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 
-function OrderHistoryPage(){
+function UsersOrderHistoryPage(){
     const {dataStore} = useContext(AppWideContext);
 
     const mobileView=null;
@@ -10,4 +10,4 @@ function OrderHistoryPage(){
     return (dataStore.mobile) ? mobileView : browserView;
 }
 
-export default OrderHistoryPage;
+export default UsersOrderHistoryPage;

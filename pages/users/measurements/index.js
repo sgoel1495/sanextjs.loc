@@ -12,7 +12,7 @@ import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 import {apiCall} from "../../../helpers/apiCall";
 
-function MeasurementsPage() {
+function UsersMeasurementsPage() {
     const router = useRouter();
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     if (dataStore.userData.contact == null)
@@ -232,4 +232,4 @@ function MeasurementsPage() {
     )
 }
 
-export default MeasurementsPage;
+export default UsersMeasurementsPage;

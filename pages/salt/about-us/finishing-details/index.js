@@ -13,7 +13,7 @@ import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury
 import Header from "../../../../components/navbar/Header";
 
 
-function FinishingDetailsPage(){
+function SaltFinishingDetailsPage(){
     const {dataStore} = useContext(AppWideContext);
     const category = "Contact Us";
 
@@ -64,4 +64,4 @@ function FinishingDetailsPage(){
 
 }
 
-export default FinishingDetailsPage;
+export default SaltFinishingDetailsPage;

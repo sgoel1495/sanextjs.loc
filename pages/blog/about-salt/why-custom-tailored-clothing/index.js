@@ -11,7 +11,7 @@ import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatme
 import Link from "next/link";
 import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTailoredClothing";
 
-function WhyCustomTailoredClothingPage() {
+function BlogWhyCustomTailoredClothingPage() {
     const {dataStore} = useContext(AppWideContext);
 
     const mobileView = null;
@@ -45,4 +45,4 @@ function WhyCustomTailoredClothingPage() {
 
 }
 
-export default WhyCustomTailoredClothingPage;
+export default BlogWhyCustomTailoredClothingPage;

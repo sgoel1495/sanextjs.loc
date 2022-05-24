@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Cart() {
-    return ( <>Cart Page</> );
+function HomepageCartPage() {
+    return <>Homepage Cart Page</>
 }
 
-export default Cart;
+export default HomepageCartPage;
 

@@ -6,7 +6,7 @@ import AddressForm from "../../../../components/user/AddressForm";
 import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";
 
-function AddAddressPage() {
+function UsersAddAddressPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
     if (dataStore.userData.contact == null)
@@ -47,4 +47,4 @@ function AddAddressPage() {
     )
 }
 
-export default AddAddressPage;
+export default UsersAddAddressPage;

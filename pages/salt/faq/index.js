@@ -33,7 +33,7 @@ const AnswerBlock = ({ item }) => {
     return item.check ? check : main;
 }
 
-function FaqPage() {
+function SaltFaqPage() {
     const { dataStore } = useContext(AppWideContext);
 
     const category = "FAQ";
@@ -103,4 +103,4 @@ function FaqPage() {
 }
 
 
-export default FaqPage;
+export default SaltFaqPage;

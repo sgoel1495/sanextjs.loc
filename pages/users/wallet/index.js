@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 
-function WalletPage(){
+function UsersWalletPage(){
     const {dataStore} = useContext(AppWideContext);
 
     const mobileView=null;
@@ -10,4 +10,4 @@ function WalletPage(){
     return (dataStore.mobile) ? mobileView : browserView;
 }
 
-export default WalletPage;
+export default UsersWalletPage;

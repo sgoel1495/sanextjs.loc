@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 
-function MyReferralsPage(){
+function UsersMyReferralsPage(){
     const {dataStore} = useContext(AppWideContext);
 
     const mobileView=null;
@@ -10,4 +10,4 @@ function MyReferralsPage(){
     return (dataStore.mobile) ? mobileView : browserView;
 }
 
-export default MyReferralsPage;
+export default UsersMyReferralsPage;

@@ -1,5 +1,7 @@
-function UserAccountPage() {
-    return "User Account";
+import React from "react";
+
+function UsersAccountPage() {
+    return <>Users Account Page</>
 }
 
-export default UserAccountPage;
+export default UsersAccountPage;

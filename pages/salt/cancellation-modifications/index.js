@@ -34,7 +34,7 @@ const AnswerBlock = ({ item }) => {
     return item.check ? check : main;
 }
 
-function CancellationModificationsPage() {
+function SaltCancellationModificationsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
 
@@ -95,4 +95,4 @@ function CancellationModificationsPage() {
 }
 
 
-export default CancellationModificationsPage;
+export default SaltCancellationModificationsPage;

@@ -79,8 +79,8 @@ function NewArrivalsAllPage() {
         return () => {
             if (loaderRef && loaderRef.current)
                 observer.unobserve(loaderRef.current)
-        };
-    }, [loaderRef, fetchData]);
+        }
+    }, [loaderRef, fetchData])
 
     useEffect(() => {
         fetchData(false)

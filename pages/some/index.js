@@ -1,7 +1,7 @@
 import React from 'react';
 
 function SomePage() {
-    return (<>Some Page</>);
+    return <>Some Page</>
 }
 
 export default SomePage;

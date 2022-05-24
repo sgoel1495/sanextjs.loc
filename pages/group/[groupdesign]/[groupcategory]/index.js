@@ -12,7 +12,7 @@ import Footer from "../../../../components/footer/Footer";
  * @constructor
  */
 
-function GroupCategory() {
+function GroupCategoryPage() {
     // we are dealing with color and cateogry
     const {dataStore} = useContext(AppWideContext);
     const router = useRouter();
@@ -43,4 +43,4 @@ function GroupCategory() {
 
 }
 
-export default GroupCategory;
+export default GroupCategoryPage;

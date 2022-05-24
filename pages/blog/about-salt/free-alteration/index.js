@@ -11,7 +11,7 @@ import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatme
 import Link from "next/link";
 import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTailoredClothing";
 
-function FreeAlterationPage(){
+function BlogFreeAlterationPage(){
     const {dataStore} = useContext(AppWideContext);
 
     const mobileView = null;
@@ -44,4 +44,4 @@ function FreeAlterationPage(){
 
 }
 
-export default FreeAlterationPage;
+export default BlogFreeAlterationPage;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 function UsersPage() {
-    return ( <>Nothing to see</> );
+    return <>Users Page</>
 }
 
 export default UsersPage;

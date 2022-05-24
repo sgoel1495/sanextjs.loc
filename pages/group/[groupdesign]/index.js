@@ -12,7 +12,7 @@ import Footer from "../../../components/footer/Footer";
  * @constructor
  */
 
-function GroupDesign() {
+function GroupDesignPage() {
     // we are dealing with design here.
     const {dataStore} = useContext(AppWideContext);
     const router = useRouter();
@@ -42,4 +42,4 @@ function GroupDesign() {
 
 }
 
-export default GroupDesign;
+export default GroupDesignPage;

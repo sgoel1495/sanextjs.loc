@@ -7,7 +7,7 @@ import ContactInformation from "../../../components/user/ContactInformation";
 import DefaultAddressBookInformation from "../../../components/user/DefaultAddressBookInformation";
 import { useRouter } from "next/router";
 
-function ProfilePage() {
+function UsersProfilePage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
     if (dataStore.userData.contact == null)
@@ -36,4 +36,4 @@ function ProfilePage() {
     )
 }
 
-export default ProfilePage;
+export default UsersProfilePage;

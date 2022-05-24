@@ -12,7 +12,7 @@ import Header from "../../../components/navbar/Header";
  * @todo bot to be integrated with both contact us button
  */
 
-function ContactUsPage() {
+function SaltContactUsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
     const category = "Contact Us";
@@ -128,4 +128,4 @@ function ContactUsPage() {
 
 }
 
-export default ContactUsPage;
+export default SaltContactUsPage;

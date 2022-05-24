@@ -2,7 +2,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import {useRouter} from "next/router";
 import {Fragment, useContext, useEffect} from "react";
 
-function Logout() {
+function UsersLogoutPage() {
     const {updateDataStore} = useContext(AppWideContext);
     const router = useRouter();
     useEffect(() => {
@@ -23,7 +23,7 @@ function Logout() {
             "favorites": [],
             "cart": {},
             "ref_id": null,
-            "temp_user_id": ""
+            "temp_user_id": Date.now().toString()
         };
 
         const userMeasurements={}
@@ -45,4 +45,4 @@ function Logout() {
     return <Fragment>Logging out ...</Fragment>;
 }
 
-export default Logout;
+export default UsersLogoutPage;
