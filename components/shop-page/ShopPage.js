@@ -79,7 +79,7 @@ function ShopPage(props) {
             if (loaderRef && loaderRef.current)
                 observer.unobserve(loaderRef.current)
         };
-    }, [loaderRef, fetchData]);
+    }, [loaderRef, fetchData]);// eslint-disable-line react-hooks/exhaustive-deps
 
 
     useEffect(() => {
