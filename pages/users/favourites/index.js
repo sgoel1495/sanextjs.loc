@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 
-function FavouritesPage(){
+function UsersFavouritesPage(){
     const {dataStore} = useContext(AppWideContext);
 
     const mobileView=null;
@@ -10,4 +10,4 @@ function FavouritesPage(){
     return (dataStore.mobile) ? mobileView : browserView;
 }
 
-export default FavouritesPage;
+export default UsersFavouritesPage;

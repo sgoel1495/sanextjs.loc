@@ -11,7 +11,7 @@ import Header from "../../../components/navbar/Header";
  */
 
 
-function TermsAndConditionPage() {
+function SaltTermsAndConditionPage() {
     const { dataStore } = useContext(AppWideContext);
 
     const category = "Terms & Conditions";
@@ -525,4 +525,4 @@ function TermsAndConditionPage() {
     );
 }
 
-export default TermsAndConditionPage;
+export default SaltTermsAndConditionPage;

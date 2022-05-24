@@ -14,7 +14,7 @@ import Header from "../../../../components/navbar/Header";
 
 
 
-function SizeFitPage(){
+function SaltSizeFitPage(){
     const {dataStore} = useContext(AppWideContext);
 
     const scrollToRef = createRef();
@@ -64,4 +64,4 @@ function SizeFitPage(){
 
 }
 
-export default SizeFitPage;
+export default SaltSizeFitPage;

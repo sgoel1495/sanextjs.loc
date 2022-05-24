@@ -1,8 +1,8 @@
 import React from 'react';
 
 
-function SiteMap() {
-    return (<>SiteMapPage</>);
+function SiteMapPage() {
+    return <>SiteMapPage</>
 }
 
-export default SiteMap;
+export default SiteMapPage;

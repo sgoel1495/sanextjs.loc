@@ -132,12 +132,6 @@ function MyApp({Component, pageProps}) {
     </Fragment>
 }
 
-
-MyApp.getStaticProps = async (appContext) => {
-    const returnObject = {apiToken: "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"};
-    const appProps = await App.getInitialProps(appContext);
-    return {pageProps: {...appProps.pageProps, ...returnObject}};
-}
 /*
 MyApp.getInitialProps = async (appContext) => {
     const returnObject = {apiToken: null};

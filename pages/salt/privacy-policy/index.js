@@ -11,7 +11,7 @@ import Header from "../../../components/navbar/Header";
  */
 
 
-function PrivacyPolicyPage() {
+function SaltPrivacyPolicyPage() {
     const { dataStore } = useContext(AppWideContext);
 
     const category = "Privacy Policy";
@@ -52,4 +52,4 @@ function PrivacyPolicyPage() {
     );
 }
 
-export default PrivacyPolicyPage;
+export default SaltPrivacyPolicyPage;

@@ -11,7 +11,7 @@ import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatme
 import Link from "next/link";
 import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTailoredClothing";
 
-function StylingServicePage(){
+function BlogStylingServicePage(){
     const {dataStore} = useContext(AppWideContext);
 
 
@@ -45,4 +45,4 @@ function StylingServicePage(){
 
 }
 
-export default StylingServicePage;
+export default BlogStylingServicePage;

@@ -1,7 +1,7 @@
 import React from 'react';
 
-function HomePageIndex() {
-    return ( <>Home Page Index</> );
+function HomePage() {
+    return <>Home Page Index</>
 }
 
-export default HomePageIndex;
+export default HomePage;

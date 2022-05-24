@@ -13,7 +13,7 @@ import AffordableLuxury from "../../../../components/about-salt/AffordableLuxury
 import Header from "../../../../components/navbar/Header";
 
 
-function SizeFitPage() {
+function SaltWhySalt() {
     const {dataStore} = useContext(AppWideContext);
 
     useEffect(() => {
@@ -71,4 +71,4 @@ function SizeFitPage() {
 
 }
 
-export default SizeFitPage;
+export default SaltWhySalt

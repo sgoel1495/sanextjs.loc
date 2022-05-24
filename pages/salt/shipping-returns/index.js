@@ -35,7 +35,7 @@ const AnswerBlock = ({ item }) => {
     return item.check ? check : main;
 }
 
-function ShippingNReturnsPage() {
+function SaltShippingNReturnsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
 
@@ -97,4 +97,4 @@ function ShippingNReturnsPage() {
 }
 
 
-export default ShippingNReturnsPage;
+export default SaltShippingNReturnsPage;

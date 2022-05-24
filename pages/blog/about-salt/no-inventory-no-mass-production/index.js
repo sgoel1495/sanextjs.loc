@@ -11,7 +11,7 @@ import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatme
 import Link from "next/link";
 import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTailoredClothing";
 
-function NoInventoryNoMassProductionPage(){
+function BlogNoInventoryNoMassProductionPage(){
     const {dataStore} = useContext(AppWideContext);
 
 
@@ -45,4 +45,4 @@ function NoInventoryNoMassProductionPage(){
 
 }
 
-export default NoInventoryNoMassProductionPage;
+export default BlogNoInventoryNoMassProductionPage;
