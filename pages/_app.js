@@ -10,10 +10,11 @@ import {apiDictionary} from "../helpers/apiDictionary";
 import App from "next/app";
 import {isMobile} from "react-device-detect";
 import Script from 'next/script'
+import dataStoreDefault from "../store/defaultDataStore.json";
 
 function MyApp({Component, pageProps}) {
     const dataStoreDefault = require('../store/defaultDataStore.json');
-    dataStoreDefault.apiToken = pageProps.apiToken;
+    //dataStoreDefault.apiToken = pageProps.apiToken;
     const [dataStore, setDataStore] = useState(dataStoreDefault);
     const [refresh, setRefresh] = useState(true);
     
@@ -35,12 +36,20 @@ function MyApp({Component, pageProps}) {
     useEffect(()=>{
         if(isMobile!=dataStoreDefault.mobile)
             updateDataStore("mobile",isMobile);
-        if(dataStore.userData.contact==null){
-            const userServe=dataStore.userServe;
-            userServe.temp_user_id = Date.now().toString();
-            updateDataStore("userServe",userServe);
+    },[dataStoreDefault.mobile])
+
+    useEffect(()=>{
+        const userServe={
+            "email": "",
+            "phone_number": "",
+            "user_name": "",
+            "favorites": [],
+            "cart": {},
+            "ref_id": null,
+            "temp_user_id": Date.now().toString()
         }
-    },[dataStoreDefault.mobile,dataStore.userData.contact]);// eslint-disable-line react-hooks/exhaustive-deps
+        updateDataStore("userServe",userServe)
+    },[]);
 
     return <Fragment>
         <AppWideContext.Provider value={{
@@ -123,6 +132,13 @@ function MyApp({Component, pageProps}) {
     </Fragment>
 }
 
+
+MyApp.getStaticProps = async (appContext) => {
+    const returnObject = {apiToken: "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"};
+    const appProps = await App.getInitialProps(appContext);
+    return {pageProps: {...appProps.pageProps, ...returnObject}};
+}
+/*
 MyApp.getInitialProps = async (appContext) => {
     const returnObject = {apiToken: null};
     const callObject = apiDictionary("getToken");
@@ -138,5 +154,5 @@ MyApp.getInitialProps = async (appContext) => {
     const appProps = await App.getInitialProps(appContext);
     return {pageProps: {...appProps.pageProps, ...returnObject}};
 }
-
+*/
 export default MyApp;

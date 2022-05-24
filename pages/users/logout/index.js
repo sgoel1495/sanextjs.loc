@@ -23,7 +23,7 @@ function Logout() {
             "favorites": [],
             "cart": {},
             "ref_id": null,
-            "temp_user_id": ""
+            "temp_user_id": Date.now().toString()
         };
 
         const userMeasurements={}
