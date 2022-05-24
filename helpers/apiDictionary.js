@@ -429,10 +429,9 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
 
 
             //====================== ORDERS
-        case "orderHistory":
+        case "userOrderHistory":
             url += "/get_user_orderhistory";
             body = {
-                token: apiToken,
                 ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
