@@ -25,13 +25,21 @@ function Logout() {
             "ref_id": null,
             "temp_user_id": ""
         };
-        const userMeasurements={};
+
+        const userMeasurements={}
+        const userOrderHistory={}
+        const userCart=[]
+        const defaultAddress=null
+        const userAddresses=[]
 
         updateDataStore("userData", userData);
         updateDataStore("userWallet", userWallet);
         updateDataStore("userServe", userServe);
-        updateDataStore("userServe", userServe);
-        updateDataStore("userServe", userMeasurements);
+        updateDataStore("userAddresses", userAddresses);
+        updateDataStore("defaultAddress", defaultAddress);
+        updateDataStore("userCart", userCart);
+        updateDataStore("userOrderHistory", userOrderHistory);
+        updateDataStore("userMeasurements", userMeasurements);
         router.replace("/");
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
     return <Fragment>Logging out ...</Fragment>;

@@ -73,13 +73,13 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
 
     //==================== user Measurement
     const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
-        "user":{contact:username}
+        "user":{contact:username,token:apiToken}
     });
-    /*
+    console.log("ORDER HISTORY CALL",orderHistoryCall)
     let userOrderHistory = {};
-    if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && Object.keys(orderHistoryCall.response).length>0)
+    if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && orderHistoryCall.response!="user not found"
+        && Object.keys(orderHistoryCall.response).length>0)
         userOrderHistory = {...orderHistoryCall.response}
-    */
 
     console.log(userData);
     console.log(userWallet);
@@ -87,14 +87,15 @@ export async function updateUserDataAfterLogin(username, apiToken, currentUserMe
     console.log(userAddresses);
     console.log(userCart);
     console.log(userMeasurements);
-    //console.log(userOrderHistory);
+    console.log(userOrderHistory);
 
     return {
         "userData":userData,
         "userWallet":userWallet,
         "userServe":userServe,
         "userAddresses":userAddresses,
-        "userMeasurements":userMeasurements
+        "userMeasurements":userMeasurements,
+        "userOrderHistory":userOrderHistory
     }
 }
 
