@@ -9,9 +9,13 @@ import AddressForm from "../../../../../components/user/AddressForm";
 function AddAddressEditByIdPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
-    const addressId = query.pageid;
-    if( !addressId || dataStore.userData.contact==null || !dataStore.userAddresses.length < (addressId+1) )
-        router.replace("/"); // no illegal access
+    const query = router.query
+    const addressId = query.pageid
+    useEffect(()=>{
+        if( !addressId || dataStore.userData.contact==null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId+1) )
+            router.replace("/"); // no illegal access
+    },[addressId,dataStore.userData.contact,dataStore.userAddresses,dataStore.userAddresses.length,router])
+
 
     const address = dataStore.userAddresses[addressId];
 

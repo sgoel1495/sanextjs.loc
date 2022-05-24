@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, {Fragment, useContext, useEffect} from "react";
 import { useRouter } from "next/router";
 import AppWideContext from "../../../../store/AppWideContext";
 import UsersSideMenu from "../../../../components/user/UsersSideMenu";
@@ -9,8 +9,11 @@ import Header from "../../../../components/navbar/Header";
 function UsersAddAddressPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
-    if (dataStore.userData.contact == null)
-        router.replace("/"); //illegal direct access
+    useEffect(()=>{
+        if (dataStore.userData.contact == null)
+            router.replace("/"); //illegal direct access
+    },[dataStore.userData.contact,router])
+
 
     const address = {
         "name": "",

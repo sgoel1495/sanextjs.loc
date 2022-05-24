@@ -68,6 +68,7 @@ function NewArrivalsAllPage() {
     }, [data, dataStore.apiToken, pagination])
 
     useEffect(() => {
+        let forReturn = null
         const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
             root: null,
             rootMargin: '0px',
@@ -75,10 +76,12 @@ function NewArrivalsAllPage() {
         })
         if (loaderRef && loaderRef.current) {
             observer.observe(loaderRef.current)
+            forReturn = loaderRef.current
         }
+
         return () => {
-            if (loaderRef && loaderRef.current)
-                observer.unobserve(loaderRef.current)
+            if (forReturn)
+                observer.unobserve(forReturn)
         }
     }, [loaderRef, fetchData])
 

@@ -65,6 +65,7 @@ function ShopPage(props) {
     }, [data, dataStore.apiToken, category, pagination])
 
     React.useEffect(() => {
+        let forReturn = null
         const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
             root: null,
             rootMargin: '0px',
@@ -72,12 +73,13 @@ function ShopPage(props) {
         })
         if (loaderRef && loaderRef.current) {
             observer.observe(loaderRef.current)
+            forReturn=loaderRef.current
         }
         window.addEventListener("scroll", controller);
         return () => {
             window.removeEventListener('scroll', controller)
-            if (loaderRef && loaderRef.current)
-                observer.unobserve(loaderRef.current)
+            if (forReturn)
+                observer.unobserve(forReturn)
         };
     }, [loaderRef, fetchData]);
 
@@ -88,13 +90,15 @@ function ShopPage(props) {
             limit: 30, skip: 0
         })
         setCategory(props.hpid.substr(5))
-    }, [props.hpid])
+        fetchData(false)
+    }, [props.hpid,fetchData])
 
     //don not put fetchData in the dependency array
+    /*
     useEffect(() => {
         fetchData(false)
     }, [category])
-
+    */
 
     /**
      * @todo API - Please tell the api which gives the tagline for categories << HArdcoded

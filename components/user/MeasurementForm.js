@@ -26,10 +26,9 @@ function MeasurementForm(props) {
         if(props.index==-1){
             const m = require("../../store/emptyMeasurement.json");
             setMeasurement(m);
-        } else {
-            setMeasurement(dataStore.userMeasurements[props.index]);
-        }
-    },[dataStore.userMeasurements.toString(),props.index])// eslint-disable-line react-hooks/exhaustive-deps
+        } else
+            setMeasurement(dataStore.userMeasurements[props.index])
+    },[dataStore.userMeasurements,props.index])
 
     console.log("Current Measurement",measurement);
 

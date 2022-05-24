@@ -41,7 +41,7 @@ function UsersLogoutPage() {
         updateDataStore("userOrderHistory", userOrderHistory);
         updateDataStore("userMeasurements", userMeasurements);
         router.replace("/");
-    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [router,updateDataStore])
     return <Fragment>Logging out ...</Fragment>;
 }
 

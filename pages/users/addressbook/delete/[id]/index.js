@@ -8,34 +8,37 @@ function AddressBookDeleteByIdPage(){
     const query = router.query;
     const {dataStore,updateDataStore} = useContext(AppWideContext);
     const addressId = query.pageid;
-    if( !addressId || dataStore.userData.contact==null || !dataStore.userAddresses.length < (addressId+1) )
-        router.replace("/"); // no illegal access
+    useEffect(()=>{
+        if( !addressId || dataStore.userData.contact==null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId+1))
+            router.replace("/"); // no illegal access
+    },[addressId,dataStore.userData.contact,dataStore.userAddresses,dataStore.userAddresses.length,router])
 
-    const processOnLoad = async ()=> {
-        const resp = await apiCall("removeAddressBook", dataStore.apiToken, {
-            "user": {
-                email: dataStore.userData.contact
-            },
-            "address": {
-                "index": addressId
-            }
-        });
-        if (resp.status == 200) {
-            const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
-                "user": {
-                    email: dataStore.userData.contact
-                }
-            });
-            if (addressCall.hasOwnProperty("response") && addressCall.response) {
-                updateDataStore("userAddresses", [...addressCall.response]);
-            }
-        }
-        router.back();
-    }
+
 
     useEffect(()=>{
-        processOnLoad();
-    },[]);// eslint-disable-line react-hooks/exhaustive-deps
+        const processOnLoad = async ()=> {
+            const resp = await apiCall("removeAddressBook", dataStore.apiToken, {
+                "user": {
+                    email: dataStore.userData.contact
+                },
+                "address": {
+                    "index": addressId
+                }
+            });
+            if (resp.status == 200) {
+                const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
+                    "user": {
+                        email: dataStore.userData.contact
+                    }
+                });
+                if (addressCall.hasOwnProperty("response") && addressCall.response) {
+                    updateDataStore("userAddresses", [...addressCall.response]);
+                }
+            }
+        }
+        processOnLoad()
+            .then(()=>{router.back()})
+    },[router,updateDataStore,addressId,dataStore.apiToken,dataStore.userData.contact])
 
     return <Fragment>Deleting Address</Fragment>;
 }

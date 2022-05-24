@@ -1,9 +1,11 @@
 import {useRouter} from "next/router";
-import {Fragment} from "react";
+import {Fragment, useEffect} from "react";
 
 function UsersAddressEditPage(){
     const router=useRouter();
-    router.replace("/");
+    useEffect(()=>{
+        router.replace("/")
+    },[router])
 
     return <Fragment>No Direct Access</Fragment>;
 }

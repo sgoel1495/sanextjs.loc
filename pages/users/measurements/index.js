@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
@@ -15,8 +15,11 @@ import {apiCall} from "../../../helpers/apiCall";
 function UsersMeasurementsPage() {
     const router = useRouter();
     const { dataStore, updateDataStore } = useContext(AppWideContext);
-    if (dataStore.userData.contact == null)
-        router.replace("/"); //illegal direct access
+    useEffect(()=>{
+        if (dataStore.userData.contact == null)
+            router.replace("/"); //illegal direct access
+    },[dataStore.userData.contact,router])
+
 
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
