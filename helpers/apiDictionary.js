@@ -21,6 +21,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         headers: headers,
         body: ""
     };
+
     let finalFetcher = null;
 
     switch (word) {
@@ -437,6 +438,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+
 
         default:
             url = null;
