@@ -36,7 +36,8 @@ function ShopByLooksSwiper(props) {
     const actualData = [];
 
     if(data && data.length > 0){
-        data.forEach(ele=> {
+        const limitedData = data.slice(-10)
+        limitedData.forEach(ele=> {
             actualData.push({
                 url: "/looks/" + ele.look_id,
                 title: ele.heading,
