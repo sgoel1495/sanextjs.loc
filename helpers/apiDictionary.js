@@ -439,6 +439,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+            //====================== INSTAGRAM
+        case "instagramToken":
+            url += "/get_instagram_token";
+            body = {
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
 
         default:
             url = null;
