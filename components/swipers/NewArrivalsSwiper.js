@@ -41,7 +41,8 @@ function NewArrivalsSwiper(props) {
     const actualData = [];
 
     if (data && data.length > 0) {
-        data.forEach(ele => {
+        const limitedData = data.slice(-10)
+        limitedData.forEach(ele => {
             actualData.push({
                 link: "/" + ele.old_product_id,
                 url: WEBASSETS + ele.img_path,

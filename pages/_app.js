@@ -6,11 +6,11 @@ import '../styles/variables.css';
 import '../styles/zoomInSwiper.scss';
 import AppWideContext from "../store/AppWideContext";
 import React, {useEffect, useState, useCallback, Fragment} from 'react';
-import {apiDictionary} from "../helpers/apiDictionary";
-import App from "next/app";
+//import {apiDictionary} from "../helpers/apiDictionary";
+//import App from "next/app";
 import {isMobile} from "react-device-detect";
 import Script from 'next/script'
-import dataStoreDefault from "../store/defaultDataStore.json";
+
 
 function MyApp({Component, pageProps}) {
     const dataStoreDefault = require('../store/defaultDataStore.json');
@@ -24,6 +24,8 @@ function MyApp({Component, pageProps}) {
         "temp_user_id": Date.now().toString()
     }
     dataStoreDefault.userServe = userServe
+    dataStoreDefault.mobile = isMobile
+
     //dataStoreDefault.apiToken = pageProps.apiToken;
     const [dataStore, setDataStore] = useState(dataStoreDefault);
     const [refresh, setRefresh] = useState(true);
@@ -33,6 +35,11 @@ function MyApp({Component, pageProps}) {
         setDataStore({...dataStore});
         setRefresh(!refresh);
     },[dataStore, refresh])
+
+    useEffect(()=>{
+        if(dataStore.mobile!=isMobile)
+            updateDataStore("mobile",isMobile)
+    },[isMobile])
 
     const facebookBlock = <Fragment>
         <Script src="https://connect.facebook.net/en_US/all.js?hash=c3e73dbaa85ad58c8934ca9e6c6f542c"
