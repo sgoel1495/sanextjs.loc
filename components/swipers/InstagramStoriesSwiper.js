@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination"
@@ -6,9 +6,12 @@ import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
+import fetchJsonp from "fetch-jsonp";
+
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
+/*
 const actualData = [
     "https://scontent.cdninstagram.com/v/t51.29350-15/271309711_487846002900801_7070125602518874136_n.webp.jpg?_nc_cat=104&ccb=1-5&_nc_sid=8ae9d6&_nc_ohc=iraRfAzsRiQAX9FdCzm&_nc_ht=scontent.cdninstagram.com&edm=ANQ71j8EAAAA&oh=00_AT8Edziw9ISTS4ZsDdCEDTm8RmTpd3ISPAnPzGo2Jt464Q&oe=61DDD185",
     "https://scontent.cdninstagram.com/v/t51.29350-15/271147254_1187333378469600_2628835461645009588_n.webp.jpg?_nc_cat=110&ccb=1-5&_nc_sid=8ae9d6&_nc_ohc=_9gVbmmnWsEAX_q2CNA&_nc_ht=scontent.cdninstagram.com&edm=ANQ71j8EAAAA&oh=00_AT8wZCqHE4Ti1e21n9C-PVekLnpX_icJ3RmqAV_xLW6nig&oe=61DED6F0",
@@ -22,7 +25,22 @@ const actualData = [
     "https://scontent.cdninstagram.com/v/t51.29350-15/269990668_3022257934657797_1819390708764342416_n.webp.jpg?_nc_cat=100&ccb=1-5&_nc_sid=8ae9d6&_nc_ohc=y_yOyeF6yhcAX__9Fyo&_nc_oc=AQnpNNm1Q0qcP7BNRcmKuK06NfYCVFoVUdSDvVbDlJhyg-9TiGM-LMWLxTCHsdSXy4I&_nc_ht=scontent.cdninstagram.com&edm=ANQ71j8EAAAA&oh=00_AT-FfoN86l8CLOc55avPOgKc5j8S6as8XNdLcm_x6alnOw&oe=61DF0166"
 ]
 
+ */
+
 function InstagramStoriesSwiper(props) {
+    const instaGramToken = "IGQVJXVHh1MHhfalktbDhneFRJLWJMWUpmVzF6cXUtOE1JbGhrWERsdl85a1dHbnFUaVdjVDIyQUVtZA290bG4zS2d3QW9SdGxyNEJHUE5iU0JaUmZAmYzVyZAFdqQjJaS3dDZAWxENVd3"
+    const instaGramUrl = "https://graph.instagram.com/me/media"
+    const [actualData, setActualData]=useState([])
+    useEffect(()=>{
+        fetchJsonp(instaGramUrl+"?access_token="+instaGramToken)
+            .then(function(response) {
+                return response.json()
+            }).then(function(json) {
+            console.log('INSTAGRAM RESPONSE', json)
+        }).catch(function(ex) {
+            console.log('parsing failed', ex)
+        })
+    },[])
     const mobileView = null;
     const browserView = (
         <section className={"saltAttireStories"}>
@@ -34,20 +52,22 @@ function InstagramStoriesSwiper(props) {
             >
                 Share your instagram stories with us #SALTATTIRESTORIES
             </BlockHeader>
-            <Swiper
-                slidesPerView={6.2}
-                spaceBetween={0}
-                autoplay={{
-                    "delay": 2500,
-                    "disableOnInteraction": false
-                }}
-                navigation={true}
-                className={"mb-10 instagramStories"}
-            >
-                {actualData.map((item, index) => {
-                    return (
-                        <SwiperSlide key={index}>
-                            <a href={item} className={"block"} target="_blank" rel="noreferrer">
+            {(actualData.length=0)
+                ?<div>INSTAGRAM ACCESS REQUIRED</div>
+                :<Swiper
+                    slidesPerView={6.2}
+                    spaceBetween={0}
+                    autoplay={{
+                        "delay": 2500,
+                        "disableOnInteraction": false
+                    }}
+                    navigation={true}
+                    className={"mb-10 instagramStories"}
+                >
+                    {actualData.map((item, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <a href={item} className={"block"} target="_blank" rel="noreferrer">
                                 <span className={"block relative h-[270px] w-full"}>
                                     <Image
                                         src={item}
@@ -56,11 +76,11 @@ function InstagramStoriesSwiper(props) {
                                         objectFit="cover"
                                     />
                                 </span>
-                            </a>
-                        </SwiperSlide>
-                    )
-                })}
-            </Swiper>
+                                </a>
+                            </SwiperSlide>
+                        )
+                    })}
+                </Swiper>}
         </section>
     )
     return (
