@@ -53,7 +53,7 @@ function InstagramStoriesSwiper(props) {
             }).catch(function (ex) {
                 console.log('Token Failed', ex)
             })
-    }, [])
+    }, [props.apiToken])
     const mobileView = null;
     const browserView = (
         <section className={"saltAttireStories"}>
