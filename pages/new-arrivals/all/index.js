@@ -148,12 +148,15 @@ function NewArrivalsAllPage() {
         </>
     );
 
+    const threshold = Math.floor(window.innerHeight-100)
+
     return dataStore.mobile ? mobileView :
         <InfiniteScroll
             loadMore={fetchProducts}
             hasMore={hasMore}
             loader={loader}
             initialLoad={true}
+            threshold={threshold}
         >
             {(data)?browserView:<Fragment></Fragment>}
         </InfiniteScroll>
