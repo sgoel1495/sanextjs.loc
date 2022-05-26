@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import InfoBand from "../info-band/InfoBand";
 import Navbar from "./Navbar";
 
@@ -18,13 +18,17 @@ import Navbar from "./Navbar";
 
 const Header = (props) => {
     const [navControl, setNavControl] = React.useState(false);
-    const controller = () => setNavControl(window.scrollY > 0);
+    const controller = useCallback(() => {
+        const isSet = (window.scrollY > 0)
+        if(isSet!==navControl)
+            setNavControl(isSet)
+    },[navControl])
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
         return () => {
             window.removeEventListener('scroll', controller)
         };
-    }, []);
+    }, [controller]);
 
     const mobileView = props.type === "minimal"
         ? <div className={"fixed inset-x-0 top-0 z-20"}>

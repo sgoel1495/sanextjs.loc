@@ -39,7 +39,7 @@ function MyApp({Component, pageProps}) {
     useEffect(()=>{
         if(dataStore.mobile!=isMobile)
             updateDataStore("mobile",isMobile)
-    },[isMobile,dataStore.mobile])
+    },[dataStore.mobile,updateDataStore])
 
     const facebookBlock = <Fragment>
         <Script src="https://connect.facebook.net/en_US/all.js?hash=c3e73dbaa85ad58c8934ca9e6c6f542c"

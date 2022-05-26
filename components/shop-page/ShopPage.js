@@ -42,11 +42,11 @@ function ShopPage(props) {
     const [loading, setLoading] = useState(false);
 
     const [navControl, setNavControl] = React.useState(false);
-    const controller = useCallback((currentNav=navControl) => {
+    const controller = useCallback(() => {
         const isSet = (window.scrollY > window.innerHeight - 20)
-        if (currentNav !== isSet)
+        if (navControl !== isSet)
             setNavControl(isSet)
-    },[])
+    },[navControl])
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
         return () =>
