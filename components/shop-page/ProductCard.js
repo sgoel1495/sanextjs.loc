@@ -7,7 +7,7 @@ import AppWideContext from "../../store/AppWideContext";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
-        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
+        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`} />
     </span>
 )
 

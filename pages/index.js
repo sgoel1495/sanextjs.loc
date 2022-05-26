@@ -53,7 +53,7 @@ function RootPage() {
         <AboutSaltHomepage isMobile={dataStore.mobile}/>
         <MediaBuzzSwiper isMobile={dataStore.mobile}/>
         <ShopByLooksSwiper isMobile={dataStore.mobile}/>
-        <InstagramStoriesSwiper isMobile={dataStore.mobile}/>
+        <InstagramStoriesSwiper isMobile={dataStore.mobile} apiToken={dataStore.apiToken}/>
         <DesignBlock isMobile={dataStore.mobile}/>
     </Fragment>;
 

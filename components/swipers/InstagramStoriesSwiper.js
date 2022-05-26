@@ -7,6 +7,7 @@ import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
 import fetchJsonp from "fetch-jsonp";
+import {apiCall} from "../../helpers/apiCall";
 
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
@@ -28,19 +29,31 @@ const actualData = [
  */
 
 function InstagramStoriesSwiper(props) {
-    const instaGramToken = "IGQVJXVHh1MHhfalktbDhneFRJLWJMWUpmVzF6cXUtOE1JbGhrWERsdl85a1dHbnFUaVdjVDIyQUVtZA290bG4zS2d3QW9SdGxyNEJHUE5iU0JaUmZAmYzVyZAFdqQjJaS3dDZAWxENVd3"
+    //<InstagramStoriesSwiper isMobile={dataStore.mobile} apiToken={dataStore.apiToken}/>
+
     const instaGramUrl = "https://graph.instagram.com/me/media"
-    const [actualData, setActualData]=useState([])
-    useEffect(()=>{
-        fetchJsonp(instaGramUrl+"?access_token="+instaGramToken)
-            .then(function(response) {
-                return response.json()
-            }).then(function(json) {
-            console.log('INSTAGRAM RESPONSE', json)
-        }).catch(function(ex) {
-            console.log('parsing failed', ex)
-        })
-    },[])
+    const [actualData, setActualData] = useState([])
+    useEffect(() => {
+        apiCall("instagramToken", props.apiToken)
+            .then(function (response) {
+                console.log('Token RESPONSE', response)
+                //if(response.response.token) {
+                if(false) {
+                    console.log('Using token Token RESPONSE', response.response.token)
+                    fetchJsonp(instaGramUrl + "?access_token=" + response.response.token)
+                        .then(function (response) {
+                            return response.json()
+                        }).then(function (json) {
+                        console.log('INSTAGRAM RESPONSE', json)
+                    }).catch(function (ex) {
+                        console.log('parsing failed', ex)
+                    })
+                }
+
+            }).catch(function (ex) {
+                console.log('Token Failed', ex)
+            })
+    }, [])
     const mobileView = null;
     const browserView = (
         <section className={"saltAttireStories"}>
@@ -52,9 +65,9 @@ function InstagramStoriesSwiper(props) {
             >
                 Share your instagram stories with us #SALTATTIRESTORIES
             </BlockHeader>
-            {(actualData.length=0)
-                ?<div>INSTAGRAM ACCESS REQUIRED</div>
-                :<Swiper
+            {(actualData.length = 0)
+                ? <div>INSTAGRAM ACCESS REQUIRED</div>
+                : <Swiper
                     slidesPerView={6.2}
                     spaceBetween={0}
                     autoplay={{

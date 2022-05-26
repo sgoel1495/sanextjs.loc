@@ -36,9 +36,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             body = {
                 product: {
                     token: apiToken,
-                    ...queryObject,
-                    skip: queryObject.skip || 0,
-                    limit: queryObject.limit || 10
+                    ...queryObject
                 }
             };
             postFetcher.body = JSON.stringify(body);
@@ -434,6 +432,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_user_orderhistory";
             body = {
                 ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+            //====================== INSTAGRAM
+        case "instagramToken":
+            url += "/get_instagram_token";
+            body = {
+                token: apiToken
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
