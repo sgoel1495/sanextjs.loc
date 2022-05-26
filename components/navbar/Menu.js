@@ -37,10 +37,10 @@ function Menu(props) {
                 {mimotoList}
                 <div key={ele.collection_id}>
                     <Link href={ele.url}>
-                        <a className={`font-600 block mb-1 text-xs`}>
+                        <a className={`font-500 block mb-1 text-xs text-black`}>
                             {ele.name}
                             {/*<NewTag/>*/}
-                            <span className={`block text-[8px] tracking-wider whitespace-nowrap`}>{ele.tagline}</span>
+                            <span className={`block text-[8px] tracking-widest whitespace-nowrap`}>{ele.tagline}</span>
                         </a>
                     </Link>
                 </div>

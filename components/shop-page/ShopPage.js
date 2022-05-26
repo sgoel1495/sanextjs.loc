@@ -7,7 +7,7 @@
 
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
-import React, {Fragment, useCallback, useContext, useState} from "react";
+import React, { Fragment, useCallback, useContext, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Menu from "../navbar/Menu";
 import Footer from "../footer/Footer";
@@ -18,11 +18,11 @@ import Header from "../navbar/Header";
 import ProductCard from "./ProductCard";
 import MobileShopPage from "./MobileShopPage";
 import InfiniteScroll from 'react-infinite-scroller';
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 
 const fetchData = async (data, apiToken, category, pagination) => {
     let gotData = false;
-    const callObject = await apiCall("getProducts", apiToken, {category: category, ...pagination})
+    const callObject = await apiCall("getProducts", apiToken, { category: category, ...pagination })
     if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
         if (data != null)
             callObject.response.data = data.data.concat(callObject.response.data)
@@ -36,7 +36,7 @@ function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
     const category = props.hpid.substring(5)
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -46,7 +46,7 @@ function ShopPage(props) {
         const isSet = (window.scrollY > window.innerHeight - 20)
         if (navControl !== isSet)
             setNavControl(isSet)
-    },[navControl])
+    }, [navControl])
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
         return () =>
@@ -94,11 +94,11 @@ function ShopPage(props) {
     const hasMore = (data == null || (data.hasOwnProperty("total_products_exist") && data.total_products_exist > pagination.skip))
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
-                            <span className={"block relative w-14 aspect-square"}>
-                                <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                                       alt={"loader"}/>
-                            </span>
-                    </span>
+        <span className={"block relative w-14 aspect-square"}>
+            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
+                alt={"loader"} />
+        </span>
+    </span>
 
 
     if (!dataStore.mobile)
@@ -111,14 +111,14 @@ function ShopPage(props) {
             >
                 {(data)
                     ? <Fragment>
-                        <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
-                        {navControl || <Header type={"shopMenu"}/>}
-                        <CategoryHeaderVideo category={category}/>
+                        <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile} />
+                        {navControl || <Header type={"shopMenu"} />}
+                        <CategoryHeaderVideo category={category} />
                         {navControl
                             ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
-                                      category={props.hpid}/>
+                                category={props.hpid} />
                             : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
-                                    category={props.hpid}/>
+                                category={props.hpid} />
                         }
                         <BlockHeader
                             space={"py-5"}
@@ -129,10 +129,10 @@ function ShopPage(props) {
                         </BlockHeader>
                         <main className={`grid grid-cols-3 gap-5 container pb-20`}>
                             {data && data.data && data.data.map((prod, index) => {
-                                return <ProductCard prod={prod} key={index}/>
+                                return <ProductCard prod={prod} key={index} />
                             })}
                         </main>
-                        <Footer isMobile={dataStore.mobile}/>
+                        <Footer isMobile={dataStore.mobile} />
                     </Fragment>
                     : null}
             </InfiniteScroll>
