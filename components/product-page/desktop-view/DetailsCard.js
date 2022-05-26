@@ -1,9 +1,9 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import WishlistButton from "../../common/WishListButton";
 import appSettings from "../../../store/appSettings";
 import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
-import {apiCall} from "../../../helpers/apiCall";
+import { apiCall } from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
 import emptyMeasurement from "../../../store/emptyMeasurement.json"
 import MeasurementModal0 from "../../../components/user/MeasurementModal0"
@@ -27,14 +27,14 @@ const DetailsCard = ({ data, hpid }) => {
     const currCurrency = dataStore.currCurrency
     const currencyData = appSettings("currency_data")
     const currencySymbol = currencyData[currCurrency].curr_symbol;
-    const [deliveryAvailable,setDeliveryAvailable] = useState(null)
-    const [pincode,setPinCode] = useState(null)
-    const [sizeModal,setSizeModal]=useState(false)
-    const [selectedSize,setSelectedSize]=useState(null)
-    const [refresh,setRefresh]=useState(false)
+    const [deliveryAvailable, setDeliveryAvailable] = useState(null)
+    const [pincode, setPinCode] = useState(null)
+    const [sizeModal, setSizeModal] = useState(false)
+    const [selectedSize, setSelectedSize] = useState(null)
+    const [refresh, setRefresh] = useState(false)
     //for toast
-    const [toastMsg,setToastMsg]=useState(null)
-    const [showToast,setShowToast]=useState(false)
+    const [toastMsg, setToastMsg] = useState(null)
+    const [showToast, setShowToast] = useState(false)
 
     //for tailored model
     const [showModal0, setShowModal0] = useState(false)
@@ -93,10 +93,10 @@ const DetailsCard = ({ data, hpid }) => {
         }
         return newKey;
     }
-    const getUserO=()=>{
+    const getUserO = () => {
         const tempId = dataStore.userServe.temp_user_id || Date.now()
         const userO = {
-            email: (dataStore.userData.contact)?dataStore.userData.contact:"",
+            email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
             is_guest: !!(dataStore.userData.contact),
             temp_user_id: tempId
         }
@@ -107,14 +107,14 @@ const DetailsCard = ({ data, hpid }) => {
         setCurrentMeasurement(m);
         nextModal()
     }
-    const pastOrdersModal = ()=>{
+    const pastOrdersModal = () => {
         setShowModal0(false)
         setShowModal1(false)
         setShowModal2(false)
         setShowModal3(false)
         setShowModalPastOrders(true)
     }
-    const closeModal = ()=>{
+    const closeModal = () => {
         setShowModal0(false)
         setShowModal1(false)
         setShowModal2(false)
@@ -126,19 +126,19 @@ const DetailsCard = ({ data, hpid }) => {
         setCurrentMeasurement(currentMeasurement);
         setRefresh(!refresh);
     }
-    const refreshDataStore=async ()=>{
+    const refreshDataStore = async () => {
         const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user":getUserO()
+            "user": getUserO()
         });
 
         let userMeasurements = {};
-        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length>0)
+        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
             userMeasurements = measurementCall.response
         updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
     const saveModal = async () => {
 
-        if(currentMeasurement.measure_id==""){
+        if (currentMeasurement.measure_id == "") {
             // add new
             currentMeasurement.measure_id = getNewKey();
         } else {
@@ -147,34 +147,34 @@ const DetailsCard = ({ data, hpid }) => {
         }
         await apiCall("addMeasurements", dataStore.apiToken, {
             "user": getUserO(),
-            "measurments":currentMeasurement
+            "measurments": currentMeasurement
         })
 
         // update DataStore
         await refreshDataStore()
         closeModal()
     }
-    const sizeByProduct = (p)=>{
+    const sizeByProduct = (p) => {
         //p is the item
         setCurrentMeasurementProduct(p)
         closeModal()
         addNewModal(p.measurement)
     }
 
-    const addTailorToCart=async ()=>{
+    const addTailorToCart = async () => {
 
     }
 
-    const checkDelivery = async ()=>{
-        if(pincode==null)
+    const checkDelivery = async () => {
+        if (pincode == null)
             return;
-        const resp = await apiCall("cityByZipcode",dataStore.apiToken,{zipcode:pincode});
-        setDeliveryAvailable( (resp.response_data && resp.response_data.city)?true:false )
+        const resp = await apiCall("cityByZipcode", dataStore.apiToken, { zipcode: pincode });
+        setDeliveryAvailable((resp.response_data && resp.response_data.city) ? true : false)
     }
 
-    const addToCart=async ()=>{
+    const addToCart = async () => {
         //check if there is a size
-        if(selectedSize==null || selectedSize==""){
+        if (selectedSize == null || selectedSize == "") {
             setToastMsg("Please select a size first")
             setShowToast(true)
             return
@@ -199,46 +199,49 @@ const DetailsCard = ({ data, hpid }) => {
 
          */
         let userO = null;
-        let tempId=null;
-        if(!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id==""){
-            tempId=Date.now()
-            dataStore.userServe.temp_user_id=tempId
-            updateDataStore("userServe",dataStore.userServe)
+        let tempId = null;
+        if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id == "") {
+            tempId = Date.now()
+            dataStore.userServe.temp_user_id = tempId
+            updateDataStore("userServe", dataStore.userServe)
         } else
-            tempId=dataStore.userServe.temp_user_id
+            tempId = dataStore.userServe.temp_user_id
 
-        if(dataStore.userData.contact){
-            userO={ email : dataStore.userData.contact,
-                is_guest : false,
-                temp_user_id : tempId
+        if (dataStore.userData.contact) {
+            userO = {
+                email: dataStore.userData.contact,
+                is_guest: false,
+                temp_user_id: tempId
             }
         } else {
-            userO={ email : "",
-                is_guest : true,
-                temp_user_id : tempId
+            userO = {
+                email: "",
+                is_guest: true,
+                temp_user_id: tempId
             }
         }
 
-        const cart={ product_id : hpid,
-            size : selectedSize,
-            qty : "1",
-            is_sale : false,
-            is_tailor : false,
-            sleeve_length : "",
-            dress_length : ""
+        const cart = {
+            product_id: hpid,
+            size: selectedSize,
+            qty: "1",
+            is_sale: false,
+            is_tailor: false,
+            sleeve_length: "",
+            dress_length: ""
         }
 
-        const resp = await apiCall("addToCart",dataStore.apiToken,{user:userO,cart:cart})
-        if(resp.response && resp.response=="success") {
+        const resp = await apiCall("addToCart", dataStore.apiToken, { user: userO, cart: cart })
+        if (resp.response && resp.response == "success") {
             setToastMsg("Added to Cart")
             setShowToast(true)
             // refresh the cart
-            const respCart = await apiCall("getCart",dataStore.apiToken,{user:userO})
-            if(respCart.response && Array.isArray(respCart.response))
-                updateDataStore("userCart",respCart.response)
-            console.log("Cart",respCart)
+            const respCart = await apiCall("getCart", dataStore.apiToken, { user: userO })
+            if (respCart.response && Array.isArray(respCart.response))
+                updateDataStore("userCart", respCart.response)
+            console.log("Cart", respCart)
         }
-        console.log("ADD TO CART RESP",resp)
+        console.log("ADD TO CART RESP", resp)
 
     }
 
@@ -248,7 +251,7 @@ const DetailsCard = ({ data, hpid }) => {
                 <div className={"flex items-center justify-between text-black/60 text-sm font-500 mb-4"}>
                     <span>{currencySymbol} {currCurrency === "inr" ? data.price : data.usd_price}</span>
                     <div className='flex items-center gap-2'>
-                        <WishlistButton pid={hpid}/>
+                        <WishlistButton pid={hpid} />
                         <span>Icon</span>
                     </div>
                 </div>
@@ -258,22 +261,22 @@ const DetailsCard = ({ data, hpid }) => {
                 </div>
 
                 <div className={"flex justify-between font-600 mb-4 text-black/60"}>
-                    {["XS","S","M","L","XL","XXL"].map((item, index) => {
+                    {["XS", "S", "M", "L", "XL", "XXL"].map((item, index) => {
                         if (index > 0)
                             return <>
                                 <span className={""} key={"div" + index}>|</span>
-                                <span className={(selectedSize==item)?"":""} key={index} onClick={()=>setSelectedSize(item)}>{item}</span>
+                                <span className={(selectedSize == item) ? "border-t border-b border-black text-black" : "border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
                             </>
-                        return <span className={(selectedSize==item)?"":""} key={index}  onClick={()=>setSelectedSize(item)}>{item}</span>
+                        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black" : "border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
                     })}
                 </div>
                 <p
-                    className={"text-sm text-center uppercase mb-2 text-black/60 font-500 text-xs"}
-                    onClick={()=>setSizeModal(true)}
+                    className={"text-center uppercase mb-2 text-black/60 font-600 text-xs cursor-pointer"}
+                    onClick={() => setSizeModal(true)}
                 >
                     size guide
                 </p>
-                <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={()=>setShowModal0(true)}>
+                <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={() => setShowModal0(true)}>
                     <span className={"uppercase underline cursor-pointer"}>tailor it</span>
                     <span className={""}>/</span>
                     <span className={"uppercase underline cursor-pointer"}>customise</span>
@@ -308,30 +311,30 @@ const DetailsCard = ({ data, hpid }) => {
                 <p className={"text-[10px] tracking-tight font-600 mb-1"}> Please enter PIN to check delivery availability.</p>
                 <div className={"inline-flex justify-between"}>
                     <input placeholder={"Enter pincode"} type="number"
-                           className='border border-black text-sm w-3/5 placeholder:text-black font-500'
-                           onChange={e=>setPinCode(e.target.value)}
+                        className='border border-black text-sm w-3/5 placeholder:text-black font-500'
+                        onChange={e => setPinCode(e.target.value)}
                     />
                     <button
                         className={"bg-black text-white uppercase text-sm px-2"}
                         onClick={checkDelivery}
                     >Submit</button>
                 </div>
-                {(deliveryAvailable==null)
-                    ?null
-                    :(deliveryAvailable)
-                    ?<div>Delivery Available!</div>
-                    :<div>
-                    Sorry! Delivery not available to this location.
+                {(deliveryAvailable == null)
+                    ? null
+                    : (deliveryAvailable)
+                        ? <div>Delivery Available!</div>
+                        : <div>
+                            Sorry! Delivery not available to this location.
                             <Link href="/salt/contact-us">
                                 <a> Contact Us </a>
                             </Link>
-                    if you do not see your pincode.
-                    </div>
+                            if you do not see your pincode.
+                        </div>
                 }
             </div>
             {sizeModal &&
                 ReactDom.createPortal(
-                    <SizeGuide closeModal={()=>setSizeModal(false)} isMobile={dataStore.isMobile} />,
+                    <SizeGuide closeModal={() => setSizeModal(false)} isMobile={dataStore.isMobile} />,
                     document.getElementById("measurementmodal"))
             }
             {showModal0 &&

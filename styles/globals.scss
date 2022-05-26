@@ -9,10 +9,6 @@
     html {
         -webkit-tap-highlight-color: transparent;
     }
-
-    html,body{
-        scroll-behavior: smooth;
-    }
 }
 
 /* Only Css common to whole project */
@@ -53,6 +49,45 @@ body.scroll-overflow .navigator {
     background-position: center;
     height: 100%;
     width: 100%;
+}
+
+.size_guide_table{
+    @apply w-full table-fixed;
+
+    thead th{
+        @apply text-[#777]
+    }
+
+    tr{
+        @apply border-t border-b;
+
+        &:first-child{
+            @apply border-t-0;
+        }
+
+        td,th{
+            @apply py-3;
+        }
+
+        td{
+            @apply text-[#777]
+        }
+    }
+}
+
+.fade-up{
+    animation: fadeup .4s ease;
+}
+
+@keyframes fadeup {
+    from{
+        transform: translateY(50%);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* For Mobiles */
