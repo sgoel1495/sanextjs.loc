@@ -26,8 +26,7 @@ const fetchData = async (data, apiToken, category, pagination) => {
             callObject.response.data = data.data.concat(callObject.response.data)
         gotData = true;
     }
-    console.log("FETCH DATA",callObject.response)
-    return (gotData) ? callObject.response : {}
+    return (gotData) ? callObject : {}
 }
 
 
@@ -55,8 +54,7 @@ function NewArrivalsAllPage() {
 
         setLoading(true)
         const newData = await fetchData(data, dataStore.apiToken, category, pagination)
-        console.log("NEW DATA",newData)
-        setData(newData)
+        setData(newData.response)
         setCarousal(newData.new_arr_carousal)
         setPagination({
             skip: pagination.skip + pagination.limit,
