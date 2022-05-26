@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, {Fragment, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PageHead from "../../../components/PageHead";
 import AppWideContext from "../../../store/AppWideContext";
 import Footer from "../../../components/footer/Footer";
@@ -6,8 +6,9 @@ import Image from "next/image";
 import Header from "../../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
-import { apiDictionary } from "../../../helpers/apiDictionary";
 import ProductCard from "../../../components/new-Arrivals/ProductCard";
+import InfiniteScroll from "react-infinite-scroller";
+import {apiCall} from "../../../helpers/apiCall";
 
 /**
  * @todo @team Swiper data
@@ -17,12 +18,23 @@ import ProductCard from "../../../components/new-Arrivals/ProductCard";
  * @constructor
  */
 
+const fetchData = async (data, apiToken, category, pagination) => {
+    let gotData = false;
+    const callObject = await apiCall("getProducts", apiToken, {category: category, ...pagination})
+    if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
+        if (data != null)
+            callObject.response.data = data.data.concat(callObject.response.data)
+        gotData = true;
+    }
+    console.log("FETCH DATA",callObject.response)
+    return (gotData) ? callObject.response : {}
+}
+
 
 function NewArrivalsAllPage() {
+    const category = "new-arrivals"
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
-    const loaderRef = useRef(null)
-
     const [data, setData] = useState(null);
     const [carousal, setCarousal] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -34,9 +46,27 @@ function NewArrivalsAllPage() {
      */
 
     const [pagination, setPagination] = useState({
-        limit: 30, skip: 0
+        limit: 10, skip: 0
     })
-    const fetchData = useCallback((flag = true, io = null) => {
+
+    const fetchProducts = useCallback(async () => {
+        if (loading)
+            return
+
+        setLoading(true)
+        const newData = await fetchData(data, dataStore.apiToken, category, pagination)
+        console.log("NEW DATA",newData)
+        setData(newData)
+        setCarousal(newData.new_arr_carousal)
+        setPagination({
+            skip: pagination.skip + pagination.limit,
+            limit: pagination.limit
+        })
+        setLoading(false)
+    }, [loading, data, dataStore.apiToken, category, pagination])
+
+    /*
+    const OldfetchData = useCallback((flag = true, io = null) => {
         if (io) {
             if (!io.isIntersecting)
                 return
@@ -66,7 +96,6 @@ function NewArrivalsAllPage() {
                 setLoading(false);
             });
     }, [data, dataStore.apiToken, pagination])
-
     useEffect(() => {
         let forReturn = null
         const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
@@ -84,11 +113,18 @@ function NewArrivalsAllPage() {
                 observer.unobserve(forReturn)
         }
     }, [loaderRef, fetchData])
-
     useEffect(() => {
         fetchData(false)
     }, [fetchData])
+    */
+    const hasMore = (data == null || (data.hasOwnProperty("total_products_exist") && data.total_products_exist > pagination.skip))
 
+    const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
+                            <span className={"block relative w-14 aspect-square"}>
+                                <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
+                                       alt={"loader"}/>
+                            </span>
+                    </span>
 
     const mobileView = null;
     const browserView = (
@@ -108,20 +144,21 @@ function NewArrivalsAllPage() {
                     {data && data.data && data.data.map((prod, index) => {
                         return <ProductCard prod={prod} key={index} />
                     })}
-                    <span className={"col-span-3 flex justify-center items-center"} ref={loaderRef}>
-                        {loading &&
-                            <span className={"block relative w-14 aspect-square"}>
-                                <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`} alt={"loader"} />
-                            </span>
-                        }
-                    </span>
                 </main>
             </section>
             <Footer isMobile={dataStore.mobile} />
         </>
     );
 
-    return dataStore.mobile ? mobileView : browserView
+    return dataStore.mobile ? mobileView :
+        <InfiniteScroll
+            loadMore={fetchProducts}
+            hasMore={hasMore}
+            loader={loader}
+            initialLoad={true}
+        >
+            {(data)?browserView:<Fragment></Fragment>}
+        </InfiniteScroll>
 }
 
 
