@@ -100,6 +100,7 @@ function ShopPage(props) {
         </span>
     </span>
 
+    const threshold = Math.floor(window.innerHeight-100)
 
     if (!dataStore.mobile)
         return (
@@ -108,6 +109,7 @@ function ShopPage(props) {
                 hasMore={hasMore}
                 loader={loader}
                 initialLoad={true}
+                threshold={threshold}
             >
                 {(data)
                     ? <Fragment>
@@ -134,7 +136,7 @@ function ShopPage(props) {
                         </main>
                         <Footer isMobile={dataStore.mobile} />
                     </Fragment>
-                    : null}
+                    : <Fragment></Fragment>}
             </InfiniteScroll>
         );
 }
