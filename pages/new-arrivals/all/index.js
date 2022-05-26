@@ -37,13 +37,6 @@ function NewArrivalsAllPage() {
     const [data, setData] = useState(null);
     const [carousal, setCarousal] = useState(null);
     const [loading, setLoading] = useState(false);
-
-
-    /**
-     *
-     * @todo API issue. We have no idea about the number of products we should get. Please change the limit below accordingly
-     */
-
     const [pagination, setPagination] = useState({
         limit: 10, skip: 0
     })
@@ -123,6 +116,7 @@ function NewArrivalsAllPage() {
                                        alt={"loader"}/>
                             </span>
                     </span>
+    const threshold = (typeof window !== "undefined")?Math.floor(window.innerHeight - 100):0
 
     const mobileView = null;
     const browserView = (
@@ -147,8 +141,6 @@ function NewArrivalsAllPage() {
             <Footer isMobile={dataStore.mobile} />
         </>
     );
-
-    const threshold = Math.floor(window.innerHeight-100)
 
     return dataStore.mobile ? mobileView :
         <InfiniteScroll
