@@ -36,9 +36,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             body = {
                 product: {
                     token: apiToken,
-                    ...queryObject,
-                    skip: queryObject.skip || 0,
-                    limit: queryObject.limit || 10
+                    ...queryObject
                 }
             };
             postFetcher.body = JSON.stringify(body);
