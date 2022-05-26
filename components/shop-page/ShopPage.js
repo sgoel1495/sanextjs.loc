@@ -42,16 +42,16 @@ function ShopPage(props) {
     const [loading, setLoading] = useState(false);
 
     const [navControl, setNavControl] = React.useState(false);
-    const controller = () => {
+    const controller = useCallback(() => {
         const isSet = (window.scrollY > window.innerHeight - 20)
         if (navControl !== isSet)
             setNavControl(isSet)
-    }
+    },[navControl])
     React.useEffect(() => {
         window.addEventListener("scroll", controller);
         return () =>
             window.removeEventListener('scroll', controller)
-    }, []);
+    }, [controller]);
     const [pagination, setPagination] = useState({
         limit: 10, skip: 0
     })

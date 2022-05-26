@@ -17,7 +17,17 @@ function ProductPage(props) {
     const [data, setData] = useState(null);
 
     const [navControl, setNavControl] = React.useState(false);
-    const controller = () => setNavControl(window.scrollY > window.innerHeight / 2);
+    const controller = useCallback(() => {
+        const isSet = (window.scrollY > 0)
+        if(isSet!==navControl)
+            setNavControl(isSet)
+    },[navControl])
+    React.useEffect(() => {
+        window.addEventListener("scroll", controller);
+        return () => {
+            window.removeEventListener('scroll', controller)
+        };
+    }, [controller]);
 
     const fetchData = useCallback(() => {
         const callObject = apiDictionary("getProduct", dataStore.apiToken, { product_id: props.hpid });
@@ -32,12 +42,6 @@ function ProductPage(props) {
             })
     }, [dataStore.apiToken, props.hpid])
 
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        }
-    }, [])
 
     useEffect(() => {
         fetchData();
