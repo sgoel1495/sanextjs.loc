@@ -312,7 +312,7 @@ function CartModal(props) {
                                     <p className="text-[10px]">{p.tag_line}</p>
                                 </div>
                                 <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{p.color.name}</p>
+                                    <p className="text-[10px]">COLOR:{(p.multi_color)?"multicolor":p.color.name}</p>
                                     <p className="text-[10px]">SIZE:{p.size}</p>
                                 </div>
                                 <div className="inline-flex gap-4 text-sm items-center">
@@ -530,6 +530,7 @@ function CartModal(props) {
 
 
 function SidebarMenuCart(props) {
+    const { dataStore } = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [showSidebarMenuCart, setShowSidebarMenuCart] = useState(false);
     React.useEffect(() => {
@@ -554,6 +555,7 @@ function SidebarMenuCart(props) {
         <>
             <span onClick={() => setShowSidebarMenuCart(true)}
                 className={`block relative w-6 cursor-pointer ${iconHeight}`}>
+                <span>{(dataStore.userCart.length===0)?null:dataStore.userCart.length}</span>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
                     alt="carticon"
