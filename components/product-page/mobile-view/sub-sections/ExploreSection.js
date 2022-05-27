@@ -33,11 +33,12 @@ const ExploreSection = (props) => {
 */
                 }
             })
-    },[dataStore.apiToken, props.api, props.query, props.title])
+    },[dataStore.apiToken, props.api, props.query])
 
     useEffect(() => {
         fetchData()
-    }, [fetchData, props.id])
+    }, [fetchData])
+    // props.id was removed from deps
 
     let body;
 
