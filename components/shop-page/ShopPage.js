@@ -100,7 +100,7 @@ function ShopPage(props) {
         </span>
     </span>
 
-    const threshold = (typeof window !== "undefined")?Math.floor(window.innerHeight - 100):0
+    const threshold = (typeof window !== "undefined") ? Math.floor(window.innerHeight - 100) : 0;
 
     if (!dataStore.mobile)
         return (

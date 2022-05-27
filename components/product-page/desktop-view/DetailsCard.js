@@ -316,9 +316,9 @@ const DetailsCard = ({ data, hpid }) => {
                         if (index > 0)
                             return <>
                                 <span className={""} key={"div" + index}>|</span>
-                                <span className={(selectedSize == item) ? "border-t border-b border-black text-black" : "border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
+                                <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
                             </>
-                        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black" : "border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
+                        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
                     })}
                 </div>
                 <p
