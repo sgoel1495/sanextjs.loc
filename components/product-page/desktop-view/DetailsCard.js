@@ -223,7 +223,6 @@ const DetailsCard = ({ data, hpid }) => {
 }"
 
          */
-        let userO = null;
         let tempId = null;
         if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id == "") {
             tempId = Date.now()
@@ -232,18 +231,10 @@ const DetailsCard = ({ data, hpid }) => {
         } else
             tempId = dataStore.userServe.temp_user_id
 
-        if (dataStore.userData.contact) {
-            userO = {
-                email: dataStore.userData.contact,
-                is_guest: false,
-                temp_user_id: tempId
-            }
-        } else {
-            userO = {
-                email: "",
-                is_guest: true,
-                temp_user_id: tempId
-            }
+        const userO = {
+            email: (dataStore.userData.contact)? dataStore.userData.contact:"",
+            is_guest: !(dataStore.userData.contact),
+            temp_user_id: tempId
         }
 
         const cart = {
@@ -254,6 +245,21 @@ const DetailsCard = ({ data, hpid }) => {
             is_tailor: false,
             sleeve_length: "",
             dress_length: ""
+        }
+        const displayCart = {
+            asset_id: data.single_view_img,
+            product_id: hpid,
+            cart_id: data.product_id+"+"+selectedSize,
+            name:data.name,
+            tag_line:data.tag_line,
+            color: (data.hasOwnProperty("color"))?data.color:{name:"MULTICOLOR"},
+            multi_color: (data.hasOwnProperty("multi_color"))?data.multi_color:false,
+            qty:"1",
+            size:selectedSize,
+            is_tailor:false,
+            price:data.price,
+            usd_price:data.usd_price,
+            order: cart
         }
 
         //check if the product already in cart
@@ -281,7 +287,7 @@ const DetailsCard = ({ data, hpid }) => {
                 }
             } else {
                 //not logged in
-                dataStore.userCart.push(cart)
+                dataStore.userCart.push(displayCart)
                 updateDataStore("userCart", dataStore.userCart)
             }
             setToastMsg("Added to Cart")

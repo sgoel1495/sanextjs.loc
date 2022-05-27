@@ -56,9 +56,13 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     //==================== user Cart
     // we may have products that we need to add to user
     // first we add any measurements that may be there.
-    const countCart = Object.keys(currentCart)
-    for(let x=0;x<countCart;x++){
-        await apiCall("addToCart", dataStore.apiToken, { user: userO, cart: currentCart[x] })
+    console.log("CURRENT CART",currentCart)
+    for(let x=0;x<currentCart.length;x++){
+        const newCart = currentCart[x].order
+        newCart.qty = currentCart[x].qty
+        console.log("INSERTING product to cart",newCart)
+        const callResult = await apiCall("addToCart", apiToken, { user: userO, cart: newCart })
+        console.log("CALL RESULT",callResult)
     }
 
     let userCart = [];
