@@ -283,7 +283,7 @@ function CartModal(props) {
             }
             const updateCall = await apiCall("removeCart", dataStore.apiToken, {"user": userO, product: updateProduct});
         } else {
-            delete dataStore.userCart[i]
+            dataStore.userCart.splice(i,1)
         }
         await refreshCart()
     }
@@ -550,6 +550,7 @@ function SidebarMenuCart(props) {
         default:
             iconHeight = "h-6"
     }
+    console.log("USER CART",dataStore.userCart)
 
     return (
         <>
