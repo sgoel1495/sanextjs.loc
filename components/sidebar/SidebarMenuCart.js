@@ -242,12 +242,12 @@ function CartModal(props) {
 
     const refreshCart = async () => {
         //retrieve from api and update
-        if(dataStore.userData.contact) {
+        if (dataStore.userData.contact) {
             let userCart = [];
-            const cartCall = await apiCall("getCart", dataStore.apiToken, {"user": userO});
+            const cartCall = await apiCall("getCart", dataStore.apiToken, { "user": userO });
 
             if (cartCall.response && Array.isArray(cartCall.response)) {
-                userCart = cartCall.response.filter(item=>{return item.qty!=null})
+                userCart = cartCall.response.filter(item => { return item.qty != null })
             }
             updateDataStore("userCart", userCart)
         } else {
@@ -265,25 +265,25 @@ function CartModal(props) {
                 dataStore.userCart[i].qty = (cv - 1).toString();
         }
         //update
-        if(dataStore.userData.contact) {
+        if (dataStore.userData.contact) {
             const updateProduct = {
                 product_cart_id: dataStore.userCart[i].cart_id,
                 qty: dataStore.userCart[i].qty
             }
-            await apiCall("updateCart", dataStore.apiToken, {"user": userO, product: updateProduct});
+            await apiCall("updateCart", dataStore.apiToken, { "user": userO, product: updateProduct });
         }
         await refreshCart()
 
     }
 
     const removeFromCart = async (i) => {
-        if(dataStore.userData.contact) {
+        if (dataStore.userData.contact) {
             const updateProduct = {
                 product_cart_id: dataStore.userCart[i].cart_id
             }
-            const updateCall = await apiCall("removeCart", dataStore.apiToken, {"user": userO, product: updateProduct});
+            const updateCall = await apiCall("removeCart", dataStore.apiToken, { "user": userO, product: updateProduct });
         } else {
-            dataStore.userCart.splice(i,1)
+            dataStore.userCart.splice(i, 1)
         }
         await refreshCart()
     }
@@ -312,7 +312,7 @@ function CartModal(props) {
                                     <p className="text-[10px]">{p.tag_line}</p>
                                 </div>
                                 <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{(p.multi_color)?"multicolor":p.color.name}</p>
+                                    <p className="text-[10px]">COLOR:{(p.multi_color) ? "multicolor" : p.color.name}</p>
                                     <p className="text-[10px]">SIZE:{p.size}</p>
                                 </div>
                                 <div className="inline-flex gap-4 text-sm items-center">
@@ -359,9 +359,9 @@ function CartModal(props) {
                                 </div> */}
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty:
-                                    <div className="text-[#555]" onClick={() => changeQty(index, -1)}>-</div>
+                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(index, -1)}>-</div>
                                     <div>{p.qty}</div>
-                                    <div className="text-[#555]" onClick={() => changeQty(index, 1)}>+</div>
+                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(index, 1)}>+</div>
                                 </div>
                                 <p className="text-right text-[#777] text-xs">
                                     {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
@@ -550,13 +550,12 @@ function SidebarMenuCart(props) {
         default:
             iconHeight = "h-6"
     }
-    console.log("USER CART",dataStore.userCart)
+    console.log("USER CART", dataStore.userCart)
 
     return (
         <>
-            <span onClick={() => setShowSidebarMenuCart(true)}
-                className={`block relative w-6 cursor-pointer ${iconHeight}`}>
-                <span>{(dataStore.userCart.length===0)?null:dataStore.userCart.length}</span>
+            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
+                <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{(dataStore.userCart.length === 0) ? null : dataStore.userCart.length}</span>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
                     alt="carticon"

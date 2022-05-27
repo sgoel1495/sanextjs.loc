@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useContext, useEffect, useRef, useState} from 'react';
+import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import PageHead from "../../components/PageHead";
 import AppWideContext from "../../store/AppWideContext";
 import Footer from "../../components/footer/Footer";
@@ -9,18 +9,18 @@ import Link from "next/link";
 import BlockHeader from "../../components/common/blockHeader";
 import WishListButton from "../../components/common/WishListButton";
 import Header from "../../components/navbar/Header";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 import InfiniteScroll from "react-infinite-scroller";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
-        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
+        <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`} />
     </span>
 )
 
 const fetchData = async (data, apiToken, pagination) => {
     let gotData = false;
-    const callObject = await apiCall("getLooksData", apiToken, {look_id: "", ...pagination})
+    const callObject = await apiCall("getLooksData", apiToken, { look_id: "", ...pagination })
     if (
         callObject.hasOwnProperty("response")
         && callObject.response.hasOwnProperty("look")
@@ -31,13 +31,13 @@ const fetchData = async (data, apiToken, pagination) => {
         }
         gotData = true;
     }
-    return {data: callObject.response, hasMore: gotData}
+    return { data: callObject.response, hasMore: gotData }
 }
 
 
 function LooksPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
     const [data, setData] = useState(null);
     const [expandLook, setExpandLook] = useState(null);
     const expandedRef = useRef(null);
@@ -67,13 +67,13 @@ function LooksPage() {
         setLoading(false)
     }, [loading, data, dataStore.apiToken, pagination])
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
-                            <span className={"block relative w-14 aspect-square"}>
-                                <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                                       alt={"loader"}/>
-                            </span>
-                    </span>
+        <span className={"block relative w-14 aspect-square"}>
+            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
+                alt={"loader"} />
+        </span>
+    </span>
     //const threshold = (typeof window !== "undefined") ? Math.floor(window.innerHeight / 2) : 0
-    const threshold = 500
+    const threshold = 500;
 
     /*
     const resp = useApiCall("getLooksData", dataStore.apiToken, { look_id: "", limit: 10 });
@@ -155,7 +155,7 @@ function LooksPage() {
                 <>
                     <div className={`grid grid-cols-2 place-items-center`}>
                         <LookDataBlockImage src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"}
-                                            alt={prodDetails.name}/>
+                            alt={prodDetails.name} />
                         <div className={`text-center`}>
                             <p className={leadTextStyle}>{prodDetails.name}</p>
                             <p className={textStyle}>{prodDetails.tag_line}</p>
@@ -185,7 +185,7 @@ function LooksPage() {
                             </Link>
                         </div>
                         <LookDataBlockImage src={WEBASSETS + "/assets/" + prod + "/square-crop.jpg"}
-                                            alt={prodDetails.name}/>
+                            alt={prodDetails.name} />
                     </div>
                 </>
             );
@@ -198,9 +198,9 @@ function LooksPage() {
                 >
                     Close
                     <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} fill={"currentColor"}
-                         viewBox="0 0 24 24">
+                        viewBox="0 0 24 24">
                         <path
-                            d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                            d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" />
                     </svg>
                 </button>
                 <BlockHeader
@@ -212,7 +212,7 @@ function LooksPage() {
                     <span className={"text-h1"}>~</span>
                 </BlockHeader>
                 <div className={`grid grid-cols-2`}>
-                    <LookDataBlockImage src={WEBASSETS + expandLook.img_path} alt={expandLook.name}/>
+                    <LookDataBlockImage src={WEBASSETS + expandLook.img_path} alt={expandLook.name} />
                     <div className={`place-self-center bg-white h-fit w-2/3`}>
                         {products}
                     </div>
@@ -235,11 +235,11 @@ function LooksPage() {
                             onClick={() => setExpandLook(look)}
                             className={`relative group cursor-pointer z-0`}
                         >
-                            <WishListButton className={`absolute right-4 top-4 z-10`} pid={look.look_id}/>
-                            <LookDataBlockImage src={WEBASSETS + look.img_path} alt={look.name}/>
+                            <WishListButton className={`absolute right-4 top-4 z-10`} pid={look.look_id} />
+                            <LookDataBlockImage src={WEBASSETS + look.img_path} alt={look.name} />
                             <div
                                 className={"hidden group-hover:grid place-items-center absolute inset-0 opacity-95 text-white text-center font-600 tracking-wider"}
-                                style={{background: look.bg_color}}>
+                                style={{ background: look.bg_color }}>
                                 <div className={`self-end`}>
                                     <p className={`mb-2 text-h5`}>{look.heading}</p>
                                     <p className={`text-h5 font-cursive italic`}>{look.details}</p>
@@ -257,8 +257,8 @@ function LooksPage() {
 
     const mobileView = null;
     const browserView = <Fragment>
-        <PageHead url="/looks" id="looks" isMobile={dataStore.mobile}/>
-        <Header type={dataStore.mobile ? "minimal" : "shopMenu"}/>
+        <PageHead url="/looks" id="looks" isMobile={dataStore.mobile} />
+        <Header type={dataStore.mobile ? "minimal" : "shopMenu"} />
         <section className={`bg-[#E6E1DB] py-20`}>
             <BlockHeader
                 space={"py-5"}
@@ -272,7 +272,7 @@ function LooksPage() {
                 {data && lookData()}
             </main>
         </section>
-        <Footer isMobile={dataStore.mobile}/>
+        <Footer isMobile={dataStore.mobile} />
     </Fragment>
 
     return <InfiniteScroll
