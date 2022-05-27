@@ -246,8 +246,9 @@ const DetailsCard = ({ data, hpid }) => {
             sleeve_length: "",
             dress_length: ""
         }
+        console.log("DATA PRODUCT",data)
         const displayCart = {
-            asset_id: data.single_view_img,
+            asset_id: "/assets/"+data.asset_id+"/thumb.jpg",
             product_id: hpid,
             cart_id: data.product_id+"+"+selectedSize,
             name:data.name,
