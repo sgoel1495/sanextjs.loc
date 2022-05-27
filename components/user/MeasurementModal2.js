@@ -85,8 +85,6 @@ function MeasurementModal2({ closeModal, isMobile, measurement, updateValues, la
 
         return returnValues;
     }
-    console.log("Bra Size", measurement.bre_size);
-
     const questionLeadClass = "font-600 text-[#555] tracking-wider";
     const labelClass = "text-sm font-700 text-right mt-[12px]";
     const inputSelect = "w-[105px] font-600 text-xs focus:ring-transparent focus:border-black";

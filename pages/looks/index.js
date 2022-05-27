@@ -74,8 +74,6 @@ function LooksPage() {
                     </span>
     //const threshold = (typeof window !== "undefined") ? Math.floor(window.innerHeight / 2) : 0
     const threshold = 500
-    console.log(threshold)
-
 
     /*
     const resp = useApiCall("getLooksData", dataStore.apiToken, { look_id: "", limit: 10 });

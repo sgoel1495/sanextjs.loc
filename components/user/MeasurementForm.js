@@ -30,8 +30,6 @@ function MeasurementForm(props) {
             setMeasurement(dataStore.userMeasurements[props.index])
     },[dataStore.userMeasurements,props.index])
 
-    console.log("Current Measurement",measurement);
-
     const saveAndReturn = async () => {
         //validations: all except landmark need to be filled. Email check
         let allFilled = true;

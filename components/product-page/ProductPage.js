@@ -47,9 +47,6 @@ function ProductPage(props) {
         fetchData();
     }, [fetchData, props.hpid]);
 
-
-    console.log(data)
-
     if (data)
         return <div>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile} />

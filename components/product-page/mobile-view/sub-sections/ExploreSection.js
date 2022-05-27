@@ -25,9 +25,12 @@ const ExploreSection = (props) => {
             .then(json => {
                 if (json && json.status === 200) {
                     setData(json.response.data);
+
+/*
                     if (props.title === "Same Color") {
                         console.log("yoyo", json.response)
                     }
+*/
                 }
             })
     },[dataStore.apiToken, props.api, props.query, props.title])

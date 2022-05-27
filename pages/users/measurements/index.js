@@ -97,7 +97,6 @@ function UsersMeasurementsPage() {
     }
 
     const showModal = (m) => {
-        console.log("Setting Measurement", m);
         setCurrentMeasurement(m);
 
         setShowModal1(true);
@@ -111,36 +110,53 @@ function UsersMeasurementsPage() {
     }
 
     const saveModal = async () => {
-        if(currentMeasurement.measure_id==""){
+
+        if (currentMeasurement.measure_id == "") {
             // add new
             currentMeasurement.measure_id = getNewKey();
         } else {
             //case update - we simply remove and add
             await delMeasurement(currentMeasurement)
         }
-        await apiCall("addMeasurements", dataStore.apiToken, {
-            "user": getUserO(),
-            "measurments":currentMeasurement
-        })
 
-        // update DataStore
-        await refreshDataStore()
+        if(dataStore.userData.contact) {
+            // we have a valid user
+            await apiCall("addMeasurements", dataStore.apiToken, {
+                "user": getUserO(),
+                "measurments": currentMeasurement
+            })
+
+            // update DataStore
+            await refreshDataStore()
+        } else {
+            //non logged in case
+            dataStore.userMeasurements[currentMeasurement.measure_id]=currentMeasurement
+            updateDataStore("userMeasurements",dataStore.userMeasurements)
+        }
+
         closeModal()
     }
 
     const delMeasurement=async (m)=>{
         //only delete. no refresh
-        await apiCall("removeMeasurements", dataStore.apiToken, {
-            user: getUserO(),
-            measurments :{
-                measure_id: m.measure_id
-            }
-        });
+        delete dataStore.userMeasurements[m.measure_id]
+        if(dataStore.userData.contact) {
+            //logged in user
+            await apiCall("removeMeasurements", dataStore.apiToken, {
+                user: getUserO(),
+                measurments: {
+                    measure_id: m.measure_id
+                }
+            });
+        }
     }
 
     const deleteMeasurement = async (m) => {
         await delMeasurement(m)
-        await refreshDataStore()
+        if(dataStore.userData.contact)
+            await refreshDataStore()
+        else
+            updateDataStore("userMeasurements",dataStore.userMeasurements)
     }
 
     const refreshDataStore=async ()=>{
@@ -153,8 +169,6 @@ function UsersMeasurementsPage() {
             userMeasurements = measurementCall.response
         updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
-
-    console.log("Current Measurements", currentMeasurement)
 
     const mobileView = null;
     const browserView = () => {
@@ -187,7 +201,6 @@ function UsersMeasurementsPage() {
         </Fragment>
     }
 
-    console.log("MEASUREMENT", currentMeasurement);
     return (
         <Fragment>
             <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />

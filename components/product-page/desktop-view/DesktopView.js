@@ -29,11 +29,11 @@ const DesktopView = ({ hpid, data }) => {
                     Your browser does not support video tag.
                 </video>
                 <div className={"absolute top-20 pl-28 pr-10 py-2 capitalize inline-flex gap-4 items-center bg-black left-0 text-white text-xs font-600"}>
-                    <Link href={"/"}>
+                    <Link href={"/"} key="home">
                         <a>Home</a>
                     </Link>
                     <span>&gt;</span>
-                    <Link href={"/"}>
+                    <Link href={"/"} key="category">
                         <a>{data.category}</a>
                     </Link>
                     <span>&gt;</span>

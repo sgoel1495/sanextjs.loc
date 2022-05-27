@@ -23,7 +23,6 @@ function CartModal(props) {
     const [showEditTailored, setShowEditTailored] = useState(false)
     const [showViewTailored, setShowViewTailored] = useState(false)
 
-
     const imageClass = "block relative w-40 h-40";
     const blockHeader = "border-4 border-theme-200 p-2 uppercase mb-5 tracking-wide"
 
@@ -237,17 +236,23 @@ function CartModal(props) {
      */
     const userO = {
         email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-        is_guest: (dataStore.userData.contact) ? true : false,
+        is_guest: !(dataStore.userData.contact),
         temp_user_id: dataStore.userServe.temp_user_id
     }
 
     const refreshCart = async () => {
         //retrieve from api and update
-        let userCart = [];
-        const cartCall = await apiCall("getCart", dataStore.apiToken, { "user": userO });
-        if (cartCall.response && Array.isArray(cartCall.response))
-            userCart = [...cartCall.response];
-        updateDataStore("userCart", userCart)
+        if(dataStore.userData.contact) {
+            let userCart = [];
+            const cartCall = await apiCall("getCart", dataStore.apiToken, {"user": userO});
+
+            if (cartCall.response && Array.isArray(cartCall.response)) {
+                userCart = cartCall.response.filter(item=>{return item.qty!=null})
+            }
+            updateDataStore("userCart", userCart)
+        } else {
+            updateDataStore("userCart", dataStore.userCart)
+        }
     }
 
     const changeQty = async (i, n) => {
@@ -259,20 +264,27 @@ function CartModal(props) {
             if (cv > 1)
                 dataStore.userCart[i].qty = (cv - 1).toString();
         }
-        //update in api
-        const updateProduct = {
-            product_cart_id: dataStore.userCart[i].product_cart_id,
-            qty: dataStore.userCart[i].qty
+        //update
+        if(dataStore.userData.contact) {
+            const updateProduct = {
+                product_cart_id: dataStore.userCart[i].cart_id,
+                qty: dataStore.userCart[i].qty
+            }
+            await apiCall("updateCart", dataStore.apiToken, {"user": userO, product: updateProduct});
         }
-        await apiCall("updateCart", dataStore.apiToken, { "user": userO, product: updateProduct });
         await refreshCart()
+
     }
 
     const removeFromCart = async (i) => {
-        const updateProduct = {
-            product_cart_id: dataStore.userCart[i].product_cart_id
+        if(dataStore.userData.contact) {
+            const updateProduct = {
+                product_cart_id: dataStore.userCart[i].cart_id
+            }
+            const updateCall = await apiCall("removeCart", dataStore.apiToken, {"user": userO, product: updateProduct});
+        } else {
+            delete dataStore.userCart[i]
         }
-        const updateCall = await apiCall("removeCart", dataStore.apiToken, { "user": userO, product: updateProduct });
         await refreshCart()
     }
 
