@@ -11,6 +11,7 @@ import WishListButton from "../../components/common/WishListButton";
 import Header from "../../components/navbar/Header";
 import { apiCall } from "../../helpers/apiCall";
 import InfiniteScroll from "react-infinite-scroller";
+import sleep from "../../helpers/sleep";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -45,26 +46,29 @@ function LooksPage() {
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(null);
     const [pagination, setPagination] = useState({
-        limit: 6, skip: 0
+        limit: 12, skip: 0
     })
+    const [canMore, setCanMore] = useState(true)
     const [hasMore, setHasMore] = useState(true)
+
 
     const fetchProducts = useCallback(async () => {
         if (loading)
             return
-
         setLoading(true)
+
         const newData = await fetchData(data, dataStore.apiToken, pagination)
         if (newData.hasMore)
             setData(newData.data)
-        setHasMore(newData.hasMore)
+        setCanMore(newData.hasMore)
+        setHasMore(false)
         setPagination({
             skip: pagination.skip + pagination.limit,
             limit: pagination.limit
         })
-        setLoading(false)
+
     }, [loading, data, dataStore.apiToken, pagination])
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
@@ -72,23 +76,8 @@ function LooksPage() {
                 alt={"loader"} />
         </span>
     </span>
-    //const threshold = (typeof window !== "undefined") ? Math.floor(window.innerHeight / 2) : 0
-    const threshold = 500;
 
-    /*
-    const resp = useApiCall("getLooksData", dataStore.apiToken, { look_id: "", limit: 10 });
     useEffect(() => {
-        if (resp
-            && resp.hasOwnProperty("status")
-            && resp.status == 200
-            && resp.hasOwnProperty("response")
-            && resp.response.hasOwnProperty("prod")
-            && resp.response.hasOwnProperty("look")
-        )
-            setData(resp.response);
-    }, [resp]);
-    */
-    React.useEffect(() => {
         if (expandedRef.current) {
             const element =
                 expandedRef.current.getBoundingClientRect().top + window.scrollY - document.getElementsByClassName("navigator")[0].getBoundingClientRect().bottom
@@ -99,45 +88,41 @@ function LooksPage() {
         }
     }, [expandLook])
 
-    /*
-    each look has
-    after_color: ""
-    bg_color: "#0c172f"
-    bg_img_path: "/assets/look-757/Collage.v1.jpg"
-    color: "#ffffff"
-    details: "Aadya"
-    heading: "Green Sheen"
-    img_path: "/assets/look-757/Full.v1.jpg"
-    is_img_left: false
-    look_id: "look-757"
-    name: "Green Sheen"
-    products: ['Dresses-Aadya-RawSilkFestiveFitandA-LineDress']
-    template: 2
 
-    after_color: ""
-    bg_color: "#5b4351"
-    bg_img_path: "/assets/look-768/Collage.v1.jpg"
-    color: "#ffffff"
-    details: "Hibiscus,Earnest-Black"
-    heading: "Subtle Floral"
-    img_path: "/assets/look-768/Full.v1.jpg"
-    is_img_left: true
-    look_id: "look-768"
-    name: "Subtle Floral"
-    products: Array(2)
-    0: "Tops-Hibiscus-FloralKnitV-NeckTop"
-    1: "Pants-Earnest-Black-MidToHighRisePants"
-    length: 2
 
-    each product has
-    category: "dresses"
-    in_stock: "true"
-    is_international: true
-    name: "Aadya"
-    price: 2850
-    tag_line: "Raw Silk Festive Fit & A-Line Dress"
-    usd_price: 50
-     */
+    useEffect(()=>{
+        const bringIntoView= async ()=> {
+            let returnValue = false
+            if (canMore) {
+                if (data && data.look) {
+                    const last = []
+                    const howMany = 15
+                    for (let x = 0; x <= howMany; x++)
+                        last.push(null)
+                    Object.values(data.look).forEach((val) => {
+                        for (let x = 0; x < howMany; x++)
+                            last[x] = last[x + 1]
+                        last[howMany] = val
+                    })
+                    if (last[0] !== null) {
+                        const scrollToElement = document.querySelector('#' + last[0].look_id)
+                        if (scrollToElement)
+                            scrollToElement.scrollIntoView({behavior: 'smooth'})
+                        await sleep(1000)
+                    }
+                }
+                returnValue=true
+            }
+            return returnValue
+        }
+        bringIntoView().then((res)=>{
+            if(res)
+                setHasMore(true)
+            setLoading(false)
+        }).catch(e=>e.message)
+
+    },[hasMore])
+
     const expandData = () => {
 
         const leadTextStyle = "text-h5 font-600";
@@ -234,6 +219,7 @@ function LooksPage() {
                         <div
                             onClick={() => setExpandLook(look)}
                             className={`relative group cursor-pointer z-0`}
+                            id={look.look_id}
                         >
                             <WishListButton className={`absolute right-4 top-4 z-10`} pid={look.look_id} />
                             <LookDataBlockImage src={WEBASSETS + look.img_path} alt={look.name} />
@@ -256,36 +242,79 @@ function LooksPage() {
     }
 
     const mobileView = null;
-    const browserView = <Fragment>
-        <PageHead url="/looks" id="looks" isMobile={dataStore.mobile} />
-        <Header type={dataStore.mobile ? "minimal" : "shopMenu"} />
-        <section className={`bg-[#E6E1DB] py-20`}>
-            <BlockHeader
-                space={"py-5"}
-                titleStyle={"text-center py-10 tracking-wider"}
-            >
-                <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
-                <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
-                    className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
-            </BlockHeader>
-            <main className={`px-10 grid grid-cols-3 gap-7`} >
-                {data && lookData()}
-            </main>
-        </section>
-        <Footer isMobile={dataStore.mobile} />
-    </Fragment>
+    const browserView = null
 
-    return <InfiniteScroll
-        loadMore={fetchProducts}
-        hasMore={hasMore}
-        loader={loader}
-        initialLoad={true}
-        threshold={threshold}
-    >
-        {dataStore.mobile ? mobileView : browserView}
-    </InfiniteScroll>
+    if(!dataStore.mobile)
+        return <Fragment>
+            <PageHead url="/looks" id="looks" isMobile={dataStore.mobile} />
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} />
+            <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
+                <BlockHeader
+                    space={"py-5"}
+                    titleStyle={"text-center py-10 tracking-wider"}
+                >
+                    <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
+                    <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
+                        className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
+                </BlockHeader>
+                <InfiniteScroll
+                    loadMore={fetchProducts}
+                    hasMore={hasMore}
+                    loader={loader}
+                    initialLoad={true}
+                    threshold={100}
+                >
+                    <main className={`px-10 grid grid-cols-3 gap-7`} >
+                        {data && lookData()}
+                    </main>
+                </InfiniteScroll>
+            </section>
+            <Footer isMobile={dataStore.mobile} />
+        </Fragment>
+    else
+        return null
 
 }
 
 
 export default LooksPage;
+
+/*
+each look has
+after_color: ""
+bg_color: "#0c172f"
+bg_img_path: "/assets/look-757/Collage.v1.jpg"
+color: "#ffffff"
+details: "Aadya"
+heading: "Green Sheen"
+img_path: "/assets/look-757/Full.v1.jpg"
+is_img_left: false
+look_id: "look-757"
+name: "Green Sheen"
+products: ['Dresses-Aadya-RawSilkFestiveFitandA-LineDress']
+template: 2
+
+after_color: ""
+bg_color: "#5b4351"
+bg_img_path: "/assets/look-768/Collage.v1.jpg"
+color: "#ffffff"
+details: "Hibiscus,Earnest-Black"
+heading: "Subtle Floral"
+img_path: "/assets/look-768/Full.v1.jpg"
+is_img_left: true
+look_id: "look-768"
+name: "Subtle Floral"
+products: Array(2)
+0: "Tops-Hibiscus-FloralKnitV-NeckTop"
+1: "Pants-Earnest-Black-MidToHighRisePants"
+length: 2
+
+each product has
+category: "dresses"
+in_stock: "true"
+is_international: true
+name: "Aadya"
+price: 2850
+tag_line: "Raw Silk Festive Fit & A-Line Dress"
+usd_price: 50
+ */

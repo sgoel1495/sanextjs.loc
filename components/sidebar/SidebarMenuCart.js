@@ -550,7 +550,7 @@ function SidebarMenuCart(props) {
         default:
             iconHeight = "h-6"
     }
-    console.log("USER CART", dataStore.userCart)
+
 
     return (
         <>
