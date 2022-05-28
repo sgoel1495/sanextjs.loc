@@ -3,6 +3,7 @@ import Header from "../../../components/navbar/Header";
 import {Fragment, useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import OrderSummary from "../../../components/checkout-page/OrderSummary";
+import ShippingAddress from "../../../components/checkout-page/ShippingAddress";
 
 function UsersCheckoutPage () {
 
@@ -15,7 +16,7 @@ function UsersCheckoutPage () {
         <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
         <Header type={"shopMenu"}/>
         <div>
-            <div></div>
+            <div><ShippingAddress /></div>
             <div><OrderSummary /></div>
         </div>
 

@@ -1,75 +1,362 @@
-import {Fragment, useContext, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
+import {DateTime} from "luxon";
+import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
+import Toast from "../common/Toast";
+import Link from "next/link"
 
-
-function ShippingAddress(){
-    const { dataStore,updateDataStore } = useContext(AppWideContext);
+function ShippingAddress() {
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const cAddress = dataStore.selectedAddress || dataStore.defaultdAddress
+    const [message, setMessage] = useState(null);
+    const [show, setShow] = useState(false);
+
     const emptyAddress = {
         "name": "",
         "lastname": "",
-        "email": (dataStore.userData.contact)?dataStore.userData.contact:"",
-        "phone": (dataStore.userData.contact)?dataStore.userServe.phone_number:"",
+        "email": (dataStore.userData.contact) ? dataStore.userData.contact : "",
+        "phone": (dataStore.userData.contact) ? dataStore.userServe.phone_number : "",
         "address": "",
         "landmark": "",
         "country": "India",
         "zip_code": "",
-        "state": "",
+        "state": null,
         "city": ""
     }
-    const [address, setAddress]=useState((cAddress)?cAddress:emptyAddress)
-
-    const [extraMeasure,setExtraMeasure]=useState({
-        "tops_brand" : "",
-        "tops_size" : "",
-        "jeans_pants_size" : 0
+    const [address, setAddress] = useState((cAddress) ? cAddress : emptyAddress)
+    const [extraMeasure, setExtraMeasure] = useState({
+        "tops_brand": "",
+        "tops_size": "",
+        "jeans_pants_size": 0
     })
-
-    const updateAddressValue=(key,value)=>{
-        address[key]=value
+    const [bDay,setBDay] = useState({
+        birthday:"",
+        anniversary:""
+    })
+    const [createAccount,setCreateAccount] = useState(false)
+    const [password,setPassword] = useState({pwd1:"",pwd2:""})
+    const [isGift,setIsGift] = useState(false)
+    const [giftData,setGiftData] = useState({
+        gift_msg: "",
+        gift_msg_to: "",
+        gift_msg_from: ""
+    })
+    const [payMode,setPayMode] = useState(null)
+    const [promoCode,setPromoCode] = useState(null)
+    const [refresh,setRefresh] = useState(false)
+    const updateAddressValue = (key, value) => {
+        address[key] = value
         setAddress(address)
+        setRefresh(!refresh)
     }
 
-    const updateExtraMeasureValue=(key,value)=>{
-        extraMeasure[key]=value
-        setExtraMeasure(address)
+    const updateZipcode = async (zip)=>{
+        //checkZip with db before update
+        setRefresh(!refresh)
+    }
+
+    const updateExtraMeasureValue = (key, value) => {
+        extraMeasure[key] = value
+        setExtraMeasure(extraMeasure)
+        setRefresh(!refresh)
+    }
+    const updateBDay = (key, value) => {
+        bDay[key] = value
+        setBDay(bDay)
+        setRefresh(!refresh)
+    }
+    const updatePwd = (key, value) => {
+        password[key] = value
+        setPassword(password)
+        setRefresh(!refresh)
+    }
+
+    const updateGift = (key, value) => {
+        giftData[key] = value
+        setGiftData(giftData)
+        setRefresh(!refresh)
+    }
+
+    const brands = [
+        "Marks & Sprencer's", "Zara", "H&M", "Allen Sally", "Van Heusen", "Vero Moda", "Mango"
+    ]
+    const topSizes = [
+        "< XS", "XS", "M", "L", "XL", "XXL",
+        "UK 6", "UK 8", "UK 10", "UK 12", "UK 14", "UK 16", "UK 18",
+        "EU 34", "EU 36", "EU 38", "EU 40", "EU 42", "EU 44", "EU 46",
+
+    ]
+    const pantSizes = [
+        "26","28","30","32","34","36"
+    ]
+    const selectOptions = (w) => {
+        let returnValues = <option className={inputSelect} value="">Please Select</option>;
+        w.forEach(size => {
+            returnValues = <Fragment>
+                {returnValues}
+                <option className={inputSelect} value={size}>{size}</option>
+            </Fragment>
+        })
+
+        return returnValues;
+    }
+
+    const checkAndSave = async ()=>{
+
+    }
+
+    const applyPromo = async ()=>{
+
     }
 
     const labelClass = "block text-[14px] mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
+    const optionClass = "grid grid-cols-2 gap-x-5 justify-center"
+    const inputSelect = "w-[105px] font-600 text-xs focus:ring-transparent focus:border-black";
+    const inputField = "w-[105px] border border-black bg-[#f1f2f3] placeholder:font-600 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black";
+    const focusStyle = "focus:ring-offset-0 focus:ring-0"
+    const inputStyle = `block w-full border-none bg-black/5 px-4 py-3 ${focusStyle}`;
 
     const mobileView = null
-    const browserView = ()=>{
+    const browserView = () => {
         return <Fragment>
             {(dataStore.userData.contact)
-                ?null
-                :<div onClick={()=>updateDataStore("showSidebarMenuUser",true)}>Already have an account?</div>
+                ? null
+                : <div onClick={() => updateDataStore("showSidebarMenuUser", true)}>Already have an account?</div>
             }
             <div>Shipping Address</div>
             <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555]">
                 <div>
                     <label className={labelClass} htmlFor="name">First Name</label>
-                    <input className={inputClass} type="text" name="name" id="name" value={address.name} onChange={e => updateAddressValue("name", e.target.value)} />
+                    <input className={inputClass} type="text" name="name" id="name" value={address.name}
+                           onChange={e => updateAddressValue("name", e.target.value)}/>
                 </div>
                 <div>
                     <label className={labelClass} htmlFor="lastname">Last Name</label>
-                    <input className={inputClass} type="text" name="lastname" id="lastname" value={address.lastname} onChange={e => updateAddressValue("lastname", e.target.value)} />
+                    <input className={inputClass} type="text" name="lastname" id="lastname" value={address.lastname}
+                           onChange={e => updateAddressValue("lastname", e.target.value)}/>
                 </div>
                 <div>
                     <label className={labelClass} htmlFor="email">Email</label>
-                    <input className={inputClass} type="email" name="email" id="email" value={address.email} onChange={e => updateAddressValue("email", e.target.value)} />
+                    <input className={inputClass} type="email" name="email" id="email" value={address.email}
+                           onChange={e => updateAddressValue("email", e.target.value)}/>
                 </div>
                 <div>
                     <label className={labelClass} htmlFor="phone">Telephone</label>
-                    <input className={inputClass} type="number" name="phone" id="phone" value={address.phone} onChange={e => updateAddressValue("phone", e.target.value)} />
+                    <input className={inputClass} type="number" name="phone" id="phone" value={address.phone}
+                           onChange={e => updateAddressValue("phone", e.target.value)}/>
                 </div>
             </div>
-
+            <div className={'flex flex-col items-center gap-y-2'}>
+                <div>1. What Size Tops do you usually wear?</div>
+                <div>
+                    <div className={optionClass}>
+                        <div className="flex flex-col gap-y-2">
+                            <label className={labelClass} htmlFor="tops_brand">Brand:</label>
+                            <select className={inputSelect} name="tops_brand" value={extraMeasure.tops_brand}
+                                    onChange={e => updateExtraMeasureValue("tops_brand", e.target.value)}>
+                                {selectOptions(brands)}
+                            </select>
+                            <label className={labelClass} htmlFor="tops_brand_other">Other:</label>
+                            <input className={inputField} name="tops_brand_other" type="text"
+                                   value={(!brands.includes(extraMeasure.tops_brand)) ? extraMeasure.tops_brand : null}
+                                   onChange={e => updateExtraMeasureValue("tops_brand", e.target.value)}/>
+                        </div>
+                    </div>
+                    <div className={optionClass}>
+                        <div className="flex flex-col gap-y-2">
+                            <label className={labelClass} htmlFor="tops_size">Size:</label>
+                            <select className={inputSelect} name="tops_size" value={extraMeasure.tops_size}
+                                    onChange={e => updateExtraMeasureValue("tops_size", e.target.value)}>
+                                {selectOptions(topSizes)}
+                            </select>
+                            <label className={labelClass} htmlFor="tops_size_other">Other:</label>
+                            <input className={inputField} name="tops_size_other" type="text"
+                                   value={(!topSizes.includes(extraMeasure.tops_size)) ? extraMeasure.tops_size : null}
+                                   onChange={e => updateExtraMeasureValue("tops_size", e.target.value)}/>
+                        </div>
+                    </div>
+                </div>
+                <div>2. What is the Jeans/Pants size you wear</div>
+                <div className={optionClass}>
+                    <div className="flex flex-col gap-y-2">
+                        <label className={labelClass} htmlFor="jeans_pants_size">Size:</label>
+                        <select className={inputSelect} name="jeans_pants_size" value={extraMeasure.jeans_pants_size}
+                                onChange={e => updateExtraMeasureValue("jeans_pants_size", e.target.value)}>
+                            {selectOptions(pantSizes)}
+                        </select>
+                        <label className={labelClass} htmlFor="jeans_pants_size_other">Other:</label>
+                        <input className={inputField} name="jeans_pants_size_other" type="text"
+                               value={(!pantSizes.includes(extraMeasure.jeans_pants_size)) ? extraMeasure.jeans_pants_size : null}
+                               onChange={e => updateExtraMeasureValue("jeans_pants_size", e.target.value)}/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label className={labelClass} htmlFor="birthday">Date of Birth <span>(Surprise gifts await)</span></label>
+                    <input name="birthday" className={inputStyle + " w-full"} type="date" min={DateTime.now().minus({year: 18}).toISODate()}
+                        onChange={e=>updateBDay("birthday",e.target.value)} value={(bDay.birthday==="")?null:bDay.birthday}
+                    />
+                </div>
+                <div>
+                    <label className={labelClass} htmlFor="anniversary">Date of Birth <span>(Surprise gifts await)</span></label>
+                    <input name="anniversary" className={inputStyle + " w-full"} type="date" min={DateTime.now().minus({year: 18}).toISODate()}
+                        onChange={e=>updateBDay("anniversary",e.target.value)} value={(bDay.anniversary==="")?null:bDay.anniversary}
+                    />
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label className={labelClass} htmlFor="zip_code">Zip/Postal Code</label>
+                    <input
+                        className={inputClass}
+                        type="text"
+                        name="zip_code"
+                        id="zip_code"
+                        value={address.zip_code}
+                        onChange={e => updateZipcode(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label className={labelClass} htmlFor="address">Address Line 1</label>
+                    <input className={inputClass} type="text" name="address" id="address" value={address.address} onChange={e => updateAddressValue("address", e.target.value)} />
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label className={labelClass} htmlFor="landmark">Address Line 2</label>
+                    <input className={inputClass} type="text" name="landmark" id="landmark" value={address.landmark} onChange={e => updateAddressValue("landmark", e.target.value)} />
+                </div>
+                <div>
+                    <label className={labelClass} htmlFor="country">Country</label>
+                    <input className={inputClass} name="country" id="country" value={address.country} disabled={true} onChange={e => updateAddressValue("country", e.target.value)} />
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label className={labelClass} htmlFor="state">State/Province</label>
+                    <select
+                        className={inputClass}
+                        name="state"
+                        id="state"
+                        value={address.state}
+                        onChange={e => updateAddressValue("state", e.target.value)}
+                        placeholder="Please select region, state or province"
+                    >
+                        <StatesAndCitiesOptions state={address.state} cities={false}/>
+                    </select>
+                </div>
+                <div>
+                    <label className={labelClass} htmlFor="city">City</label>
+                    <select
+                        className={inputClass}
+                        name="city"
+                        id="city"
+                        value={address.city}
+                        onChange={e => updateAddressValue("city", e.target.value)}
+                        placeholder="Please select your city"
+                    >
+                        <StatesAndCitiesOptions state={address.state} cities={true} />
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="create_account" id="create_account" checked={createAccount}
+                           onChange={()=>setCreateAccount(!createAccount)}/>
+                    <span>Create My Account</span>
+                </label>
+                {(createAccount)
+                    ?<div>
+                        <div>
+                            <label className={labelClass} htmlFor="pwd1">Password</label>
+                            <input className={inputClass} type="password" name="pwd1" id="pwd1" value={password.pw1}
+                                   onChange={e => updatePwd("pwd1", e.target.value)}/>
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="pwd2">Confirm Password</label>
+                            <input className={inputClass} type="password" name="pwd2" id="pwd2" value={password.pw2}
+                                   onChange={e => updatePwd("pwd2", e.target.value)}/>
+                        </div>
+                    </div>
+                    :null
+                }
+            </div>
+            <div>
+                <div>Cancel</div>
+                <div onClick={checkAndSave}>SAVE</div>
+            </div>
+            <div>
+                <div>Promo Code</div>
+                <div>
+                    <div>
+                        <input className={inputClass} type="text" name="promocode" id="promocode" value={promoCode}
+                               onChange={e => setPromoCode(e.target.value)}/>
+                        <span><span>*</span>Not applicable for sales item</span>
+                    </div>
+                    <div onClick={applyPromo}>
+                        APPLY
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="isgift" id="isgift" checked={isGift}
+                           onChange={()=>setIsGift(!isGift)}/>
+                    <span>Is this a Gift?</span>
+                </label>
+                {(isGift)
+                    ?<div>
+                        <div>
+                            <label className={labelClass} htmlFor="gift_msg">Your Personalized Message</label>
+                            <input className={inputClass} type="text" name="gift_msg" id="gift_msg" value={giftData.gift_msg}
+                                   onChange={e => updateGift("gift_msg", e.target.value)}/>
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="gift_msg_to">To</label>
+                            <input className={inputClass} type="text" name="gift_msg_to" id="gift_msg_to" value={giftData.gift_msg_to}
+                                   onChange={e => updateGift("gift_msg_to", e.target.value)}
+                                   placeholder="Recipients Name"
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="gift_msg_from">From</label>
+                            <input className={inputClass} type="text" name="gift_msg_from" id="gift_msg_from" value={giftData.gift_msg_from}
+                                   onChange={e => updateGift("gift_msg_from", e.target.value)}/>
+                        </div>
+                    </div>
+                    :null
+                }
+            </div>
+            <div>
+                <div>Payment</div>
+                <div onChange={()=>setPayMode(e.target.value)}>
+                    <label>
+                        <input type="radio" value="Not Paid" name="paymentMode" />
+                        <span>Cash on Delivery</span>
+                        <Link href="/salt/shipping-returns">
+                            <a>COD Refund Policy</a>
+                        </Link>
+                    </label>
+                    <label>
+                        <input type="radio" value="CC" name="paymentMode" />
+                        <span>Credit Cards</span>
+                    </label>
+                    <label>
+                        <input type="radio" value="DC" name="paymentMode" />
+                        <span>Debit Cards / Net Banking</span>
+                    </label>
+                </div>
+            </div>
+            <Toast show={show} hideToast={() => setShow(false)}>
+                <span>{message}</span>
+            </Toast>
         </Fragment>
     }
 
-    return (dataStore.mobile)? mobileView:browserView()
+    return (dataStore.mobile) ? mobileView : browserView()
 }
 
 export default ShippingAddress
