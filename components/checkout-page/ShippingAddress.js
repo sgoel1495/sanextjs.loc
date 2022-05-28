@@ -6,6 +6,7 @@ import Toast from "../common/Toast";
 import Link from "next/link"
 import getUserO from "../../helpers/getUserO";
 import {apiCall} from "../../helpers/apiCall";
+import PromoCode from "./PromoCode";
 
 function ShippingAddress() {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
@@ -45,7 +46,7 @@ function ShippingAddress() {
         gift_msg_from: ""
     })
     const [payMode,setPayMode] = useState(null)
-    const [promoCode,setPromoCode] = useState(null)
+
     const [refresh,setRefresh] = useState(false)
     const updateAddressValue = (key, value) => {
         address[key] = value
@@ -121,30 +122,7 @@ function ShippingAddress() {
  ""token"" : ""b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0""
 }"
      */
-    const applyPromo = async ()=>{
-        if(!promoCode){
-            setMessage("Please enter the code before applying")
-            setShow(true)
-        } else {
-            const query = {
-                user: userO,
-                order:{
-                    order_id: dataStore.currentOrderId,
-                    coupon_code: promoCode
-                }
-            }
-            const promoCall = await apiCall("applyCoupon",dataStore.apiToken,query)
-            if(promoCall.hasOwnProperty("coupon_apply") && promoCall.coupon_apply.hasOwnProperty("msg")
-                && promoCall.coupon_apply.msg==="Success"){
-                updateDataStore("orderPromo",promoCall)
-                setMessage("Coupon Accepted")
-                setShow(true)
-            } else {
-                setMessage("Coupon not valid / unable to apply")
-                setShow(true)
-            }
-        }
-    }
+
 
     const labelClass = "block text-[14px] mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
@@ -326,17 +304,7 @@ function ShippingAddress() {
                 <div onClick={checkAndSave}>SAVE</div>
             </div>
             <div>
-                <div>Promo Code</div>
-                <div>
-                    <div>
-                        <input className={inputClass} type="text" name="promocode" id="promocode" value={promoCode}
-                               onChange={e => setPromoCode(e.target.value)}/>
-                        <span><span>*</span>Not applicable for sales item</span>
-                    </div>
-                    <div onClick={applyPromo}>
-                        APPLY
-                    </div>
-                </div>
+                <PromoCode />
             </div>
             <div>
                 <label>
