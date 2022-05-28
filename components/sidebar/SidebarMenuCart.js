@@ -419,7 +419,9 @@ function CartModal(props) {
                         <p className={`text-sm mb-6`}>YOUR CART</p>
                         {(dataStore.userCart.length > 0)
                             ? <Fragment>
-                                <div>CHECKOUT</div>
+                                <Link href="/users/checkoutpage">
+                                <a>CHECKOUT</a>
+                                </Link>
                                 {productCartView()}
                             </Fragment>
                             : null
@@ -439,7 +441,10 @@ function CartModal(props) {
                             <a className="underline uppercase text-sm">Continue Shopping</a>
                         </Link>
                         {(dataStore.userCart.length > 0)
-                            ? <div>CHECKOUT</div>
+                            ?<Link href="/users/checkoutpage">
+                                <a>CHECKOUT</a>
+                            </Link>
+
                             : null
                         }
                     </div>

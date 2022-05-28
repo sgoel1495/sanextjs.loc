@@ -99,6 +99,7 @@
   },
   "userAddresses": [],
   "defaultAddress": null,
+  "selectedAddress": null,
   "userMeasurements": {},
   "userCart": [],
   "userOrderHistory": {}

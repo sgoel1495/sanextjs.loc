@@ -13,6 +13,7 @@ import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 import PastOrdersMeasurementModal from "../../../components/user/PastOrdersMeasurementModal";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
+import addToCartLoggedIn from "../../../helpers/addToCartLoggedIn";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -277,15 +278,7 @@ const DetailsCard = ({ data, hpid }) => {
         } else {
             if (dataStore.userData.contact) {
                 // logged in user
-                const resp = await apiCall("addToCart", dataStore.apiToken, {user: userO, cart: cart})
-                if (resp.response && resp.response == "success") {
-                    // refresh the cart
-                    const respCart = await apiCall("getCart", dataStore.apiToken, {user: userO})
-                    if (respCart.response && Array.isArray(respCart.response)) {
-                        const actualCart = respCart.response.filter(item=>{return item.qty!=null})
-                        updateDataStore("userCart", actualCart)
-                    }
-                }
+                await addToCartLoggedIn(dataStore.apiToken, userO, cart, updateDataStore)
             } else {
                 //not logged in
                 dataStore.userCart.push(displayCart)
