@@ -6,6 +6,7 @@ import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import { apiCall } from "../../helpers/apiCall";
 import Toast from "../common/Toast";
+import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -84,15 +85,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait }) => {
             } else {
                 if (dataStore.userData.contact) {
                     // logged in user
-                    const resp = await apiCall("addToCart", dataStore.apiToken, { user: userO, cart: cart })
-                    if (resp.response && resp.response === "success") {
-                        // refresh the cart
-                        const respCart = await apiCall("getCart", dataStore.apiToken, { user: userO })
-                        if (respCart.response && Array.isArray(respCart.response)) {
-                            const actualCart = respCart.response.filter(item => { return item.qty != null })
-                            updateDataStore("userCart", actualCart)
-                        }
-                    }
+                    await addToCartLoggedIn(dataStore.apiToken, userO, cart, updateDataStore)
                 } else {
                     //not logged in
                     dataStore.userCart.push(displayCart)
