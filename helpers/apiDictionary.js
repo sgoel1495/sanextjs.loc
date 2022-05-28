@@ -426,7 +426,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-
             //====================== ORDERS
         case "userOrderHistory":
             url += "/get_user_orderhistory";
@@ -442,6 +441,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_instagram_token";
             body = {
                 token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        //====================== INSTAGRAM
+        case "applyCoupon":
+            url += "/checkout/apply_coupon_code";
+            body = {
+                token: apiToken,
+                ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}

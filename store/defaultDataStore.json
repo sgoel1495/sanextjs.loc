@@ -102,5 +102,6 @@
   "selectedAddress": null,
   "userMeasurements": {},
   "userCart": [],
-  "userOrderHistory": {}
+  "userOrderHistory": {},
+  "orderPromo": {}
 }

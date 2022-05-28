@@ -25,9 +25,22 @@ function OrderSummary () {
             inrTotal += cartItem.price
             usdTotal += cartItem.usd_price
         })
-        return (dataStore.currCurrency==="inr")? rupeeIndian.format(inrTotal):dollarUS.format(usdTotal)
+        return (dataStore.currCurrency==="inr")? rupeeIndian.format(inrTotal - promoDiscountValue):dollarUS.format(usdTotal - promoDiscountValue)
     }
     const total = orderTotal()
+    const promoDiscountValue = (
+        dataStore.orderPromo
+        && dataStore.orderPromo.discount_hash
+        && dataStore.orderPromo.discount_hash.is_promocode_applied
+    ) ? (dataStore.currCurrency ==="inr")
+        ? dataStore.orderPromo.discount_hash.discount_inr
+        : dataStore.orderPromo.discount_hash.discount_usd
+        : 0.00
+
+    const promoDiscount = (dataStore.currCurrency ==="inr")
+        ? rupeeIndian.format(promoDiscountValue)
+        : dollarUS.format(promoDiscountValue)
+
 
     return <div>
         <div>Order Summary</div>
@@ -39,7 +52,7 @@ function OrderSummary () {
         </div>
         <div>
             <span>Promo</span>
-            <span>₹ 0.00</span>
+            <span>{promoDiscount}</span>
         </div>
         <div>
             <span>Shipping Charges</span>
