@@ -14,6 +14,7 @@ import PastOrdersMeasurementModal from "../../../components/user/PastOrdersMeasu
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
 import addToCartLoggedIn from "../../../helpers/addToCartLoggedIn";
+import getUserO from "../../../helpers/getUserO";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -94,15 +95,6 @@ const DetailsCard = ({ data, hpid }) => {
         }
         return newKey;
     }
-    const getUserO = () => {
-        const tempId = dataStore.userServe.temp_user_id || Date.now()
-        const userO = {
-            email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-            is_guest: !!(dataStore.userData.contact),
-            temp_user_id: tempId
-        }
-        return userO
-    }
     const addNewModal = (m) => {
         setCurrentProduct(data)
         setCurrentMeasurement(m);
@@ -129,7 +121,7 @@ const DetailsCard = ({ data, hpid }) => {
     }
     const refreshDataStore = async () => {
         const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user": getUserO()
+            "user": getUserO(dataStore)
         });
 
         let userMeasurements = {};
@@ -144,7 +136,7 @@ const DetailsCard = ({ data, hpid }) => {
         if(dataStore.userData.contact) {
             //logged in user
             await apiCall("removeMeasurements", dataStore.apiToken, {
-                user: getUserO(),
+                user: getUserO(dataStore),
                 measurments: {
                     measure_id: m.measure_id
                 }
@@ -165,7 +157,7 @@ const DetailsCard = ({ data, hpid }) => {
         if(dataStore.userData.contact) {
             // we have a valid user
             await apiCall("addMeasurements", dataStore.apiToken, {
-                "user": getUserO(),
+                "user": getUserO(dataStore),
                 "measurments": currentMeasurement
             })
 

@@ -18,6 +18,21 @@ function OrderSummary () {
     firstDate.setDate(firstDate.getDate()+10)
     const secondDate = new Date()
     secondDate.setDate(secondDate.getDate()+12)
+
+    const promoDiscountValue = (
+        dataStore.orderPromo
+        && dataStore.orderPromo.discount_hash
+        && dataStore.orderPromo.discount_hash.is_promocode_applied
+    )
+    ? (dataStore.currCurrency ==="inr")
+        ? dataStore.orderPromo.discount_hash.discount_inr
+        : dataStore.orderPromo.discount_hash.discount_usd
+    : 0.00
+
+    const promoDiscount = (dataStore.currCurrency ==="inr")
+        ? rupeeIndian.format(promoDiscountValue)
+        : dollarUS.format(promoDiscountValue)
+
     const orderTotal = ()=>{
         let inrTotal =0
         let usdTotal =0
@@ -28,19 +43,6 @@ function OrderSummary () {
         return (dataStore.currCurrency==="inr")? rupeeIndian.format(inrTotal - promoDiscountValue):dollarUS.format(usdTotal - promoDiscountValue)
     }
     const total = orderTotal()
-    const promoDiscountValue = (
-        dataStore.orderPromo
-        && dataStore.orderPromo.discount_hash
-        && dataStore.orderPromo.discount_hash.is_promocode_applied
-    ) ? (dataStore.currCurrency ==="inr")
-        ? dataStore.orderPromo.discount_hash.discount_inr
-        : dataStore.orderPromo.discount_hash.discount_usd
-        : 0.00
-
-    const promoDiscount = (dataStore.currCurrency ==="inr")
-        ? rupeeIndian.format(promoDiscountValue)
-        : dollarUS.format(promoDiscountValue)
-
 
     return <div>
         <div>Order Summary</div>

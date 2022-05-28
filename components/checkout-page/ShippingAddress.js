@@ -4,12 +4,15 @@ import {DateTime} from "luxon";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
 import Toast from "../common/Toast";
 import Link from "next/link"
+import getUserO from "../../helpers/getUserO";
+import {apiCall} from "../../helpers/apiCall";
 
 function ShippingAddress() {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const cAddress = dataStore.selectedAddress || dataStore.defaultdAddress
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
+    const userO = getUserO(dataStore)
 
     const emptyAddress = {
         "name": "",
@@ -105,8 +108,42 @@ function ShippingAddress() {
 
     }
 
+    /*
+    "{
+ ""user"" : { ""contact"" : """",
+   ""is_guest"" : true,
+   ""temp_user_id"" : ""1600001858486""
+ },
+ ""order"" : {
+   ""order_id"": ""1600074229"",
+   ""coupon_code"": ""SUCCESS15""
+ },
+ ""token"" : ""b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0""
+}"
+     */
     const applyPromo = async ()=>{
-
+        if(!promoCode){
+            setMessage("Please enter the code before applying")
+            setShow(true)
+        } else {
+            const query = {
+                user: userO,
+                order:{
+                    order_id: dataStore.currentOrderId,
+                    coupon_code: promoCode
+                }
+            }
+            const promoCall = await apiCall("applyCoupon",dataStore.apiToken,query)
+            if(promoCall.hasOwnProperty("coupon_apply") && promoCall.coupon_apply.hasOwnProperty("msg")
+                && promoCall.coupon_apply.msg==="Success"){
+                updateDataStore("orderPromo",promoCall)
+                setMessage("Coupon Accepted")
+                setShow(true)
+            } else {
+                setMessage("Coupon not valid / unable to apply")
+                setShow(true)
+            }
+        }
     }
 
     const labelClass = "block text-[14px] mb-1";

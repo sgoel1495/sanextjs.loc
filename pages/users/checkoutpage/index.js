@@ -8,8 +8,8 @@ import ShippingAddress from "../../../components/checkout-page/ShippingAddress";
 function UsersCheckoutPage () {
 
     const { dataStore,updateDataStore } = useContext(AppWideContext);
-
-
+    if(!dataStore.currentOrderId || dataStore.currentOrderId===0)
+        updateDataStore("currentOrderId",Date.now())
 
     const mobileView=null
     const browserView=<Fragment>
