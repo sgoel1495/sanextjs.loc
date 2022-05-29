@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 
-function OrderSummary(props) {
+function OrderSummary() {
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
@@ -47,10 +47,6 @@ function OrderSummary(props) {
     }
     const total = orderTotal()
 
-    const placeOrder = async () => {
-
-    }
-
     return (
         <div className="bg-[#f1f2f3] py-6 px-5 mt-12">
             <p className="text-xl mb-2">Order Summary</p>
@@ -80,10 +76,6 @@ function OrderSummary(props) {
                 <p>{total}</p>
             </div>
             <p className="text-[10px] font-500">* Inclusive GST</p>
-            {(props.complete)
-                ? <div onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
-                : null
-            }
             <Toast show={show} hideToast={() => setShow(false)}>
                 <span>{message}</span>
             </Toast>

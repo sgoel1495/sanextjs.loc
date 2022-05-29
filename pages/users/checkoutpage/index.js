@@ -17,8 +17,10 @@ function UsersCheckoutPage() {
 
     const [addressComplete, setAddressComplete] = useState(false)
     const [giftPaymentComplete, setGiftPaymentComplete] = useState(false)
-    const orderSummaryComplete = (addressComplete && giftPaymentComplete)
 
+    const placeOrder = async () => {
+
+    }
 
     const mobileView = null
     const browserView = <Fragment>
@@ -32,11 +34,14 @@ function UsersCheckoutPage() {
                 <ReviewOrder />
             </div>
             <div className="flex-[4]">
-                <OrderSummary complete={orderSummaryComplete} />
+                <OrderSummary />
             </div>
+            {(addressComplete && giftPaymentComplete)
+                ? <div onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
+                : null
+            }
         </div>
     </Fragment>
-
 
 
     return (
@@ -47,6 +52,3 @@ function UsersCheckoutPage() {
 }
 
 export default UsersCheckoutPage
-/*
-
- */
