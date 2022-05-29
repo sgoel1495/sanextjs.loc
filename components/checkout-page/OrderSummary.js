@@ -1,7 +1,8 @@
-import {useContext} from "react";
+import React, {useContext, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
+import Toast from "../common/Toast";
 
-function OrderSummary () {
+function OrderSummary ({complete}) {
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
@@ -18,6 +19,8 @@ function OrderSummary () {
     firstDate.setDate(firstDate.getDate()+10)
     const secondDate = new Date()
     secondDate.setDate(secondDate.getDate()+12)
+    const [message, setMessage] = useState(null);
+    const [show, setShow] = useState(false);
 
     const promoDiscountValue = (
         dataStore.orderPromo
@@ -44,6 +47,10 @@ function OrderSummary () {
     }
     const total = orderTotal()
 
+    const placeOrder = async()=>{
+
+    }
+
     return <div>
         <div>Order Summary</div>
         <div>Estimated Delivery {monthNames[firstDate.getMonth()]} {firstDate.getDate()} - {monthNames[secondDate.getMonth()]} {secondDate.getDate()}</div>
@@ -68,8 +75,15 @@ function OrderSummary () {
         <div>
             <span>Amount Payable</span>
             <span>{total}</span>
+            <div>* Inclusive GST</div>
         </div>
-        <div>* Inclusive GST</div>
+        {(complete)
+            ?<div onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
+            :null
+        }
+        <Toast show={show} hideToast={() => setShow(false)}>
+            <span>{message}</span>
+        </Toast>
     </div>
 }
 
