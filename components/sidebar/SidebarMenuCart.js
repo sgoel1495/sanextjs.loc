@@ -282,11 +282,11 @@ function CartModal(props) {
                         </svg>
                     </button>
                     <div className={`text-center font-600 tracking-wider mb-10`}>
-                        <p className={`text-sm mb-6`}>YOUR CART</p>
+                        <p className={`text-sm mb-6`}>YOUR CART {dataStore.userCart.length > 0 && `(${dataStore.userCart.length})`}</p>
                         {(dataStore.userCart.length > 0)
                             ? <Fragment>
                                 <Link href="/users/checkoutpage">
-                                <a>CHECKOUT</a>
+                                    <a className="inline-flex mb-5 text-white bg-black px-5 py-3">CHECKOUT</a>
                                 </Link>
                                 <ProductCartView />
                             </Fragment>
@@ -304,13 +304,12 @@ function CartModal(props) {
                         <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
                         <p className={`text-sm mb-4`}>There is nothing in your cart. Let&apos;s add some items.</p>
                         <Link href="/new-arrivals/all">
-                            <a className="underline uppercase text-sm">Continue Shopping</a>
+                            <a className="flex justify-center underline uppercase text-sm mt-8">Continue Shopping</a>
                         </Link>
                         {(dataStore.userCart.length > 0)
-                            ?<Link href="/users/checkoutpage">
-                                <a>CHECKOUT</a>
+                            ? <Link href="/users/checkoutpage">
+                                <a className="inline-flex my-5 text-white bg-black px-5 py-3">CHECKOUT</a>
                             </Link>
-
                             : null
                         }
                     </div>

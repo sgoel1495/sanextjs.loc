@@ -1,32 +1,32 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, { Fragment, useContext, useState } from "react";
 import Toast from "../common/Toast";
 import AppWideContext from "../../store/AppWideContext";
 import getUserO from "../../helpers/getUserO";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 
-function PromoCode(){
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+function PromoCode() {
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-    const [promoCode,setPromoCode] = useState(null)
+    const [promoCode, setPromoCode] = useState(null)
     const userO = getUserO(dataStore)
 
-    const applyPromo = async ()=>{
-        if(!promoCode){
+    const applyPromo = async () => {
+        if (!promoCode) {
             setMessage("Please enter the code before applying")
             setShow(true)
         } else {
             const query = {
                 user: userO,
-                order:{
+                order: {
                     order_id: dataStore.currentOrderId,
                     coupon_code: promoCode
                 }
             }
-            const promoCall = await apiCall("applyCoupon",dataStore.apiToken,query)
-            if(promoCall.hasOwnProperty("coupon_apply") && promoCall.coupon_apply.hasOwnProperty("msg")
-                && promoCall.coupon_apply.msg==="Success"){
-                updateDataStore("orderPromo",promoCall)
+            const promoCall = await apiCall("applyCoupon", dataStore.apiToken, query)
+            if (promoCall.hasOwnProperty("coupon_apply") && promoCall.coupon_apply.hasOwnProperty("msg")
+                && promoCall.coupon_apply.msg === "Success") {
+                updateDataStore("orderPromo", promoCall)
                 setMessage("Coupon Accepted")
                 setShow(true)
             } else {
@@ -36,27 +36,28 @@ function PromoCode(){
         }
     }
 
-    const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
-    const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
+    const inputClass = "block w-full border-transparent text-[14px] py-2 focus:ring-transparent focus:border-white";
 
     const mobileView = null
-    const browserView = <Fragment>
-        <div>Promo Code</div>
-        <div>
-            <div>
-                <input className={inputClass} type="text" name="promocode" id="promocode" value={promoCode}
-                       onChange={e => setPromoCode(e.target.value)}/>
-                <span><span>*</span>Not applicable for sales item</span>
+    const browserView = (
+        <Fragment>
+            <p className="text-xl mb-2">Promo Code</p>
+            <div className="bg-[#f1f2f3] py-5 px-8 flex gap-10">
+                <div className="flex-[3]">
+                    <input className={inputClass} type="text" name="promocode" id="promocode" value={promoCode} onChange={e => setPromoCode(e.target.value)} />
+                    <span className="text-xs text-[#777] font-500 leading-none">* Not applicable for sales item</span>
+                </div>
+                <div className="flex-[2]">
+                    <button className="bg-black px-4 py-1.5 my-1 text-white tracking-wide font-500" onClick={applyPromo}>
+                        APPLY
+                    </button>
+                </div>
             </div>
-            <div onClick={applyPromo}>
-                APPLY
-            </div>
-        </div>
-        <Toast show={show} hideToast={() => setShow(false)}>
-            <span>{message}</span>
-        </Toast>
-
-    </Fragment>
+            <Toast show={show} hideToast={() => setShow(false)}>
+                <span>{message}</span>
+            </Toast>
+        </Fragment>
+    )
 
 
     return (dataStore.mobile) ? mobileView : browserView

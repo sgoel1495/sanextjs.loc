@@ -1,14 +1,14 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "./store/AppWideContext";
 import Toast from "./components/common/Toast";
 
-function CreateMyAccount(props){
-    const { dataStore,updateDataStore } = useContext(AppWideContext);
+function CreateMyAccount(props) {
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-    const [createAccount,setCreateAccount] = useState(false)
-    const [password,setPassword] = useState({pwd1:"",pwd2:""})
-    const [refresh,setRefresh] = useState(false)
+    const [createAccount, setCreateAccount] = useState(false)
+    const [password, setPassword] = useState({ pwd1: "", pwd2: "" })
+    const [refresh, setRefresh] = useState(false)
 
     const updatePwd = (key, value) => {
         password[key] = value
@@ -16,45 +16,44 @@ function CreateMyAccount(props){
         setRefresh(!refresh)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         let completeness = true
-        if(createAccount){
+        if (createAccount) {
             completeness = (
-                password.pwd1!==""
-                && password.pwd2!==""
-                && password.pwd1===password.pwd2
+                password.pwd1 !== ""
+                && password.pwd2 !== ""
+                && password.pwd1 === password.pwd2
             )
         }
-        if(completeness !== props.createAccount)
+        if (completeness !== props.createAccount)
             props.updateCreateAccount(completeness)
-    },[refresh])
+    }, [refresh])
 
-    const labelClass = "block text-[14px] mb-1";
-    const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
-    const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
+    const labelClass = "block font-500 mb-1";
+    const inputClass = "w-full border border-[#f1f2f3] bg-[#f1f2f3] placeholder:font-600 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black";
 
 
-    const mobileView=null
-    const browserView=<Fragment>
-        <label>
-            <input type="checkbox" name="create_account" id="create_account" checked={createAccount}
-                   onChange={()=>setCreateAccount(!createAccount)}/>
+    const mobileView = null
+    const browserView = <Fragment>
+        <label className={labelClass + " flex items-center gap-2"}>
+            <input className="ms-2 focus:ring-transparent text-[#777]" type="checkbox" name="create_account" id="create_account" checked={createAccount}
+                onChange={() => setCreateAccount(!createAccount)} />
             <span>Create My Account</span>
         </label>
         {(createAccount)
-            ?<div>
+            ? <div className="grid grid-cols-2 gap-x-8 justify-center mb-4">
                 <div>
                     <label className={labelClass} htmlFor="pwd1">Password</label>
                     <input className={inputClass} type="password" name="pwd1" id="pwd1" value={password.pw1}
-                           onChange={e => updatePwd("pwd1", e.target.value)}/>
+                        onChange={e => updatePwd("pwd1", e.target.value)} />
                 </div>
                 <div>
                     <label className={labelClass} htmlFor="pwd2">Confirm Password</label>
                     <input className={inputClass} type="password" name="pwd2" id="pwd2" value={password.pw2}
-                           onChange={e => updatePwd("pwd2", e.target.value)}/>
+                        onChange={e => updatePwd("pwd2", e.target.value)} />
                 </div>
             </div>
-            :null
+            : null
         }
         <Toast show={show} hideToast={() => setShow(false)}>
             <span>{message}</span>

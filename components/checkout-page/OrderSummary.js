@@ -1,8 +1,8 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 
-function OrderSummary ({complete}) {
+function OrderSummary({ complete }) {
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
@@ -16,9 +16,9 @@ function OrderSummary ({complete}) {
     });
     const { dataStore } = useContext(AppWideContext);
     const firstDate = new Date()
-    firstDate.setDate(firstDate.getDate()+10)
+    firstDate.setDate(firstDate.getDate() + 10)
     const secondDate = new Date()
-    secondDate.setDate(secondDate.getDate()+12)
+    secondDate.setDate(secondDate.getDate() + 12)
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
 
@@ -27,64 +27,68 @@ function OrderSummary ({complete}) {
         && dataStore.orderPromo.discount_hash
         && dataStore.orderPromo.discount_hash.is_promocode_applied
     )
-    ? (dataStore.currCurrency ==="inr")
-        ? dataStore.orderPromo.discount_hash.discount_inr
-        : dataStore.orderPromo.discount_hash.discount_usd
-    : 0.00
+        ? (dataStore.currCurrency === "inr")
+            ? dataStore.orderPromo.discount_hash.discount_inr
+            : dataStore.orderPromo.discount_hash.discount_usd
+        : 0.00
 
-    const promoDiscount = (dataStore.currCurrency ==="inr")
+    const promoDiscount = (dataStore.currCurrency === "inr")
         ? rupeeIndian.format(promoDiscountValue)
         : dollarUS.format(promoDiscountValue)
 
-    const orderTotal = ()=>{
-        let inrTotal =0
-        let usdTotal =0
-        Object.values(dataStore.userCart).forEach(cartItem=>{
+    const orderTotal = () => {
+        let inrTotal = 0
+        let usdTotal = 0
+        Object.values(dataStore.userCart).forEach(cartItem => {
             inrTotal += cartItem.price * cartItem.qty
             usdTotal += cartItem.usd_price * cartItem.qty
         })
-        return (dataStore.currCurrency==="inr")? rupeeIndian.format(inrTotal - promoDiscountValue):dollarUS.format(usdTotal - promoDiscountValue)
+        return (dataStore.currCurrency === "inr") ? rupeeIndian.format(inrTotal - promoDiscountValue) : dollarUS.format(usdTotal - promoDiscountValue)
     }
     const total = orderTotal()
 
-    const placeOrder = async()=>{
+    const placeOrder = async () => {
 
     }
 
-    return <div>
-        <div>Order Summary</div>
-        <div>Estimated Delivery {monthNames[firstDate.getMonth()]} {firstDate.getDate()} - {monthNames[secondDate.getMonth()]} {secondDate.getDate()}</div>
-        <hr/>
-        <div>
-            <span>Bag Total</span>
-            <span>{total}</span>
+    return (
+        <div className="bg-[#f1f2f3] py-6 px-5 mt-12">
+            <p className="text-xl mb-2">Order Summary</p>
+            <div>Estimated Delivery {monthNames[firstDate.getMonth()]} {firstDate.getDate()} - {monthNames[secondDate.getMonth()]} {secondDate.getDate()}</div>
+            <table className="order_summary_table">
+                <tbody>
+                    <tr>
+                        <td>Bag Total</td>
+                        <td>{total}</td>
+                    </tr>
+                    <tr>
+                        <td>Promo</td>
+                        <td>{promoDiscount}</td>
+                    </tr>
+                    <tr>
+                        <td>Shipping Charges</td>
+                        <td>FREE</td>
+                    </tr>
+                    <tr>
+                        <td>Alteration Services</td>
+                        <td>FREE</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div className="flex font-600 text-[#777] mt-5">
+                <p className="flex-1">Amount Payable</p>
+                <p>{total}</p>
+            </div>
+            <p className="text-[10px] font-500">* Inclusive GST</p>
+            {(complete)
+                ? <div onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
+                : null
+            }
+            <Toast show={show} hideToast={() => setShow(false)}>
+                <span>{message}</span>
+            </Toast>
         </div>
-        <div>
-            <span>Promo</span>
-            <span>{promoDiscount}</span>
-        </div>
-        <div>
-            <span>Shipping Charges</span>
-            <span>FREE</span>
-        </div>
-        <div>
-            <span>Alteration Services</span>
-            <span>FREE</span>
-        </div>
-        <hr/>
-        <div>
-            <span>Amount Payable</span>
-            <span>{total}</span>
-            <div>* Inclusive GST</div>
-        </div>
-        {(complete)
-            ?<div onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
-            :null
-        }
-        <Toast show={show} hideToast={() => setShow(false)}>
-            <span>{message}</span>
-        </Toast>
-    </div>
+    )
 }
 
 export default OrderSummary
