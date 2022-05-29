@@ -15,10 +15,11 @@ import Header from "../navbar/Header";
 import ProductCard from "./ProductCard";
 import InfiniteScroll from 'react-infinite-scroller';
 import {apiCall} from "../../helpers/apiCall";
+import MimotoSlider from "./MimotoSlider";
 
 const fetchData = async (data, apiToken, category, pagination) => {
     let gotData = false;
-    const callObject = await apiCall("getMimoto", apiToken, {category: category, ...pagination})
+    const callObject = await apiCall("getProducts", apiToken, {category: category, ...pagination})
     if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
         if (data != null)
             callObject.response.data = data.data.concat(callObject.response.data)
@@ -110,6 +111,7 @@ function MimotoPage(props) {
                     : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
                             category={props.hpid}/>
                 }
+                <MimotoSlider />
                 <InfiniteScroll
                     loadMore={fetchProducts}
                     hasMore={hasMore}
