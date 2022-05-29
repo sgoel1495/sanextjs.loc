@@ -2,7 +2,7 @@ import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "./store/AppWideContext";
 import Toast from "./components/common/Toast";
 
-function CreateMyAccount({createAccount, updateCreateAccount}){
+function CreateMyAccount(props){
     const { dataStore,updateDataStore } = useContext(AppWideContext);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
@@ -25,8 +25,8 @@ function CreateMyAccount({createAccount, updateCreateAccount}){
                 && password.pwd1===password.pwd2
             )
         }
-        if(completeness !== createAccount)
-            updateCreateAccount(completeness)
+        if(completeness !== props.createAccount)
+            props.updateCreateAccount(completeness)
     },[refresh])
 
     const labelClass = "block text-[14px] mb-1";
