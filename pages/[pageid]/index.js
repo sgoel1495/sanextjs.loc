@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
 import React, {Fragment, useContext} from "react";
-import AppWideContext from "../../store/AppWideContext";
+
 import ShopPage from "../../components/shop-page/ShopPage";
 import ProductPage from "../../components/product-page/ProductPage";
 import MimotoPage from "../../components/mimoto-page/MimotoPage";
@@ -8,14 +8,13 @@ import MimotoPage from "../../components/mimoto-page/MimotoPage";
 function PageById(){
     const router = useRouter();
     const query = router.query;
-    const {dataStore} = useContext(AppWideContext);
 
     return <Fragment>
         {(router && query && query.pageid && query.pageid.startsWith("shop-"))
-            ?<ShopPage  isMobile={dataStore.mobile} hpid={query.pageid}/>
+            ?<ShopPage  hpid={query.pageid}/>
             :(router && query && query.pageid && query.pageid.startsWith("mimoto-"))
-                ?<MimotoPage  isMobile={dataStore.mobile} hpid={query.pageid}/>
-                :<ProductPage isMobile={dataStore.mobile} hpid={query.pageid}/>
+                ?<MimotoPage  hpid={query.pageid}/>
+                :<ProductPage hpid={query.pageid}/>
         }
     </Fragment>;
 }
