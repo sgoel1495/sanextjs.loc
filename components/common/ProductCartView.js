@@ -92,7 +92,7 @@ function ProductCartView(){
                                     <div className="text-[#555]" onClick={() => changeQty(index, 1)}>+</div>
                                 </div>
                                 <p className="text-right text-[#777] text-xs">
-                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
                                 </p>
                             </div>
                         </div>
@@ -134,7 +134,7 @@ function ProductCartView(){
                                     <div className="text-[#555] cursor-pointer" onClick={() => changeQty(index, 1)}>+</div>
                                 </div>
                                 <p className="text-right text-[#777] text-xs">
-                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
+                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
                                 </p>
                             </div>
                         </div>

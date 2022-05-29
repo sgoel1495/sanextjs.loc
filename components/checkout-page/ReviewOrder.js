@@ -3,7 +3,7 @@ import AppWideContext from "../../store/AppWideContext";
 import ProductCartView from "../common/ProductCartView";
 
 function ReviewOrder(){
-    const { dataStore,updateDataStore } = useContext(AppWideContext);
+    const { dataStore} = useContext(AppWideContext);
 
     const mobileView=null
     const browserView=<Fragment>

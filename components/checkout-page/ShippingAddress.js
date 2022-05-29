@@ -3,11 +3,8 @@ import AppWideContext from "../../store/AppWideContext";
 import {DateTime} from "luxon";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
 import Toast from "../common/Toast";
-import Link from "next/link"
 import getUserO from "../../helpers/getUserO";
 import {apiCall} from "../../helpers/apiCall";
-import PromoCode from "./PromoCode";
-import GiftAndPayment from "./GiftAndPayment";
 import CreateMyAccount from "../../CreateMyAccount";
 
 function ShippingAddress() {
@@ -39,13 +36,6 @@ function ShippingAddress() {
         birthday:"",
         anniversary:""
     })
-    const [isGift,setIsGift] = useState(false)
-    const [giftData,setGiftData] = useState({
-        gift_msg: "",
-        gift_msg_to: "",
-        gift_msg_from: ""
-    })
-    const [payMode,setPayMode] = useState(null)
     const [refresh,setRefresh] = useState(false)
     const updateAddressValue = (key, value) => {
         address[key] = value
@@ -96,21 +86,6 @@ function ShippingAddress() {
     const checkAndSave = async ()=>{
 
     }
-
-    /*
-    "{
- ""user"" : { ""contact"" : """",
-   ""is_guest"" : true,
-   ""temp_user_id"" : ""1600001858486""
- },
- ""order"" : {
-   ""order_id"": ""1600074229"",
-   ""coupon_code"": ""SUCCESS15""
- },
- ""token"" : ""b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0""
-}"
-     */
-
 
     const labelClass = "block text-[14px] mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
