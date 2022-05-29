@@ -1,18 +1,19 @@
-import React, {Fragment, useContext, useEffect} from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import AppWideContext from "../../../../store/AppWideContext";
 import UsersSideMenu from "../../../../components/user/UsersSideMenu";
 import AddressForm from "../../../../components/user/AddressForm";
 import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";
+import UserPageTemplate from "../../../../components/user/UserPageTemplate";
 
 function UsersAddAddressPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
-    useEffect(()=>{
+    useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
-    },[dataStore.userData.contact,router])
+    }, [dataStore.userData.contact, router])
 
 
     const address = {
@@ -31,12 +32,9 @@ function UsersAddAddressPage() {
     const mobileView = null;
     const browserView = () => {
         return (
-            <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
-                <UsersSideMenu mobile={false} />
-                <div className="pl-8 flex-[3]">
-                    <AddressForm index={-1} address={address} />
-                </div>
-            </div>
+            <UserPageTemplate>
+                <AddressForm index={-1} address={address} />
+            </UserPageTemplate>
         );
     }
 

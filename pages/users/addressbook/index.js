@@ -2,6 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
+import Footer from "../../../components/footer/Footer";
 import UsersSideMenu from "../../../components/user/UsersSideMenu";
 import ContactInformation from "../../../components/user/ContactInformation";
 import DefaultAddressBookInformation from "../../../components/user/DefaultAddressBookInformation";
@@ -36,6 +37,7 @@ function UsersAddressBookPage() {
             <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
             <Header type={"shopMenu"} />
             {(dataStore.mobile) ? mobileView : browserView()}
+            <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     )
 }

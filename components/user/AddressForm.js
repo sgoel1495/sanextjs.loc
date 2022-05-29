@@ -111,7 +111,7 @@ function AddressForm(props) {
                 "user": {
                     email: dataStore.userData.contact
                 },
-                "address": {...address,"index":props.index}
+                "address": { ...address, "index": props.index }
             });
             if (resp.status !== 200) {
                 setMessage("Something went wrong. Please try again or contact administrator");
@@ -142,16 +142,14 @@ function AddressForm(props) {
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
 
     const mobileView = null;
-    const browserView = <div>
+    const browserView = <Fragment>
         {(address)
-            ? <div>
-                <div>
-                    {(props.index == -1)
-                        ? <p className="text-[28px] mb-5">Add New Address</p>
-                        : <p className="text-[28px] mb-5">Edit Address</p>
-                    }
-                </div>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555]">
+            ? <>
+                {(props.index == -1)
+                    ? <p className="text-[28px] mb-2">Add New Address</p>
+                    : <p className="text-[28px] mb-2">Edit Address</p>
+                }
+                <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555] w-full">
                     <div>
                         <label className={labelClass} htmlFor="name">First Name</label>
                         <input className={inputClass} type="text" name="name" id="name" value={address.name} onChange={e => updateAddressValue("name", e.target.value)} />
@@ -237,9 +235,9 @@ function AddressForm(props) {
                 <Toast show={show} hideToast={() => setShow(false)}>
                     <span>{message}</span>
                 </Toast>
-            </div>
+            </>
             : null}
-    </div>
+    </Fragment>
 
 
     return (dataStore.mobile) ? mobileView : browserView

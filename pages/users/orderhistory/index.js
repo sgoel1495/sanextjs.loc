@@ -3,6 +3,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import { useRouter } from "next/router";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
+import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 
 function UsersOrderHistoryPage() {
@@ -16,7 +17,7 @@ function UsersOrderHistoryPage() {
     const mobileView = null;
     const browserView = (
         <UserPageTemplate>
-            orderhistory
+            <p className="text-[28px] mb-2">My Orders</p>
         </UserPageTemplate>
     )
     return (
@@ -24,6 +25,7 @@ function UsersOrderHistoryPage() {
             <PageHead url={"/users/orderhistory"} id={"profile"} isMobile={dataStore.mobile} />
             <Header type={"shopMenu"} />
             {(dataStore.mobile) ? mobileView : browserView}
+            <Footer isMobile={dataStore.mobile} />
         </Fragment>
     )
 }

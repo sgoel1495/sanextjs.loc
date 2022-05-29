@@ -3,6 +3,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import { useRouter } from "next/router";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
+import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 
 function UsersFavouritesPage(){
@@ -16,7 +17,8 @@ function UsersFavouritesPage(){
     const mobileView = null;
     const browserView = (
         <UserPageTemplate>
-            Favourites
+            <p className="text-[28px] mb-2">Favourites</p>
+            <p className="text-[#777] text-lg">No Favourites Found!</p>
         </UserPageTemplate>
     )
     return (
@@ -24,6 +26,7 @@ function UsersFavouritesPage(){
             <PageHead url={"/users/favourites"} id={"profile"} isMobile={dataStore.mobile} />
             <Header type={"shopMenu"} />
             {(dataStore.mobile) ? mobileView : browserView}
+            <Footer isMobile={dataStore.mobile} />
         </Fragment>
     )
 }
