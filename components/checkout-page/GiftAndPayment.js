@@ -24,6 +24,26 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
 
     useEffect(() => {
         const completeness = (gitCardCompleteness() && payMode)
+        if(completeness){
+            dataStore.currentOrdersInCart[dataStore.currentOrderId].order={
+                order_id: dataStore.currentOrderId,
+                is_gift: isGift,
+                gift_msg: giftData.gift_msg,
+                gift_msg_to: giftData.gift_msg_to,
+                gift_msg_from: giftData.gift_msg_from,
+                is_usd: !(dataStore.currCurrency==="inr"),
+                payment_mode: payMode,
+                payment_status: "Not Paid",
+                credited_in_account: false,
+                curr_currency: "inr",
+                ex_rate: 1
+            }
+            dataStore.currentOrdersInCart[dataStore.currentOrderId].payment={
+                selected_mode:payMode
+            }
+            updateDataStore("currentOrdersInCart",dataStore.currentOrdersInCart)
+        }
+
         if (completeness !== giftPaymentComplete)
             updateCompleteness(completeness)
     }, [refresh])
@@ -89,7 +109,7 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
             <p className="text-xl mb-2">Payment</p>
             <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" value={payMode} onChange={(e) => setPayMode(e.target.value)}>
                 <label className="flex items-center gap-2">
-                    <input type="radio" value="Not Paid" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
+                    <input type="radio" value="COD" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
                     <span className="text-[#777] font-600">
                         Cash on Delivery
                         <Link href="/salt/shipping-returns">

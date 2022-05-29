@@ -94,6 +94,10 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         )
         if (completeness !== addressComplete)
             updateCompleteness(completeness)
+
+        dataStore.currentOrdersInCart[dataStore.currentOrderId].address=address
+        dataStore.currentOrdersInCart[dataStore.currentOrderId].measurement=extraMeasure
+        updateDataStore("currentOrdersInCart",dataStore.currentOrdersInCart)
     }
 
     const addressCompleteness = () => {
