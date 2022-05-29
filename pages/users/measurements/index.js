@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
@@ -10,16 +10,17 @@ import emptyMeasurement from "../../../store/emptyMeasurement.json";
 import MeasurementModal1 from "../../../components/user/MeasurementModal1";
 import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
-import {apiCall} from "../../../helpers/apiCall";
+import { apiCall } from "../../../helpers/apiCall";
 import getUserO from "../../../helpers/getUserO";
+import UserPageTemplate from "../../../components/user/UserPageTemplate";
 
 function UsersMeasurementsPage() {
     const router = useRouter();
     const { dataStore, updateDataStore } = useContext(AppWideContext);
-    useEffect(()=>{
+    useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
-    },[dataStore.userData.contact,router])
+    }, [dataStore.userData.contact, router])
 
 
     const [showModal1, setShowModal1] = useState(false);
@@ -110,7 +111,7 @@ function UsersMeasurementsPage() {
             await delMeasurement(currentMeasurement)
         }
 
-        if(dataStore.userData.contact) {
+        if (dataStore.userData.contact) {
             // we have a valid user
             await apiCall("addMeasurements", dataStore.apiToken, {
                 "user": getUserO(dataStore),
@@ -121,17 +122,17 @@ function UsersMeasurementsPage() {
             await refreshDataStore()
         } else {
             //non logged in case
-            dataStore.userMeasurements[currentMeasurement.measure_id]=currentMeasurement
-            updateDataStore("userMeasurements",dataStore.userMeasurements)
+            dataStore.userMeasurements[currentMeasurement.measure_id] = currentMeasurement
+            updateDataStore("userMeasurements", dataStore.userMeasurements)
         }
 
         closeModal()
     }
 
-    const delMeasurement=async (m)=>{
+    const delMeasurement = async (m) => {
         //only delete. no refresh
         delete dataStore.userMeasurements[m.measure_id]
-        if(dataStore.userData.contact) {
+        if (dataStore.userData.contact) {
             //logged in user
             await apiCall("removeMeasurements", dataStore.apiToken, {
                 user: getUserO(dataStore),
@@ -144,52 +145,49 @@ function UsersMeasurementsPage() {
 
     const deleteMeasurement = async (m) => {
         await delMeasurement(m)
-        if(dataStore.userData.contact)
+        if (dataStore.userData.contact)
             await refreshDataStore()
         else
-            updateDataStore("userMeasurements",dataStore.userMeasurements)
+            updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
 
-    const refreshDataStore=async ()=>{
+    const refreshDataStore = async () => {
         const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user":getUserO(dataStore)
+            "user": getUserO(dataStore)
         });
 
         let userMeasurements = {};
-        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length>0)
+        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
             userMeasurements = measurementCall.response
         updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
 
     const mobileView = null;
     const browserView = () => {
-        return <Fragment>
-            <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
-                <UsersSideMenu mobile={false} />
-                <div className="pl-8 flex-[3] flex flex-col items-start gap-4">
-                    <p className="text-[28px]">Measurement Summary</p>
-                    <div className="flex gap-8 w-full">
-                        <div className="flex-1 bg-[#f1f2f3] px-6 py-8 font-600 text-[#555]">
-                            <p>User Id: {dataStore.userData.contact}</p>
-                            <p>Total Measurement(s): {measurementKeys.length}</p>
-                        </div>
-                        <div className="flex-1 bg-[#f1f2f3] grid place-items-center" >
-                            <button className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => showModal(emptyMeasurement)}>ADD NEW</button>
-                        </div>
+        return (
+            <UserPageTemplate>
+                <p className="text-[28px]">Measurement Summary</p>
+                <div className="flex gap-8 w-full">
+                    <div className="flex-1 bg-[#f1f2f3] px-6 py-8 font-600 text-[#555]">
+                        <p>User Id: {dataStore.userData.contact}</p>
+                        <p>Total Measurement(s): {measurementKeys.length}</p>
                     </div>
-                    <div>
-                        <p className="text-[28px] mt-4">Measurements</p>
-                        {(measurementKeys.length > 0)
-                            ? <div>{measurementBlocks()}</div>
-                            : <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
-                                <p>No measurement found!</p>
-                                <p>Please add measurement.</p>
-                            </div>
-                        }
+                    <div className="flex-1 bg-[#f1f2f3] grid place-items-center" >
+                        <button className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => showModal(emptyMeasurement)}>ADD NEW</button>
                     </div>
                 </div>
-            </div>
-        </Fragment>
+                <div>
+                    <p className="text-[28px] mt-4">Measurements</p>
+                    {(measurementKeys.length > 0)
+                        ? <div>{measurementBlocks()}</div>
+                        : <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
+                            <p>No measurement found!</p>
+                            <p>Please add measurement.</p>
+                        </div>
+                    }
+                </div>
+            </UserPageTemplate>
+        )
     }
 
     return (
