@@ -111,6 +111,7 @@
     "account": {},
     "order": {},
     "payment": {}
-  }
+  },
+  "place_order_step1": {}
 
 }

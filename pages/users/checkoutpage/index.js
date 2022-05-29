@@ -7,6 +7,8 @@ import PromoCode from "../../../components/checkout-page/PromoCode";
 import GiftAndPayment from "../../../components/checkout-page/GiftAndPayment";
 import ReviewOrder from "../../../components/checkout-page/ReviewOrder";
 import AppWideContext from "../../../store/AppWideContext";
+import getUserO from "../../../helpers/getUserO";
+import {apiCall} from "../../../helpers/apiCall";
 
 function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
@@ -19,6 +21,26 @@ function UsersCheckoutPage() {
     const [giftPaymentComplete, setGiftPaymentComplete] = useState(false)
 
     const placeOrder = async () => {
+        console.log(dataStore.currentOrderId,dataStore.currentOrderInCart)
+        // this userO is different
+        const user = {
+            contact: dataStore.userData.contact || dataStore.currentOrderInCart.address.email,
+            is_guest: !(dataStore.userData.contact),
+            temp_user_id: dataStore.userServe.temp_user_id
+        }
+        console.log("USER",user)
+        const callWord = "savePayment"
+            /*
+        const callWord = (dataStore.currentOrderInCart.order.payment_mode==="CC"
+            || dataStore.currentOrderInCart.order.payment_mode==="DC" )?"savePayment" : "codcheckout"
+
+             */
+        const step1Call = await apiCall(callWord,dataStore.apiToken,{
+            user:user,
+            order:dataStore.currentOrderInCart.order
+        })
+        console.log("STEP1 CALL",step1Call)
+        dataStore.place_order_step1 = step1Call
 
     }
 
@@ -35,11 +57,12 @@ function UsersCheckoutPage() {
             </div>
             <div className="flex-[4]">
                 <OrderSummary />
+                {(addressComplete && giftPaymentComplete)
+                    ? <div className="inline-flex mb-5 text-white bg-black px-5 py-3" onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
+                    : null
+                }
             </div>
-            {(addressComplete && giftPaymentComplete)
-                ? <div onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
-                : null
-            }
+
         </div>
     </Fragment>
 
@@ -52,3 +75,11 @@ function UsersCheckoutPage() {
 }
 
 export default UsersCheckoutPage
+
+/*
+            {(addressComplete && giftPaymentComplete)
+                ? <div className="inline-flex mb-5 text-white bg-black px-5 py-3" onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
+                : null
+            }
+<div className="inline-flex mb-5 text-white bg-black px-5 py-3" onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
+ */

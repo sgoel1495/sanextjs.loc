@@ -472,6 +472,28 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        //====================== CC/DC Payment
+        case "savePayment":
+            url += "/checkout/save_payment_details";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        //====================== CC/DC Payment
+        case "codcheckout":
+            url += "/checkout";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
 
         default:
             url = null;
