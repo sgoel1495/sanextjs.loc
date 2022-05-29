@@ -103,5 +103,7 @@
   "userMeasurements": {},
   "userCart": [],
   "userOrderHistory": {},
-  "orderPromo": {}
+  "orderPromo": {},
+  "currentOrderId": 0,
+  "currentOrdersInCart": {}
 }
