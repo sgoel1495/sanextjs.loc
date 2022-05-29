@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import {DateTime} from "luxon";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
@@ -7,11 +7,13 @@ import getUserO from "../../helpers/getUserO";
 import {apiCall} from "../../helpers/apiCall";
 import CreateMyAccount from "../../CreateMyAccount";
 
-function ShippingAddress() {
+function ShippingAddress({addressComplete, updateCompleteness}) {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const cAddress = dataStore.selectedAddress || dataStore.defaultdAddress
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
+    const [refresh,setRefresh] = useState(false)
+
     const userO = getUserO(dataStore)
 
     const emptyAddress = {
@@ -36,7 +38,6 @@ function ShippingAddress() {
         birthday:"",
         anniversary:""
     })
-    const [refresh,setRefresh] = useState(false)
     const updateAddressValue = (key, value) => {
         address[key] = value
         setAddress(address)
@@ -83,8 +84,30 @@ function ShippingAddress() {
         return returnValues;
     }
 
-    const checkAndSave = async ()=>{
+    const checkAndSave = ()=>{
+        const completeness = (
+            addressCompleteness()
+            && extraMeasureCompleteness()
+            && createAccountCompleteness()
+        )
+        if(completeness!==addressComplete)
+            updateCompleteness(completeness)
+    }
 
+    const addressCompleteness = ()=>{
+        let completeness = true
+
+        return completeness
+    }
+    const extraMeasureCompleteness = ()=>{
+        let completeness = true
+
+        return completeness
+    }
+    const createAccountCompleteness = ()=>{
+        let completeness = true
+
+        return completeness
     }
 
     const labelClass = "block text-[14px] mb-1";
