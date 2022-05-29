@@ -7,6 +7,7 @@ import getUserO from "../../helpers/getUserO";
 import { apiCall } from "../../helpers/apiCall";
 import CreateMyAccount from "../../CreateMyAccount";
 import validator from "validator";
+import capitalizeTheFirstLetterOfEachWord from "../../helpers/capitalizeFirstWordOfEveryString";
 
 function ShippingAddress({ addressComplete, updateCompleteness }) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
@@ -27,14 +28,17 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         "landmark": "",
         "country": "India",
         "zip_code": "",
-        "state": null,
+        "state": "",
         "city": ""
     }
     const [address, setAddress] = useState((cAddress) ? cAddress : emptyAddress)
     const [extraMeasure, setExtraMeasure] = useState({
         "tops_brand": "",
+        "tops_brand_other": "",
         "tops_size": "",
-        "jeans_pants_size": 0
+        "tops_size_other": "",
+        "jeans_pants_size": 0,
+        "jeans_pants_size_other": 0
     })
     const [bDay, setBDay] = useState({
         birthday: "",
@@ -47,8 +51,23 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     }
 
     const updateZipcode = async (zip) => {
-        //checkZip with db before update
-        setRefresh(!refresh)
+        if(dataStore.currCurrency==="inr" && zip.length===6){
+            const zipCall = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode:zip})
+            if(
+                zipCall.hasOwnProperty("response_data")
+                && zipCall.response_data.hasOwnProperty("city")
+                && zipCall.response_data.hasOwnProperty("state")
+                && zipCall.response_data.hasOwnProperty("zipcode")
+            ){
+                address.state = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.state)
+                address.city = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.city)
+                address.zip_code = zipCall.response_data.zipcode
+                setAddress(address)
+                setRefresh(!refresh)
+            }
+        } else
+            updateAddressValue("zip_code",zip)
+
     }
 
     const updateExtraMeasureValue = (key, value) => {
@@ -95,9 +114,13 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         if (completeness !== addressComplete)
             updateCompleteness(completeness)
 
-        dataStore.currentOrdersInCart[dataStore.currentOrderId].address=address
-        dataStore.currentOrdersInCart[dataStore.currentOrderId].measurement=extraMeasure
-        updateDataStore("currentOrdersInCart",dataStore.currentOrdersInCart)
+        dataStore.currentOrderInCart=Object.assign({address:address})
+        dataStore.currentOrderInCart=Object.assign({measurement:{
+                "tops_brand": extraMeasure.tops_brand || extraMeasure.tops_brand_other,
+                "tops_size": extraMeasure.tops_size || extraMeasure.tops_size_other,
+                "jeans_pants_size": extraMeasure.jeans_pants_size || extraMeasure.jeans_pants_size_other
+            }})
+        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
     }
 
     const addressCompleteness = () => {
@@ -121,19 +144,27 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
             completeness = false
         }
 
+        if(dataStore.currCurrency==="inr" && address.zip_code.length!==6){
+            setMessage("Incorrect Zipcode");
+            setShow(true);
+            completeness = false
+        }
+
         return completeness
     }
     const extraMeasureCompleteness = () => {
         let completeness = true
-        if ("tops_brand" === "") {
+        let needUpdate = false
+
+        if (extraMeasure.tops_brand === "" && extraMeasure.tops_brand_other === "") {
             setMessage("Please select a Tops Brand")
             setShow(true)
             completeness = false
-        } else if ("tops_size" === "") {
+        } else if (extraMeasure.tops_size === "" && extraMeasure.tops_size_other === "") {
             setMessage("Please select a Tops Size")
             setShow(true)
             completeness = false
-        } else if ("tops_size" === "") {
+        } else if (extraMeasure.tops_size === "" && extraMeasure.tops_size_other === "") {
             setMessage("Please select a Jeans/Pants Size")
             setShow(true)
             completeness = false
@@ -219,8 +250,8 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                             <input
                                 className={inputField} name="tops_brand_other"
                                 type="text"
-                                value={(!brands.includes(extraMeasure.tops_brand)) ? extraMeasure.tops_brand : null}
-                                onChange={e => updateExtraMeasureValue("tops_brand", e.target.value)}
+                                value={extraMeasure.tops_brand_other}
+                                onChange={e => updateExtraMeasureValue("tops_brand_other", e.target.value)}
                             />
                         </div>
                     </div>
@@ -236,8 +267,8 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                             <label className={labelClass} htmlFor="tops_size_other">Other:</label>
                             <input className={inputField} name="tops_size_other"
                                 type="text"
-                                value={(!topSizes.includes(extraMeasure.tops_size)) ? extraMeasure.tops_size : null}
-                                onChange={e => updateExtraMeasureValue("tops_size", e.target.value)}
+                                value={extraMeasure.tops_size_other}
+                                onChange={e => updateExtraMeasureValue("tops_size_other", e.target.value)}
                             />
                         </div>
                     </div>
@@ -254,8 +285,8 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                             <label className={labelClass} htmlFor="jeans_pants_size_other">Other:</label>
                             <input className={inputField} name="jeans_pants_size_other"
                                 type="text"
-                                value={(!pantSizes.includes(extraMeasure.jeans_pants_size)) ? extraMeasure.jeans_pants_size : null}
-                                onChange={e => updateExtraMeasureValue("jeans_pants_size", e.target.value)}
+                                value={extraMeasure.jeans_pants_size_other}
+                                onChange={e => updateExtraMeasureValue("jeans_pants_size_other", e.target.value)}
                             />
                         </div>
                     </div>
@@ -265,7 +296,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                         <input name="birthday" className={inputStyle + " w-full"}
                             type="date"
                             min={DateTime.now().minus({ year: 18 }).toISODate()}
-                            onChange={e => updateBDay("birthday", e.target.value)} value={(bDay.birthday === "") ? null : bDay.birthday}
+                            onChange={e => updateBDay("birthday", e.target.value)} value={bDay.birthday}
                         />
                     </div>
                     <div>
@@ -273,7 +304,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                         <input name="anniversary" className={inputStyle + " w-full"}
                             type="date"
                             min={DateTime.now().minus({ year: 18 }).toISODate()}
-                            onChange={e => updateBDay("anniversary", e.target.value)} value={(bDay.anniversary === "") ? null : bDay.anniversary}
+                            onChange={e => updateBDay("anniversary", e.target.value)} value={bDay.anniversary}
                         />
                     </div>
                     <div>

@@ -25,7 +25,7 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     useEffect(() => {
         const completeness = (gitCardCompleteness() && payMode)
         if(completeness){
-            dataStore.currentOrdersInCart[dataStore.currentOrderId].order={
+            dataStore.currentOrderInCart.order={
                 order_id: dataStore.currentOrderId,
                 is_gift: isGift,
                 gift_msg: giftData.gift_msg,
@@ -38,10 +38,10 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
                 curr_currency: "inr",
                 ex_rate: 1
             }
-            dataStore.currentOrdersInCart[dataStore.currentOrderId].payment={
+            dataStore.currentOrderInCart.payment={
                 selected_mode:payMode
             }
-            updateDataStore("currentOrdersInCart",dataStore.currentOrdersInCart)
+            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
         }
 
         if (completeness !== giftPaymentComplete)

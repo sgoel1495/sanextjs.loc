@@ -8,7 +8,7 @@ function PromoCode() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-    const [promoCode, setPromoCode] = useState(null)
+    const [promoCode, setPromoCode] = useState("")
     const userO = getUserO(dataStore)
 
     const applyPromo = async () => {

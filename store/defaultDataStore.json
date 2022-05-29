@@ -105,5 +105,12 @@
   "userOrderHistory": {},
   "orderPromo": {},
   "currentOrderId": 0,
-  "currentOrdersInCart": {}
+  "currentOrderInCart": {
+    "address": {},
+    "measurement": {},
+    "account": {},
+    "order": {},
+    "payment": {}
+  }
+
 }

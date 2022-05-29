@@ -26,16 +26,11 @@ function CreateMyAccount(props) {
             )
         }
         if(completeness)
-            dataStore.currentOrdersInCart[dataStore.currentOrderId].account={
-                create_account:true,
+            dataStore.currentOrderInCart.account={
+                create_account:createAccount,
                 password:password.pwd1
             }
-        else
-            dataStore.currentOrdersInCart[dataStore.currentOrderId].account={
-                create_account:false,
-                password:""
-            }
-        updateDataStore("currentOrdersInCart",dataStore.currentOrdersInCart)
+        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
         if (completeness !== props.createAccount)
             props.updateCreateAccount(completeness)
     }, [refresh])

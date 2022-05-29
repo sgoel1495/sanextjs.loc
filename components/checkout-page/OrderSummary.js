@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 
-function OrderSummary({ complete }) {
+function OrderSummary(props) {
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
@@ -80,7 +80,7 @@ function OrderSummary({ complete }) {
                 <p>{total}</p>
             </div>
             <p className="text-[10px] font-500">* Inclusive GST</p>
-            {(complete)
+            {(props.complete)
                 ? <div onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
                 : null
             }
