@@ -23,13 +23,13 @@ function UsersCheckoutPage () {
         <Header type={"shopMenu"}/>
         <div>
             <div>
-                <ShippingAddress  updateCompleteness={setAddressComplete.bind(this)} />
+                <ShippingAddress  addressComplete={addressComplete} updateCompleteness={setAddressComplete.bind(this)} />
             </div>
             <div>
                 <PromoCode />
             </div>
             <div>
-                <GiftAndPayment   updateCompleteness={setGiftPaymentComplete.bind(this)} />
+                <GiftAndPayment   giftPaymentComplete={giftPaymentComplete} updateCompleteness={setGiftPaymentComplete.bind(this)} />
             </div>
             <div>
                 <ReviewOrder />

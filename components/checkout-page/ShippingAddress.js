@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import {DateTime} from "luxon";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
@@ -6,12 +6,16 @@ import Toast from "../common/Toast";
 import getUserO from "../../helpers/getUserO";
 import {apiCall} from "../../helpers/apiCall";
 import CreateMyAccount from "../../CreateMyAccount";
+import validator from "validator";
 
-function ShippingAddress() {
+function ShippingAddress({addressComplete, updateCompleteness}) {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const cAddress = dataStore.selectedAddress || dataStore.defaultdAddress
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
+    const [refresh,setRefresh] = useState(false)
+    const [createAccount, setCreateAccount] =useState(false)
+
     const userO = getUserO(dataStore)
 
     const emptyAddress = {
@@ -36,7 +40,6 @@ function ShippingAddress() {
         birthday:"",
         anniversary:""
     })
-    const [refresh,setRefresh] = useState(false)
     const updateAddressValue = (key, value) => {
         address[key] = value
         setAddress(address)
@@ -83,8 +86,56 @@ function ShippingAddress() {
         return returnValues;
     }
 
-    const checkAndSave = async ()=>{
+    const checkAndSave = ()=>{
+        const completeness = (
+            addressCompleteness()
+            && extraMeasureCompleteness()
+            && createAccount
+        )
+        if(completeness!==addressComplete)
+            updateCompleteness(completeness)
+    }
 
+    const addressCompleteness = ()=>{
+        let completeness = true
+            //validations: all except landmark need to be filled. Email check
+            let allFilled = true;
+            Object.keys(address).forEach(key => {
+                if (key != "landmark")
+                    if (address[key] == null || address[key] == "")
+                        allFilled = false;
+            })
+            if (!allFilled) {
+                setMessage("All required fields are not filled");
+                setShow(true);
+                completeness = false
+            }
+
+            if (allFilled && !validator.isEmail(address.email)) {
+                setMessage("Email is incorrect");
+                setShow(true);
+                completeness = false
+            }
+
+        return completeness
+    }
+    const extraMeasureCompleteness = ()=>{
+        let completeness = true
+        if("tops_brand"===""){
+            setMessage("Please select a Tops Brand")
+            setShow(true)
+            completeness = false
+        } else if("tops_size"===""){
+            setMessage("Please select a Tops Size")
+            setShow(true)
+            completeness = false
+        } else if("tops_size"===""){
+            setMessage("Please select a Jeans/Pants Size")
+            setShow(true)
+            completeness = false
+        }
+
+        return completeness
     }
 
     const labelClass = "block text-[14px] mb-1";
@@ -240,7 +291,7 @@ function ShippingAddress() {
                     </select>
                 </div>
             </div>
-            <div><CreateMyAccount /></div>
+            <div><CreateMyAccount createAccount={createAccount} updateCreateAccount={setCreateAccount.bind(this)}/></div>
 
             <div>
                 <div>Cancel</div>

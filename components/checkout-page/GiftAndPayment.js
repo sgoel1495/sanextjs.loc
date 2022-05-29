@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Toast from "../common/Toast";
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
-import getUserO from "../../helpers/getUserO";
 
-function GiftAndPayment() {
+function GiftAndPayment({giftPaymentComplete, updateCompleteness}) {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
+    const [refresh,setRefresh] = useState(false)
     const [isGift, setIsGift] = useState(false)
     const [giftData, setGiftData] = useState({
         gift_msg: "",
@@ -15,7 +15,6 @@ function GiftAndPayment() {
         gift_msg_from: ""
     })
     const [payMode, setPayMode] = useState(null)
-    const userO = getUserO(dataStore)
 
     const updateGift = (key, value) => {
         giftData[key] = value
@@ -23,7 +22,32 @@ function GiftAndPayment() {
         setRefresh(!refresh)
     }
 
+    useEffect(()=>{
+        const completeness = (gitCardCompleteness() && payMode)
+        if(completeness!==giftPaymentComplete)
+            updateCompleteness(completeness)
+    },[refresh])
 
+    const gitCardCompleteness = ()=>{
+        let completeness = true
+        if(isGift){
+            if(giftData.gift_msg=""){
+                setMessage("PLease write a message for gift")
+                setShow(true)
+                completeness = false
+            } else if(giftData.gift_msg_to=""){
+                setMessage("Please write the name of the person receiving gift")
+                setShow(true)
+                completeness = false
+            } else if(giftData.gift_msg_from=""){
+                setMessage("PLease write the name of the person sending gift")
+                setShow(true)
+                completeness = false
+            }
+        }
+
+        return completeness
+    }
 
     const labelClass = "block text-[14px] mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
