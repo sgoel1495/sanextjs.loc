@@ -7,6 +7,8 @@ import Link from "next/link"
 import getUserO from "../../helpers/getUserO";
 import {apiCall} from "../../helpers/apiCall";
 import PromoCode from "./PromoCode";
+import GiftAndPayment from "./GiftAndPayment";
+import CreateMyAccount from "../../CreateMyAccount";
 
 function ShippingAddress() {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
@@ -37,8 +39,6 @@ function ShippingAddress() {
         birthday:"",
         anniversary:""
     })
-    const [createAccount,setCreateAccount] = useState(false)
-    const [password,setPassword] = useState({pwd1:"",pwd2:""})
     const [isGift,setIsGift] = useState(false)
     const [giftData,setGiftData] = useState({
         gift_msg: "",
@@ -46,7 +46,6 @@ function ShippingAddress() {
         gift_msg_from: ""
     })
     const [payMode,setPayMode] = useState(null)
-
     const [refresh,setRefresh] = useState(false)
     const updateAddressValue = (key, value) => {
         address[key] = value
@@ -67,17 +66,6 @@ function ShippingAddress() {
     const updateBDay = (key, value) => {
         bDay[key] = value
         setBDay(bDay)
-        setRefresh(!refresh)
-    }
-    const updatePwd = (key, value) => {
-        password[key] = value
-        setPassword(password)
-        setRefresh(!refresh)
-    }
-
-    const updateGift = (key, value) => {
-        giftData[key] = value
-        setGiftData(giftData)
         setRefresh(!refresh)
     }
 
@@ -277,84 +265,13 @@ function ShippingAddress() {
                     </select>
                 </div>
             </div>
-            <div>
-                <label>
-                    <input type="checkbox" name="create_account" id="create_account" checked={createAccount}
-                           onChange={()=>setCreateAccount(!createAccount)}/>
-                    <span>Create My Account</span>
-                </label>
-                {(createAccount)
-                    ?<div>
-                        <div>
-                            <label className={labelClass} htmlFor="pwd1">Password</label>
-                            <input className={inputClass} type="password" name="pwd1" id="pwd1" value={password.pw1}
-                                   onChange={e => updatePwd("pwd1", e.target.value)}/>
-                        </div>
-                        <div>
-                            <label className={labelClass} htmlFor="pwd2">Confirm Password</label>
-                            <input className={inputClass} type="password" name="pwd2" id="pwd2" value={password.pw2}
-                                   onChange={e => updatePwd("pwd2", e.target.value)}/>
-                        </div>
-                    </div>
-                    :null
-                }
-            </div>
+            <div><CreateMyAccount /></div>
+
             <div>
                 <div>Cancel</div>
                 <div onClick={checkAndSave}>SAVE</div>
             </div>
-            <div>
-                <PromoCode />
-            </div>
-            <div>
-                <label>
-                    <input type="checkbox" name="isgift" id="isgift" checked={isGift}
-                           onChange={()=>setIsGift(!isGift)}/>
-                    <span>Is this a Gift?</span>
-                </label>
-                {(isGift)
-                    ?<div>
-                        <div>
-                            <label className={labelClass} htmlFor="gift_msg">Your Personalized Message</label>
-                            <input className={inputClass} type="text" name="gift_msg" id="gift_msg" value={giftData.gift_msg}
-                                   onChange={e => updateGift("gift_msg", e.target.value)}/>
-                        </div>
-                        <div>
-                            <label className={labelClass} htmlFor="gift_msg_to">To</label>
-                            <input className={inputClass} type="text" name="gift_msg_to" id="gift_msg_to" value={giftData.gift_msg_to}
-                                   onChange={e => updateGift("gift_msg_to", e.target.value)}
-                                   placeholder="Recipients Name"
-                            />
-                        </div>
-                        <div>
-                            <label className={labelClass} htmlFor="gift_msg_from">From</label>
-                            <input className={inputClass} type="text" name="gift_msg_from" id="gift_msg_from" value={giftData.gift_msg_from}
-                                   onChange={e => updateGift("gift_msg_from", e.target.value)}/>
-                        </div>
-                    </div>
-                    :null
-                }
-            </div>
-            <div>
-                <div>Payment</div>
-                <div onChange={()=>setPayMode(e.target.value)}>
-                    <label>
-                        <input type="radio" value="Not Paid" name="paymentMode" />
-                        <span>Cash on Delivery</span>
-                        <Link href="/salt/shipping-returns">
-                            <a>COD Refund Policy</a>
-                        </Link>
-                    </label>
-                    <label>
-                        <input type="radio" value="CC" name="paymentMode" />
-                        <span>Credit Cards</span>
-                    </label>
-                    <label>
-                        <input type="radio" value="DC" name="paymentMode" />
-                        <span>Debit Cards / Net Banking</span>
-                    </label>
-                </div>
-            </div>
+
             <Toast show={show} hideToast={() => setShow(false)}>
                 <span>{message}</span>
             </Toast>

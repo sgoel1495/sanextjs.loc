@@ -104,5 +104,6 @@
   "userCart": [],
   "userOrderHistory": {},
   "orderPromo": {},
-  "currentOrderId": 0
+  "currentOrderId": 0,
+  "currentOrdersInCart": {}
 }
