@@ -6,6 +6,7 @@ import Toast from "../common/Toast";
 import getUserO from "../../helpers/getUserO";
 import {apiCall} from "../../helpers/apiCall";
 import CreateMyAccount from "../../CreateMyAccount";
+import validator from "validator";
 
 function ShippingAddress({addressComplete, updateCompleteness}) {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
@@ -13,6 +14,7 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
     const [refresh,setRefresh] = useState(false)
+    const [createAccount, setCreateAccount] =useState(false)
 
     const userO = getUserO(dataStore)
 
@@ -88,7 +90,7 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
         const completeness = (
             addressCompleteness()
             && extraMeasureCompleteness()
-            && createAccountCompleteness()
+            && createAccount
         )
         if(completeness!==addressComplete)
             updateCompleteness(completeness)
@@ -96,16 +98,42 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
 
     const addressCompleteness = ()=>{
         let completeness = true
+            //validations: all except landmark need to be filled. Email check
+            let allFilled = true;
+            Object.keys(address).forEach(key => {
+                if (key != "landmark")
+                    if (address[key] == null || address[key] == "")
+                        allFilled = false;
+            })
+            if (!allFilled) {
+                setMessage("All required fields are not filled");
+                setShow(true);
+                completeness = false
+            }
+
+            if (allFilled && !validator.isEmail(address.email)) {
+                setMessage("Email is incorrect");
+                setShow(true);
+                completeness = false
+            }
 
         return completeness
     }
     const extraMeasureCompleteness = ()=>{
         let completeness = true
-
-        return completeness
-    }
-    const createAccountCompleteness = ()=>{
-        let completeness = true
+        if("tops_brand"===""){
+            setMessage("Please select a Tops Brand")
+            setShow(true)
+            completeness = false
+        } else if("tops_size"===""){
+            setMessage("Please select a Tops Size")
+            setShow(true)
+            completeness = false
+        } else if("tops_size"===""){
+            setMessage("Please select a Jeans/Pants Size")
+            setShow(true)
+            completeness = false
+        }
 
         return completeness
     }
@@ -263,7 +291,7 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
                     </select>
                 </div>
             </div>
-            <div><CreateMyAccount /></div>
+            <div><CreateMyAccount createAccount={createAccount} updateCreateAccount={setCreateAccount.bind(this)}/></div>
 
             <div>
                 <div>Cancel</div>
