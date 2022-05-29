@@ -4,31 +4,38 @@ import AppWideContext from "../../store/AppWideContext";
 import {Fragment, useContext, useEffect, useState} from "react";
 import Link from "next/link";
 
-function MimotoSlider(){
+function MimotoSlider() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
-    const [collectionArray,setCollectionArray] = useState([])
+    const [collectionArray, setCollectionArray] = useState([])
 
-    useEffect(()=>{
-        const fetchMimotoCollection = async ()=>{
+    useEffect(() => {
+        const fetchMimotoCollection = async () => {
             const resp = await apiCall("getMimotoCollection", dataStore.apiToken)
-            if(resp.hasOwnProperty("response") && resp.response.hasOwnProperty("mimoto"))
+            if (resp.hasOwnProperty("response") && resp.response.hasOwnProperty("mimoto"))
                 setCollectionArray([...resp.response.mimoto])
             console.log(resp)
         }
-        fetchMimotoCollection().then(()=>{}).catch(e=>e.message)
-    },[])
+        fetchMimotoCollection().then(() => {
+        }).catch(e => e.message)
+    }, [])
 
-    const displayCollection = ()=>{
+    const displayCollection = () => {
         let returnValue = null
         console.log(collectionArray)
         collectionArray.forEach(collection => {
 
-            if(collection.visible)
-            returnValue = <Fragment>
-                {returnValue}
-                <Link href={collection.url}><a>{collection.name} {collection.tagline}</a></Link>
-            </Fragment>
+            if (collection.visible)
+                returnValue = <Fragment>
+                    {returnValue}
+                    <Link href={collection.url}>
+                        <a>
+                            <span>{collection.name}</span>
+                            <span>{collection.tagline}</span>
+                            <span>Nostalgia is a way of transporting ourselves to a time when we felt loved and safe. The collection has a range of shirts & tops with prints in familiar motifs that reminds us of our childhood and the feeling of comfort.</span>
+                        </a>
+                    </Link>
+                </Fragment>
         })
 
         return returnValue
@@ -38,7 +45,7 @@ function MimotoSlider(){
             <span className={"block relative w-14 aspect-square"}>
             <Image src={WEBASSETS + "/assets/images/nostalgia_v1.jpg"} layout={`fill`} objectFit={`cover`}
                    alt={"loader"}/>
-            {displayCollection()}
+                {displayCollection()}
         </span>
 
     </div>
