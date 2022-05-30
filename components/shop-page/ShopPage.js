@@ -24,11 +24,16 @@ const fetchData = async (data, apiToken, category, pagination) => {
     let gotData = false;
     const callObject = await apiCall("getProducts", apiToken, {category: category, ...pagination})
     if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
-        if (data != null)
-            callObject.response.data = data.data.concat(callObject.response.data)
-        gotData = true;
+        if (callObject
+            && callObject.response
+            && callObject.response.data
+        ) {
+            gotData = true;
+            if (data != null)
+                callObject.response.data = data.data.concat(callObject.response.data)
+        }
     }
-    return (gotData) ? callObject.response : {}
+    return (gotData) ? callObject.response : null
 }
 
 
@@ -82,7 +87,8 @@ function ShopPage({category,hpid}) {
 
         setLoading(true)
         const newData = await fetchData(data, dataStore.apiToken, category, pagination)
-        setData(newData)
+        if(newData)
+            setData(newData)
         setPagination({
             skip: pagination.skip + pagination.limit,
             limit: pagination.limit
