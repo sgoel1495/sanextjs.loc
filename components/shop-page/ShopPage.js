@@ -32,10 +32,9 @@ const fetchData = async (data, apiToken, category, pagination) => {
 }
 
 
-function ShopPage(props) {
+function ShopPage({category,hpid}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
-    const category = props.hpid.substring(5)
     const {dataStore} = useContext(AppWideContext);
 
     const [data, setData] = useState(null);
@@ -71,7 +70,7 @@ function ShopPage(props) {
                     loading={loading}
                     data={data}
                     category={category}
-                    hpid={props.hpid}
+                    hpid={hpid}
                 />
             )
         }
@@ -105,14 +104,14 @@ function ShopPage(props) {
     if (!dataStore.mobile)
         return (
             <Fragment>
-                <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile}/>
+                <PageHead url={"/" + hpid} id={hpid} isMobile={dataStore.mobile}/>
                 {navControl || <Header type={"shopMenu"}/>}
                 <CategoryHeaderVideo category={category}/>
                 {navControl
                     ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
-                              category={props.hpid}/>
+                              category={hpid}/>
                     : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
-                            category={props.hpid}/>
+                            category={hpid}/>
                 }
                 <BlockHeader
                     space={"py-5"}
