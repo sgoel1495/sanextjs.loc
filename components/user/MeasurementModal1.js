@@ -91,9 +91,6 @@ function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, ne
         return returnValues;
     }
 
-    console.log("Shoulder", measurement.shoulder);
-    console.log("Biceps", measurement.bisceps);
-
     const blockClass = "flex flex-col items-center max-w-max";
     const labelClass = "text-xs font-700";
     const inputSelect = "font-600 text-xs focus:ring-transparent focus:border-black";

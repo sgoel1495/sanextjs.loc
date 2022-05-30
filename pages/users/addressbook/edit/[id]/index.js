@@ -5,16 +5,17 @@ import UsersSideMenu from "../../../../../components/user/UsersSideMenu";
 import PageHead from "../../../../../components/PageHead";
 import Header from "../../../../../components/navbar/Header";
 import AddressForm from "../../../../../components/user/AddressForm";
+import UserPageTemplate from "../../../../../components/user/UserPageTemplate";
 
 function AddAddressEditByIdPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
     const query = router.query
     const addressId = query.pageid
-    useEffect(()=>{
-        if( !addressId || dataStore.userData.contact==null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId+1) )
+    useEffect(() => {
+        if (!addressId || dataStore.userData.contact == null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId + 1))
             router.replace("/"); // no illegal access
-    },[addressId,dataStore.userData.contact,dataStore.userAddresses,dataStore.userAddresses.length,router])
+    }, [addressId, dataStore.userData.contact, dataStore.userAddresses, dataStore.userAddresses.length, router])
 
 
     const address = dataStore.userAddresses[addressId];
@@ -22,12 +23,9 @@ function AddAddressEditByIdPage() {
     const mobileView = null;
     const browserView = () => {
         return (
-            <div className="xl:w-3/5 mx-auto flex divide-x gap-x-8 mt-28">
-                <UsersSideMenu mobile={false} />
-                <div className="pl-8 flex-[3]">
-                    <AddressForm index={addressId} address={address} />
-                </div>
-            </div>
+            <UserPageTemplate>
+                <AddressForm index={addressId} address={address} />
+            </UserPageTemplate>
         );
     }
 

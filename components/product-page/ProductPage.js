@@ -47,14 +47,11 @@ function ProductPage(props) {
         fetchData();
     }, [fetchData, props.hpid]);
 
-
-    console.log(data)
-
     if (data)
         return <div>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile} />
             <Header type={!dataStore.mobile && navControl ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
-            {(props.isMobile) ? <MobileView hpid={props.hpid} data={data} /> : <DesktopView hpid={props.hpid} data={data} />}
+            {(dataStore.Mobile) ? <MobileView hpid={props.hpid} data={data} /> : <DesktopView hpid={props.hpid} data={data} />}
         </div>;
     else
         return <></>

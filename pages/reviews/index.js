@@ -23,9 +23,6 @@ function ReviewsPage() {
             setData(resp.reviews);
     }, [resp]);
 
-    console.log("GIFT CARD DATA", data);
-
-
     const showReviews = () => {
         let srd = null;
         if (data)

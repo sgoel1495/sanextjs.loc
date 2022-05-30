@@ -1,22 +1,22 @@
 import AppWideContext from "../../../store/AppWideContext";
-import {useRouter} from "next/router";
-import {Fragment, useContext, useEffect} from "react";
+import { useRouter } from "next/router";
+import { Fragment, useContext, useEffect } from "react";
 
 function UsersLogoutPage() {
-    const {updateDataStore} = useContext(AppWideContext);
+    const { updateDataStore } = useContext(AppWideContext);
     const router = useRouter();
     useEffect(() => {
-        const userData={
+        const userData = {
             "contact": null
         };
-        const userWallet= {
+        const userWallet = {
             "email": "",
-                "phone_number": "",
-                "user_name": "",
-                "wallet_amount": 0,
-                "usd_wallet_amount": 0
+            "phone_number": "",
+            "user_name": "",
+            "wallet_amount": 0,
+            "usd_wallet_amount": 0
         };
-        const userServe={
+        const userServe = {
             "email": "",
             "phone_number": "",
             "user_name": "",
@@ -26,11 +26,11 @@ function UsersLogoutPage() {
             "temp_user_id": Date.now().toString()
         };
 
-        const userMeasurements={}
-        const userOrderHistory={}
-        const userCart=[]
-        const defaultAddress=null
-        const userAddresses=[]
+        const userMeasurements = {}
+        const userOrderHistory = {}
+        const userCart = []
+        const defaultAddress = null
+        const userAddresses = []
 
         updateDataStore("userData", userData);
         updateDataStore("userWallet", userWallet);
@@ -41,7 +41,7 @@ function UsersLogoutPage() {
         updateDataStore("userOrderHistory", userOrderHistory);
         updateDataStore("userMeasurements", userMeasurements);
         router.replace("/");
-    }, [router,updateDataStore])
+    }, [router, updateDataStore])
     return <Fragment>Logging out ...</Fragment>;
 }
 

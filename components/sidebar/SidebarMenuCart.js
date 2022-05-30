@@ -7,6 +7,7 @@ import SwiperCore, { Autoplay } from "swiper";
 import "swiper/css";
 import AppWideContext from "../../store/AppWideContext";
 import { apiCall } from "../../helpers/apiCall";
+import ProductCartView from "../common/ProductCartView";
 
 SwiperCore.use([Autoplay]);
 
@@ -22,7 +23,6 @@ function CartModal(props) {
     const [tailoredProduct, setTailoredProduct] = useState(null)
     const [showEditTailored, setShowEditTailored] = useState(false)
     const [showViewTailored, setShowViewTailored] = useState(false)
-
 
     const imageClass = "block relative w-40 h-40";
     const blockHeader = "border-4 border-theme-200 p-2 uppercase mb-5 tracking-wide"
@@ -237,130 +237,8 @@ function CartModal(props) {
      */
     const userO = {
         email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-        is_guest: (dataStore.userData.contact) ? true : false,
+        is_guest: !(dataStore.userData.contact),
         temp_user_id: dataStore.userServe.temp_user_id
-    }
-
-    const refreshCart = async () => {
-        //retrieve from api and update
-        let userCart = [];
-        const cartCall = await apiCall("getCart", dataStore.apiToken, { "user": userO });
-        if (cartCall.response && Array.isArray(cartCall.response))
-            userCart = [...cartCall.response];
-        updateDataStore("userCart", userCart)
-    }
-
-    const changeQty = async (i, n) => {
-        if (n == 1) {
-            // increase
-            dataStore.userCart[i].qty = (parseInt(dataStore.userCart[i].qty) + 1).toString();
-        } else if (n == -1) {
-            const cv = parseInt(dataStore.userCart[i].qty)
-            if (cv > 1)
-                dataStore.userCart[i].qty = (cv - 1).toString();
-        }
-        //update in api
-        const updateProduct = {
-            product_cart_id: dataStore.userCart[i].product_cart_id,
-            qty: dataStore.userCart[i].qty
-        }
-        await apiCall("updateCart", dataStore.apiToken, { "user": userO, product: updateProduct });
-        await refreshCart()
-    }
-
-    const removeFromCart = async (i) => {
-        const updateProduct = {
-            product_cart_id: dataStore.userCart[i].product_cart_id
-        }
-        const updateCall = await apiCall("removeCart", dataStore.apiToken, { "user": userO, product: updateProduct });
-        await refreshCart()
-    }
-
-    const productCartView = () => {
-        let returnValues = null;
-        dataStore.userCart.forEach((p, index) => {
-            if (p.is_tailor == "false")
-                returnValues = (
-                    <div>
-                        {returnValues}
-                        <div>
-                            <div className="border p-1">
-                                <div className="relative h-40 aspect-[9/16]">
-                                    <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
-                                        id={p.cart_id + index.toString()}
-                                        layout="fill"
-                                        objectFit="cover"
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X</button>
-                                <div>
-                                    <p className="font-600 text-sm leading-none">{p.name}</p>
-                                    <p className="text-[10px]">{p.tag_line}</p>
-                                </div>
-                                <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{p.color.name}</p>
-                                    <p className="text-[10px]">SIZE:{p.size}</p>
-                                </div>
-                                <div className="inline-flex gap-4 text-sm items-center">
-                                    Qty
-                                    <div className="text-[#555]" onClick={() => changeQty(index, -1)}>-</div>
-                                    <div>{p.qty}</div>
-                                    <div className="text-[#555]" onClick={() => changeQty(index, 1)}>+</div>
-                                </div>
-                                <p className="text-right text-[#777] text-xs">
-                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                )
-
-            else
-                returnValues = (
-                    <div>
-                        {returnValues}
-                        <div className="flex gap-x-2 items-center">
-                            <div className="border p-1">
-                                <div className="relative h-40 aspect-[9/16]">
-                                    <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
-                                        id={p.cart_id + index.toString()}
-                                        layout="fill"
-                                        objectFit="cover"
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X</button>
-                                <div>
-                                    <p className="font-600 text-sm leading-none">{p.name}</p>
-                                    <p className="text-[10px]">{p.tag_line}</p>
-                                </div>
-                                <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{p.color.name}</p>
-                                    <p className="text-[10px]">SIZE:TAILORED</p>
-                                </div>
-                                {/* <div>
-                                    <span onClick={() => quickEditTailored(p)}>EDIT</span>
-                                    <span onClick={() => quickViewTailored(p)}>VIEW</span>
-                                </div> */}
-                                <div className="inline-flex gap-4 text-sm items-center">
-                                    Qty:
-                                    <div className="text-[#555]" onClick={() => changeQty(index, -1)}>-</div>
-                                    <div>{p.qty}</div>
-                                    <div className="text-[#555]" onClick={() => changeQty(index, 1)}>+</div>
-                                </div>
-                                <p className="text-right text-[#777] text-xs">
-                                    {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? p.price : p.usd_price}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                )
-        })
-
-        return returnValues
     }
 
     const quickEditTailored = (p) => {
@@ -404,11 +282,13 @@ function CartModal(props) {
                         </svg>
                     </button>
                     <div className={`text-center font-600 tracking-wider mb-10`}>
-                        <p className={`text-sm mb-6`}>YOUR CART</p>
+                        <p className={`text-sm mb-6`}>YOUR CART {dataStore.userCart.length > 0 && `(${dataStore.userCart.length})`}</p>
                         {(dataStore.userCart.length > 0)
                             ? <Fragment>
-                                <div>CHECKOUT</div>
-                                {productCartView()}
+                                <Link href="/users/checkoutpage">
+                                    <a className="inline-flex mb-5 text-white bg-black px-5 py-3">CHECKOUT</a>
+                                </Link>
+                                <ProductCartView />
                             </Fragment>
                             : null
                         }
@@ -424,10 +304,12 @@ function CartModal(props) {
                         <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
                         <p className={`text-sm mb-4`}>There is nothing in your cart. Let&apos;s add some items.</p>
                         <Link href="/new-arrivals/all">
-                            <a className="underline uppercase text-sm">Continue Shopping</a>
+                            <a className="flex justify-center underline uppercase text-sm mt-8">Continue Shopping</a>
                         </Link>
                         {(dataStore.userCart.length > 0)
-                            ? <div>CHECKOUT</div>
+                            ? <Link href="/users/checkoutpage">
+                                <a className="inline-flex my-5 text-white bg-black px-5 py-3">CHECKOUT</a>
+                            </Link>
                             : null
                         }
                     </div>
@@ -518,6 +400,7 @@ function CartModal(props) {
 
 
 function SidebarMenuCart(props) {
+    const { dataStore } = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [showSidebarMenuCart, setShowSidebarMenuCart] = useState(false);
     React.useEffect(() => {
@@ -538,10 +421,11 @@ function SidebarMenuCart(props) {
             iconHeight = "h-6"
     }
 
+
     return (
         <>
-            <span onClick={() => setShowSidebarMenuCart(true)}
-                className={`block relative w-6 cursor-pointer ${iconHeight}`}>
+            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
+                <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{(dataStore.userCart.length === 0) ? null : dataStore.userCart.length}</span>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
                     alt="carticon"

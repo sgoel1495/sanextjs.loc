@@ -13,6 +13,8 @@ import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 import PastOrdersMeasurementModal from "../../../components/user/PastOrdersMeasurementModal";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
+import addToCartLoggedIn from "../../../helpers/addToCartLoggedIn";
+import getUserO from "../../../helpers/getUserO";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -93,15 +95,6 @@ const DetailsCard = ({ data, hpid }) => {
         }
         return newKey;
     }
-    const getUserO = () => {
-        const tempId = dataStore.userServe.temp_user_id || Date.now()
-        const userO = {
-            email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-            is_guest: !!(dataStore.userData.contact),
-            temp_user_id: tempId
-        }
-        return userO
-    }
     const addNewModal = (m) => {
         setCurrentProduct(data)
         setCurrentMeasurement(m);
@@ -128,7 +121,7 @@ const DetailsCard = ({ data, hpid }) => {
     }
     const refreshDataStore = async () => {
         const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user": getUserO()
+            "user": getUserO(dataStore)
         });
 
         let userMeasurements = {};
@@ -136,6 +129,21 @@ const DetailsCard = ({ data, hpid }) => {
             userMeasurements = measurementCall.response
         updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
+
+    const delMeasurement=async (m)=>{
+        //only delete. no refresh
+        delete dataStore.userMeasurements[m.measure_id]
+        if(dataStore.userData.contact) {
+            //logged in user
+            await apiCall("removeMeasurements", dataStore.apiToken, {
+                user: getUserO(dataStore),
+                measurments: {
+                    measure_id: m.measure_id
+                }
+            });
+        }
+    }
+
     const saveModal = async () => {
 
         if (currentMeasurement.measure_id == "") {
@@ -145,15 +153,25 @@ const DetailsCard = ({ data, hpid }) => {
             //case update - we simply remove and add
             await delMeasurement(currentMeasurement)
         }
-        await apiCall("addMeasurements", dataStore.apiToken, {
-            "user": getUserO(),
-            "measurments": currentMeasurement
-        })
 
-        // update DataStore
-        await refreshDataStore()
+        if(dataStore.userData.contact) {
+            // we have a valid user
+            await apiCall("addMeasurements", dataStore.apiToken, {
+                "user": getUserO(dataStore),
+                "measurments": currentMeasurement
+            })
+
+            // update DataStore
+            await refreshDataStore()
+        } else {
+            //non logged in case
+            dataStore.userMeasurements[currentMeasurement.measure_id]=currentMeasurement
+            updateDataStore("userMeasurements",dataStore.userMeasurements)
+        }
+
         closeModal()
     }
+
     const sizeByProduct = (p) => {
         //p is the item
         setCurrentMeasurementProduct(p)
@@ -198,7 +216,6 @@ const DetailsCard = ({ data, hpid }) => {
 }"
 
          */
-        let userO = null;
         let tempId = null;
         if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id == "") {
             tempId = Date.now()
@@ -207,18 +224,10 @@ const DetailsCard = ({ data, hpid }) => {
         } else
             tempId = dataStore.userServe.temp_user_id
 
-        if (dataStore.userData.contact) {
-            userO = {
-                email: dataStore.userData.contact,
-                is_guest: false,
-                temp_user_id: tempId
-            }
-        } else {
-            userO = {
-                email: "",
-                is_guest: true,
-                temp_user_id: tempId
-            }
+        const userO = {
+            email: (dataStore.userData.contact)? dataStore.userData.contact:"",
+            is_guest: !(dataStore.userData.contact),
+            temp_user_id: tempId
         }
 
         const cart = {
@@ -230,19 +239,46 @@ const DetailsCard = ({ data, hpid }) => {
             sleeve_length: "",
             dress_length: ""
         }
+        console.log("DATA PRODUCT",data)
+        const displayCart = {
+            asset_id: "/assets/"+data.asset_id+"/thumb.jpg",
+            product_id: hpid,
+            cart_id: data.product_id+"+"+selectedSize,
+            name:data.name,
+            tag_line:data.tag_line,
+            color: (data.hasOwnProperty("color"))?data.color:{name:"MULTICOLOR"},
+            multi_color: (data.hasOwnProperty("multi_color"))?data.multi_color:false,
+            qty:"1",
+            size:selectedSize,
+            is_tailor:false,
+            price:data.price,
+            usd_price:data.usd_price,
+            order: cart
+        }
 
-        const resp = await apiCall("addToCart", dataStore.apiToken, { user: userO, cart: cart })
-        if (resp.response && resp.response == "success") {
+        //check if the product already in cart
+        let isPresentInCart=false
+        if(dataStore.userCart.length>0){
+            dataStore.userCart.forEach(item=>{
+                if(item.product_id == hpid)
+                    isPresentInCart=true
+            })
+        }
+
+        if(isPresentInCart) {
+            setToastMsg("Already in cart")
+        } else {
+            if (dataStore.userData.contact) {
+                // logged in user
+                await addToCartLoggedIn(dataStore.apiToken, userO, cart, updateDataStore)
+            } else {
+                //not logged in
+                dataStore.userCart.push(displayCart)
+                updateDataStore("userCart", dataStore.userCart)
+            }
             setToastMsg("Added to Cart")
             setShowToast(true)
-            // refresh the cart
-            const respCart = await apiCall("getCart", dataStore.apiToken, { user: userO })
-            if (respCart.response && Array.isArray(respCart.response))
-                updateDataStore("userCart", respCart.response)
-            console.log("Cart", respCart)
         }
-        console.log("ADD TO CART RESP", resp)
-
     }
 
     return (
@@ -265,9 +301,9 @@ const DetailsCard = ({ data, hpid }) => {
                         if (index > 0)
                             return <>
                                 <span className={""} key={"div" + index}>|</span>
-                                <span className={(selectedSize == item) ? "border-t border-b border-black text-black" : "border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
+                                <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
                             </>
-                        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black" : "border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
+                        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
                     })}
                 </div>
                 <p
@@ -300,10 +336,10 @@ const DetailsCard = ({ data, hpid }) => {
                 </div>
             </div>
             <div className={"bg-white mt-2 flex justify-evenly text-xs border-4 border-black/10 py-2"}>
-                <Link href={"/salt/shipping-returns"}>
+                <Link href={"/salt/shipping-returns"} key="shipping">
                     <a className={"uppercase underline"}>return policy</a>
                 </Link>
-                <Link href={"/salt/faq"}>
+                <Link href={"/salt/faq"} key="faq">
                     <a className={"uppercase underline"}>faq</a>
                 </Link>
             </div>
@@ -325,7 +361,7 @@ const DetailsCard = ({ data, hpid }) => {
                         ? <div>Delivery Available!</div>
                         : <div>
                             Sorry! Delivery not available to this location.
-                            <Link href="/salt/contact-us">
+                            <Link href="/salt/contact-us" key="contact">
                                 <a> Contact Us </a>
                             </Link>
                             if you do not see your pincode.

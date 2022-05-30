@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import AppWideContext from "../../store/AppWideContext";
-import { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import validator from "validator";
 import Toast from "../common/Toast";
 import { apiCall } from "../../helpers/apiCall";
+import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
 
 /**
  * there is no processing for default or company at present
@@ -12,7 +13,6 @@ import { apiCall } from "../../helpers/apiCall";
  * @constructor
  */
 
-const statesAndCities = require('../../store/statesAndCities.json');
 
 function AddressForm(props) {
     const router = useRouter();
@@ -111,7 +111,7 @@ function AddressForm(props) {
                 "user": {
                     email: dataStore.userData.contact
                 },
-                "address": {...address,"index":props.index}
+                "address": { ...address, "index": props.index }
             });
             if (resp.status !== 200) {
                 setMessage("Something went wrong. Please try again or contact administrator");
@@ -131,44 +131,6 @@ function AddressForm(props) {
 
     }
 
-    const sncList = () => {
-        const states = [];
-        const cities = [];
-        statesAndCities.forEach(snc => {
-            if (states.includes(snc.state) == false)
-                states.push(snc.state);
-            if (address.state == snc.state)
-                cities.push(snc.city);
-        });
-        states.sort();
-        cities.sort();
-        return { states, cities };
-    }
-
-    const statesOptions = () => {
-        let returnValue = null;
-        const { states } = sncList();
-        states.forEach(state => {
-            returnValue = <Fragment>
-                {returnValue}
-                <option value={state}>{state}</option>
-            </Fragment>;
-        });
-        return returnValue;
-    }
-
-    const citiesOptions = () => {
-        let returnValue = null;
-        const { cities } = sncList();
-        cities.forEach(city => {
-            returnValue = <Fragment>
-                {returnValue}
-                <option value={city}>{city}</option>
-            </Fragment>;
-        });
-        return returnValue;
-    }
-
     const updateAddressValue = (key, value) => {
         address[key] = value;
         setAddress(address);
@@ -180,16 +142,14 @@ function AddressForm(props) {
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
 
     const mobileView = null;
-    const browserView = <div>
+    const browserView = <Fragment>
         {(address)
-            ? <div>
-                <div>
-                    {(props.index == -1)
-                        ? <p className="text-[28px] mb-5">Add New Address</p>
-                        : <p className="text-[28px] mb-5">Edit Address</p>
-                    }
-                </div>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555]">
+            ? <>
+                {(props.index == -1)
+                    ? <p className="text-[28px] mb-2">Add New Address</p>
+                    : <p className="text-[28px] mb-2">Edit Address</p>
+                }
+                <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555] w-full">
                     <div>
                         <label className={labelClass} htmlFor="name">First Name</label>
                         <input className={inputClass} type="text" name="name" id="name" value={address.name} onChange={e => updateAddressValue("name", e.target.value)} />
@@ -228,7 +188,7 @@ function AddressForm(props) {
                             onChange={e => updateAddressValue("state", e.target.value)}
                             placeholder="Please select region, state or province"
                         >
-                            {statesOptions()}
+                            <StatesAndCitiesOptions state={address.state} cities={false} />
                         </select>
                     </div>
                     <div>
@@ -241,7 +201,7 @@ function AddressForm(props) {
                             onChange={e => updateAddressValue("city", e.target.value)}
                             placeholder="Please select your city"
                         >
-                            {citiesOptions()}
+                            <StatesAndCitiesOptions state={address.state} cities={true} />
                         </select>
                     </div>
                     <div>
@@ -275,9 +235,9 @@ function AddressForm(props) {
                 <Toast show={show} hideToast={() => setShow(false)}>
                     <span>{message}</span>
                 </Toast>
-            </div>
+            </>
             : null}
-    </div>
+    </Fragment>
 
 
     return (dataStore.mobile) ? mobileView : browserView

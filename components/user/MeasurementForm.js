@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import AppWideContext from "../../store/AppWideContext";
-import { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import validator from "validator/es";
 import Toast from "../common/Toast";
 import { apiCall } from "../../helpers/apiCall";
+import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions";
 
 /**
  * there is no processing for default or company at present
@@ -29,8 +30,6 @@ function MeasurementForm(props) {
         } else
             setMeasurement(dataStore.userMeasurements[props.index])
     },[dataStore.userMeasurements,props.index])
-
-    console.log("Current Measurement",measurement);
 
     const saveAndReturn = async () => {
         //validations: all except landmark need to be filled. Email check
@@ -94,44 +93,6 @@ function MeasurementForm(props) {
 
     }
 
-    const sncList = () => {
-        const states = [];
-        const cities = [];
-        statesAndCities.forEach(snc => {
-            if (states.includes(snc.state) == false)
-                states.push(snc.state);
-            if (address.state == snc.state)
-                cities.push(snc.city);
-        });
-        states.sort();
-        cities.sort();
-        return { states, cities };
-    }
-
-    const statesOptions = () => {
-        let returnValue = null;
-        const { states } = sncList();
-        states.forEach(state => {
-            returnValue = <Fragment>
-                {returnValue}
-                <option value={state}>{state}</option>
-            </Fragment>;
-        });
-        return returnValue;
-    }
-
-    const citiesOptions = () => {
-        let returnValue = null;
-        const { cities } = sncList();
-        cities.forEach(city => {
-            returnValue = <Fragment>
-                {returnValue}
-                <option value={city}>{city}</option>
-            </Fragment>;
-        });
-        return returnValue;
-    }
-
     const updateAddressValue = (key, value) => {
         address[key] = value;
         setAddress(address);
@@ -191,7 +152,7 @@ function MeasurementForm(props) {
                             onChange={e => updateAddressValue("state", e.target.value)}
                             placeholder="Please select region, state or province"
                         >
-                            {statesOptions()}
+                            <StatesAndCitiesOptions state={address.state} cities={false} />
                         </select>
                     </div>
                     <div>
@@ -204,7 +165,7 @@ function MeasurementForm(props) {
                             onChange={e => updateAddressValue("city", e.target.value)}
                             placeholder="Please select your city"
                         >
-                            {citiesOptions()}
+                            <StatesAndCitiesOptions state={address.state} cities={true} />
                         </select>
                     </div>
                     <div>

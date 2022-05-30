@@ -75,6 +75,26 @@ body.scroll-overflow .navigator {
     }
 }
 
+.order_summary_table{
+    *{
+        @apply block;
+    }
+
+    @apply block w-full border-t border-b border-[#808080] py-5;
+
+    tr {
+        @apply flex;
+
+        td{
+            @apply py-3 font-600 text-[#777];
+        }
+
+        td:first-child{
+            @apply flex-1
+        }
+    }
+}
+
 .fade-up{
     animation: fadeup .4s ease;
 }

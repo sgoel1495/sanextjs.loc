@@ -99,7 +99,19 @@
   },
   "userAddresses": [],
   "defaultAddress": null,
+  "selectedAddress": null,
   "userMeasurements": {},
   "userCart": [],
-  "userOrderHistory": {}
+  "userOrderHistory": {},
+  "orderPromo": {},
+  "currentOrderId": 0,
+  "currentOrderInCart": {
+    "address": {},
+    "measurement": {},
+    "account": {},
+    "order": {},
+    "payment": {}
+  },
+  "place_order_step1": {}
+
 }

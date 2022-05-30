@@ -36,7 +36,6 @@ function InstagramStoriesSwiper(props) {
     useEffect(() => {
         apiCall("instagramToken", props.apiToken)
             .then(function (response) {
-                console.log('Token RESPONSE', response)
                 //if(response.response.token) {
                 if(false) {
                     console.log('Using token Token RESPONSE', response.response.token)

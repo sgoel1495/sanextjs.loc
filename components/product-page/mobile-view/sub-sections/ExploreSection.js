@@ -25,16 +25,20 @@ const ExploreSection = (props) => {
             .then(json => {
                 if (json && json.status === 200) {
                     setData(json.response.data);
+
+/*
                     if (props.title === "Same Color") {
                         console.log("yoyo", json.response)
                     }
+*/
                 }
             })
-    },[dataStore.apiToken, props.api, props.query, props.title])
+    },[dataStore.apiToken, props.api, props.query])
 
     useEffect(() => {
         fetchData()
-    }, [fetchData, props.id])
+    }, [fetchData])
+    // props.id was removed from deps
 
     let body;
 

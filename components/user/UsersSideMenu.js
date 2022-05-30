@@ -31,7 +31,7 @@ function UsersSideMenu(props) {
             </Fragment>;
         })
         return (
-            <ul className="flex-1 py-3">
+            <ul>
                 {returnValue}
             </ul>
         );

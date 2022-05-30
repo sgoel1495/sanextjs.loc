@@ -10,6 +10,9 @@ module.exports = {
         {
             pattern: /text-/,
         },
+        {
+            pattern: /col-span-/,
+        },
     ],
     theme: {
         fontFamily: {

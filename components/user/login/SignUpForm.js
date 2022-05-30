@@ -28,8 +28,7 @@ const SignUpForm = (props) => {
     })
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        const existingUserMeasurements = dataStore.userMeasurements || {};
-        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,existingUserMeasurements,dataStore.userCart);
+        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,dataStore.userMeasurements,dataStore.userCart);
         Object.keys(updateData).forEach((key)=>{
             updateDataStore(key, updateData[key]);
         })

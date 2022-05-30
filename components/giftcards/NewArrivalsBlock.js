@@ -30,8 +30,6 @@ function NewArrivalsBlock(props){
             setData(resp.giftcards);
     }, [resp]);
 
-    console.log("GIFT CARD DATA", data);
-
     const showNewArrivals = ()=>{
         let sgc = null;
         if(data)

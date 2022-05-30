@@ -22,7 +22,6 @@ function Footer(props) {
 
     const newsletterSignup = async () => {
         const newEmail = newsletterRef.current.value;
-        console.log("EMAIL", newEmail);
         if (isValidEmail(newEmail)) {
             const resp = await apiCall("addExclusiveUser", dataStore.apiToken, { email: newEmail });
             if (resp.hasOwnProperty("msg"))
