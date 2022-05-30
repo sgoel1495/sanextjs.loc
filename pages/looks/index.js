@@ -121,7 +121,7 @@ function LooksPage() {
             setLoading(false)
         }).catch(e=>e.message)
 
-    },[hasMore])
+    },[hasMore,canMore,data])
 
     const expandData = () => {
 

@@ -22,7 +22,29 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
         setRefresh(!refresh)
     }
 
+
+
     useEffect(() => {
+        const gitCardCompleteness = () => {
+            let completeness = true
+            if (isGift) {
+                if (giftData.gift_msg = "") {
+                    setMessage("PLease write a message for gift")
+                    setShow(true)
+                    completeness = false
+                } else if (giftData.gift_msg_to = "") {
+                    setMessage("Please write the name of the person receiving gift")
+                    setShow(true)
+                    completeness = false
+                } else if (giftData.gift_msg_from = "") {
+                    setMessage("PLease write the name of the person sending gift")
+                    setShow(true)
+                    completeness = false
+                }
+            }
+
+            return completeness
+        }
         const completeness = (gitCardCompleteness() && payMode)
         if(completeness){
             dataStore.currentOrderInCart.order={
@@ -46,28 +68,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
 
         if (completeness !== giftPaymentComplete)
             updateCompleteness(completeness)
-    }, [refresh])
-
-    const gitCardCompleteness = () => {
-        let completeness = true
-        if (isGift) {
-            if (giftData.gift_msg = "") {
-                setMessage("PLease write a message for gift")
-                setShow(true)
-                completeness = false
-            } else if (giftData.gift_msg_to = "") {
-                setMessage("Please write the name of the person receiving gift")
-                setShow(true)
-                completeness = false
-            } else if (giftData.gift_msg_from = "") {
-                setMessage("PLease write the name of the person sending gift")
-                setShow(true)
-                completeness = false
-            }
-        }
-
-        return completeness
-    }
+    }, [refresh,dataStore.currCurrency, dataStore.currentOrderId, dataStore.currentOrderInCart, giftData.gift_msg, giftData.gift_msg_from, giftData.gift_msg_to,
+        giftPaymentComplete, isGift, giftData, payMode, updateCompleteness,updateDataStore])
 
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";

@@ -16,9 +16,10 @@ function MimotoSlider() {
                 setCollectionArray([...resp.response.mimoto])
             console.log(resp)
         }
-        fetchMimotoCollection().then(() => {
-        }).catch(e => e.message)
-    }, [])
+        if(dataStore && dataStore.apiToken)
+            fetchMimotoCollection().then(() => {
+            }).catch(e => e.message)
+    }, [dataStore, dataStore.apiToken])
 
     const displayCollection = () => {
         let returnValue = null

@@ -15,7 +15,7 @@ function UsersCheckoutPage() {
     useEffect(()=>{
         if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === 0))
             updateDataStore("currentOrderId", Date.now())
-    },[])
+    },[dataStore,updateDataStore])
 
     const [addressComplete, setAddressComplete] = useState(false)
     const [giftPaymentComplete, setGiftPaymentComplete] = useState(false)
