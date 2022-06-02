@@ -1,21 +1,24 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
-import { DateTime } from "luxon";
+import {DateTime} from "luxon";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
 import Toast from "../common/Toast";
 import getUserO from "../../helpers/getUserO";
-import { apiCall } from "../../helpers/apiCall";
+import {apiCall} from "../../helpers/apiCall";
 import CreateMyAccount from "../../CreateMyAccount";
 import validator from "validator";
 import capitalizeTheFirstLetterOfEachWord from "../../helpers/capitalizeFirstWordOfEveryString";
+import DisplayAddress from "./DisplayAddress";
 
-function ShippingAddress({ addressComplete, updateCompleteness }) {
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+function ShippingAddress({addressComplete, updateCompleteness}) {
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const cAddress = dataStore.selectedAddress || dataStore.defaultdAddress
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
     const [refresh, setRefresh] = useState(false)
     const [createAccount, setCreateAccount] = useState(false)
+    const [editAddress, setEditAddress] = useState(true)
+    const [selectedAddressIndex, setSelectedAddressIndex] = useState(null)
 
     const userO = getUserO(dataStore)
 
@@ -51,14 +54,14 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     }
 
     const updateZipcode = async (zip) => {
-        if(dataStore.currCurrency==="inr" && zip.length===6){
-            const zipCall = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode:zip})
-            if(
+        if (dataStore.currCurrency === "inr" && zip.length === 6) {
+            const zipCall = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode: zip})
+            if (
                 zipCall.hasOwnProperty("response_data")
                 && zipCall.response_data.hasOwnProperty("city")
                 && zipCall.response_data.hasOwnProperty("state")
                 && zipCall.response_data.hasOwnProperty("zipcode")
-            ){
+            ) {
                 address.state = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.state)
                 address.city = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.city)
                 address.zip_code = zipCall.response_data.zipcode
@@ -66,7 +69,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                 setRefresh(!refresh)
             }
         } else
-            updateAddressValue("zip_code",zip)
+            updateAddressValue("zip_code", zip)
 
     }
 
@@ -106,21 +109,28 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     }
 
     const checkAndSave = () => {
-        const completeness = (
-            addressCompleteness()
-            && extraMeasureCompleteness()
-            && createAccount
-        )
+        let completeness = false
+        if (dataStore.userData.contact) {
+            completeness = addressCompleteness()
+        } else {
+            completeness = (
+                addressCompleteness()
+                && extraMeasureCompleteness()
+                && createAccount
+            )
+        }
         if (completeness !== addressComplete)
             updateCompleteness(completeness)
 
-        dataStore.currentOrderInCart=Object.assign({address:address})
-        dataStore.currentOrderInCart=Object.assign({measurement:{
+        dataStore.currentOrderInCart = Object.assign({address: address})
+        dataStore.currentOrderInCart = Object.assign({
+            measurement: {
                 "tops_brand": extraMeasure.tops_brand || extraMeasure.tops_brand_other,
                 "tops_size": extraMeasure.tops_size || extraMeasure.tops_size_other,
                 "jeans_pants_size": extraMeasure.jeans_pants_size || extraMeasure.jeans_pants_size_other
-            }})
-        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+            }
+        })
+        updateDataStore("currentOrderInCart", dataStore.currentOrderInCart)
     }
 
     const addressCompleteness = () => {
@@ -144,7 +154,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
             completeness = false
         }
 
-        if(dataStore.currCurrency==="inr" && address.zip_code.length!==6){
+        if (dataStore.currCurrency === "inr" && address.zip_code.length !== 6) {
             setMessage("Incorrect Zipcode");
             setShow(true);
             completeness = false
@@ -152,6 +162,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
 
         return completeness
     }
+
     const extraMeasureCompleteness = () => {
         let completeness = true
         let needUpdate = false
@@ -173,6 +184,24 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         return completeness
     }
 
+    const addressIndex = (index,edit) => {
+        if(index!==selectedAddressIndex)
+        {
+            setSelectedAddressIndex(index)
+            setAddress(dataStore.userAddresses[index])
+            if(index)
+                updateDataStore("selectedAddress",dataStore.userAddresses[index])
+        }
+        if(edit!==editAddress)
+            setEditAddress(edit)
+    }
+
+    useEffect(()=>{
+        console.log("I WAS TRIGGERED")
+        if(dataStore.userData.contact && dataStore.userAddresses.length>0)
+            addressIndex(null,false)
+    },[dataStore.userAddresses.length, dataStore.userData.contact])
+
     const labelClass = "block font-500 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
@@ -182,198 +211,222 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     const focusStyle = "focus:ring-offset-0 focus:ring-0"
     const inputStyle = `block w-full border-none bg-black/5 px-4 py-3 ${focusStyle}`;
 
+    console.log("editAddress, dataStore.userData.contact, dataStore.userAddresses.length",editAddress, dataStore.userData.contact, dataStore.userAddresses.length)
+
     const mobileView = null
     const browserView = () => {
-        return (
-            <Fragment>
-                {(dataStore.userData.contact)
-                    ? null
-                    : <button className="mb-2 underline font-500" onClick={() => updateDataStore("showSidebarMenuUser", true)}>Already have an account?</button>
-                }
-                <p className="text-xl mb-2">Shipping Address</p>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555]">
-                    <div>
-                        <label className={labelClass} htmlFor="name">First Name</label>
-                        <input
-                            className={inputClass}
-                            type="text"
-                            name="name"
-                            id="name" value={address.name}
-                            onChange={e => updateAddressValue("name", e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="lastname">Last Name</label>
-                        <input
-                            className={inputClass}
-                            type="text"
-                            name="lastname"
-                            id="lastname" value={address.lastname}
-                            onChange={e => updateAddressValue("lastname", e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="email">Email</label>
-                        <input
-                            className={inputClass}
-                            type="email"
-                            name="email"
-                            id="email" value={address.email}
-                            onChange={e => updateAddressValue("email", e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="phone">Telephone</label>
-                        <input
-                            className={inputClass}
-                            type="number"
-                            name="phone"
-                            id="phone" value={address.phone}
-                            onChange={e => updateAddressValue("phone", e.target.value)}
-                        />
-                    </div>
-                    <p className="font-600 text-sm text-[#777] col-span-full">1. What Size Tops do you usually wear?</p>
-                    <div className={optionClass}>
+        return <Fragment>
+            <p className="text-xl mb-2">Shipping Address</p>
+            {(!editAddress)
+                ? <DisplayAddress addressIndex={addressIndex.bind(this)}/>
+                : <Fragment>
+                    {(dataStore.userData.contact)
+                        ? null
+                        : <button className="mb-2 underline font-500"
+                                  onClick={() => updateDataStore("showSidebarMenuUser", true)}>Already have an
+                            account?</button>
+                    }
+
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-[#555]">
                         <div>
-                            <label className={labelClass} htmlFor="tops_brand">Brand:</label>
-                            <select
-                                className={inputSelect}
-                                name="tops_brand"
-                                value={extraMeasure.tops_brand}
-                                onChange={e => updateExtraMeasureValue("tops_brand", e.target.value)}
-                            >
-                                {selectOptions(brands)}
-                            </select>
-                        </div>
-                        <div>
-                            <label className={labelClass} htmlFor="tops_brand_other">Other:</label>
+                            <label className={labelClass} htmlFor="name">First Name</label>
                             <input
-                                className={inputField} name="tops_brand_other"
+                                className={inputClass}
                                 type="text"
-                                value={extraMeasure.tops_brand_other}
-                                onChange={e => updateExtraMeasureValue("tops_brand_other", e.target.value)}
+                                name="name"
+                                id="name" value={address.name}
+                                onChange={e => updateAddressValue("name", e.target.value)}
                             />
                         </div>
-                    </div>
-                    <div className={optionClass}>
                         <div>
-                            <label className={labelClass} htmlFor="tops_size">Size:</label>
-                            <select className={inputSelect} name="tops_size" value={extraMeasure.tops_size}
-                                onChange={e => updateExtraMeasureValue("tops_size", e.target.value)}>
-                                {selectOptions(topSizes)}
+                            <label className={labelClass} htmlFor="lastname">Last Name</label>
+                            <input
+                                className={inputClass}
+                                type="text"
+                                name="lastname"
+                                id="lastname" value={address.lastname}
+                                onChange={e => updateAddressValue("lastname", e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="email">Email</label>
+                            <input
+                                className={inputClass}
+                                type="email"
+                                name="email"
+                                id="email" value={address.email}
+                                onChange={e => updateAddressValue("email", e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="phone">Telephone</label>
+                            <input
+                                className={inputClass}
+                                type="number"
+                                name="phone"
+                                id="phone" value={address.phone}
+                                onChange={e => updateAddressValue("phone", e.target.value)}
+                            />
+                        </div>
+                        <p className="font-600 text-sm text-[#777] col-span-full">1. What Size Tops do you usually
+                            wear?</p>
+                        <div className={optionClass}>
+                            <div>
+                                <label className={labelClass} htmlFor="tops_brand">Brand:</label>
+                                <select
+                                    className={inputSelect}
+                                    name="tops_brand"
+                                    value={extraMeasure.tops_brand}
+                                    onChange={e => updateExtraMeasureValue("tops_brand", e.target.value)}
+                                >
+                                    {selectOptions(brands)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className={labelClass} htmlFor="tops_brand_other">Other:</label>
+                                <input
+                                    className={inputField} name="tops_brand_other"
+                                    type="text"
+                                    value={extraMeasure.tops_brand_other}
+                                    onChange={e => updateExtraMeasureValue("tops_brand_other", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className={optionClass}>
+                            <div>
+                                <label className={labelClass} htmlFor="tops_size">Size:</label>
+                                <select className={inputSelect} name="tops_size" value={extraMeasure.tops_size}
+                                        onChange={e => updateExtraMeasureValue("tops_size", e.target.value)}>
+                                    {selectOptions(topSizes)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className={labelClass} htmlFor="tops_size_other">Other:</label>
+                                <input className={inputField} name="tops_size_other"
+                                       type="text"
+                                       value={extraMeasure.tops_size_other}
+                                       onChange={e => updateExtraMeasureValue("tops_size_other", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <p className="font-600 text-sm text-[#777] col-span-full">2. What is the Jeans/Pants size you
+                            wear</p>
+                        <div className={optionClass}>
+                            <div>
+                                <label className={labelClass} htmlFor="jeans_pants_size">Size:</label>
+                                <select className={inputSelect} name="jeans_pants_size"
+                                        value={extraMeasure.jeans_pants_size}
+                                        onChange={e => updateExtraMeasureValue("jeans_pants_size", e.target.value)}>
+                                    {selectOptions(pantSizes)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className={labelClass} htmlFor="jeans_pants_size_other">Other:</label>
+                                <input className={inputField} name="jeans_pants_size_other"
+                                       type="text"
+                                       value={extraMeasure.jeans_pants_size_other}
+                                       onChange={e => updateExtraMeasureValue("jeans_pants_size_other", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className=""></div>
+                        <div>
+                            <label className={labelClass} htmlFor="birthday">Date of
+                                Birth <span>(Surprise gifts await)</span></label>
+                            <input name="birthday" className={inputStyle + " w-full"}
+                                   type="date"
+                                   min={DateTime.now().minus({year: 18}).toISODate()}
+                                   onChange={e => updateBDay("birthday", e.target.value)} value={bDay.birthday}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClass}
+                                   htmlFor="anniversary">Anniversary <span>(Surprise gifts await)</span></label>
+                            <input name="anniversary" className={inputStyle + " w-full"}
+                                   type="date"
+                                   min={DateTime.now().minus({year: 18}).toISODate()}
+                                   onChange={e => updateBDay("anniversary", e.target.value)} value={bDay.anniversary}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="zip_code">Zip/Postal Code</label>
+                            <input
+                                className={inputClass}
+                                type="text"
+                                name="zip_code"
+                                id="zip_code"
+                                value={address.zip_code}
+                                onChange={e => updateZipcode(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="address">Address Line 1</label>
+                            <input className={inputClass}
+                                   type="text"
+                                   name="address"
+                                   id="address" value={address.address}
+                                   onChange={e => updateAddressValue("address", e.target.value)}/>
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="landmark">Address Line 2</label>
+                            <input className={inputClass}
+                                   type="text"
+                                   name="landmark"
+                                   id="landmark" value={address.landmark}
+                                   onChange={e => updateAddressValue("landmark", e.target.value)}/>
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="country">Country</label>
+                            <input className={inputClass} name="country"
+                                   id="country" value={address.country} disabled={true}
+                                   onChange={e => updateAddressValue("country", e.target.value)}/>
+                        </div>
+                        <div>
+                            <label className={labelClass} htmlFor="state">State/Province</label>
+                            <select
+                                className={inputClass}
+                                name="state"
+                                id="state"
+                                value={address.state}
+                                onChange={e => updateAddressValue("state", e.target.value)}
+                                placeholder="Please select region, state or province"
+                            >
+                                <StatesAndCitiesOptions state={address.state} cities={false}/>
                             </select>
                         </div>
                         <div>
-                            <label className={labelClass} htmlFor="tops_size_other">Other:</label>
-                            <input className={inputField} name="tops_size_other"
-                                type="text"
-                                value={extraMeasure.tops_size_other}
-                                onChange={e => updateExtraMeasureValue("tops_size_other", e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <p className="font-600 text-sm text-[#777] col-span-full">2. What is the Jeans/Pants size you wear</p>
-                    <div className={optionClass}>
-                        <div>
-                            <label className={labelClass} htmlFor="jeans_pants_size">Size:</label>
-                            <select className={inputSelect} name="jeans_pants_size" value={extraMeasure.jeans_pants_size}
-                                onChange={e => updateExtraMeasureValue("jeans_pants_size", e.target.value)}>
-                                {selectOptions(pantSizes)}
+                            <label className={labelClass} htmlFor="city">City</label>
+                            <select
+                                className={inputClass}
+                                name="city"
+                                id="city"
+                                value={address.city}
+                                onChange={e => updateAddressValue("city", e.target.value)}
+                                placeholder="Please select your city"
+                            >
+                                <StatesAndCitiesOptions state={address.state} cities={true}/>
                             </select>
                         </div>
-                        <div>
-                            <label className={labelClass} htmlFor="jeans_pants_size_other">Other:</label>
-                            <input className={inputField} name="jeans_pants_size_other"
-                                type="text"
-                                value={extraMeasure.jeans_pants_size_other}
-                                onChange={e => updateExtraMeasureValue("jeans_pants_size_other", e.target.value)}
-                            />
+                        {(dataStore.userData.contact)
+                            ? null
+                            : <div className="col-span-full">
+                                <CreateMyAccount createAccount={createAccount}
+                                                 updateCreateAccount={setCreateAccount.bind(this)}/>
+                            </div>
+                        }
+                        <div className="col-span-full flex justify-center gap-10 text-sm">
+                            <button className="border border-black px-4 py-1.5">Cancel</button>
+                            <button className="bg-black px-4 py-1.5 text-white tracking-widest font-500"
+                                    onClick={checkAndSave}>SAVE
+                            </button>
                         </div>
                     </div>
-                    <div className=""></div>
-                    <div>
-                        <label className={labelClass} htmlFor="birthday">Date of Birth <span>(Surprise gifts await)</span></label>
-                        <input name="birthday" className={inputStyle + " w-full"}
-                            type="date"
-                            min={DateTime.now().minus({ year: 18 }).toISODate()}
-                            onChange={e => updateBDay("birthday", e.target.value)} value={bDay.birthday}
-                        />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="anniversary">Anniversary <span>(Surprise gifts await)</span></label>
-                        <input name="anniversary" className={inputStyle + " w-full"}
-                            type="date"
-                            min={DateTime.now().minus({ year: 18 }).toISODate()}
-                            onChange={e => updateBDay("anniversary", e.target.value)} value={bDay.anniversary}
-                        />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="zip_code">Zip/Postal Code</label>
-                        <input
-                            className={inputClass}
-                            type="text"
-                            name="zip_code"
-                            id="zip_code"
-                            value={address.zip_code}
-                            onChange={e => updateZipcode(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="address">Address Line 1</label>
-                        <input className={inputClass}
-                            type="text"
-                            name="address"
-                            id="address" value={address.address} onChange={e => updateAddressValue("address", e.target.value)} />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="landmark">Address Line 2</label>
-                        <input className={inputClass}
-                            type="text"
-                            name="landmark"
-                            id="landmark" value={address.landmark} onChange={e => updateAddressValue("landmark", e.target.value)} />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="country">Country</label>
-                        <input className={inputClass} name="country"
-                            id="country" value={address.country} disabled={true} onChange={e => updateAddressValue("country", e.target.value)} />
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="state">State/Province</label>
-                        <select
-                            className={inputClass}
-                            name="state"
-                            id="state"
-                            value={address.state}
-                            onChange={e => updateAddressValue("state", e.target.value)}
-                            placeholder="Please select region, state or province"
-                        >
-                            <StatesAndCitiesOptions state={address.state} cities={false} />
-                        </select>
-                    </div>
-                    <div>
-                        <label className={labelClass} htmlFor="city">City</label>
-                        <select
-                            className={inputClass}
-                            name="city"
-                            id="city"
-                            value={address.city}
-                            onChange={e => updateAddressValue("city", e.target.value)}
-                            placeholder="Please select your city"
-                        >
-                            <StatesAndCitiesOptions state={address.state} cities={true} />
-                        </select>
-                    </div>
-                    <div className="col-span-full"><CreateMyAccount createAccount={createAccount} updateCreateAccount={setCreateAccount.bind(this)} /></div>
-                    <div className="col-span-full flex justify-center gap-10 text-sm">
-                        <button className="border border-black px-4 py-1.5">Cancel</button>
-                        <button className="bg-black px-4 py-1.5 text-white tracking-widest font-500" onClick={checkAndSave}>SAVE</button>
-                    </div>
-                </div>
-                <Toast show={show} hideToast={() => setShow(false)}>
-                    <span>{message}</span>
-                </Toast>
-            </Fragment>
-        )
+                    <Toast show={show} hideToast={() => setShow(false)}>
+                        <span>{message}</span>
+                    </Toast>
+                </Fragment>
+            }
+        </Fragment>
     }
 
     return (dataStore.mobile) ? mobileView : browserView()
