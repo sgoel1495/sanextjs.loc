@@ -56,7 +56,7 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
                 dress_length: ""
             }
             const displayCart = {
-                asset_id: prod.single_view_img,
+                asset_id: "/assets/" + prod.asset_id + "/new.jpg",
                 product_id: prod.asset_id,
                 cart_id: prod.product_id + "+" + currSize,
                 name: prod.name,
