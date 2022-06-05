@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
-import { apiCall } from "../../helpers/apiCall";
 import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 
@@ -14,9 +13,10 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const MimotoProductCard = ({ prod, index }) => {
+const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore, updateDataStore } = useContext(AppWideContext);
+    const [expandShop, setExpandShop] = useState(null);
 
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
@@ -47,7 +47,7 @@ const MimotoProductCard = ({ prod, index }) => {
             }
 
             const cart = {
-                product_id: prod.product_id,
+                product_id: prod.asset_id,
                 size: currSize,
                 qty: "1",
                 is_sale: false,
@@ -56,12 +56,12 @@ const MimotoProductCard = ({ prod, index }) => {
                 dress_length: ""
             }
             const displayCart = {
-                asset_id: prod.asset_id,
-                product_id: prod.product_id,
+                asset_id: prod.single_view_img,
+                product_id: prod.asset_id,
                 cart_id: prod.product_id + "+" + currSize,
                 name: prod.name,
                 tag_line: prod.tag_line,
-                color: (prod.hasOwnProperty("color_name")) ? prod.color_name : { name: "MULTICOLOR" },
+                color: (prod.hasOwnProperty("color")) ? prod.color : { name: "MULTICOLOR" },
                 multi_color: (prod.hasOwnProperty("multi_color")) ? prod.multi_color : false,
                 qty: "1",
                 size: currSize,
@@ -74,7 +74,7 @@ const MimotoProductCard = ({ prod, index }) => {
             let isPresentInCart = false
             if (dataStore.userCart.length > 0) {
                 dataStore.userCart.forEach(item => {
-                    if (item.product_id === prod.product_id)
+                    if (item.product_id === prod.asset_id)
                         isPresentInCart = true
                 })
             }
@@ -113,7 +113,7 @@ const MimotoProductCard = ({ prod, index }) => {
                     className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
                 <Link href={"/" + prod.asset_id}>
                     <a className={`block z-0`} id={prod.asset_id}>
-                        <ShopDataBlockImage src={WEBASSETS + "/assets/" + prod.asset_id + "/mo.new.jpg"} alt={prod.name} />
+                        <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.name} />
                         <div className={`flex px-5 items-center leading-none py-3`}>
                             <div className='flex-1'>
                                 <p className={`font-600 font-cursive italic`}>{prod.name}</p>

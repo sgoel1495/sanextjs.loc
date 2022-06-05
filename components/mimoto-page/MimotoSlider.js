@@ -8,6 +8,7 @@ function MimotoSlider({data}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
     const [collectionArray, setCollectionArray] = useState([])
+    console.log("DATA MIMOTO SLIDER", data)
 
     useEffect(() => {
         const fetchMimotoCollection = async () => {
@@ -40,24 +41,27 @@ function MimotoSlider({data}) {
         return returnValue
     }
 
-    return <div>
-        <div>
-            <Link href={data.mimoto_collection.url}>
-                <a>
+    return (data)
+        ? <div>
+            <div>
+                <Link href={data.mimoto_collection.url}>
+                    <a>
                     <span className={"block relative w-14 aspect-square"}>
                         <Image src={WEBASSETS + data.mimoto_collection.mob_img_path} layout={`fill`} objectFit={`cover`}
-                           alt={data.mimoto_collection.collection_id}/>
+                               alt={data.mimoto_collection.collection_id}/>
                         <span>
                             <span>{data.mimoto_collection.display_name}</span>
                             <span>{data.mimoto_collection.tagline}</span>
                             <span>{data.mimoto_collection.description}</span>
                         </span>
                     </span>
-                </a>
-            </Link>
+                    </a>
+                </Link>
+            </div>
+            <div>{displayCollection()}</div>
         </div>
-        <div>{displayCollection()}</div>
-    </div>
+        : null
+
 }
 
 export default MimotoSlider

@@ -382,26 +382,13 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== MIMOTO
-            //same link for adding tailored and non tailored
-        case "getMimotoProducts":
-            url += "/mimoto/getAllProducts";
-            body = {
-                mimoto: {
-                    token: apiToken,
-                    ...queryObject
-                }
-
-            };
-            postFetcher.body = JSON.stringify(body);
-            finalFetcher = {...postFetcher}
-            break;
-
         case "getMimotoCollection":
-            url += "/product/get_mimoto_collection";
+            url += "/get_mimoto_collection";
             body = {
                 mimoto: {
                     token: apiToken,
-                    ...queryObject
+                    skip:0,
+                    limit:100
                 }
 
             };

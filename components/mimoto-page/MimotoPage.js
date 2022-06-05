@@ -18,6 +18,7 @@ import MimotoSlider from "./MimotoSlider";
 
 const fetchData = async (apiToken, category) => {
     const callObject = await apiCall("getMimotoProducts", apiToken, {name: category})
+    console.log("CALL OBJECT",callObject)
     return (callObject.hasOwnProperty("response")
         && callObject.hasOwnProperty("msg")
         && callObject.msg === "Products Found"
@@ -33,12 +34,16 @@ function MimotoPage(props) {
 
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
+    console.log("DATA MIMOTO MAIN PAGE", data)
 
     useEffect(() => {
+        console.log("STEP 1 =================")
         if (dataStore.apiToken) {
+            console.log("STEP 2 =================")
             setLoading(true)
             fetchData(dataStore.apiToken, category)
                 .then(d => {
+                    console.log("D ========",d)
                     setData(d)
                     setLoading(false)
                 })
@@ -82,15 +87,17 @@ function MimotoPage(props) {
                             category={props.hpid}/>
                 }
                 {(loading)
-                    ? {loader}
-                    : <Fragment>
-                        <MimotoSlider data={data}/>
-                        <main className={`grid grid-cols-3 gap-5 container pb-20`}>
-                            {data && data.products && data.products.map((prod, index) => {
-                                return <MimotoProductCard prod={prod} key={index}/>
-                            })}
-                        </main>
-                    </Fragment>
+                    ? loader
+                    : (data && data.hasOwnProperty("mimoto_collection"))
+                        ? <Fragment>
+                            <MimotoSlider data={data}/>
+                            <main className={`grid grid-cols-3 gap-5 container pb-20`}>
+                                {data && data.products && data.products.map((prod, index) => {
+                                    return <MimotoProductCard prod={prod} key={index} />
+                                })}
+                            </main>
+                        </Fragment>
+                        : null
                 }
                 <Footer isMobile={dataStore.mobile}/>
             </Fragment>
