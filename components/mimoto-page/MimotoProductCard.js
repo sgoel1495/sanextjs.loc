@@ -14,7 +14,7 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({ prod, isMobile, wide, portrait }) => {
+const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
@@ -218,4 +218,4 @@ const ProductCard = ({ prod, isMobile, wide, portrait }) => {
     );
 };
 
-export default ProductCard;
+export default MimotoProductCard;

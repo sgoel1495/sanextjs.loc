@@ -65,19 +65,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        case "getMimotoCollection":
-            url += "/product/get_mimoto_collection";
-            body = {
-                mimoto: {
-                    token: apiToken,
-                    skip: queryObject.skip || 0,
-                    limit: queryObject.limit || 10
-                }
-            };
-            postFetcher.body = JSON.stringify(body);
-            finalFetcher = {...postFetcher}
-            break;
-
         //------------------------General
         case "getTopStrip":
             url += "/home/get_homepage_top_strip";
