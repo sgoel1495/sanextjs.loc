@@ -483,9 +483,29 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        //====================== CC/DC Payment
+        //====================== COD Payment
         case "codcheckout":
             url += "/checkout";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "codOtp":
+            url += "/checkout/send_otp_for_cod";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "verifyOtp":
+            url += "/checkout/send_otp_for_cod";
             body = {
                 token: apiToken,
                 ...queryObject

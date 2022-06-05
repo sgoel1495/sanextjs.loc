@@ -9,6 +9,10 @@ import ReviewOrder from "../../../components/checkout-page/ReviewOrder";
 import AppWideContext from "../../../store/AppWideContext";
 import getUserO from "../../../helpers/getUserO";
 import {apiCall} from "../../../helpers/apiCall";
+import Toast from "../../../components/common/Toast";
+import ReactDom from "react-dom";
+import SizeGuide from "../../../components/product-page/SizeGuide";
+import OtpModal from "../../../components/checkout-page/OtpModal";
 
 function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
@@ -19,6 +23,10 @@ function UsersCheckoutPage() {
 
     const [addressComplete, setAddressComplete] = useState(false)
     const [giftPaymentComplete, setGiftPaymentComplete] = useState(false)
+    const [message, setMessage] = useState(null);
+    const [show, setShow] = useState(false);
+
+    const [showOTPModal, setShowOTPModal] = useState(false)
 
     const placeOrder = async () => {
         console.log(dataStore.currentOrderId,dataStore.currentOrderInCart)
@@ -44,6 +52,11 @@ function UsersCheckoutPage() {
 
     }
 
+    const otpVerified = (verified)=>{
+        dataStore.currentOrderInCart.otp_verified = verified
+        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+    }
+
     const mobileView = null
     const browserView = <Fragment>
         <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
@@ -62,14 +75,21 @@ function UsersCheckoutPage() {
                     : null
                 }
             </div>
-
         </div>
+        {showOTPModal &&
+            ReactDom.createPortal(
+                <OtpModal closeModal={() => setShowOTPModal(false)} otpVerified={otpVerified.bind(this)} />,
+                document.getElementById("paymentpopup"))
+        }
     </Fragment>
 
 
     return (
         <Fragment>
             {(dataStore.mobile) ? mobileView : browserView}
+            <Toast show={show} hideToast={() => setShow(false)}>
+                <span>{message}</span>
+            </Toast>
         </Fragment>
     )
 }

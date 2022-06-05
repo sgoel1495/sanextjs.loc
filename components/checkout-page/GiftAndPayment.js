@@ -71,6 +71,14 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     }, [refresh,dataStore.currCurrency, dataStore.currentOrderId, dataStore.currentOrderInCart, giftData.gift_msg, giftData.gift_msg_from, giftData.gift_msg_to,
         giftPaymentComplete, isGift, giftData, payMode, updateCompleteness,updateDataStore])
 
+    const updatePayMode = (mode)=>{
+        if(mode==="COD"){
+            dataStore.currentOrderInCart.shipping_fee = 80
+            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+        }
+        setPayMode(mode)
+    }
+
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
@@ -109,7 +117,7 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
                 : null
             }
             <p className="text-xl mb-2">Payment</p>
-            <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" value={payMode} onChange={(e) => setPayMode(e.target.value)}>
+            <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" value={payMode} onChange={(e) => updatePayMode(e.target.value)}>
                 <label className="flex items-center gap-2">
                     <input type="radio" value="COD" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
                     <span className="text-[#777] font-600">
