@@ -333,6 +333,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "getDefaultAddress":
+            url += "/get_default_address";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         //===================== Measurements
         case "userMeasurements":
             url += "/get_measurment_profile";
@@ -394,6 +404,31 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
                     ...queryObject
                 }
 
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getMimotoCollection":
+            url += "/product/get_mimoto_collection";
+            body = {
+                mimoto: {
+                    token: apiToken,
+                    ...queryObject
+                }
+
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getMimotoProducts":
+            url += "/get_mimoto_products";
+            body = {
+                mimoto: {
+                    token: apiToken,
+                    ...queryObject
+                }
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}

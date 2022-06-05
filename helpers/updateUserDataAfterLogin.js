@@ -52,6 +52,18 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     if (addressCall.hasOwnProperty("response") && addressCall.response && Array.isArray(addressCall.response) )
         userAddresses = [...addressCall.response];
 
+    const defaultAddressCall = await apiCall("getDefaultAddress", apiToken, {
+        "user":{
+            email: username
+        }
+    });
+    let defaultAddress = null
+    if(
+        defaultAddressCall.hasOwnProperty("response")
+        && defaultAddressCall.response.hasOwnProperty("email")
+    )
+        defaultAddress = defaultAddressCall.response
+
     // @TODO Conflict on the cart data structure.
     //==================== user Cart
     // we may have products that we need to add to user
@@ -125,6 +137,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
         "userWallet":userWallet,
         "userServe":userServe,
         "userAddresses":userAddresses,
+        "defaultAddress":defaultAddress,
         "userCart":userCart,
         "userMeasurements":userMeasurements,
         "userOrderHistory":userOrderHistory,
