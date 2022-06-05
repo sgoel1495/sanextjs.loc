@@ -6,37 +6,54 @@
  */
 
 import PageHead from "../PageHead";
-import React, {Fragment, useCallback, useContext, useState} from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Menu from "../navbar/Menu";
 import Footer from "../footer/Footer";
 import Image from "next/image";
 import Header from "../navbar/Header";
-import ProductCard from "./ProductCard";
-import InfiniteScroll from 'react-infinite-scroller';
+import MimotoProductCard from "./MimotoProductCard";
 import {apiCall} from "../../helpers/apiCall";
 import MimotoSlider from "./MimotoSlider";
 
-const fetchData = async (data, apiToken, category, pagination) => {
-    let gotData = false;
-    const callObject = await apiCall("getProducts", apiToken, {category: category, ...pagination})
-    if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
-        if (data != null)
-            callObject.response.data = data.data.concat(callObject.response.data)
-        gotData = true;
-    }
-    return (gotData) ? callObject.response : {}
+const fetchData = async (apiToken, category) => {
+    const callObject = await apiCall("getMimotoProducts", apiToken, {name: category})
+    console.log("CALL OBJECT",callObject)
+    return (callObject.hasOwnProperty("response")
+        && callObject.hasOwnProperty("msg")
+        && callObject.msg === "Products Found"
+    ) ? callObject.response : {}
 }
 
 
 function MimotoPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
-    const category = props.hpid.substring(5)
+    const {category} = props
     const {dataStore} = useContext(AppWideContext);
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
+    console.log("DATA MIMOTO MAIN PAGE", data)
+
+    useEffect(() => {
+        console.log("STEP 1 =================")
+        if (dataStore.apiToken) {
+            console.log("STEP 2 =================")
+            setLoading(true)
+            fetchData(dataStore.apiToken, category)
+                .then(d => {
+                    console.log("D ========",d)
+                    setData(d)
+                    setLoading(false)
+                })
+                .catch(e => {
+                    console.log(e.message)
+                    setLoading(false)
+                })
+        }
+    }, [dataStore.apiToken])
+
 
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
@@ -49,46 +66,6 @@ function MimotoPage(props) {
         return () =>
             window.removeEventListener('scroll', controller)
     }, [controller]);
-    const [pagination, setPagination] = useState({
-        limit: 10, skip: 0
-    })
-
-    /**
-     * @todo API - Please tell the api which gives the tagline for categories << HArdcoded
-     *
-     * @type {string}
-     */
-    const tag_line = "Designed for timelessness and crafted with utmost love, the premium quality tops & blouses in a wide palette of prints and colours are made for both work & beyond.";
-
-    /*
-        if (dataStore.mobile) {
-            return (
-                <MobileShopPage
-                    loaderRef={loaderRef}
-                    loading={loading}
-                    data={data}
-                    category={category}
-                    hpid={props.hpid}
-                />
-            )
-        }
-
-     */
-    const fetchProducts = useCallback(async () => {
-        if (loading)
-            return
-
-        setLoading(true)
-        const newData = await fetchData(data, dataStore.apiToken, category, pagination)
-        setData(newData)
-        setPagination({
-            skip: pagination.skip + pagination.limit,
-            limit: pagination.limit
-        })
-        setLoading(false)
-    }, [loading, data, dataStore.apiToken, category, pagination])
-
-    const hasMore = (data == null || (data.hasOwnProperty("total_products_exist") && data.total_products_exist > pagination.skip))
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
@@ -96,8 +73,6 @@ function MimotoPage(props) {
                    alt={"loader"}/>
         </span>
     </span>
-
-    const threshold = (typeof window !== "undefined") ? Math.floor(window.innerHeight - 100) : 0;
 
     if (!dataStore.mobile)
         return (
@@ -111,22 +86,19 @@ function MimotoPage(props) {
                     : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
                             category={props.hpid}/>
                 }
-                <MimotoSlider />
-                <InfiniteScroll
-                    loadMore={fetchProducts}
-                    hasMore={hasMore}
-                    loader={loader}
-                    initialLoad={true}
-                    threshold={threshold}
-                >
-                    <main className={`grid grid-cols-3 gap-5 container pb-20`}>
-
-                        {data && data.data && data.data.map((prod, index) => {
-                            return <ProductCard prod={prod} key={index}/>
-                        })}
-                    </main>
-                </InfiniteScroll>
-
+                {(loading)
+                    ? loader
+                    : (data && data.hasOwnProperty("mimoto_collection"))
+                        ? <Fragment>
+                            <MimotoSlider data={data}/>
+                            <main className={`grid grid-cols-3 gap-5 container pb-20`}>
+                                {data && data.products && data.products.map((prod, index) => {
+                                    return <MimotoProductCard prod={prod} key={index} />
+                                })}
+                            </main>
+                        </Fragment>
+                        : null
+                }
                 <Footer isMobile={dataStore.mobile}/>
             </Fragment>
         );
