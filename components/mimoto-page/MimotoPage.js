@@ -86,7 +86,7 @@ function MimotoPage(props) {
                     : <Fragment>
                         <MimotoSlider data={data}/>
                         <main className={`grid grid-cols-3 gap-5 container pb-20`}>
-                            {data && data.data && data.data.map((prod, index) => {
+                            {data && data.products && data.products.map((prod, index) => {
                                 return <MimotoProductCard prod={prod} key={index}/>
                             })}
                         </main>
