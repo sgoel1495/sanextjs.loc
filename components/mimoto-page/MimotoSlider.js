@@ -1,12 +1,12 @@
 import Image from "next/image";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
-import {Fragment, useContext, useEffect, useState} from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 
-function MimotoSlider({data}) {
+function MimotoSlider({ data, ...props }) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
     const [collectionArray, setCollectionArray] = useState([])
     console.log("DATA MIMOTO SLIDER", data)
 
@@ -30,9 +30,9 @@ function MimotoSlider({data}) {
                 returnValue = <Fragment>
                     {returnValue}
                     <Link href={collection.url}>
-                        <a>
-                            <span>{collection.name}</span>
-                            <span>{collection.tagline}</span>
+                        <a className="block">
+                            <p className="text-h5">{collection.name}</p>
+                            <p className="text-[10px] uppercase">{collection.tagline}</p>
                         </a>
                     </Link>
                 </Fragment>
@@ -42,23 +42,22 @@ function MimotoSlider({data}) {
     }
 
     return (data)
-        ? <div>
+        ? <div className={props.className}>
             <div>
                 <Link href={data.mimoto_collection.url}>
                     <a>
-                    <span className={"block relative w-14 aspect-square"}>
-                        <Image src={WEBASSETS + data.mimoto_collection.mob_img_path} layout={`fill`} objectFit={`cover`}
-                               alt={data.mimoto_collection.collection_id}/>
-                        <span>
-                            <span>{data.mimoto_collection.display_name}</span>
-                            <span>{data.mimoto_collection.tagline}</span>
-                            <span>{data.mimoto_collection.description}</span>
-                        </span>
-                    </span>
+                        <div className={"relative w-full aspect-square"}>
+                            <Image src={WEBASSETS + data.mimoto_collection.mob_img_path} layout={`fill`} objectFit={`cover`} alt={data.mimoto_collection.collection_id} />
+                            <span>
+                                <span>{data.mimoto_collection.display_name}</span>
+                                <span>{data.mimoto_collection.tagline}</span>
+                                <span>{data.mimoto_collection.description}</span>
+                            </span>
+                        </div>
                     </a>
                 </Link>
             </div>
-            <div>{displayCollection()}</div>
+            <div className="grid grid-cols-3 gap-2">{displayCollection()}</div>
         </div>
         : null
 
