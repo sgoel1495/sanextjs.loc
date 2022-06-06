@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'saltattire'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5FF751B009264185B925DE37F3443B1A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_679B5579475E4CE8A2927230717E90EF }}
           package: .
