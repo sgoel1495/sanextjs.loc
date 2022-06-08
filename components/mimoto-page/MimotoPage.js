@@ -51,7 +51,7 @@ function MimotoPage(props) {
                     setLoading(false)
                 })
         }
-    }, [dataStore.apiToken])
+    }, [category, dataStore.apiToken])
 
 
     const [navControl, setNavControl] = React.useState(false);
@@ -90,7 +90,7 @@ function MimotoPage(props) {
                         ? <div className="w-11/12 mx-auto flex items-start gap-14 relative mt-8">
                             <MimotoSlider className="flex-1 block sticky top-20 inset-x-0 bg-[#f7f7f7]" data={data} />
                             <main className={`flex-[2] relative`}>
-                                <div className="flex justify-end sticky top-[3rem] inset-x-0 bg-white z-10 py-3">
+                                <div className="flex justify-end sticky top-[3rem] inset-x-0 bg-white z-[1] py-3">
                                     <button className="flex items-center uppercase text-sm gap-x-1">
                                         Filter
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24">

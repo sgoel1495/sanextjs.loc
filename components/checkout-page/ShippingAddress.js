@@ -1,17 +1,17 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
-import {DateTime} from "luxon";
+import { DateTime } from "luxon";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
 import Toast from "../common/Toast";
 import getUserO from "../../helpers/getUserO";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 import CreateMyAccount from "../../CreateMyAccount";
 import validator from "validator";
 import capitalizeTheFirstLetterOfEachWord from "../../helpers/capitalizeFirstWordOfEveryString";
 import DisplayAddress from "./DisplayAddress";
 
-function ShippingAddress({addressComplete, updateCompleteness}) {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+function ShippingAddress({ addressComplete, updateCompleteness }) {
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const cAddress = dataStore.selectedAddress || dataStore.defaultdAddress
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
@@ -55,7 +55,7 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
 
     const updateZipcode = async (zip) => {
         if (dataStore.currCurrency === "inr" && zip.length === 6) {
-            const zipCall = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode: zip})
+            const zipCall = await apiCall("cityByZipcode", dataStore.apiToken, { zipcode: zip })
             if (
                 zipCall.hasOwnProperty("response_data")
                 && zipCall.response_data.hasOwnProperty("city")
@@ -122,7 +122,7 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
         if (completeness !== addressComplete)
             updateCompleteness(completeness)
 
-        dataStore.currentOrderInCart = Object.assign({address: address})
+        dataStore.currentOrderInCart = Object.assign({ address: address })
         dataStore.currentOrderInCart = Object.assign({
             measurement: {
                 "tops_brand": extraMeasure.tops_brand || extraMeasure.tops_brand_other,
@@ -184,23 +184,22 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
         return completeness
     }
 
-    const addressIndex = (index,edit) => {
-        if(index!==selectedAddressIndex)
-        {
+    const addressIndex = (index, edit) => {
+        if (index !== selectedAddressIndex) {
             setSelectedAddressIndex(index)
             setAddress(dataStore.userAddresses[index])
-            if(index)
-                updateDataStore("selectedAddress",dataStore.userAddresses[index])
+            if (index)
+                updateDataStore("selectedAddress", dataStore.userAddresses[index])
         }
-        if(edit!==editAddress)
+        if (edit !== editAddress)
             setEditAddress(edit)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("I WAS TRIGGERED")
-        if(dataStore.userData.contact && dataStore.userAddresses.length>0)
-            addressIndex(null,false)
-    },[dataStore.userAddresses.length, dataStore.userData.contact])
+        if (dataStore.userData.contact && dataStore.userAddresses.length > 0)
+            addressIndex(null, false)
+    }, [dataStore.userAddresses.length, dataStore.userData.contact])
 
     const labelClass = "block font-500 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
@@ -211,19 +210,21 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
     const focusStyle = "focus:ring-offset-0 focus:ring-0"
     const inputStyle = `block w-full border-none bg-black/5 px-4 py-3 ${focusStyle}`;
 
-    console.log("editAddress, dataStore.userData.contact, dataStore.userAddresses.length",editAddress, dataStore.userData.contact, dataStore.userAddresses.length)
+    console.log("editAddress, dataStore.userData.contact, dataStore.userAddresses.length", editAddress, dataStore.userData.contact, dataStore.userAddresses.length)
 
     const mobileView = null
     const browserView = () => {
         return <Fragment>
             <p className="text-xl mb-2">Shipping Address</p>
             {(!editAddress)
-                ? <DisplayAddress addressIndex={addressIndex.bind(this)}/>
+                ? <div className="grid grid-cols-3 gap-6 mb-10">
+                    <DisplayAddress addressIndex={addressIndex.bind(this)} />
+                </div>
                 : <Fragment>
                     {(dataStore.userData.contact)
                         ? null
                         : <button className="mb-2 underline font-500"
-                                  onClick={() => updateDataStore("showSidebarMenuUser", true)}>Already have an
+                            onClick={() => updateDataStore("showSidebarMenuUser", true)}>Already have an
                             account?</button>
                     }
 
@@ -296,16 +297,16 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
                             <div>
                                 <label className={labelClass} htmlFor="tops_size">Size:</label>
                                 <select className={inputSelect} name="tops_size" value={extraMeasure.tops_size}
-                                        onChange={e => updateExtraMeasureValue("tops_size", e.target.value)}>
+                                    onChange={e => updateExtraMeasureValue("tops_size", e.target.value)}>
                                     {selectOptions(topSizes)}
                                 </select>
                             </div>
                             <div>
                                 <label className={labelClass} htmlFor="tops_size_other">Other:</label>
                                 <input className={inputField} name="tops_size_other"
-                                       type="text"
-                                       value={extraMeasure.tops_size_other}
-                                       onChange={e => updateExtraMeasureValue("tops_size_other", e.target.value)}
+                                    type="text"
+                                    value={extraMeasure.tops_size_other}
+                                    onChange={e => updateExtraMeasureValue("tops_size_other", e.target.value)}
                                 />
                             </div>
                         </div>
@@ -315,17 +316,17 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
                             <div>
                                 <label className={labelClass} htmlFor="jeans_pants_size">Size:</label>
                                 <select className={inputSelect} name="jeans_pants_size"
-                                        value={extraMeasure.jeans_pants_size}
-                                        onChange={e => updateExtraMeasureValue("jeans_pants_size", e.target.value)}>
+                                    value={extraMeasure.jeans_pants_size}
+                                    onChange={e => updateExtraMeasureValue("jeans_pants_size", e.target.value)}>
                                     {selectOptions(pantSizes)}
                                 </select>
                             </div>
                             <div>
                                 <label className={labelClass} htmlFor="jeans_pants_size_other">Other:</label>
                                 <input className={inputField} name="jeans_pants_size_other"
-                                       type="text"
-                                       value={extraMeasure.jeans_pants_size_other}
-                                       onChange={e => updateExtraMeasureValue("jeans_pants_size_other", e.target.value)}
+                                    type="text"
+                                    value={extraMeasure.jeans_pants_size_other}
+                                    onChange={e => updateExtraMeasureValue("jeans_pants_size_other", e.target.value)}
                                 />
                             </div>
                         </div>
@@ -334,18 +335,18 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
                             <label className={labelClass} htmlFor="birthday">Date of
                                 Birth <span>(Surprise gifts await)</span></label>
                             <input name="birthday" className={inputStyle + " w-full"}
-                                   type="date"
-                                   min={DateTime.now().minus({year: 18}).toISODate()}
-                                   onChange={e => updateBDay("birthday", e.target.value)} value={bDay.birthday}
+                                type="date"
+                                min={DateTime.now().minus({ year: 18 }).toISODate()}
+                                onChange={e => updateBDay("birthday", e.target.value)} value={bDay.birthday}
                             />
                         </div>
                         <div>
                             <label className={labelClass}
-                                   htmlFor="anniversary">Anniversary <span>(Surprise gifts await)</span></label>
+                                htmlFor="anniversary">Anniversary <span>(Surprise gifts await)</span></label>
                             <input name="anniversary" className={inputStyle + " w-full"}
-                                   type="date"
-                                   min={DateTime.now().minus({year: 18}).toISODate()}
-                                   onChange={e => updateBDay("anniversary", e.target.value)} value={bDay.anniversary}
+                                type="date"
+                                min={DateTime.now().minus({ year: 18 }).toISODate()}
+                                onChange={e => updateBDay("anniversary", e.target.value)} value={bDay.anniversary}
                             />
                         </div>
                         <div>
@@ -362,24 +363,24 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
                         <div>
                             <label className={labelClass} htmlFor="address">Address Line 1</label>
                             <input className={inputClass}
-                                   type="text"
-                                   name="address"
-                                   id="address" value={address.address}
-                                   onChange={e => updateAddressValue("address", e.target.value)}/>
+                                type="text"
+                                name="address"
+                                id="address" value={address.address}
+                                onChange={e => updateAddressValue("address", e.target.value)} />
                         </div>
                         <div>
                             <label className={labelClass} htmlFor="landmark">Address Line 2</label>
                             <input className={inputClass}
-                                   type="text"
-                                   name="landmark"
-                                   id="landmark" value={address.landmark}
-                                   onChange={e => updateAddressValue("landmark", e.target.value)}/>
+                                type="text"
+                                name="landmark"
+                                id="landmark" value={address.landmark}
+                                onChange={e => updateAddressValue("landmark", e.target.value)} />
                         </div>
                         <div>
                             <label className={labelClass} htmlFor="country">Country</label>
                             <input className={inputClass} name="country"
-                                   id="country" value={address.country} disabled={true}
-                                   onChange={e => updateAddressValue("country", e.target.value)}/>
+                                id="country" value={address.country} disabled={true}
+                                onChange={e => updateAddressValue("country", e.target.value)} />
                         </div>
                         <div>
                             <label className={labelClass} htmlFor="state">State/Province</label>
@@ -391,7 +392,7 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
                                 onChange={e => updateAddressValue("state", e.target.value)}
                                 placeholder="Please select region, state or province"
                             >
-                                <StatesAndCitiesOptions state={address.state} cities={false}/>
+                                <StatesAndCitiesOptions state={address.state} cities={false} />
                             </select>
                         </div>
                         <div>
@@ -404,20 +405,20 @@ function ShippingAddress({addressComplete, updateCompleteness}) {
                                 onChange={e => updateAddressValue("city", e.target.value)}
                                 placeholder="Please select your city"
                             >
-                                <StatesAndCitiesOptions state={address.state} cities={true}/>
+                                <StatesAndCitiesOptions state={address.state} cities={true} />
                             </select>
                         </div>
                         {(dataStore.userData.contact)
                             ? null
                             : <div className="col-span-full">
                                 <CreateMyAccount createAccount={createAccount}
-                                                 updateCreateAccount={setCreateAccount.bind(this)}/>
+                                    updateCreateAccount={setCreateAccount.bind(this)} />
                             </div>
                         }
                         <div className="col-span-full flex justify-center gap-10 text-sm">
                             <button className="border border-black px-4 py-1.5">Cancel</button>
                             <button className="bg-black px-4 py-1.5 text-white tracking-widest font-500"
-                                    onClick={checkAndSave}>SAVE
+                                onClick={checkAndSave}>SAVE
                             </button>
                         </div>
                     </div>
