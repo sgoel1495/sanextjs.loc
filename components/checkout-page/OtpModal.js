@@ -1,22 +1,22 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 import getUserO from "../../helpers/getUserO";
 import Toast from "../common/Toast";
-import {updateUserDataAfterLogin} from "../../helpers/updateUserDataAfterLogin";
+import { updateUserDataAfterLogin } from "../../helpers/updateUserDataAfterLogin";
 
-function OtpModal({otpVerified,closeModal}){
+function OtpModal({ otpVerified, closeModal }) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
-    const [otp,setOtp] = useState("")
-    const [otpValidity,setOtpValidity] = useState(null)
+    const [otp, setOtp] = useState("")
+    const [otpValidity, setOtpValidity] = useState(null)
     const [canRequestOTPAgain, setCanRequestOTPAgain] = useState(false)
     const [counter, setCounter] = useState(0)
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         const current = Date.now()
-        if(otpValidity) {
+        if (otpValidity) {
             const seconds = Math.floor((otpValidity - current) / 1000) - 1
             if (otpValidity > current && seconds >= 0) {
                 console.log("seconds Left", seconds)
@@ -27,14 +27,14 @@ function OtpModal({otpVerified,closeModal}){
                 setCanRequestOTPAgain(true)
             }
         }
-    },[counter,otpValidity])
+    }, [counter, otpValidity])
 
-    const requestOTP = async ()=>{
-        const otpCall = await apiCall("codOtp",dataStore.apiToken, {
-            user: getUserO(dataStore,true),
-            order: {order_id: dataStore.currentOrderId}
+    const requestOTP = async () => {
+        const otpCall = await apiCall("codOtp", dataStore.apiToken, {
+            user: getUserO(dataStore, true),
+            order: { order_id: dataStore.currentOrderId }
         })
-        if(otpCall.hasOwnProperty("otp_valid_till")){
+        if (otpCall.hasOwnProperty("otp_valid_till")) {
             const unixTime = Date.parse(otpCall.otp_valid_till).getTime()
             setOtpValidity(unixTime)
             setCanRequestOTPAgain(false)
@@ -42,11 +42,11 @@ function OtpModal({otpVerified,closeModal}){
         }
     }
 
-    const resendOTP = async ()=>{
+    const resendOTP = async () => {
         await requestOTP()
     }
 
-    const verifyOtp = async ()=> {
+    const verifyOtp = async () => {
         const otpCall = await apiCall("verifyOtp", dataStore.apiToken, {
             user: getUserO(dataStore, true),
             order: {
@@ -57,7 +57,7 @@ function OtpModal({otpVerified,closeModal}){
         if (otpCall.hasOwnProperty("message") && otpCall.message === "OTP Verification Successful for COD Order and Order placed successfully") {
             setMessage("Order Successfully Placed")
             setShow(true)
-            if(dataStore.userData.contact)
+            if (dataStore.userData.contact)
                 await updateUserDataAfterLogin(dataStore.userData.contact, dataStore.apiToken, {}, [])
             else {
                 const toReset = {
@@ -74,8 +74,8 @@ function OtpModal({otpVerified,closeModal}){
                     },
                     "place_order_step1": {}
                 }
-                Object.keys(toReset).forEach(key=>{
-                    updateDataStore(key,toReset[key])
+                Object.keys(toReset).forEach(key => {
+                    updateDataStore(key, toReset[key])
                 })
             }
             closeModal(true)
@@ -83,36 +83,38 @@ function OtpModal({otpVerified,closeModal}){
     }
 
 
-    const browserView = <Fragment>
-        <div onClick={closeModal}>X</div>
-        <div>OTP Verification For COD</div>
-        <div>We have sent an OTP for COD verification on your below mentioned details:</div>
-        <div>
-            <span>Email:</span>
-            <span>{dataStore.currentOrderInCart.address.email}</span>
-        </div>
-        <div>
-            <span>Phone:</span>
-            <span>{dataStore.currentOrderInCart.address.phone}</span>
-        </div>
-        <div>
-            <input type="text" id="otp" name="otp" placeholder="OTP" value={otp} onClick={e=>{setOtp(e.target.value)}} />
-        </div>
-        <div onClick={verifyOtp}>
-            VERIFY & PLACE ORDER
-        </div>
-        {(otpValidity && !canRequestOTPAgain)
-            ?<div>Resend OTP in {counter}s</div>
-            :null
-        }
-        {(canRequestOTPAgain)
-            ?<div onClick={resendOTP}>Resend OTP</div>
-            :null
-        }
-        <Toast show={show} hideToast={() => setShow(false)}>
-            <span>{message}</span>
-        </Toast>
-    </Fragment>
+    const browserView = (
+        <>
+            <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 flex justify-center items-start py-[5%] px-[10%]" onClick={closeModal}>
+                <div className="bg-white relative flex flex-col items-center text-center py-10 px-16" onClick={e => e.stopPropagation()}>
+                    <button className="absolute top-2 right-5 text-2xl z-50" onClick={closeModal}>X</button>
+                    <p className="text-2xl mb-4">OTP Verification For COD</p>
+                    <p className="text-[#777] mb-8">We have sent an OTP for COD verification on your below<br/>mentioned details:</p>
+                    <div className="inline-flex gap-2 items-center text-[#777]">
+                        <span>Email:</span>
+                        <span>{dataStore.currentOrderInCart.address.email}</span>
+                    </div>
+                    <div className="inline-flex gap-2 items-center text-[#777]">
+                        <span>Phone:</span>
+                        <span>{dataStore.currentOrderInCart.address.phone}</span>
+                    </div>
+                    <input className="focus:ring-transparent focus:border-black border-black text-center text-sm mb-5 mt-8" type="text" id="otp" name="otp" placeholder="OTP" value={otp} onClick={e => { setOtp(e.target.value) }} />
+                    <button className="bg-black px-5 py-2 text-white shadow-lg" onClick={verifyOtp}>
+                        VERIFY & PLACE ORDER
+                    </button>
+                    {(otpValidity && !canRequestOTPAgain)
+                        ? <p className="text-[#777]">Resend OTP in {counter}s</p>
+                        : null}
+                    {(canRequestOTPAgain)
+                        ? <button className="text-[#777]" onClick={resendOTP}>Resend OTP</button>
+                        : null}
+                </div>
+            </div>
+            <Toast show={show} hideToast={() => setShow(false)}>
+                <span>{message}</span>
+            </Toast>
+        </>
+    )
 
     return browserView
 }
