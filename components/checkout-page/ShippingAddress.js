@@ -197,8 +197,9 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
 
     useEffect(() => {
         console.log("I WAS TRIGGERED")
-        if (dataStore.userData.contact && dataStore.userAddresses.length > 0)
-            addressIndex(null, false)
+        if (dataStore.userData.contact && dataStore.userAddresses.length > 0 && editAddress!==false)
+            if(selectedAddressIndex!==null)
+                addressIndex(null, false)
     }, [dataStore.userAddresses.length, dataStore.userData.contact])
 
     const labelClass = "block font-500 mb-1";
