@@ -57,6 +57,8 @@ function UsersCheckoutPage() {
         updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
     }
 
+    console.log("addressComplete && giftPaymentComplete",addressComplete, giftPaymentComplete)
+
     const mobileView = null
     const browserView = <Fragment>
         <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
