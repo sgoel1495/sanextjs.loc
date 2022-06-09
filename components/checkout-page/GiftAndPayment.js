@@ -15,61 +15,69 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
         gift_msg_from: ""
     })
     const [payMode, setPayMode] = useState(null)
+    const [giftCompleteness,setGiftCompleteness] = useState(false)
+
+    const updateInDatastore = ()=>{
+        dataStore.currentOrderInCart.order={
+            order_id: dataStore.currentOrderId,
+            is_gift: isGift,
+            gift_msg: giftData.gift_msg,
+            gift_msg_to: giftData.gift_msg_to,
+            gift_msg_from: giftData.gift_msg_from,
+            is_usd: !(dataStore.currCurrency==="inr"),
+            payment_mode: payMode,
+            payment_status: "Not Paid",
+            credited_in_account: false,
+            curr_currency: "inr",
+            ex_rate: 1
+        }
+        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+    }
 
     const updateGift = (key, value) => {
         giftData[key] = value
         setGiftData(giftData)
         setRefresh(!refresh)
+
+        let completeness = true
+        if (giftData.gift_msg === "") {
+            setMessage("PLease write a message for gift")
+            setShow(true)
+            completeness = false
+        } else if (giftData.gift_msg_to === "") {
+            setMessage("Please write the name of the person receiving gift")
+            setShow(true)
+            completeness = false
+        } else if (giftData.gift_msg_from === "") {
+            setMessage("PLease write the name of the person sending gift")
+            setShow(true)
+            completeness = false
+        }
+        setGiftCompleteness(completeness)
+        updateDataStore()
     }
 
 
-
     useEffect(() => {
-        const gitCardCompleteness = () => {
-            let completeness = true
-            if (isGift) {
-                if (giftData.gift_msg = "") {
-                    setMessage("PLease write a message for gift")
-                    setShow(true)
-                    completeness = false
-                } else if (giftData.gift_msg_to = "") {
-                    setMessage("Please write the name of the person receiving gift")
-                    setShow(true)
-                    completeness = false
-                } else if (giftData.gift_msg_from = "") {
-                    setMessage("PLease write the name of the person sending gift")
-                    setShow(true)
-                    completeness = false
-                }
-            }
-
-            return completeness
-        }
-        const completeness = (gitCardCompleteness() && payMode)
-        if(completeness){
-            dataStore.currentOrderInCart.order={
-                order_id: dataStore.currentOrderId,
-                is_gift: isGift,
-                gift_msg: giftData.gift_msg,
-                gift_msg_to: giftData.gift_msg_to,
-                gift_msg_from: giftData.gift_msg_from,
-                is_usd: !(dataStore.currCurrency==="inr"),
-                payment_mode: payMode,
-                payment_status: "Not Paid",
-                credited_in_account: false,
-                curr_currency: "inr",
-                ex_rate: 1
-            }
-            dataStore.currentOrderInCart.payment={
-                selected_mode:payMode
-            }
-            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
-        }
+        let completeness = false
+        if(
+            ((isGift && giftCompleteness) || !isGift)
+            && payMode
+        )
+            completeness = true
 
         if (completeness !== giftPaymentComplete)
             updateCompleteness(completeness)
-    }, [refresh,dataStore.currCurrency, dataStore.currentOrderId, dataStore.currentOrderInCart, giftData.gift_msg, giftData.gift_msg_from, giftData.gift_msg_to,
-        giftPaymentComplete, isGift, giftData, payMode, updateCompleteness,updateDataStore])
+    }, [isGift,giftCompleteness,payMode,giftPaymentComplete,updateCompleteness])
+
+    const updatePayMode = (mode)=>{
+        if(mode==="COD"){
+            dataStore.currentOrderInCart.shipping_fee = 80
+            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+        }
+        setPayMode(mode)
+        updateInDatastore()
+    }
 
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
@@ -109,7 +117,7 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
                 : null
             }
             <p className="text-xl mb-2">Payment</p>
-            <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" value={payMode} onChange={(e) => setPayMode(e.target.value)}>
+            <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" value={payMode} onChange={(e) => updatePayMode(e.target.value)}>
                 <label className="flex items-center gap-2">
                     <input type="radio" value="COD" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
                     <span className="text-[#777] font-600">

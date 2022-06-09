@@ -20,6 +20,7 @@ class MyDocument extends Document {
                 <div id="cartside"></div>
                 <div id="searchmenu"></div>
                 <div id="measurementmodal"></div>
+                <div id="paymentpopup"></div>
                 <div id="bottomDrawer"></div>
                 <Main/>
                 <NextScript/>

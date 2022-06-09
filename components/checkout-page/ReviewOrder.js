@@ -16,7 +16,7 @@ function ReviewOrder() {
                 title={
                     <div className="text-xl mb-2">Review Order - <span className="text-base font-500">{(dataStore.userCart.length === 0) ? 0 : dataStore.userCart.length} item in bag</span></div>
                 }
-                bodyStyle={`bg-[#f1f2f3] px-8`}
+                bodyStyle={`bg-[#f1f2f3] px-8 grid grid-cols-2 gap-10`}
             >
                 <ProductCartView />
             </Accordion>

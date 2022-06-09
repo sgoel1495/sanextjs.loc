@@ -43,7 +43,10 @@ function OrderSummary() {
             inrTotal += cartItem.price * cartItem.qty
             usdTotal += cartItem.usd_price * cartItem.qty
         })
-        return (dataStore.currCurrency === "inr") ? rupeeIndian.format(inrTotal - promoDiscountValue) : dollarUS.format(usdTotal - promoDiscountValue)
+        const shippingFee = dataStore.currentOrderInCart.shipping_fee
+        return (dataStore.currCurrency === "inr")
+            ? rupeeIndian.format(inrTotal - promoDiscountValue + shippingFee)
+            : dollarUS.format(usdTotal - promoDiscountValue + shippingFee)
     }
     const total = orderTotal()
 
@@ -63,7 +66,12 @@ function OrderSummary() {
                     </tr>
                     <tr>
                         <td>Shipping Charges</td>
-                        <td>FREE</td>
+                        <td>{(dataStore.currentOrderInCart.shipping_fee===0)
+                                ?<span>FREE</span>
+                                :(dataStore.currCurrency === "inr")
+                                    ? rupeeIndian.format(dataStore.currentOrderInCart.shipping_fee)
+                                    : dollarUS.format(dataStore.currentOrderInCart.shipping_fee)
+                        }</td>
                     </tr>
                     <tr>
                         <td>Alteration Services</td>

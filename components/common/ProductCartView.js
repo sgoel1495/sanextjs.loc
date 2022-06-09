@@ -63,7 +63,7 @@ function ProductCartView(){
         dataStore.userCart.forEach((p, index) => {
             if (p.is_tailor == "false")
                 returnValues = (
-                    <div>
+                    <>
                         {returnValues}
                         <div>
                             <div className="border p-1">
@@ -96,14 +96,14 @@ function ProductCartView(){
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </>
                 )
 
             else
                 returnValues = (
-                    <div>
+                    <>
                         {returnValues}
-                        <div className="flex gap-x-2 items-center">
+                        <div className="flex gap-x-2 items-center bg-white p-3">
                             <div className="border p-1">
                                 <div className="relative h-40 aspect-[9/16]">
                                     <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
@@ -138,7 +138,7 @@ function ProductCartView(){
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </>
                 )
         })
 

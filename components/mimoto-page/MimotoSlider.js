@@ -1,13 +1,14 @@
 import Image from "next/image";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
-import {Fragment, useContext, useEffect, useState} from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 
-function MimotoSlider() {
+function MimotoSlider({ data, ...props }) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
     const [collectionArray, setCollectionArray] = useState([])
+    console.log("DATA MIMOTO SLIDER", data)
 
     useEffect(() => {
         const fetchMimotoCollection = async () => {
@@ -16,7 +17,7 @@ function MimotoSlider() {
                 setCollectionArray([...resp.response.mimoto])
             console.log(resp)
         }
-        if(dataStore && dataStore.apiToken)
+        if (dataStore && dataStore.apiToken)
             fetchMimotoCollection().then(() => {
             }).catch(e => e.message)
     }, [dataStore, dataStore.apiToken])
@@ -25,15 +26,13 @@ function MimotoSlider() {
         let returnValue = null
         console.log(collectionArray)
         collectionArray.forEach(collection => {
-
             if (collection.visible)
                 returnValue = <Fragment>
                     {returnValue}
                     <Link href={collection.url}>
-                        <a>
-                            <span>{collection.name}</span>
-                            <span>{collection.tagline}</span>
-                            <span>Nostalgia is a way of transporting ourselves to a time when we felt loved and safe. The collection has a range of shirts & tops with prints in familiar motifs that reminds us of our childhood and the feeling of comfort.</span>
+                        <a className="block text-center">
+                            <p className="text-h5 capitalize">{collection.name}</p>
+                            <p className="text-[10px] uppercase">{collection.tagline}</p>
                         </a>
                     </Link>
                 </Fragment>
@@ -42,14 +41,26 @@ function MimotoSlider() {
         return returnValue
     }
 
-    return <div>
-            <span className={"block relative w-14 aspect-square"}>
-            <Image src={WEBASSETS + "/assets/images/nostalgia_v1.jpg"} layout={`fill`} objectFit={`cover`}
-                   alt={"loader"}/>
-                {displayCollection()}
-        </span>
+    return (data)
+        ? <div className={props.className}>
+            <div>
+                <Link href={data.mimoto_collection.url}>
+                    <a>
+                        <div className={"relative w-full aspect-square"}>
+                            <Image src={WEBASSETS + data.mimoto_collection.mob_img_path} layout={`fill`} objectFit={`cover`} alt={data.mimoto_collection.collection_id} />
+                            <div className="bg-red z-50">
+                                <span>{data.mimoto_collection.display_name}</span>
+                                <span>{data.mimoto_collection.tagline}</span>
+                                <span>{data.mimoto_collection.description}</span>
+                            </div>
+                        </div>
+                    </a>
+                </Link>
+            </div>
+            <div className="grid grid-cols-3 gap-2 p-4">{displayCollection()}</div>
+        </div>
+        : null
 
-    </div>
 }
 
 export default MimotoSlider

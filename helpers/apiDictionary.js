@@ -65,19 +65,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        case "getMimotoCollection":
-            url += "/product/get_mimoto_collection";
-            body = {
-                mimoto: {
-                    token: apiToken,
-                    skip: queryObject.skip || 0,
-                    limit: queryObject.limit || 10
-                }
-            };
-            postFetcher.body = JSON.stringify(body);
-            finalFetcher = {...postFetcher}
-            break;
-
         //------------------------General
         case "getTopStrip":
             url += "/home/get_homepage_top_strip";
@@ -333,6 +320,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "getDefaultAddress":
+            url += "/get_default_address";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         //===================== Measurements
         case "userMeasurements":
             url += "/get_measurment_profile";
@@ -385,15 +382,27 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== MIMOTO
-            //same link for adding tailored and non tailored
+        case "getMimotoCollection":
+            url += "/get_mimoto_collection";
+            body = {
+                mimoto: {
+                    token: apiToken,
+                    skip:0,
+                    limit:100
+                }
+
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "getMimotoProducts":
-            url += "/mimoto/getAllProducts";
+            url += "/get_mimoto_products";
             body = {
                 mimoto: {
                     token: apiToken,
                     ...queryObject
                 }
-
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
@@ -483,9 +492,29 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        //====================== CC/DC Payment
+        //====================== COD Payment
         case "codcheckout":
             url += "/checkout";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "codOtp":
+            url += "/checkout/send_otp_for_cod";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "verifyOtp":
+            url += "/checkout/send_otp_for_cod";
             body = {
                 token: apiToken,
                 ...queryObject

@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
-import { apiCall } from "../../helpers/apiCall";
 import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 
@@ -14,7 +13,7 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({ prod, isMobile, wide, portrait }) => {
+const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
@@ -57,7 +56,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait }) => {
                 dress_length: ""
             }
             const displayCart = {
-                asset_id: prod.single_view_img,
+                asset_id: "/assets/" + prod.asset_id + "/new.jpg",
                 product_id: prod.asset_id,
                 cart_id: prod.product_id + "+" + currSize,
                 name: prod.name,
@@ -218,4 +217,4 @@ const ProductCard = ({ prod, isMobile, wide, portrait }) => {
     );
 };
 
-export default ProductCard;
+export default MimotoProductCard;

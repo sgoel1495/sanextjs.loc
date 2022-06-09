@@ -21,6 +21,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
 
     //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, { contact: username });
+
     let userServe = {
         "email": "",
         "phone_number": "",
@@ -28,10 +29,14 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
         "favorites": [],
         "cart": {},
         "ref_id": null,
-        "temp_user_id": Date.now()
+        "temp_user_id": null
     };
-    if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email)
+    if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email) {
         userServe = {...serveCall.response};
+        if(!userServe.temp_user_id || userServe.temp_user_id===""){
+            userServe.temp_user_id=Date.now()
+        }
+    }
 
     // create user Object required in other calls
     const tempId = userServe.temp_user_id || Date.now()
@@ -51,6 +56,18 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     let userAddresses = [];
     if (addressCall.hasOwnProperty("response") && addressCall.response && Array.isArray(addressCall.response) )
         userAddresses = [...addressCall.response];
+
+    const defaultAddressCall = await apiCall("getDefaultAddress", apiToken, {
+        "user":{
+            email: username
+        }
+    });
+    let defaultAddress = null
+    if(
+        defaultAddressCall.hasOwnProperty("response")
+        && defaultAddressCall.response.hasOwnProperty("email")
+    )
+        defaultAddress = defaultAddressCall.response
 
     // @TODO Conflict on the cart data structure.
     //==================== user Cart
@@ -106,15 +123,41 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     console.log("userCart",userCart);
     console.log("userMeasurements",userMeasurements);
     console.log("userOrderHistory",userOrderHistory);
+/*
+  "orderPromo": {},
+  "currentOrderId": 0,
+  "currentOrderInCart": {
+    "address": {},
+    "measurement": {},
+    "account": {},
+    "order": {},
+    "payment": {},
+    "otp_verified": false
+  },
+  "place_order_step1": {}
 
+ */
     return {
         "userData":userData,
         "userWallet":userWallet,
         "userServe":userServe,
         "userAddresses":userAddresses,
+        "defaultAddress":defaultAddress,
         "userCart":userCart,
         "userMeasurements":userMeasurements,
-        "userOrderHistory":userOrderHistory
+        "userOrderHistory":userOrderHistory,
+        "orderPromo": {},
+        "currentOrderId": 0,
+        "currentOrderInCart": {
+            "address": {},
+            "measurement": {},
+            "account": {},
+            "order": {},
+            "payment": {},
+            "shipping_fee": 0,
+            "otp_verified": false
+        },
+        "place_order_step1": {}
     }
 }
 

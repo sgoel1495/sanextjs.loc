@@ -9,9 +9,13 @@ import ReviewOrder from "../../../components/checkout-page/ReviewOrder";
 import AppWideContext from "../../../store/AppWideContext";
 import getUserO from "../../../helpers/getUserO";
 import {apiCall} from "../../../helpers/apiCall";
+import Toast from "../../../components/common/Toast";
+import ReactDom from "react-dom";
+import OtpModal from "../../../components/checkout-page/OtpModal";
 
 function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
+
     useEffect(()=>{
         if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === 0))
             updateDataStore("currentOrderId", Date.now())
@@ -19,30 +23,30 @@ function UsersCheckoutPage() {
 
     const [addressComplete, setAddressComplete] = useState(false)
     const [giftPaymentComplete, setGiftPaymentComplete] = useState(false)
+    const [message, setMessage] = useState(null);
+    const [show, setShow] = useState(false);
+
+    const [showOTPModal, setShowOTPModal] = useState(false)
 
     const placeOrder = async () => {
         console.log(dataStore.currentOrderId,dataStore.currentOrderInCart)
         // this userO is different
-        const user = {
-            contact: dataStore.userData.contact || dataStore.currentOrderInCart.address.email,
-            is_guest: !(dataStore.userData.contact),
-            temp_user_id: dataStore.userServe.temp_user_id
-        }
+        const user = getUserO(dataStore,true)
         console.log("USER",user)
-        const callWord = "savePayment"
-            /*
-        const callWord = (dataStore.currentOrderInCart.order.payment_mode==="CC"
-            || dataStore.currentOrderInCart.order.payment_mode==="DC" )?"savePayment" : "codcheckout"
-
-             */
-        const step1Call = await apiCall(callWord,dataStore.apiToken,{
+        const step1Call = await apiCall("savePayment",dataStore.apiToken,{
             user:user,
             order:dataStore.currentOrderInCart.order
         })
         console.log("STEP1 CALL",step1Call)
         dataStore.place_order_step1 = step1Call
-
     }
+
+    const otpVerified = (verified)=>{
+        dataStore.currentOrderInCart.otp_verified = verified
+        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+    }
+
+    console.log("addressComplete && giftPaymentComplete",addressComplete, giftPaymentComplete)
 
     const mobileView = null
     const browserView = <Fragment>
@@ -62,14 +66,21 @@ function UsersCheckoutPage() {
                     : null
                 }
             </div>
-
         </div>
+        {showOTPModal &&
+            ReactDom.createPortal(
+                <OtpModal closeModal={() => setShowOTPModal(false)} otpVerified={otpVerified.bind(this)} />,
+                document.getElementById("paymentpopup"))
+        }
     </Fragment>
 
 
     return (
         <Fragment>
             {(dataStore.mobile) ? mobileView : browserView}
+            <Toast show={show} hideToast={() => setShow(false)}>
+                <span>{message}</span>
+            </Toast>
         </Fragment>
     )
 }

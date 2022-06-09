@@ -8,3 +8,11 @@ Password : 12345678
 TeaCii Test User
 jomapps.jb@gmail.com
 cenario
+
+====================================
+CC Avenue
+merchant_id:     130447
+URL:http://saltattire.azurewebsites.net
+access_code:     AVNT04JE31CN09TNNC
+URL:http://saltattire.azurewebsites.net
+Working key:     1CEDB27C0E254EFA27C810BD5FD42121
