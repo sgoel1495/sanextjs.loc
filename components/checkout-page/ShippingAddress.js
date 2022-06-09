@@ -3,7 +3,6 @@ import AppWideContext from "../../store/AppWideContext";
 import { DateTime } from "luxon";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
 import Toast from "../common/Toast";
-import getUserO from "../../helpers/getUserO";
 import { apiCall } from "../../helpers/apiCall";
 import CreateMyAccount from "../../CreateMyAccount";
 import validator from "validator";
@@ -19,8 +18,6 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     const [createAccount, setCreateAccount] = useState(false)
     const [editAddress, setEditAddress] = useState(true)
     const [selectedAddressIndex, setSelectedAddressIndex] = useState(null)
-
-    const userO = getUserO(dataStore)
 
     const emptyAddress = {
         "name": "",
@@ -110,8 +107,10 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
 
     const checkAndSave = () => {
         let completeness = false
-        if (dataStore.userData.contact) {
-            completeness = addressCompleteness()
+        if (dataStore.userData.contact
+            && selectedAddressIndex
+            && editAddress===false) {
+            completeness = true
         } else {
             completeness = (
                 addressCompleteness()
@@ -119,18 +118,23 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                 && createAccount
             )
         }
+
+        if(completeness===true) {
+            dataStore.currentOrderInCart = Object.assign({address: address})
+            dataStore.currentOrderInCart = Object.assign({
+                measurement: {
+                    "tops_brand": extraMeasure.tops_brand || extraMeasure.tops_brand_other,
+                    "tops_size": extraMeasure.tops_size || extraMeasure.tops_size_other,
+                    "jeans_pants_size": extraMeasure.jeans_pants_size || extraMeasure.jeans_pants_size_other
+                }
+            })
+            updateDataStore("currentOrderInCart", dataStore.currentOrderInCart)
+        }
+
+        // update the parent if different.
         if (completeness !== addressComplete)
             updateCompleteness(completeness)
 
-        dataStore.currentOrderInCart = Object.assign({ address: address })
-        dataStore.currentOrderInCart = Object.assign({
-            measurement: {
-                "tops_brand": extraMeasure.tops_brand || extraMeasure.tops_brand_other,
-                "tops_size": extraMeasure.tops_size || extraMeasure.tops_size_other,
-                "jeans_pants_size": extraMeasure.jeans_pants_size || extraMeasure.jeans_pants_size_other
-            }
-        })
-        updateDataStore("currentOrderInCart", dataStore.currentOrderInCart)
     }
 
     const addressCompleteness = () => {
@@ -165,7 +169,6 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
 
     const extraMeasureCompleteness = () => {
         let completeness = true
-        let needUpdate = false
 
         if (extraMeasure.tops_brand === "" && extraMeasure.tops_brand_other === "") {
             setMessage("Please select a Tops Brand")
@@ -185,6 +188,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     }
 
     const addressIndex = (index, edit) => {
+        console.log("AddressIndex was called")
         if (index !== selectedAddressIndex) {
             setSelectedAddressIndex(index)
             setAddress(dataStore.userAddresses[index])
@@ -197,8 +201,10 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
 
     useEffect(() => {
         console.log("I WAS TRIGGERED")
-        if (dataStore.userData.contact && dataStore.userAddresses.length > 0 && editAddress!==false)
-            if(selectedAddressIndex!==null)
+        if (dataStore.userData.contact
+            && dataStore.userAddresses.length > 0
+            && address.address==="")
+            if(editAddress!==false || selectedAddressIndex!==null)
                 addressIndex(null, false)
     }, [dataStore.userAddresses.length, dataStore.userData.contact])
 
