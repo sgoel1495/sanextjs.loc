@@ -9,11 +9,12 @@ const getUserO = (dataStore,alternate=false) => {
     if (dataStore) {
         userO = {
             email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-            is_guest: !!(dataStore.userData.contact),
+            is_guest: !(dataStore.userData.contact),
             temp_user_id: (dataStore.userServe.temp_user_id)? dataStore.userServe.temp_user_id : tempId
         }
         console.log("Have DataStore ",userO)
         if(alternate && !dataStore.userData.contact){
+            userO.is_guest = true
             if(dataStore.userServe.email!==""){
                 userO.email=dataStore.userServe.email
             } else if(

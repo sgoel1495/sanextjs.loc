@@ -197,6 +197,8 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         }
         if (edit !== editAddress)
             setEditAddress(edit)
+        if(index)
+            updateCompleteness(true)
     }
 
     useEffect(() => {
@@ -204,9 +206,12 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         if (dataStore.userData.contact
             && dataStore.userAddresses.length > 0
             && address.address==="")
-            if(editAddress!==false || selectedAddressIndex!==null)
-                addressIndex(null, false)
-    }, [dataStore.userAddresses.length, dataStore.userData.contact])
+            if(editAddress!==false || selectedAddressIndex!==null) {
+                console.log("I did something")
+                setEditAddress(false)
+                setSelectedAddressIndex(null)
+            }
+    }, [dataStore.userAddresses.length, dataStore.userData.contact,address.address,editAddress,selectedAddressIndex])
 
     const labelClass = "block font-500 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
