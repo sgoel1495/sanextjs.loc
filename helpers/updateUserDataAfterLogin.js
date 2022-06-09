@@ -21,6 +21,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
 
     //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, { contact: username });
+
     let userServe = {
         "email": "",
         "phone_number": "",
@@ -28,10 +29,14 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
         "favorites": [],
         "cart": {},
         "ref_id": null,
-        "temp_user_id": Date.now()
+        "temp_user_id": null
     };
-    if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email)
+    if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email) {
         userServe = {...serveCall.response};
+        if(!userServe.temp_user_id || userServe.temp_user_id===""){
+            userServe.temp_user_id=Date.now()
+        }
+    }
 
     // create user Object required in other calls
     const tempId = userServe.temp_user_id || Date.now()
