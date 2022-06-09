@@ -11,11 +11,11 @@ import getUserO from "../../../helpers/getUserO";
 import {apiCall} from "../../../helpers/apiCall";
 import Toast from "../../../components/common/Toast";
 import ReactDom from "react-dom";
-import SizeGuide from "../../../components/product-page/SizeGuide";
 import OtpModal from "../../../components/checkout-page/OtpModal";
 
 function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
+
     useEffect(()=>{
         if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === 0))
             updateDataStore("currentOrderId", Date.now())
@@ -31,25 +31,14 @@ function UsersCheckoutPage() {
     const placeOrder = async () => {
         console.log(dataStore.currentOrderId,dataStore.currentOrderInCart)
         // this userO is different
-        const user = {
-            contact: dataStore.userData.contact || dataStore.currentOrderInCart.address.email,
-            is_guest: !(dataStore.userData.contact),
-            temp_user_id: dataStore.userServe.temp_user_id
-        }
+        const user = getUserO(dataStore,true)
         console.log("USER",user)
-        const callWord = "savePayment"
-            /*
-        const callWord = (dataStore.currentOrderInCart.order.payment_mode==="CC"
-            || dataStore.currentOrderInCart.order.payment_mode==="DC" )?"savePayment" : "codcheckout"
-
-             */
-        const step1Call = await apiCall(callWord,dataStore.apiToken,{
+        const step1Call = await apiCall("savePayment",dataStore.apiToken,{
             user:user,
             order:dataStore.currentOrderInCart.order
         })
         console.log("STEP1 CALL",step1Call)
         dataStore.place_order_step1 = step1Call
-
     }
 
     const otpVerified = (verified)=>{

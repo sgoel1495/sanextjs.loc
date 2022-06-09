@@ -78,6 +78,8 @@ const LoginForm = (props) => {
                                 props.showToast("We've sent an OTP to your Email or Phone!")
                             } else {
                                 saveUserDataAfterSuccessfulLogin(uname)
+                                    .then(()=>{})
+                                    .catch(e=>console.log(e.message))
                             }
                         } else {
                             props.showToast(data['response']['body'].toUpperCase());
