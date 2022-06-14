@@ -8,6 +8,7 @@ import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwip
 import BlockHeader from "../../../components/common/blockHeader";
 import ProductCard from "../../../components/new-Arrivals/ProductCard";
 import {apiCall} from "../../../helpers/apiCall";
+import fetchMimotoData from "../../../components/mimoto-page/fetchMimotoData";
 
 /**
  * @todo @team Swiper data
@@ -21,13 +22,10 @@ function NewArrivalsAllPage(props) {
     const category = "new-arrivals"
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
-    const [data, setData] = useState(null);
-    const [carousal, setCarousal] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [pagination, setPagination] = useState({
-        limit: 10000, skip: 0
-    })
+    const [data, setData] = useState(props.data);
+    const [carousal, setCarousal] = useState(props.carousal);
 
+    /*
     useEffect(()=>{
         const fetchData = async () => {
             let gotData = false;
@@ -51,8 +49,7 @@ function NewArrivalsAllPage(props) {
         }
 
     },[data, dataStore.apiToken, category, pagination])
-
-
+*/
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
                             <span className={"block relative w-14 aspect-square"}>
                                 <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
@@ -89,5 +86,25 @@ function NewArrivalsAllPage(props) {
 
     return dataStore.mobile ? mobileView : browserView
 }
+
+export async function getStaticProps() {
+    const fetchData = async () => {
+        let gotData = false;
+        const callObject = await apiCall("getProducts", process.env.API_TOKEN, {category: "new-arrivals", limit: 10000, skip: 0})
+        if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data"))
+            gotData = true;
+
+        return (gotData) ? callObject : {}
+    }
+
+    const newData = await fetchData()
+    return {
+        props: {
+            data:newData.response,
+            carousal:newData.new_arr_carousal
+        }
+    }
+}
+
 
 export default NewArrivalsAllPage;
