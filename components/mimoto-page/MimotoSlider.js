@@ -3,6 +3,20 @@ import { apiCall } from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
 import { Fragment, useContext, useEffect, useState } from "react";
 import Link from "next/link";
+// Swiper
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination"
+import "swiper/css/navigation"
+import SwiperCore, { Pagination, Navigation, Autoplay } from 'swiper';
+
+SwiperCore.use([Pagination, Navigation, Autoplay]);
+
+const renderData = (arr, length) => arr.reduce((renderArray, one, i) => {
+    const rowItems = Math.floor(i / length);
+    renderArray[rowItems] = [].concat(renderArray[rowItems] || [], one);
+    return renderArray;
+}, []);
 
 function MimotoSlider({ data, ...props }) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -23,22 +37,28 @@ function MimotoSlider({ data, ...props }) {
     }, [dataStore, dataStore.apiToken])
 
     const displayCollection = () => {
-        let returnValue = null
-        console.log(collectionArray)
-        collectionArray.forEach(collection => {
-            if (collection.visible)
-                returnValue = <Fragment>
-                    {returnValue}
-                    <Link href={collection.url}>
-                        <a className="block text-center">
-                            <p className="text-h5 capitalize">{collection.name}</p>
-                            <p className="text-[10px] uppercase">{collection.tagline}</p>
-                        </a>
-                    </Link>
-                </Fragment>
-        })
-
-        return returnValue
+        const collectionData = renderData(collectionArray, 9);
+        return (
+            <Swiper
+                navigation={true}
+                className="w-72"
+            >
+                {collectionData.map((item, index) => (
+                    <SwiperSlide className="" key={index}>
+                        <div className="grid grid-cols-3">
+                            {item.map((item, index) => (
+                                <Link href={item.url} key={index}>
+                                    <a className="text-center">
+                                        <p className="text-h5 capitalize">{item.name}</p>
+                                        <p className="text-[10px] uppercase">{item.tagline}</p>
+                                    </a>
+                                </Link>
+                            ))}
+                        </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        )
     }
 
     return (data)
@@ -57,7 +77,9 @@ function MimotoSlider({ data, ...props }) {
                     </a>
                 </Link>
             </div>
-            <div className="grid grid-cols-3 gap-2 p-4">{displayCollection()}</div>
+            <div className="w-full">
+                {displayCollection()}
+            </div>
         </div>
         : null
 
