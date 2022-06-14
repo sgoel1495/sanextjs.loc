@@ -20,12 +20,12 @@ import MobileShopPage from "./MobileShopPage";
 import {apiCall} from "../../helpers/apiCall";
 
 
-function ShopPage({category,hpid}) {
+function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
     const {dataStore} = useContext(AppWideContext);
-
-    const [data, setData] = useState(null);
+    const {category,hpid} = props
+    const [data, setData] = useState(props.data);
 
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
@@ -38,6 +38,7 @@ function ShopPage({category,hpid}) {
         return () =>
             window.removeEventListener('scroll', controller)
     }, [controller]);
+/*
     const [pagination, setPagination] = useState({
         limit: 10000, skip: 0
     })
@@ -71,7 +72,7 @@ function ShopPage({category,hpid}) {
                     console.log("Full Data Loaded")
                 })
     },[data,category, dataStore.apiToken, pagination])
-
+*/
     /**
      * @todo API - Please tell the api which gives the tagline for categories << HArdcoded
      *

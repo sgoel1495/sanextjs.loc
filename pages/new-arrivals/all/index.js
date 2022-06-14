@@ -17,8 +17,6 @@ import {apiCall} from "../../../helpers/apiCall";
  * @constructor
  */
 
-
-
 function NewArrivalsAllPage(props) {
     const category = "new-arrivals"
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -92,18 +90,4 @@ function NewArrivalsAllPage(props) {
     return dataStore.mobile ? mobileView : browserView
 }
 
-export async function getStaticProps() {
-    // Call an external API endpoint to get posts.
-    // You can use any data fetching library
-    const res = await fetch('https://.../posts')
-    const posts = await res.json()
-
-    // By returning { props: { posts } }, the Blog component
-    // will receive `posts` as a prop at build time
-    return {
-        props: {
-            posts,
-        },
-    }
-}
 export default NewArrivalsAllPage;
