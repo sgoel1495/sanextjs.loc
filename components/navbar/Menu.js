@@ -37,7 +37,7 @@ function Menu(props) {
                 {mimotoList}
                 <div key={ele.collection_id}>
                     <Link href={ele.url}>
-                        <a className={`font-500 block mb-1 text-xs text-black`}>
+                        <a className={`font-600 block mb-1 text-xs text- leading-3 text-black`}>
                             {ele.name}
                             {/*<NewTag/>*/}
                             <span className={`block text-[8px] tracking-widest whitespace-nowrap`}>{ele.tagline}</span>
@@ -110,7 +110,7 @@ function Menu(props) {
                     {categoriesList}
                     <div key={ele.category}>
                         <Link href={ele.link}>
-                            <a className={`font-600 ${browserViewStyle}` + ["/" + props.category === ele.link ? " border-black" : " border-transparent hover:border-black"]}>
+                            <a className={`font-600 text-black ${browserViewStyle}` + ["/" + props.category === ele.link ? " border-black" : " border-transparent hover:border-black"]}>
                                 {ele.new && <span className={"bg-black text-white leading-none p-[0.1rem] text-[8px] " + newTagStyle}>New</span>}
                                 {ele.category}
                             </a>
@@ -192,10 +192,9 @@ function Menu(props) {
                             </Link>
                         </li>
                     </ul>
-                    {showShop && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[200px]`}>
-
+                    {showShop && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[210px]`}>
                     </div>}
-                    {showMimoto && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[300px]`} />}
+                    {showMimoto && <div className={`bg-white/95 absolute top-full inset-x-0 z-10 h-[210px]`} />}
                 </>
             )
             break;
