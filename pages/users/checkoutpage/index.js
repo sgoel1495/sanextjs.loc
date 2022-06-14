@@ -31,12 +31,13 @@ function UsersCheckoutPage() {
     const placeOrder = async () => {
         console.log(dataStore.currentOrderId,dataStore.currentOrderInCart)
         // this userO is different
-        const user = getUserO(dataStore,true)
-        console.log("USER",user)
-        const step1Call = await apiCall("savePayment",dataStore.apiToken,{
-            user:user,
+        const userO = getUserO(dataStore,true)
+        const queryObject = {
+            user:userO,
             order:dataStore.currentOrderInCart.order
-        })
+        }
+        console.log("Place Order Query Object",queryObject)
+        const step1Call = await apiCall("savePayment",dataStore.apiToken,queryObject)
         console.log("STEP1 CALL",step1Call)
         dataStore.place_order_step1 = step1Call
     }

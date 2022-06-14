@@ -1,8 +1,17 @@
 import React from "react";
 import MimotoPage from "../../components/mimoto-page/MimotoPage";
+import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 
 
-function MimotoSithPage(){
-    return <MimotoPage  category={"sith"} hpid={"mimoto-sith"} />
+function MimotoSithPage(props){
+    return <MimotoPage  category={"sith"} hpid={"mimoto-sith"} data={props.data}/>
 }
+export async function getStaticProps() {
+    return {
+        props: {
+            data:await fetchMimotoData("sith")
+        }
+    }
+}
+
 export default MimotoSithPage

@@ -7,8 +7,8 @@ import Header from "../../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
 import ProductCard from "../../../components/new-Arrivals/ProductCard";
-import InfiniteScroll from "react-infinite-scroller";
 import {apiCall} from "../../../helpers/apiCall";
+import fetchMimotoData from "../../../components/mimoto-page/fetchMimotoData";
 
 /**
  * @todo @team Swiper data
@@ -18,105 +18,44 @@ import {apiCall} from "../../../helpers/apiCall";
  * @constructor
  */
 
-const fetchData = async (data, apiToken, category, pagination) => {
-    let gotData = false;
-    const callObject = await apiCall("getProducts", apiToken, {category: category, ...pagination})
-    if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
-        if (data != null)
-            callObject.response.data = data.data.concat(callObject.response.data)
-        gotData = true;
-    }
-    return (gotData) ? callObject : {}
-}
-
-
-function NewArrivalsAllPage() {
+function NewArrivalsAllPage(props) {
     const category = "new-arrivals"
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
-    const [data, setData] = useState(null);
-    const [carousal, setCarousal] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [pagination, setPagination] = useState({
-        limit: 10, skip: 0
-    })
-
-    const fetchProducts = useCallback(async () => {
-        if (loading)
-            return
-
-        setLoading(true)
-        const newData = await fetchData(data, dataStore.apiToken, category, pagination)
-        setData(newData.response)
-        setCarousal(newData.new_arr_carousal)
-        setPagination({
-            skip: pagination.skip + pagination.limit,
-            limit: pagination.limit
-        })
-        setLoading(false)
-    }, [loading, data, dataStore.apiToken, category, pagination])
+    const [data, setData] = useState(props.data);
+    const [carousal, setCarousal] = useState(props.carousal);
 
     /*
-    const OldfetchData = useCallback((flag = true, io = null) => {
-        if (io) {
-            if (!io.isIntersecting)
-                return
+    useEffect(()=>{
+        const fetchData = async () => {
+            let gotData = false;
+            const callObject = await apiCall("getProducts", dataStore.apiToken, {category: category, ...pagination})
+            if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data"))
+                gotData = true;
+
+            return (gotData) ? callObject : {}
         }
-        if (data && flag) {
-            if (data.total_products_exist <= pagination.skip) {
-                return
-            }
-        }
-        setLoading(true)
-        const callObject = apiDictionary("getProducts", dataStore.apiToken, { category: "new-arrivals", ...pagination });
-        fetch(callObject.url, callObject.fetcher)
-            .then(response => {
-                return response.json();
-            })
-            .then(json => {
-                if (!flag)
-                    setCarousal(json.new_arr_carousal)
-                if (data && flag)
-                    json.response.data = data.data.concat(json.response.data)
-                setData(json.response);
-                setPagination({
-                    skip: pagination.skip + pagination.limit,
-                    limit: pagination.limit
+
+        if(!data && dataStore.apiToken && category && pagination){
+            fetchData()
+                .then(newData=>{
+                    setData(newData.response)
+                    setCarousal(newData.new_arr_carousal)
                 })
-            }).finally(() => {
-                setLoading(false);
-            });
-    }, [data, dataStore.apiToken, pagination])
-    useEffect(() => {
-        let forReturn = null
-        const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        })
-        if (loaderRef && loaderRef.current) {
-            observer.observe(loaderRef.current)
-            forReturn = loaderRef.current
+                .catch(e=>console.log(e.message))
+                .finally(()=>{
+                    console.log("Data load complete")
+                })
         }
 
-        return () => {
-            if (forReturn)
-                observer.unobserve(forReturn)
-        }
-    }, [loaderRef, fetchData])
-    useEffect(() => {
-        fetchData(false)
-    }, [fetchData])
-    */
-    const hasMore = (data == null || (data.hasOwnProperty("total_products_exist") && data.total_products_exist > pagination.skip))
-
+    },[data, dataStore.apiToken, category, pagination])
+*/
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
                             <span className={"block relative w-14 aspect-square"}>
                                 <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
                                        alt={"loader"}/>
                             </span>
                     </span>
-    const threshold = (typeof window !== "undefined")?Math.floor(window.innerHeight - 100):0
 
     const mobileView = null;
     const browserView = (
@@ -132,26 +71,39 @@ function NewArrivalsAllPage() {
                 >
                     <span className={"tracking-widest text-h4 uppercase"}>New Arrivals</span>
                 </BlockHeader>
-                <main className={`px-10 grid grid-cols-3 gap-10`}>
-                    {data && data.data && data.data.map((prod, index) => {
-                        return <ProductCard prod={prod} key={index} />
-                    })}
-                </main>
+                {(data)
+                    ?<main className={`px-10 grid grid-cols-3 gap-10`}>
+                        {data.data && data.data.map((prod, index) => {
+                            return <ProductCard prod={prod} key={index} />
+                        })}
+                    </main>
+                    :loader
+                }
             </section>
             <Footer isMobile={dataStore.mobile} />
         </>
     );
 
-    return dataStore.mobile ? mobileView :
-        <InfiniteScroll
-            loadMore={fetchProducts}
-            hasMore={hasMore}
-            loader={loader}
-            initialLoad={true}
-            threshold={threshold}
-        >
-            {(data)?browserView:<Fragment></Fragment>}
-        </InfiniteScroll>
+    return dataStore.mobile ? mobileView : browserView
+}
+
+export async function getStaticProps() {
+    const fetchData = async () => {
+        let gotData = false;
+        const callObject = await apiCall("getProducts", process.env.API_TOKEN, {category: "new-arrivals", limit: 10000, skip: 0})
+        if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data"))
+            gotData = true;
+
+        return (gotData) ? callObject : {}
+    }
+
+    const newData = await fetchData()
+    return {
+        props: {
+            data:newData.response,
+            carousal:newData.new_arr_carousal
+        }
+    }
 }
 
 
