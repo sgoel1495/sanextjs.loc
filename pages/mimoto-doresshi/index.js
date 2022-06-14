@@ -1,6 +1,5 @@
 import React from "react";
 import MimotoPage from "../../components/mimoto-page/MimotoPage";
-import {apiCall} from "../../helpers/apiCall";
 import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 
 

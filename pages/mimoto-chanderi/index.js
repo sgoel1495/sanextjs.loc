@@ -1,6 +1,6 @@
 import React from "react";
 import MimotoPage from "../../components/mimoto-page/MimotoPage";
-import {apiCall} from "../../helpers/apiCall";
+import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 
 
 function MimotoChanderiPage(props){
@@ -8,18 +8,9 @@ function MimotoChanderiPage(props){
 }
 
 export async function getStaticProps() {
-    const fetchData = async () => {
-        const callObject = await apiCall("getMimotoProducts", process.env.API_TOKEN, { name: "chanderi" })
-        return (callObject.hasOwnProperty("response")
-            && callObject.hasOwnProperty("msg")
-            && callObject.msg === "Products Found"
-        ) ? callObject.response : {}
-    }
-
-    const data = await fetchData()
     return {
         props: {
-            data:data
+            data:await fetchMimotoData("chanderi")
         }
     }
 }
