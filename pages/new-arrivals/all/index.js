@@ -54,73 +54,6 @@ function NewArrivalsAllPage(props) {
 
     },[data, dataStore.apiToken, category, pagination])
 
-    const fetchProducts = useCallback(async () => {
-        if (loading)
-            return
-
-        setLoading(true)
-        const newData = await fetchData(data, dataStore.apiToken, category, pagination)
-        setData(newData.response)
-        setCarousal(newData.new_arr_carousal)
-        setPagination({
-            skip: pagination.skip + pagination.limit,
-            limit: pagination.limit
-        })
-        setLoading(false)
-    }, [loading, data, dataStore.apiToken, category, pagination])
-
-    /*
-    const OldfetchData = useCallback((flag = true, io = null) => {
-        if (io) {
-            if (!io.isIntersecting)
-                return
-        }
-        if (data && flag) {
-            if (data.total_products_exist <= pagination.skip) {
-                return
-            }
-        }
-        setLoading(true)
-        const callObject = apiDictionary("getProducts", dataStore.apiToken, { category: "new-arrivals", ...pagination });
-        fetch(callObject.url, callObject.fetcher)
-            .then(response => {
-                return response.json();
-            })
-            .then(json => {
-                if (!flag)
-                    setCarousal(json.new_arr_carousal)
-                if (data && flag)
-                    json.response.data = data.data.concat(json.response.data)
-                setData(json.response);
-                setPagination({
-                    skip: pagination.skip + pagination.limit,
-                    limit: pagination.limit
-                })
-            }).finally(() => {
-                setLoading(false);
-            });
-    }, [data, dataStore.apiToken, pagination])
-    useEffect(() => {
-        let forReturn = null
-        const observer = new IntersectionObserver((io) => fetchData(true, io[0]), {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        })
-        if (loaderRef && loaderRef.current) {
-            observer.observe(loaderRef.current)
-            forReturn = loaderRef.current
-        }
-
-        return () => {
-            if (forReturn)
-                observer.unobserve(forReturn)
-        }
-    }, [loaderRef, fetchData])
-    useEffect(() => {
-        fetchData(false)
-    }, [fetchData])
-    */
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
                             <span className={"block relative w-14 aspect-square"}>
@@ -145,7 +78,7 @@ function NewArrivalsAllPage(props) {
                 </BlockHeader>
                 {(data)
                     ?<main className={`px-10 grid grid-cols-3 gap-10`}>
-                        {data && data.data && data.data.map((prod, index) => {
+                        {data.data && data.data.map((prod, index) => {
                             return <ProductCard prod={prod} key={index} />
                         })}
                     </main>

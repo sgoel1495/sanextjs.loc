@@ -122,7 +122,7 @@ function ShopPage({category,hpid}) {
                 </BlockHeader>
                 {(data)
                     ?<main className={`grid grid-cols-3 gap-5 container pb-20`}>
-                        {data && data.data && data.data.map((prod, index) => {
+                        {data.data && data.data.map((prod, index) => {
                             return <ProductCard prod={prod} key={index}/>
                         })}
                     </main>

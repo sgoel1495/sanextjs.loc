@@ -2,7 +2,6 @@ import React, { Fragment, useCallback, useContext, useEffect, useRef, useState }
 import PageHead from "../../components/PageHead";
 import AppWideContext from "../../store/AppWideContext";
 import Footer from "../../components/footer/Footer";
-import useApiCall from "../../hooks/useApiCall";
 import appSettings from "../../store/appSettings";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +9,7 @@ import BlockHeader from "../../components/common/blockHeader";
 import WishListButton from "../../components/common/WishListButton";
 import Header from "../../components/navbar/Header";
 import { apiCall } from "../../helpers/apiCall";
-import InfiniteScroll from "react-infinite-scroller";
+
 import sleep from "../../helpers/sleep";
 
 const LookDataBlockImage = (props) => (
@@ -19,21 +18,6 @@ const LookDataBlockImage = (props) => (
     </span>
 )
 
-const fetchData = async (data, apiToken, pagination) => {
-    let gotData = false;
-    const callObject = await apiCall("getLooksData", apiToken, { look_id: "", ...pagination })
-    if (
-        callObject.hasOwnProperty("response")
-        && callObject.response.hasOwnProperty("look")
-        && callObject.response.look.length > 0
-    ) {
-        if (data != null) {
-            callObject.response.look = data.look.concat(callObject.response.look)
-        }
-        gotData = true;
-    }
-    return { data: callObject.response, hasMore: gotData }
-}
 
 
 function LooksPage() {
@@ -48,28 +32,41 @@ function LooksPage() {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [loading, setLoading] = useState(null);
     const [pagination, setPagination] = useState({
-        limit: 12, skip: 0
+        limit: 10000, skip: 0
     })
     const [canMore, setCanMore] = useState(true)
     const [hasMore, setHasMore] = useState(true)
 
+    useEffect(()=>{
+        const fetchData = async () => {
+            let gotData = false;
+            const callObject = await apiCall("getLooksData", dataStore.apiToken, { look_id: "", ...pagination })
+            if (
+                callObject.hasOwnProperty("response")
+                && callObject.response.hasOwnProperty("look")
+                && callObject.response.look.length > 0
+            )
+                gotData = true;
 
-    const fetchProducts = useCallback(async () => {
-        if (loading)
-            return
-        setLoading(true)
+            return (gotData) ? callObject.response : []
+        }
+        if(
+            !data
+            && dataStore.apiToken
+            && pagination
+        )
+            fetchData()
+                .then(resp=>{
+                    setData(resp)
+                })
+                .catch(e=>console.log(e.message))
+                .finally(()=>{
+                    console.log("Full Data Loaded")
+                })
 
-        const newData = await fetchData(data, dataStore.apiToken, pagination)
-        if (newData.hasMore)
-            setData(newData.data)
-        setCanMore(newData.hasMore)
-        setHasMore(false)
-        setPagination({
-            skip: pagination.skip + pagination.limit,
-            limit: pagination.limit
-        })
+    },[data, dataStore.apiToken, pagination])
 
-    }, [loading, data, dataStore.apiToken, pagination])
+
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
             <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
@@ -88,40 +85,6 @@ function LooksPage() {
         }
     }, [expandLook])
 
-
-
-    useEffect(()=>{
-        const bringIntoView= async ()=> {
-            let returnValue = false
-            if (canMore) {
-                if (data && data.look) {
-                    const last = []
-                    const howMany = 15
-                    for (let x = 0; x <= howMany; x++)
-                        last.push(null)
-                    Object.values(data.look).forEach((val) => {
-                        for (let x = 0; x < howMany; x++)
-                            last[x] = last[x + 1]
-                        last[howMany] = val
-                    })
-                    if (last[0] !== null) {
-                        const scrollToElement = document.querySelector('#' + last[0].look_id)
-                        if (scrollToElement)
-                            scrollToElement.scrollIntoView({behavior: 'smooth'})
-                        await sleep(1000)
-                    }
-                }
-                returnValue=true
-            }
-            return returnValue
-        }
-        bringIntoView().then((res)=>{
-            if(res)
-                setHasMore(true)
-            setLoading(false)
-        }).catch(e=>e.message)
-
-    },[hasMore,canMore,data])
 
     const expandData = () => {
 
@@ -257,17 +220,12 @@ function LooksPage() {
                     <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
                         className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
                 </BlockHeader>
-                <InfiniteScroll
-                    loadMore={fetchProducts}
-                    hasMore={hasMore}
-                    loader={loader}
-                    initialLoad={true}
-                    threshold={100}
-                >
-                    <main className={`px-10 grid grid-cols-3 gap-7`} >
-                        {data && lookData()}
+                {(data)
+                    ?<main className={`px-10 grid grid-cols-3 gap-7`} >
+                        {lookData()}
                     </main>
-                </InfiniteScroll>
+                    :loader
+                }
             </section>
             <Footer isMobile={dataStore.mobile} />
         </Fragment>
