@@ -7,7 +7,6 @@ import Header from "../../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
 import BlockHeader from "../../../components/common/blockHeader";
 import ProductCard from "../../../components/new-Arrivals/ProductCard";
-import InfiniteScroll from "react-infinite-scroller";
 import {apiCall} from "../../../helpers/apiCall";
 
 /**
@@ -18,19 +17,9 @@ import {apiCall} from "../../../helpers/apiCall";
  * @constructor
  */
 
-const fetchData = async (data, apiToken, category, pagination) => {
-    let gotData = false;
-    const callObject = await apiCall("getProducts", apiToken, {category: category, ...pagination})
-    if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
-        if (data != null)
-            callObject.response.data = data.data.concat(callObject.response.data)
-        gotData = true;
-    }
-    return (gotData) ? callObject : {}
-}
 
 
-function NewArrivalsAllPage() {
+function NewArrivalsAllPage(props) {
     const category = "new-arrivals"
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
@@ -38,8 +27,32 @@ function NewArrivalsAllPage() {
     const [carousal, setCarousal] = useState(null);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
-        limit: 10, skip: 0
+        limit: 10000, skip: 0
     })
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            let gotData = false;
+            const callObject = await apiCall("getProducts", dataStore.apiToken, {category: category, ...pagination})
+            if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data"))
+                gotData = true;
+
+            return (gotData) ? callObject : {}
+        }
+
+        if(!data && dataStore.apiToken && category && pagination){
+            fetchData()
+                .then(newData=>{
+                    setData(newData.response)
+                    setCarousal(newData.new_arr_carousal)
+                })
+                .catch(e=>console.log(e.message))
+                .finally(()=>{
+                    console.log("Data load complete")
+                })
+        }
+
+    },[data, dataStore.apiToken, category, pagination])
 
     const fetchProducts = useCallback(async () => {
         if (loading)
@@ -108,7 +121,6 @@ function NewArrivalsAllPage() {
         fetchData(false)
     }, [fetchData])
     */
-    const hasMore = (data == null || (data.hasOwnProperty("total_products_exist") && data.total_products_exist > pagination.skip))
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
                             <span className={"block relative w-14 aspect-square"}>
@@ -116,7 +128,6 @@ function NewArrivalsAllPage() {
                                        alt={"loader"}/>
                             </span>
                     </span>
-    const threshold = (typeof window !== "undefined")?Math.floor(window.innerHeight - 100):0
 
     const mobileView = null;
     const browserView = (
@@ -132,27 +143,34 @@ function NewArrivalsAllPage() {
                 >
                     <span className={"tracking-widest text-h4 uppercase"}>New Arrivals</span>
                 </BlockHeader>
-                <main className={`px-10 grid grid-cols-3 gap-10`}>
-                    {data && data.data && data.data.map((prod, index) => {
-                        return <ProductCard prod={prod} key={index} />
-                    })}
-                </main>
+                {(data)
+                    ?<main className={`px-10 grid grid-cols-3 gap-10`}>
+                        {data && data.data && data.data.map((prod, index) => {
+                            return <ProductCard prod={prod} key={index} />
+                        })}
+                    </main>
+                    :loader
+                }
             </section>
             <Footer isMobile={dataStore.mobile} />
         </>
     );
 
-    return dataStore.mobile ? mobileView :
-        <InfiniteScroll
-            loadMore={fetchProducts}
-            hasMore={hasMore}
-            loader={loader}
-            initialLoad={true}
-            threshold={threshold}
-        >
-            {(data)?browserView:<Fragment></Fragment>}
-        </InfiniteScroll>
+    return dataStore.mobile ? mobileView : browserView
 }
 
+export async function getStaticProps() {
+    // Call an external API endpoint to get posts.
+    // You can use any data fetching library
+    const res = await fetch('https://.../posts')
+    const posts = await res.json()
 
+    // By returning { props: { posts } }, the Blog component
+    // will receive `posts` as a prop at build time
+    return {
+        props: {
+            posts,
+        },
+    }
+}
 export default NewArrivalsAllPage;
