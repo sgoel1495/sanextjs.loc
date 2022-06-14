@@ -3,7 +3,7 @@ import MimotoPage from "../../components/mimoto-page/MimotoPage";
 import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 
 
-function MimotoShatsuPageprops(){
+function MimotoShatsuPage(props){
     return <MimotoPage  category={"shatsu"} hpid={"mimoto-shatsu"} data={props.data}/>
 }
 export async function getStaticProps() {
