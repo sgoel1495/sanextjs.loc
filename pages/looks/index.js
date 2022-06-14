@@ -18,38 +18,19 @@ const LookDataBlockImage = (props) => (
     </span>
 )
 
-
-
-function LooksPage() {
+function LooksPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState(props.data);
     const [expandLook, setExpandLook] = useState(null);
     const expandedRef = useRef(null);
 
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
-    const [loading, setLoading] = useState(null);
-    const [pagination, setPagination] = useState({
-        limit: 10000, skip: 0
-    })
-    const [canMore, setCanMore] = useState(true)
-    const [hasMore, setHasMore] = useState(true)
-
+/*
     useEffect(()=>{
-        const fetchData = async () => {
-            let gotData = false;
-            const callObject = await apiCall("getLooksData", dataStore.apiToken, { look_id: "", ...pagination })
-            if (
-                callObject.hasOwnProperty("response")
-                && callObject.response.hasOwnProperty("look")
-                && callObject.response.look.length > 0
-            )
-                gotData = true;
 
-            return (gotData) ? callObject.response : []
-        }
         if(
             !data
             && dataStore.apiToken
@@ -65,7 +46,7 @@ function LooksPage() {
                 })
 
     },[data, dataStore.apiToken, pagination])
-
+*/
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
@@ -232,6 +213,27 @@ function LooksPage() {
     else
         return null
 
+}
+
+export async function getStaticProps() {
+    const fetchData = async () => {
+        let gotData = false;
+        const callObject = await apiCall("getLooksData", process.env.API_TOKEN, { look_id: "", limit: 10000, skip: 0})
+        if (
+            callObject.hasOwnProperty("response")
+            && callObject.response.hasOwnProperty("look")
+            && callObject.response.look.length > 0
+        )
+            gotData = true;
+
+        return (gotData) ? callObject.response : []
+    }
+
+    return {
+        props: {
+            data:await fetchData()
+        }
+    }
 }
 
 
