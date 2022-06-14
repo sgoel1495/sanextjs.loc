@@ -1,8 +1,17 @@
 import React from "react";
 import MimotoPage from "../../components/mimoto-page/MimotoPage";
+import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 
 
-function MimotoFuriruPage(){
-    return <MimotoPage  category={"furiru"} hpid={"mimoto-furiru"} />
+function MimotoFuriruPage(props){
+    return <MimotoPage  category={"furiru"} hpid={"mimoto-furiru"} data={props.data}/>
 }
+export async function getStaticProps() {
+    return {
+        props: {
+            data:await fetchMimotoData("furiru")
+        }
+    }
+}
+
 export default MimotoFuriruPage

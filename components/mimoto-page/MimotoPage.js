@@ -16,6 +16,7 @@ import MimotoProductCard from "./MimotoProductCard";
 import { apiCall } from "../../helpers/apiCall";
 import MimotoSlider from "./MimotoSlider";
 
+/*
 const fetchData = async (apiToken, category) => {
     const callObject = await apiCall("getMimotoProducts", apiToken, { name: category })
     console.log("CALL OBJECT", callObject)
@@ -25,34 +26,17 @@ const fetchData = async (apiToken, category) => {
     ) ? callObject.response : {}
 }
 
+ */
+
 function MimotoPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
     const { category } = props
     const { dataStore } = useContext(AppWideContext);
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState(props.data);
     const [loading, setLoading] = useState(false);
     console.log("DATA MIMOTO MAIN PAGE", data)
-
-    useEffect(() => {
-        console.log("STEP 1 =================")
-        if (dataStore.apiToken) {
-            console.log("STEP 2 =================")
-            setLoading(true)
-            fetchData(dataStore.apiToken, category)
-                .then(d => {
-                    console.log("D ========", d)
-                    setData(d)
-                    setLoading(false)
-                })
-                .catch(e => {
-                    console.log(e.message)
-                    setLoading(false)
-                })
-        }
-    }, [category, dataStore.apiToken])
-
 
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {

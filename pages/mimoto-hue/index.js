@@ -1,8 +1,17 @@
 import React from "react";
 import MimotoPage from "../../components/mimoto-page/MimotoPage";
+import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 
 
-function MimotoHuePage(){
-    return <MimotoPage  category={"hue"} hpid={"mimoto-hue"} />
+function MimotoHuePage(props){
+    return <MimotoPage  category={"hue"} hpid={"mimoto-hue"} data={props.data}/>
 }
+export async function getStaticProps() {
+    return {
+        props: {
+            data:await fetchMimotoData("hue")
+        }
+    }
+}
+
 export default MimotoHuePage

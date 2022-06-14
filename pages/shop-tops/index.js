@@ -1,7 +1,17 @@
 import React from "react";
 
 import ShopPage from "../../components/shop-page/ShopPage";
-function ShopTopsPage(){
-    return <ShopPage  category={"tops"} hpid={"shop-tops"} />
+import fetchShopData from "../../components/shop-page/fetchShopData";
+function ShopTopsPage(props){
+    return <ShopPage  category={"tops"} hpid={"shop-tops"} data={props.data}/>
 }
+
+export async function getStaticProps() {
+    return {
+        props: {
+            data:await fetchShopData("tops")
+        }
+    }
+}
+
 export default ShopTopsPage
