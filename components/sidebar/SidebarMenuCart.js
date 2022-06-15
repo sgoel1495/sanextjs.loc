@@ -235,11 +235,6 @@ function CartModal(props) {
   ]
 }
      */
-    const userO = {
-        email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-        is_guest: !(dataStore.userData.contact),
-        temp_user_id: dataStore.userServe.temp_user_id
-    }
 
     const quickEditTailored = (p) => {
         setTailoredProduct(p)
