@@ -74,7 +74,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
             let isPresentInCart = false
             if (dataStore.userCart.length > 0) {
                 dataStore.userCart.forEach(item => {
-                    if (item.product_id === prod.asset_id)
+                    if (item.product_id === prod.asset_id && item.size === currSize)
                         isPresentInCart = true
                 })
             }
