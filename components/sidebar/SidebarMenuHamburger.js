@@ -420,7 +420,7 @@ function SidebarMenuHamburger(props) {
                     link: `login`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userData.contact,dataStore.userWallet.user_name]);
+    }, [dataStore.userData.contact,dataStore.userServe.user_name]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);
