@@ -27,9 +27,10 @@ function MimotoSlider({ data, ...props }) {
     useEffect(() => {
         const fetchMimotoCollection = async () => {
             const resp = await apiCall("getMimotoCollection", dataStore.apiToken)
+            console.log("collection data",resp)
             if (resp.hasOwnProperty("response") && resp.response.hasOwnProperty("mimoto"))
                 setCollectionArray([...resp.response.mimoto])
-            console.log(resp)
+
         }
         if (dataStore && dataStore.apiToken)
             fetchMimotoCollection().then(() => {

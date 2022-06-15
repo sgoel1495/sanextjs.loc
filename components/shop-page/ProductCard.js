@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 import WishListButton from "../common/WishListButton";
 import Link from "next/link";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
-import { apiCall } from "../../helpers/apiCall";
 import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 
@@ -14,7 +13,7 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({ prod, isMobile, wide, portrait }) => {
+const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
@@ -75,7 +74,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait }) => {
             let isPresentInCart = false
             if (dataStore.userCart.length > 0) {
                 dataStore.userCart.forEach(item => {
-                    if (item.product_id === prod.asset_id)
+                    if (item.product_id === prod.asset_id && item.size === currSize)
                         isPresentInCart = true
                 })
             }
@@ -156,6 +155,27 @@ const ProductCard = ({ prod, isMobile, wide, portrait }) => {
 
     }
 
+
+    const whatSizes = ()=>{
+        console.log("Current Product",prod)
+        if(!prod || !prod.size_avail)
+            return null
+
+        let returnValue = null
+        const regex = /=>/g
+        const arrayString = prod.size_avail.replace(regex,':')
+        const sizeData = JSON.parse(arrayString)
+        sizeData.forEach(size=>{
+            returnValue = <Fragment>
+                {returnValue}
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size.Size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size.Size)}>{size.Size}</button>
+            </Fragment>
+        })
+        return <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
+            {returnValue}
+        </div>
+    }
+
     return (
         <>
 
@@ -179,14 +199,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait }) => {
                         </a>
                     </Link>
                     {(showSize)
-                        ? <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XS") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XS")}>XS</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "S") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("S")}>S</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "M") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("M")}>M</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "L") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("L")}>L</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XL") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XL")}>XL</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XXL") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XXL")}>XXL</button>
-                        </div>
+                        ? whatSizes()
                         : null
                     }
                     <div className="grid grid-cols-2 items-center h-16">
