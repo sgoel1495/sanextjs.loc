@@ -255,7 +255,7 @@ const SelfLink = (props) => {
     return (
         <Link href={props.link}>
             <a className={`block px-4 py-3 text-black/70 hover:bg-black/5 ` + [props.style ? props.style : ""]}>
-                <span className={`block leading-none`}>
+                <span className={`block leading-none font-600`}>
                     {props.title}
                     {props.new && <NewTag />}
                 </span>
@@ -275,7 +275,7 @@ const ChildLink = props => {
             animationDuration={"duration-200"}
             title={
                 <>
-                    <div className={`leading-none`}>
+                    <div className={`leading-none font-600`}>
                         {props.title}
                         {props.new && <NewTag />}
                     </div>
