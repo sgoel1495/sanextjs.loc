@@ -374,7 +374,7 @@ function SidebarMenuHamburger(props) {
         if (dataStore.userData.contact != null) {
             setNavigationData([
                 {
-                    title: dataStore.userWallet.user_name,
+                    title: dataStore.userServe.user_name,
                     description: ``,
                     link: `#`,
                     child: [

@@ -157,6 +157,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
 
 
     const whatSizes = ()=>{
+        console.log("Current Product",prod)
         if(!prod || !prod.size_avail)
             return null
 
