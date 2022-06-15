@@ -260,7 +260,7 @@ const DetailsCard = ({ data, hpid }) => {
         let isPresentInCart=false
         if(dataStore.userCart.length>0){
             dataStore.userCart.forEach(item=>{
-                if(item.product_id == hpid)
+                if(item.product_id == hpid && item.size===selectedSize)
                     isPresentInCart=true
             })
         }
@@ -280,6 +280,8 @@ const DetailsCard = ({ data, hpid }) => {
             setShowToast(true)
         }
     }
+
+    console.log ("Data of product", data)
 
     return (
         <div>
