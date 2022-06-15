@@ -165,6 +165,15 @@ const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
         const regex = /=>/g
         const arrayString = prod.size_avail.replace(regex,':')
         const sizeData = JSON.parse(arrayString)
+        // hardcoded T size for non-accesories
+        /*
+        console.log("SIZES",sizeData)
+        if(!["sweaters","scarves","jewellery"].includes(prod.category))
+            sizeData.push({Size:"T"})
+        console.log("SIZES",sizeData)
+
+         */
+        console.log("SIZES",sizeData)
         sizeData.forEach(size=>{
             returnValue = <Fragment>
                 {returnValue}

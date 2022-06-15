@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import AppWideContext from "../../../../store/AppWideContext";
 import ProductCard from "../../../shop-page/ProductCard";
-import useApiCall from "../../../../hooks/useApiCall";
 import Link from "next/link";
 import { apiDictionary } from "../../../../helpers/apiDictionary";
 import BlockHeader from '../../../common/blockHeader';
