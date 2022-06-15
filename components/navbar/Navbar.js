@@ -53,7 +53,7 @@ function Navbar(props) {
     switch (props.type) {
         case "shopMenu":
             browserView =
-                <nav className={navStyle + " flex items-center gap-x-4"}>
+                <nav className={navStyle + " flex items-center gap-x-4 h-[80px]"}>
                     <SaltIcon type={props.type} isMobile={false} />
                     <CurrencySwitcher type={props.type} isMobile={false} />
                     <Menu type={props.type} isMobile={false} />

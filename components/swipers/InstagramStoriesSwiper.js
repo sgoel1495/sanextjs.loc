@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Swiper, SwiperSlide} from "swiper/react";
+import React, { useEffect, useState } from 'react';
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination"
 import "swiper/css/navigation"
-import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
+import SwiperCore, { Pagination, Navigation, Autoplay } from 'swiper';
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
 import fetchJsonp from "fetch-jsonp";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
@@ -37,16 +37,16 @@ function InstagramStoriesSwiper(props) {
         apiCall("instagramToken", props.apiToken)
             .then(function (response) {
                 //if(response.response.token) {
-                if(false) {
+                if (false) {
                     console.log('Using token Token RESPONSE', response.response.token)
                     fetchJsonp(instaGramUrl + "?access_token=" + response.response.token)
                         .then(function (response) {
                             return response.json()
                         }).then(function (json) {
-                        console.log('INSTAGRAM RESPONSE', json)
-                    }).catch(function (ex) {
-                        console.log('parsing failed', ex)
-                    })
+                            console.log('INSTAGRAM RESPONSE', json)
+                        }).catch(function (ex) {
+                            console.log('parsing failed', ex)
+                        })
                 }
 
             }).catch(function (ex) {
@@ -80,19 +80,20 @@ function InstagramStoriesSwiper(props) {
                         return (
                             <SwiperSlide key={index}>
                                 <a href={item} className={"block"} target="_blank" rel="noreferrer">
-                                <span className={"block relative h-[270px] w-full"}>
-                                    <Image
-                                        src={item}
-                                        alt="instagram_story"
-                                        layout="fill"
-                                        objectFit="cover"
-                                    />
-                                </span>
+                                    <span className={"block relative h-[270px] w-full"}>
+                                        <Image
+                                            src={item}
+                                            alt="instagram_story"
+                                            layout="fill"
+                                            objectFit="cover"
+                                        />
+                                    </span>
                                 </a>
                             </SwiperSlide>
                         )
                     })}
-                </Swiper>}
+                </Swiper>
+            }
         </section>
     )
     return (

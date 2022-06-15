@@ -374,7 +374,7 @@ function SidebarMenuHamburger(props) {
         if (dataStore.userData.contact != null) {
             setNavigationData([
                 {
-                    title: dataStore.userWallet.user_name,
+                    title: dataStore.userServe.user_name,
                     description: ``,
                     link: `#`,
                     child: [
@@ -420,7 +420,7 @@ function SidebarMenuHamburger(props) {
                     link: `login`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userData.contact,dataStore.userWallet.user_name]);
+    }, [dataStore.userData.contact,dataStore.userServe.user_name]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);

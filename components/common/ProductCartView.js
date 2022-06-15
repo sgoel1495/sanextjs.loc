@@ -121,7 +121,7 @@ function ProductCartView(){
                                 </div>
                                 <div className="text-[#777] uppercase">
                                     <p className="text-[10px]">COLOR:{p.color.name}</p>
-                                    <p className="text-[10px]">SIZE:TAILORED</p>
+                                    <p className="text-[10px]">SIZE:{p.size}</p>
                                 </div>
                                 {/* <div>
                                     <span onClick={() => quickEditTailored(p)}>EDIT</span>

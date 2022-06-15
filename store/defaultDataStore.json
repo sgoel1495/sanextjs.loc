@@ -10,6 +10,11 @@
       "new": false
     },
     {
+      "category": "SWEATERS",
+      "link": "/shop-sweaters",
+      "new": true
+    },
+    {
       "category": "SHIRTS",
       "link": "/shop-shirts",
       "new": false
@@ -18,6 +23,16 @@
       "category": "TUNICS",
       "link": "/shop-tunics",
       "new": false
+    },
+    {
+      "category": "JUMPSUITS",
+      "link": "/shop-jumpsuits",
+      "new": true
+    },
+    {
+      "category": "SHORTS",
+      "link": "/shop-shorts",
+      "new": true
     },
     {
       "category": "PANTS",
@@ -38,21 +53,6 @@
       "category": "OUTERWEAR",
       "link": "/shop-outerwear",
       "new": false
-    },
-    {
-      "category": "JUMPSUITS",
-      "link": "/shop-jumpsuits",
-      "new": true
-    },
-    {
-      "category": "SHORTS",
-      "link": "/shop-shorts",
-      "new": true
-    },
-    {
-      "category": "SWEATERS",
-      "link": "/shop-sweaters",
-      "new": true
     }
   ],
   "accessories": [
