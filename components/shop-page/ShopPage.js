@@ -38,41 +38,6 @@ function ShopPage(props) {
         return () =>
             window.removeEventListener('scroll', controller)
     }, [controller]);
-/*
-    const [pagination, setPagination] = useState({
-        limit: 10000, skip: 0
-    })
-
-    useEffect(()=>{
-        const fetchData = async () => {
-            let gotData = false;
-            const callObject = await apiCall("getProducts", dataStore.apiToken, {category: category, ...pagination})
-            if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data")) {
-                if (callObject
-                    && callObject.response
-                    && callObject.response.data
-                )
-                    gotData = true;
-            }
-            return (gotData) ? callObject.response : null
-        }
-
-        if(
-            !data
-            && category
-            && dataStore.apiToken
-            && pagination
-        )
-            fetchData()
-                .then(resp=>{
-                    setData(resp)
-                })
-                .catch(e=>console.log(e.message))
-                .finally(()=>{
-                    console.log("Full Data Loaded")
-                })
-    },[data,category, dataStore.apiToken, pagination])
-*/
     /**
      * @todo API - Please tell the api which gives the tagline for categories << HArdcoded
      *
@@ -124,7 +89,7 @@ function ShopPage(props) {
                 {(data)
                     ?<main className={`grid grid-cols-3 gap-5 container pb-20`}>
                         {data.data && data.data.map((prod, index) => {
-                            return <ProductCard prod={prod} key={index}/>
+                            return <ProductCard prod={prod} key={index} isAccessory={(category==="scarves" || category==="jewellery")}/>
                         })}
                     </main>
                     :loader
