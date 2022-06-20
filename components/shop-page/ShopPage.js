@@ -27,20 +27,18 @@ function ShopPage(props) {
     const {category,hpid} = props
     const [data, setData] = useState(props.data);
     const [visibleData, setVisibleData] = useState([])
-    const initVisibleData = ()=>{
+    const initVisibleData = useCallback(()=>{
         const newData = [];
         data.data.forEach(p=>{
             if(p.is_visible)
                 newData.push(p)
         })
+        console.log("NEW DATA",newData)
         setVisibleData(newData)
-    }
+    },[data.data])
     useEffect(()=>{
-        if(data && data.data)
             initVisibleData()
-    },[initVisibleData,data,data.data])
-
-
+    },[initVisibleData])
 
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
