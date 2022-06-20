@@ -35,6 +35,22 @@ function MimotoPage(props) {
     const { dataStore } = useContext(AppWideContext);
 
     const [data, setData] = useState(props.data);
+    const [visibleData, setVisibleData] = useState([])
+    const initVisibleData = useCallback(()=>{
+        const newData = [];
+        data.products.forEach(p=>{
+            //if(p.is_visible)
+                newData.push(p)
+        })
+        console.log("NEW DATA",newData)
+        setVisibleData(newData)
+    },[data.products])
+    useEffect(()=>{
+            initVisibleData()
+    },[initVisibleData])
+    console.log("Visible Data",visibleData)
+
+
     const [loading, setLoading] = useState(false);
     console.log("DATA MIMOTO MAIN PAGE", data)
 
@@ -83,7 +99,7 @@ function MimotoPage(props) {
                                     </button>
                                 </div>
                                 <div className="grid grid-cols-2 gap-6">
-                                    {data && data.products && data.products.map((prod, index) => {
+                                    {data && visibleData && visibleData.map((prod, index) => {
                                         return <MimotoProductCard prod={prod} key={index} />
                                     })}
                                 </div>

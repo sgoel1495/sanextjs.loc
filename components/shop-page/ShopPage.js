@@ -26,6 +26,19 @@ function ShopPage(props) {
     const {dataStore} = useContext(AppWideContext);
     const {category,hpid} = props
     const [data, setData] = useState(props.data);
+    const [visibleData, setVisibleData] = useState([])
+    const initVisibleData = useCallback(()=>{
+        const newData = [];
+        data.data.forEach(p=>{
+            if(p.is_visible)
+                newData.push(p)
+        })
+        console.log("NEW DATA",newData)
+        setVisibleData(newData)
+    },[data.data])
+    useEffect(()=>{
+            initVisibleData()
+    },[initVisibleData])
 
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
@@ -88,7 +101,7 @@ function ShopPage(props) {
                 </BlockHeader>
                 {(data)
                     ?<main className={`grid grid-cols-3 gap-5 container pb-20`}>
-                        {data.data && data.data.map((prod, index) => {
+                        {visibleData && visibleData.map((prod, index) => {
                             return <ProductCard prod={prod} key={index} isAccessory={(category==="scarves" || category==="jewellery")}/>
                         })}
                     </main>
