@@ -1,35 +1,43 @@
-import {Fragment, useState} from "react";
+import { Fragment, useState } from "react";
 import isValidEmail from "../../helpers/isValidEmail";
 
-function NotifyMeModal({ closeModal, isMobile, userO, product}) {
-    const [name,setName] = useState("")
-    const [email,setEmail] = useState(userO.email)
-    const [phone,setPhone] = useState("")
-    const [size,setSize] = useState("")
-    const [msg,setMsg] = useState("")
+function NotifyMeModal({ closeModal, isMobile, userO, product }) {
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState(userO.email)
+    const [phone, setPhone] = useState("")
+    const [size, setSize] = useState("")
+    const [msg, setMsg] = useState("")
 
-    const notifyMe = async ()=>{
-        if(isValidEmail(email)){
+    const notifyMe = async () => {
+        if (isValidEmail(email)) {
             //@TODO:No api available for notify as per Nitu
             closeModal(true)
         }
     }
 
+    const inputClass = "w-full border border-black placeholder:font-500 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black text-[15px] p-[5px]"
+
     const mobileView = null
-    const browserView = ()=>{
-        return <Fragment>
-            <div onClick={()=>closeModal(false)}>X</div>
-            <div>Notify Me !</div>
-            <div> when {product.name} is available</div>
-            <input type="text" id="name" name="name" value={name} placeholder="Name" onChange={e=>setName(e.target.value)} />
-            <input type="text" id="email" name="name" value={email} placeholder="Email Id" onChange={e=>setEmail(e.target.value)} />
-            <input type="text" id="phone" name="phone" value={phone} placeholder="Phone Number" onChange={e=>setPhone(e.target.value)} />
-            <input type="text" id="size" name="size" value={name} placeholder="Size" onChange={e=>setSize(e.target.value)} />
-            <input type="text" id="msg" name="msg" value={msg} placeholder="Message" onChange={e=>setMsg(e.target.value)} />
-            <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`} onClick={() => notifyMe()}>
-                <span className={`uppercase`} >NOTIFY ME</span>
+    const browserView = () => {
+        return (
+            <div className="bg-transparent h-screen w-screen fixed inset-0 z-50 grid items-start justify-center" onClick={() => closeModal(false)}>
+                <div className="bg-white border border-black/20 relative w-[50vw] flex flex-col items-center gap-y-3 mt-[125px] px-[5%] py-[35px]" onClick={e => e.stopPropagation()}>
+                    <button className="absolute top-2 right-4 text-2xl z-50" onClick={() => closeModal(false)}>X</button>
+                    <p className="text-[18px] font-700 text-center mb-4">
+                        Notify Me ! <br />
+                        when {product.name} is available
+                    </p>
+                    <input className={inputClass} type="text" id="name" name="name" value={name} placeholder="Name" onChange={e => setName(e.target.value)} />
+                    <input className={inputClass} type="text" id="email" name="name" value={email} placeholder="Email Id" onChange={e => setEmail(e.target.value)} />
+                    <input className={inputClass} type="text" id="phone" name="phone" value={phone} placeholder="Phone Number" onChange={e => setPhone(e.target.value)} />
+                    <input className={inputClass} type="text" id="size" name="size" value={name} placeholder="Size" onChange={e => setSize(e.target.value)} />
+                    <textarea className={inputClass + " mt-2"} type="text" id="msg" name="msg" value={msg} placeholder="Message" onChange={e => setMsg(e.target.value)} />
+                    <button className={`font-500 px-4 py-2 bg-black text-white text-sm mt-2 tracking-wider leading-none`} onClick={() => notifyMe()}>
+                        <span className={`uppercase`} >NOTIFY ME</span>
+                    </button>
+                </div>
             </div>
-        </Fragment>
+        )
     }
 
     return (isMobile) ? mobileView : browserView();
