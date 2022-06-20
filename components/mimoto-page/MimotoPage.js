@@ -39,7 +39,7 @@ function MimotoPage(props) {
     const initVisibleData = useCallback(()=>{
         const newData = [];
         data.products.forEach(p=>{
-            //if(p.is_visible)
+            if(p.is_visible)
                 newData.push(p)
         })
         console.log("NEW DATA",newData)

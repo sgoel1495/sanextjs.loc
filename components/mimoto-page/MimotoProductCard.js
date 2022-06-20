@@ -8,6 +8,9 @@ import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 import returnSizes from "../../helpers/returnSizes";
 import {Fragment} from "react";
+import ReactDom from "react-dom";
+import NotifyMeModal from "../common/NotifyMeModal";
+import getUserO from "../../helpers/getUserO";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -19,7 +22,7 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
-
+    const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
@@ -157,6 +160,14 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
 
     }
 
+    const closeModal = (sent=false)=>{
+        if(sent) {
+            setToastMsg("We will notify you when the product is back in stock")
+            setShowToast(true)
+        }
+        setShowNotifyMe(false)
+    }
+
     const whatSizes = ()=>{
         const sizeData = returnSizes(prod.category);
         let returnValue = null
@@ -202,16 +213,23 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
                     }
                     <div className="grid grid-cols-2 items-center h-16">
                         {expandShop
-                            ? <>
-                                <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
-                                <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`} onClick={() => addToCart("", true)}>
-                                    <span className={`uppercase`} >Add to bag</span>
-                                    <p className={`text-xs`}>
-                                        {currencySymbol}
-                                        {(currCurrency === "inr") ? prod.price : prod.usd_price}
-                                    </p>
-                                </div>
-                            </>
+                            ?(prod.in_stock==="true")
+                                ? <Fragment>
+                                    <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
+                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`} onClick={() => addToCart("", true)}>
+                                        <span className={`uppercase`} >Add to bag</span>
+                                        <p className={`text-xs`}>
+                                            {currencySymbol}
+                                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                        </p>
+                                    </div>
+                                </Fragment>
+                                :<Fragment>
+                                    <button className={`font-800`}>SOLD OUT</button>
+                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`} onClick={() => setShowNotifyMe(true)}>
+                                        <span className={`uppercase`} >NOTIFY ME</span>
+                                    </div>
+                                </Fragment>
                             : <div className={`col-span-2`}>
                                 <p className={`text-h5 font-500`}>{prod.name}</p>
                                 <p className={`text-sm font-500`}>{prod.tag_line}</p>
@@ -225,6 +243,17 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
             }}>
                 <p>{toastMsg}</p>
             </Toast>
+            {showNotifyMe &&
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={closeModal.bind(this)}
+                        isMobile={dataStore.isMobile}
+                        userO={getUserO(dataStore)}
+                        product={prod}
+                    />,
+                    document.getElementById("measurementmodal"))
+            }
+
         </>
     );
 };
