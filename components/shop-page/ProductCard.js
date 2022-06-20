@@ -6,6 +6,7 @@ import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
+import returnSizes from "../../helpers/returnSizes";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -157,27 +158,14 @@ const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
 
 
     const whatSizes = ()=>{
-        console.log("Current Product",prod)
-        if(!prod || !prod.size_avail)
-            return null
-
+        const sizeData = returnSizes(prod.category);
         let returnValue = null
-        const regex = /=>/g
-        const arrayString = prod.size_avail.replace(regex,':')
-        const sizeData = JSON.parse(arrayString)
-        // hardcoded T size for non-accesories
-        /*
-        console.log("SIZES",sizeData)
-        if(!["sweaters","scarves","jewellery"].includes(prod.category))
-            sizeData.push({Size:"T"})
-        console.log("SIZES",sizeData)
-
-         */
-        console.log("SIZES",sizeData)
         sizeData.forEach(size=>{
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size.Size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size.Size)}>{size.Size}</button>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
+                    {size}
+                </button>
             </Fragment>
         })
         return <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>

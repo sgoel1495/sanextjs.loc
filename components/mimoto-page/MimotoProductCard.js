@@ -6,6 +6,8 @@ import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
+import returnSizes from "../../helpers/returnSizes";
+import {Fragment} from "react";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -155,6 +157,23 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
 
     }
 
+    const whatSizes = ()=>{
+        const sizeData = returnSizes(prod.category);
+        let returnValue = null
+        sizeData.forEach(size=>{
+            returnValue = <Fragment>
+                {returnValue}
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
+                    {size}
+                </button>
+            </Fragment>
+        })
+        return <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
+            {returnValue}
+        </div>
+    }
+
+
     return (
         <>
 
@@ -178,14 +197,7 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
                         </a>
                     </Link>
                     {(showSize)
-                        ? <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XS") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XS")}>XS</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "S") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("S")}>S</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "M") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("M")}>M</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "L") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("L")}>L</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XL") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XL")}>XL</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XXL") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XXL")}>XXL</button>
-                        </div>
+                        ? whatSizes()
                         : null
                     }
                     <div className="grid grid-cols-2 items-center h-16">
