@@ -19,6 +19,8 @@ function NotifyMeModal({ closeModal, isMobile, userO, product}) {
     const browserView = ()=>{
         return <Fragment>
             <div onClick={()=>closeModal(false)}>X</div>
+            <div>Notify Me !</div>
+            <div> when {product.name} is available</div>
             <input type="text" id="name" name="name" value={name} placeholder="Name" onChange={e=>setName(e.target.value)} />
             <input type="text" id="email" name="name" value={email} placeholder="Email Id" onChange={e=>setEmail(e.target.value)} />
             <input type="text" id="phone" name="phone" value={phone} placeholder="Phone Number" onChange={e=>setPhone(e.target.value)} />
