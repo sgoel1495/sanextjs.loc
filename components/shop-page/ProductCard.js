@@ -159,12 +159,16 @@ const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
 
     }
 
-    const closeModal = (sent=false)=>{
-        if(sent) {
+    const closeModal = (sent=null)=>{
+        if(sent===true) {
             setToastMsg("We will notify you when the product is back in stock")
             setShowToast(true)
-        }
-        setShowNotifyMe(false)
+            setShowNotifyMe(false)
+        } else if(sent===null){
+            setToastMsg("Please complete form and try again")
+            setShowToast(true)
+        } else
+            setShowNotifyMe(false)
     }
 
     const whatSizes = ()=>{

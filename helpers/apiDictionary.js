@@ -11,6 +11,12 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         'Accept': 'application/json; charset=UTF-8',
         'Content-Type': 'application/json; charset=UTF-8'
     };
+
+    const formDataHeaders = {
+        'Accept': 'application/json; charset=UTF-8',
+        'Content-Type': 'multipart/form-data; charset=UTF-8'
+    };
+
     let body = null;
     const getFetcher = {
         method: "GET",
@@ -19,6 +25,10 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
     const postFetcher = {
         method: "POST",
         headers: headers,
+        body: ""
+    };
+    const formDataFetcher = {
+        method: "POST",
         body: ""
     };
 
@@ -523,6 +533,13 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+            //========================== NOTIFY
+
+        case "notifyMe":
+            url += "/notify_user";
+            formDataFetcher.body = queryObject;
+            finalFetcher = {...formDataFetcher}
+            break;
 
         default:
             url = null;

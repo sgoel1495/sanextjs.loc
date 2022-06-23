@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import isValidEmail from "../../helpers/isValidEmail";
+import {apiCall} from "../../helpers/apiCall";
 
 function NotifyMeModal({ closeModal, isMobile, userO, product }) {
     const [name, setName] = useState("")
@@ -10,9 +11,20 @@ function NotifyMeModal({ closeModal, isMobile, userO, product }) {
 
     const notifyMe = async () => {
         if (isValidEmail(email)) {
-            //@TODO:No api available for notify as per Nitu
-            closeModal(true)
-        }
+            const formData = new FormData()
+            formData.append("product[notify_data][name]",name)
+            formData.append("product[notify_data][phone]",phone)
+            formData.append("product[notify_data][email]",email)
+            formData.append("product[notify_data][size]",size)
+            formData.append("product[notify_data][message]",msg)
+            formData.append("product[notify_data][product_id]",(product.product_id)?product.product_id:product.asset_id)
+            const resp = await apiCall("notifyMe","noapitokenrequried",formData)
+            if(resp.msg && resp.msg==="successfully submit")
+                closeModal(true)
+            else
+                closeModal(null)
+        } else
+            closeModal(null)
     }
 
     const inputClass = "w-full border border-black placeholder:font-500 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black text-[15px] p-[5px]"
@@ -30,7 +42,7 @@ function NotifyMeModal({ closeModal, isMobile, userO, product }) {
                     <input className={inputClass} type="text" id="name" name="name" value={name} placeholder="Name" onChange={e => setName(e.target.value)} />
                     <input className={inputClass} type="text" id="email" name="name" value={email} placeholder="Email Id" onChange={e => setEmail(e.target.value)} />
                     <input className={inputClass} type="text" id="phone" name="phone" value={phone} placeholder="Phone Number" onChange={e => setPhone(e.target.value)} />
-                    <input className={inputClass} type="text" id="size" name="size" value={name} placeholder="Size" onChange={e => setSize(e.target.value)} />
+                    <input className={inputClass} type="text" id="size" name="size" value={size} placeholder="Size" onChange={e => setSize(e.target.value)} />
                     <textarea className={inputClass + " mt-2"} type="text" id="msg" name="msg" value={msg} placeholder="Message" onChange={e => setMsg(e.target.value)} />
                     <button className={`font-500 px-4 py-2 bg-black text-white text-sm mt-2 tracking-wider leading-none`} onClick={() => notifyMe()}>
                         <span className={`uppercase`} >NOTIFY ME</span>
