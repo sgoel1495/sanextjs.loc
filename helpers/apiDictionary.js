@@ -541,6 +541,14 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...formDataFetcher}
             break;
 
+            //========================== NOTIFY
+
+        case "search":
+            url += "/get_search";
+            formDataFetcher.body = queryObject;
+            finalFetcher = {...formDataFetcher}
+            break;
+
         default:
             url = null;
             break;
