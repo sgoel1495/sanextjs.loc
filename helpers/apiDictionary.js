@@ -103,6 +103,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "datedNewArrivals":
+            url += "/get_new_items_by_date";
+            body = {
+                ...queryObject,
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+
         //------------------------USER
         case "userLogin":
             url += "/login_user";
