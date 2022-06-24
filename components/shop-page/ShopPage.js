@@ -16,29 +16,27 @@ import BlockHeader from "../common/blockHeader";
 import Header from "../navbar/Header";
 
 import ProductCard from "./ProductCard";
-import MobileShopPage from "./MobileShopPage";
-import {apiCall} from "../../helpers/apiCall";
 
 
 function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
     const {dataStore} = useContext(AppWideContext);
-    const {category,hpid} = props
+    const {category, hpid} = props
     const [data, setData] = useState(props.data);
     const [visibleData, setVisibleData] = useState([])
-    const initVisibleData = useCallback(()=>{
+    const initVisibleData = useCallback(() => {
         const newData = [];
-        data.data.forEach(p=>{
-            if(p.is_visible)
+        data.data.forEach(p => {
+            if (p.is_visible)
                 newData.push(p)
         })
-        console.log("NEW DATA",newData)
+        // console.log("NEW DATA", newData)
         setVisibleData(newData)
-    },[data.data])
-    useEffect(()=>{
-            initVisibleData()
-    },[initVisibleData])
+    }, [data.data])
+    useEffect(() => {
+        initVisibleData()
+    }, [initVisibleData])
 
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
@@ -72,7 +70,6 @@ function ShopPage(props) {
         }
 
      */
-
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
             <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
@@ -84,14 +81,12 @@ function ShopPage(props) {
         return (
             <Fragment>
                 <PageHead url={"/" + hpid} id={hpid} isMobile={dataStore.mobile}/>
-                {navControl || <Header type={"shopMenu"}/>}
-                <CategoryHeaderVideo category={category}/>
-                {navControl
-                    ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
-                              category={hpid}/>
-                    : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
-                            category={hpid}/>
-                }
+
+                <CategoryHeaderVideo category={category}>
+                    <Header type={"shopMenu"}/>
+                </CategoryHeaderVideo>
+                <Header type={navControl ? "minimal" : "menu"} isMobile={false} filterData={data ? data.filter_count : {}}
+                        category={hpid}/>
                 <BlockHeader
                     space={"py-5"}
                     titleStyle={"text-center"}
@@ -100,12 +95,12 @@ function ShopPage(props) {
                     <h4 className={`text-h6 leading-none font-cursive italic font-600 text-black/70`}>{tag_line}</h4>
                 </BlockHeader>
                 {(data)
-                    ?<main className={`grid grid-cols-3 gap-5 container pb-20`}>
+                    ? <main className={`grid grid-cols-3 gap-5 container pb-20`}>
                         {visibleData && visibleData.map((prod, index) => {
-                            return <ProductCard prod={prod} key={index} isAccessory={(category==="scarves" || category==="jewellery")}/>
+                            return <ProductCard prod={prod} key={index} isAccessory={(category === "scarves" || category === "jewellery")}/>
                         })}
                     </main>
-                    :loader
+                    : loader
                 }
                 <Footer isMobile={dataStore.mobile}/>
             </Fragment>
