@@ -18,6 +18,7 @@ const ShopDataBlockImage = (props) => (
 )
 
 const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
+    console.log("PROD",prod)
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
