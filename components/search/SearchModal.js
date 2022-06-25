@@ -37,7 +37,7 @@ function SearchModal(props) {
         data.forEach((product, index) => {
             returnValue = <Fragment>
                 {returnValue}
-                <Link href={product.old_product_id}>
+                <Link href={"/"+product.old_product_id}>
                     <a key={"product" + index}>
                         <Image src={WEBASSETS + product.img_path} alt={product.name} layout={`fill`} objectFit={`cover`} />
                         <span>{product.name}</span>
