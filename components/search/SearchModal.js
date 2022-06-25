@@ -37,10 +37,12 @@ function SearchModal(props) {
         data.forEach((product, index) => {
             returnValue = <Fragment>
                 {returnValue}
-                <Link href={"/"+product.old_product_id}>
-                    <a key={"product" + index}>
-                        <Image src={WEBASSETS + product.img_path} alt={product.name} layout={`fill`} objectFit={`cover`} />
-                        <span>{product.name}</span>
+                <Link href={"/" + product.old_product_id}>
+                    <a key={"product" + index} className="text-center">
+                        <div className="relative w-full aspect-square">
+                            <Image src={WEBASSETS + product.img_path} alt={product.name} layout={`fill`} objectFit={`cover`} />
+                        </div>
+                        <p className="text-xs font-600">{product.name}</p>
                         <p className={`text-xs`}>
                             {dataStore.currSymbol}
                             {(dataStore.currCurrency === "inr") ? product.price : product.usd_price}
@@ -78,7 +80,7 @@ function SearchModal(props) {
         </div>);
 
     const browserView = (
-        <div className={`fixed inset-0 z-50 bg-white/90`}>
+        <div className={`fixed inset-0 z-50 bg-white/90 overflow-y-scroll`}>
             <div className="w-10/12 mx-auto">
                 <div onClick={searchExecution} className={`mt-10 flex`}>
                     <input
@@ -98,6 +100,9 @@ function SearchModal(props) {
                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                     </svg>
                 </button>
+            </div>
+            <p className="text-lg font-500 text-black/60 text-center my-3">{data.length} results found</p>
+            <div className="px-16 pb-16 grid grid-cols-6 gap-x-10 gap-y-4">
                 {showResult()}
             </div>
         </div>);
