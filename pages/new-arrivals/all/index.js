@@ -25,31 +25,6 @@ function NewArrivalsAllPage(props) {
     const [data, setData] = useState(props.data);
     const [carousal, setCarousal] = useState(props.carousal);
 
-    /*
-    useEffect(()=>{
-        const fetchData = async () => {
-            let gotData = false;
-            const callObject = await apiCall("getProducts", dataStore.apiToken, {category: category, ...pagination})
-            if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data"))
-                gotData = true;
-
-            return (gotData) ? callObject : {}
-        }
-
-        if(!data && dataStore.apiToken && category && pagination){
-            fetchData()
-                .then(newData=>{
-                    setData(newData.response)
-                    setCarousal(newData.new_arr_carousal)
-                })
-                .catch(e=>console.log(e.message))
-                .finally(()=>{
-                    console.log("Data load complete")
-                })
-        }
-
-    },[data, dataStore.apiToken, category, pagination])
-*/
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
                             <span className={"block relative w-14 aspect-square"}>
                                 <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}

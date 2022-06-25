@@ -15,6 +15,8 @@ import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
 import addToCartLoggedIn from "../../../helpers/addToCartLoggedIn";
 import getUserO from "../../../helpers/getUserO";
+import returnSizes from "../../../helpers/returnSizes";
+import {Fragment} from "react";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -282,6 +284,38 @@ const DetailsCard = ({ data, hpid }) => {
     }
 
     console.log ("Data of product", data)
+    const whatSizes = ()=>{
+        const sizeData = returnSizes(data.category);
+        let returnValue = null
+        sizeData.forEach((size,index)=>{
+            returnValue = <Fragment>
+                {returnValue}
+                {(index!==0)
+                    ?<span className={""} key={"divide" + index}>|</span>
+                    :null
+                }
+                <span key={"div" + index} className={(selectedSize == size) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(size)}>
+                    {size}
+                </span>
+            </Fragment>
+        })
+        return <div className={"flex justify-between font-600 mb-4 text-black/60"}>
+            {returnValue}
+        </div>
+    }
+
+    /*
+    <div className={"flex justify-between font-600 mb-4 text-black/60"}>
+        {["XS", "S", "M", "L", "XL", "XXL"].map((item, index) => {
+        if (index > 0)
+            return <>
+                <span className={""} key={"div" + index}>|</span>
+                <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
+            </>
+        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
+    })}
+</div>
+*/
 
     return (
         <div>
@@ -297,17 +331,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <p className={"text-2xl"}>{data.name}</p>
                     <p className={"text-sm text-black/50 font-500"}>{data.tag_line}</p>
                 </div>
-
-                <div className={"flex justify-between font-600 mb-4 text-black/60"}>
-                    {["XS", "S", "M", "L", "XL", "XXL"].map((item, index) => {
-                        if (index > 0)
-                            return <>
-                                <span className={""} key={"div" + index}>|</span>
-                                <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
-                            </>
-                        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
-                    })}
-                </div>
+                {whatSizes()}
                 <p
                     className={"text-center uppercase mb-2 text-black/60 font-600 text-xs cursor-pointer"}
                     onClick={() => setSizeModal(true)}

@@ -6,6 +6,11 @@ import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
+import returnSizes from "../../helpers/returnSizes";
+import {Fragment} from "react";
+import ReactDom from "react-dom";
+import NotifyMeModal from "../common/NotifyMeModal";
+import getUserO from "../../helpers/getUserO";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -17,7 +22,7 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
-
+    const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
@@ -155,6 +160,35 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
 
     }
 
+    const closeModal = (sent=null)=>{
+        if(sent===true) {
+            setToastMsg("We will notify you when the product is back in stock")
+            setShowToast(true)
+            setShowNotifyMe(false)
+        } else if(sent===null){
+            setToastMsg("Please complete form and try again")
+            setShowToast(true)
+        } else
+            setShowNotifyMe(false)
+    }
+
+    const whatSizes = ()=>{
+        const sizeData = returnSizes(prod.category);
+        let returnValue = null
+        sizeData.forEach(size=>{
+            returnValue = <Fragment>
+                {returnValue}
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
+                    {size}
+                </button>
+            </Fragment>
+        })
+        return <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
+            {returnValue}
+        </div>
+    }
+
+
     return (
         <>
 
@@ -178,28 +212,28 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
                         </a>
                     </Link>
                     {(showSize)
-                        ? <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XS") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XS")}>XS</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "S") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("S")}>S</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "M") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("M")}>M</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "L") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("L")}>L</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XL") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XL")}>XL</button>
-                            <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == "XXL") ? "border-black" : "border-transparent"}`} onClick={() => addToCart("XXL")}>XXL</button>
-                        </div>
+                        ? whatSizes()
                         : null
                     }
                     <div className="grid grid-cols-2 items-center h-16">
                         {expandShop
-                            ? <>
-                                <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
-                                <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`} onClick={() => addToCart("", true)}>
-                                    <span className={`uppercase`} >Add to bag</span>
-                                    <p className={`text-xs`}>
-                                        {currencySymbol}
-                                        {(currCurrency === "inr") ? prod.price : prod.usd_price}
-                                    </p>
-                                </div>
-                            </>
+                            ?(prod.in_stock==="true")
+                                ? <Fragment>
+                                    <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
+                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`} onClick={() => addToCart("", true)}>
+                                        <span className={`uppercase`} >Add to bag</span>
+                                        <p className={`text-xs`}>
+                                            {currencySymbol}
+                                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                        </p>
+                                    </div>
+                                </Fragment>
+                                :<Fragment>
+                                    <button className={`font-800`}>SOLD OUT</button>
+                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`} onClick={() => setShowNotifyMe(true)}>
+                                        <span className={`uppercase`} >NOTIFY ME</span>
+                                    </div>
+                                </Fragment>
                             : <div className={`col-span-2`}>
                                 <p className={`text-h5 font-500`}>{prod.name}</p>
                                 <p className={`text-sm font-500`}>{prod.tag_line}</p>
@@ -213,6 +247,17 @@ const MimotoProductCard = ({ prod, isMobile, wide, portrait }) => {
             }}>
                 <p>{toastMsg}</p>
             </Toast>
+            {showNotifyMe &&
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={closeModal.bind(this)}
+                        isMobile={dataStore.isMobile}
+                        userO={getUserO(dataStore)}
+                        product={prod}
+                    />,
+                    document.getElementById("measurementmodal"))
+            }
+
         </>
     );
 };

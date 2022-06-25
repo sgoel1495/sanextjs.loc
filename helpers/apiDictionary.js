@@ -11,6 +11,12 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         'Accept': 'application/json; charset=UTF-8',
         'Content-Type': 'application/json; charset=UTF-8'
     };
+
+    const formDataHeaders = {
+        'Accept': 'application/json; charset=UTF-8',
+        'Content-Type': 'multipart/form-data; charset=UTF-8'
+    };
+
     let body = null;
     const getFetcher = {
         method: "GET",
@@ -19,6 +25,10 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
     const postFetcher = {
         method: "POST",
         headers: headers,
+        body: ""
+    };
+    const formDataFetcher = {
+        method: "POST",
         body: ""
     };
 
@@ -92,6 +102,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+
+        case "datedNewArrivals":
+            url += "/get_new_items_by_date";
+            body = {
+                ...queryObject,
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
 
         //------------------------USER
         case "userLogin":
@@ -470,6 +491,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        //====================== Address for Delivery
+        case "deliveryAddress":
+            url += "/checkout/address_for_delivery";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         //====================== COUPON
         case "applyCoupon":
             url += "/checkout/apply_coupon_code";
@@ -493,6 +525,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== COD Payment
+            /* INCORRECT
         case "codcheckout":
             url += "/checkout";
             body = {
@@ -502,6 +535,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+        */
 
         case "codOtp":
             url += "/checkout/send_otp_for_cod";
@@ -514,7 +548,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "verifyOtp":
-            url += "/checkout/send_otp_for_cod";
+            url += "/checkout/verify_otp_for_cod";
             body = {
                 token: apiToken,
                 ...queryObject
@@ -523,6 +557,21 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+            //========================== NOTIFY
+
+        case "notifyMe":
+            url += "/notify_user";
+            formDataFetcher.body = queryObject;
+            finalFetcher = {...formDataFetcher}
+            break;
+
+            //========================== NOTIFY
+
+        case "search":
+            url += "/get_search_view";
+            formDataFetcher.body = queryObject;
+            finalFetcher = {...formDataFetcher}
+            break;
 
         default:
             url = null;

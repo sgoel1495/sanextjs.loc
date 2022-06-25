@@ -1,0 +1,29 @@
+{
+  "user" : { "contact" : "",
+    "is_guest" : true,
+    "temp_user_id" : "1602236718",
+    "address_index" : 0,
+    "address": {
+      "0" : {
+        "name": "SK",
+        "lastname": "Singh",
+        "email": "shailaja.s@algowire.com",
+        "phone": 9999999935,
+        "address": "New Ashok Nagar",
+        "landmark": "",
+        "country": "India",
+        "zip_code": 110096,
+        "state": "Delhi",
+        "city": "New Delhi"
+      }
+    },
+    "account" : {
+      "create_account" : true,
+      "password" : "test@123"
+    }
+  },
+  "order" : {
+    "order_id": "1111111111135"
+  },
+  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+}

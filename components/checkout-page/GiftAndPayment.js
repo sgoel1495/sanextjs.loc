@@ -17,23 +17,6 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     const [payMode, setPayMode] = useState(null)
     const [giftCompleteness,setGiftCompleteness] = useState(false)
 
-    const updateInDatastore = ()=>{
-        dataStore.currentOrderInCart.order={
-            order_id: dataStore.currentOrderId,
-            is_gift: isGift,
-            gift_msg: giftData.gift_msg,
-            gift_msg_to: giftData.gift_msg_to,
-            gift_msg_from: giftData.gift_msg_from,
-            is_usd: !(dataStore.currCurrency==="inr"),
-            payment_mode: payMode,
-            payment_status: "Not Paid",
-            credited_in_account: false,
-            curr_currency: "inr",
-            ex_rate: 1
-        }
-        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
-    }
-
     const updateGift = (key, value) => {
         giftData[key] = value
         setGiftData(giftData)
@@ -71,12 +54,27 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     }, [isGift,giftCompleteness,payMode,giftPaymentComplete,updateCompleteness])
 
     const updatePayMode = (mode)=>{
+
         if(mode==="COD"){
             dataStore.currentOrderInCart.shipping_fee = 80
-            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+        } else {
+            dataStore.currentOrderInCart.shipping_fee = 0
         }
+        dataStore.currentOrderInCart.order={
+            order_id: dataStore.currentOrderId,
+            is_gift: isGift,
+            gift_msg: giftData.gift_msg,
+            gift_msg_to: giftData.gift_msg_to,
+            gift_msg_from: giftData.gift_msg_from,
+            is_usd: !(dataStore.currCurrency==="inr"),
+            payment_mode: mode,
+            payment_status: "Not Paid",
+            credited_in_account: false,
+            curr_currency: "inr",
+            ex_rate: 1
+        }
+        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
         setPayMode(mode)
-        updateInDatastore()
     }
 
     const labelClass = "block text-[#777] font-600 mb-1";

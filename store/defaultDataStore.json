@@ -100,6 +100,7 @@
   "userAddresses": [],
   "defaultAddress": null,
   "selectedAddress": null,
+  "addressIndex": 0,
   "userMeasurements": {},
   "userCart": [],
   "userOrderHistory": {},

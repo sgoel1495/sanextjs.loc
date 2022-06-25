@@ -1,0 +1,36 @@
+{
+  "user": {
+    "email": "jomapps.jb@gmail.com",
+    "is_guest": false,
+    "temp_user_id": "3300330033",
+    "address_index": 1
+  },
+  "temp_order": {
+    "_id": {
+      "$oid": "62ab1d7184120b03e0806be5"
+    },
+    "cart": {},
+    "delivery_charges": 0,
+    "measurment_profiles": {},
+    "order": {
+      "is_wallet": null,
+      "cash_from_wallet": null,
+      "is_gift": null,
+      "gift_msg": null,
+      "gift_msg_to": null,
+      "gift_msg_from": null,
+      "is_usd": null,
+      "payment_mode": null,
+      "payment_status": null,
+      "credited_in_account": null,
+      "curr_currency": null,
+      "ex_rate": null
+    },
+    "otp": "1615",
+    "otp_valid_till": "2022-06-16T12:26:23.303+00:00",
+    "temp_user_id": "3300330033",
+    "total": 2150
+  },
+  "message": "Payment initiated",
+  "status": 200
+}
