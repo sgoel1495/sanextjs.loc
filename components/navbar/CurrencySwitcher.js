@@ -43,17 +43,16 @@ function CurrencySwitcher(props) {
     }
 
     const browserView = (
-        <div className={`${height} flex items-center`}>
-            <select
-                id="currency-switcher"
-                className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
-                value={currCurrency}
-                onChange={e=>updateCurrency(e.target.value)}
-            >
-                {options}
-            </select>
+        <div className={`${height} flex items-center w-16`}>
             {
-                props.type ==="menu" && <div className={"w-full h-full bg-white absolute top-0"}/>
+                props.type !=="menu" && <select
+                    id="currency-switcher"
+                    className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
+                    value={currCurrency}
+                    onChange={e=>updateCurrency(e.target.value)}
+                >
+                    {options}
+                </select>
             }
         </div>
     );

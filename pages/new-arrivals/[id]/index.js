@@ -37,7 +37,7 @@ function NewArrivalsIdPage(props){
             ""look_mo_thumb"": ""/assets/Outerwear-Gallant-Suit-Set-FullSuitSet/mo.new.jpg""
         }
 */
-
+    console.log("DATA",data)
     useEffect(()=>{
         const fetchData = async () => {
             let gotData = false;
@@ -87,8 +87,8 @@ function NewArrivalsIdPage(props){
                 </BlockHeader>
                 {(data)
                     ?<main className={`px-10 grid grid-cols-3 gap-10`}>
-                        {data.data && data.data.map((prod, index) => {
-                            return <ProductCard prod={prod} key={index} />
+                        {data && data.map((prod, index) => {
+                            return <ProductCard prod={prod} isMobile={dataStore.mobile} key={index} isAccessory={false}/>
                         })}
                     </main>
                     :loader

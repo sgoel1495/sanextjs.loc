@@ -33,7 +33,8 @@ function SearchMenu(props) {
 
     return (
         <span className={`block relative w-6 ${iconHeight}`}>
-            <span onClick={() => setShowMenuSearch(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
+             {
+                 props.type !== "menu" && <span onClick={() => setShowMenuSearch(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <Image
                     src={WEBASSETS + "/assets/images/search_icon.svg"}
                     alt="searchicon"
@@ -41,13 +42,12 @@ function SearchMenu(props) {
                     objectFit={`contain`}
                 />
             </span>
+             }
             {showMenuSearch && ReactDom.createPortal(
                 <SearchModal closeModal={closeModal.bind(this)} isMobile={props.isMobile}/>,
                 document.getElementById("searchmenu"))
             }
-            {
-                props.type ==="menu" && <div className={"w-full h-full bg-white absolute top-0"}/>
-            }
+
         </span>
     )
 
