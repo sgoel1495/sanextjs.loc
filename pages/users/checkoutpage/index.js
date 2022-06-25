@@ -75,13 +75,6 @@ function UsersCheckoutPage() {
 
     }
 
-    const otpVerified = (verified)=>{
-        if(verified){
-            dataStore.currentOrderInCart.otp_verified = verified
-            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
-        }
-
-    }
 
     console.log("addressComplete && giftPaymentComplete",addressComplete, giftPaymentComplete)
 
@@ -106,7 +99,7 @@ function UsersCheckoutPage() {
         </div>
         {showOTPModal &&
             ReactDom.createPortal(
-                <OtpModal closeModal={() => setShowOTPModal(false)} otpVerified={otpVerified.bind(this)} />,
+                <OtpModal closeModal={() => setShowOTPModal(false)}  />,
                 document.getElementById("paymentpopup"))
         }
     </Fragment>
@@ -123,11 +116,3 @@ function UsersCheckoutPage() {
 }
 
 export default UsersCheckoutPage
-
-/*
-            {(addressComplete && giftPaymentComplete)
-                ? <div className="inline-flex mb-5 text-white bg-black px-5 py-3" onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
-                : null
-            }
-<div className="inline-flex mb-5 text-white bg-black px-5 py-3" onClick={placeOrder}>PLACE YOUR ORDER AND PAY</div>
- */

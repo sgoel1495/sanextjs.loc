@@ -548,7 +548,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "verifyOtp":
-            url += "/checkout/send_otp_for_cod";
+            url += "/checkout/verify_otp_for_cod";
             body = {
                 token: apiToken,
                 ...queryObject
@@ -568,7 +568,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             //========================== NOTIFY
 
         case "search":
-            url += "/get_search";
+            url += "/get_search_view";
             formDataFetcher.body = queryObject;
             finalFetcher = {...formDataFetcher}
             break;

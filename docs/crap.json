@@ -1,30 +1,196 @@
 {
-  "user" : { "contact" : "",
-    "is_guest" : true,
-    "temp_user_id" : "1602236718",
-    "address_index" : 0,
-    "address": {
-      "0" : {
-        "name": "SK",
-        "lastname": "Singh",
-        "email": "shailaja.s@algowire.com",
-        "phone": 9999999935,
-        "address": "New Ashok Nagar",
-        "landmark": "",
-        "country": "India",
-        "zip_code": 110096,
-        "state": "Delhi",
-        "city": "New Delhi"
+  "user": {
+    "contact": "sksingh35@gmail.com",
+    "is_guest": true,
+    "temp_user_id": "1602236718"
+  },
+  "order": {
+    "_id": {
+      "$oid": "5f80369bd4fe3d32007351eb"
+    },
+    "add_info": "",
+    "alert": null,
+    "bank_details": null,
+    "billing_address": {
+      "name": "SK",
+      "lastname": "Singh",
+      "email": "sksingh35@gmail.com",
+      "phone": 9999999935,
+      "address": "New Ashok Nagar",
+      "landmark": "",
+      "country": "India",
+      "zip_code": 110096,
+      "state": "Delhi",
+      "city": "New Delhi"
+    },
+    "call_history": null,
+    "cash_from_wallet": 0.0,
+    "comment": "",
+    "comment_history": null,
+    "credited_in_account": false,
+    "curr_currency": "inr",
+    "delivered_by": "FX",
+    "delivery_address": {
+      "name": "SK",
+      "lastname": "Singh",
+      "email": "sksingh35@gmail.com",
+      "phone": 9999999935,
+      "address": "New Ashok Nagar",
+      "landmark": "",
+      "country": "India",
+      "zip_code": 110096,
+      "state": "Delhi",
+      "city": "New Delhi"
+    },
+    "delivery_charges": 0.0,
+    "delivery_during_lockdown": null,
+    "delivery_time": "2020-10-19T09:51:36.000Z",
+    "discount": 277.0,
+    "email": "sksingh35@gmail.com",
+    "ex_rate": 1.0,
+    "gift_msg": "test",
+    "gift_msg_from": "Shailaja kant",
+    "gift_msg_to": "rohit",
+    "grand_total": 1573.0,
+    "is_gift": true,
+    "is_item_cancel": null,
+    "is_mail": false,
+    "is_order_item_wise": null,
+    "is_order_mail": false,
+    "is_other_mails": {},
+    "is_other_sms": {},
+    "is_partial": false,
+    "is_return_type": false,
+    "is_sms": false,
+    "is_stp": null,
+    "is_tailor": false,
+    "is_usd": false,
+    "items": [
+      {
+        "product_id": "Tops-Rooh-PinkShirtTop",
+        "old_product_id": "Tops-Rooh-PinkShirtTop",
+        "name": "Rooh",
+        "price": 1850.0,
+        "qty": 1,
+        "size": "M",
+        "is_sale": false,
+        "is_value_offer": false,
+        "grand_total": 1850,
+        "offer_discount": 0,
+        "discount": 277,
+        "color": "pink",
+        "tagline": "Pink Shirt Top",
+        "HSN": "54083411",
+        "payment_status": "Not Paid",
+        "canceled": false,
+        "cancel_reason": "",
+        "returned": false,
+        "return_reason": "",
+        "status": "Pending_Process_New",
+        "item_status": {
+          "Pending_Process_New": {
+            "comment": "",
+            "call_on": "",
+            "call_by": "",
+            "call_summary": "",
+            "user_measurements": "",
+            "dead_line": "2020-10-12T09:51:36.000Z",
+            "done_on": "2020-10-09T09:51:36.512Z",
+            "done_by": "user",
+            "extra": "",
+            "status_dev": "Pending Process New",
+            "status_admin": "Pending Process",
+            "status_user": "order_params Confirmed",
+            "status_code": 1,
+            "status_alert": true,
+            "status_active": true,
+            "status_next_code": 2
+          }
+        }
+      }
+    ],
+    "items_count": 1,
+    "last_updated_at": "2020-10-09T09:51:36.512Z",
+    "measurements": {
+      "tops_brand": "Zara",
+      "tops_size": "M",
+      "jeans_pants_size": 30
+    },
+    "name": "SK Singh",
+    "old_item_index": null,
+    "old_measurements": null,
+    "old_order_id": null,
+    "order_by": "Guest",
+    "order_date_time": "2020-10-09T09:51:36.512Z",
+    "order_id": "1111111111135",
+    "order_status": {
+      "Pending_Process_New": {
+        "comment": "",
+        "call_on": "",
+        "call_by": "",
+        "call_summary": "",
+        "user_measurements": "",
+        "dead_line": "2020-10-12T09:51:36.000Z",
+        "done_on": "2020-10-09T09:51:36.512Z",
+        "done_by": "user",
+        "extra": "",
+        "status_dev": "Pending Process New",
+        "status_admin": "Pending Process",
+        "status_user": "Order Confirmed",
+        "status_code": 1,
+        "status_alert": true,
+        "status_active": true,
+        "status_next_code": 2
       }
     },
-    "account" : {
-      "create_account" : true,
-      "password" : "test@123"
-    }
+    "order_times": 1,
+    "payment_mode": "COD",
+    "payment_status": "Not Paid",
+    "pending_amount": 1573.0,
+    "phone": "9999999935",
+    "pickup_confirmation": null,
+    "pickup_date": null,
+    "promo_code": "SUCCESS15",
+    "refund_type": null,
+    "return_pickup_confirmation": null,
+    "return_pickup_date": null,
+    "return_times": null,
+    "return_tracking_id": null,
+    "return_type": null,
+    "return_type_admin": null,
+    "save_bank_details": null,
+    "saved_total": null,
+    "source": "app",
+    "status": "Pending_Process_New",
+    "stp_false_reason": null,
+    "total": 1850.0,
+    "tracking_id": null,
+    "unique_random": "27ea8882ae5d48aa3327251d1381bfa1-1111111111135",
+    "updated_by": {
+      "2020-10-09 09:51:36 UTC": "user"
+    },
+    "user_from": "guest",
+    "user_reason": null
   },
-  "order" : {
-    "order_id": "1111111111135"
+  "thank_you_order": {
+    "order_id": "1111111111135",
+    "total": 1850.0,
+    "promo_code": "SUCCESS15",
+    "discount": 277.0,
+    "cod_charge": 0.0,
+    "amount_to_pay": 1573.0,
+    "payment_mode": "COD",
+    "items": [
+      {
+        "item_name": "Rooh Pink Shirt Top pink M",
+        "HSN": "54083411",
+        "size": "M",
+        "qty": 1,
+        "price": 1850.0,
+        "total": 1850.0
+      }
+    ]
   },
-  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
-  "COMMENT": "This is the case for non logged in user add address"
+  "message": "OTP Verification Successful for COD Order and Order placed successfully",
+  "status": 200
 }

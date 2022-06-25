@@ -192,6 +192,8 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         if (index !== selectedAddressIndex) {
             setSelectedAddressIndex(index)
             setAddress(dataStore.userAddresses[index])
+            dataStore.currentOrderInCart.address=dataStore.userAddresses[index]
+            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
             updateDataStore("selectedAddress", dataStore.userAddresses[index])
             updateDataStore("addressIndex",index)
             updateCompleteness(true)

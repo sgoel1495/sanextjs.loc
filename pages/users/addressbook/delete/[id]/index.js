@@ -5,9 +5,8 @@ import {apiCall} from "../../../../../helpers/apiCall";
 
 function AddressBookDeleteByIdPage(){
     const router = useRouter();
-    const query = router.query;
     const {dataStore,updateDataStore} = useContext(AppWideContext);
-    const addressId = query.pageid;
+    const addressId = router.query.id;
     useEffect(()=>{
         if( !addressId || dataStore.userData.contact==null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId+1))
             router.replace("/"); // no illegal access
