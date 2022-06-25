@@ -10,11 +10,12 @@ import UserPageTemplate from "../../../../../components/user/UserPageTemplate";
 function AddAddressEditByIdPage() {
     const router = useRouter();
     const { dataStore } = useContext(AppWideContext);
-    const query = router.query
-    const addressId = query.pageid
+    const addressId = router.query.id
     useEffect(() => {
-        if (!addressId || dataStore.userData.contact == null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId + 1))
+        if (!addressId || dataStore.userData.contact == null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId + 1)) {
+            console.log("Illegal access",addressId)
             router.replace("/"); // no illegal access
+        }
     }, [addressId, dataStore.userData.contact, dataStore.userAddresses, dataStore.userAddresses.length, router])
 
 

@@ -1,0 +1,11 @@
+{
+  "user" : { "contact" : "shailaja.s@algowire.com",
+    "is_guest" : false,
+    "temp_user_id" : "1602238343",
+    "address_index" : 0
+  },
+  "order" : {
+    "order_id": "111111111115996"
+  },
+  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+}

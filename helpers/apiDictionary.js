@@ -491,6 +491,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        //====================== Address for Delivery
+        case "deliveryAddress":
+            url += "/checkout/address_for_delivery";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         //====================== COUPON
         case "applyCoupon":
             url += "/checkout/apply_coupon_code";
@@ -514,6 +525,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== COD Payment
+            /* INCORRECT
         case "codcheckout":
             url += "/checkout";
             body = {
@@ -523,6 +535,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+        */
 
         case "codOtp":
             url += "/checkout/send_otp_for_cod";
@@ -535,7 +548,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "verifyOtp":
-            url += "/checkout/send_otp_for_cod";
+            url += "/checkout/verify_otp_for_cod";
             body = {
                 token: apiToken,
                 ...queryObject
@@ -555,7 +568,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             //========================== NOTIFY
 
         case "search":
-            url += "/get_search";
+            url += "/get_search_view";
             formDataFetcher.body = queryObject;
             finalFetcher = {...formDataFetcher}
             break;

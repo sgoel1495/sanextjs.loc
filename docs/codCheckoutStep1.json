@@ -1,0 +1,19 @@
+{
+  "user" : { "contact" : "shailaja.s@algowire.com",
+    "is_guest" : true,
+    "temp_user_id" : "1602236718"
+  },
+  "order" : { "order_id": "1111111111135",
+    "is_gift": true,
+    "gift_msg": "test",
+    "gift_msg_to": "rohit",
+    "gift_msg_from": "Shailaja kant",
+    "is_usd": false,
+    "payment_mode": "COD",
+    "payment_status": "Not Paid",
+    "credited_in_account": false,
+    "curr_currency": "inr",
+    "ex_rate": 1
+  },
+  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+}
