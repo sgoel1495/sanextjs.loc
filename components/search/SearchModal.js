@@ -1,44 +1,44 @@
-import React, {Fragment, useContext, useRef, useState} from "react";
+import React, { Fragment, useContext, useRef, useState } from "react";
 import Toast from "../common/Toast";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 import Image from "next/image";
 import AppWideContext from "../../store/AppWideContext";
 import Link from "next/link";
 
 function SearchModal(props) {
     const { dataStore } = useContext(AppWideContext);
-    const {closeModal} = props;
+    const { closeModal } = props;
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [searchTerm,setSearchTerm]=useState("")
-    const [data,setData] = useState([])
-    const [refresh,setRefresh] = useState(false)
+    const [searchTerm, setSearchTerm] = useState("")
+    const [data, setData] = useState([])
+    const [refresh, setRefresh] = useState(false)
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
 
     const searchExecution = async () => {
-        if(searchTerm.length<3){
+        if (searchTerm.length < 3) {
             setToastMsg("Please enter at least 3 characters")
             setShowToast(true)
             return
         }
         const formData = new FormData()
-        formData.append("query",searchTerm)
-        const resp = await apiCall("search","noapitokenrequried",formData)
-        if(resp.msg && resp.msg==="got"){
-            if(resp.search_data && resp.search_data.products) {
+        formData.append("query", searchTerm)
+        const resp = await apiCall("search", "noapitokenrequried", formData)
+        if (resp.msg && resp.msg === "got") {
+            if (resp.search_data && resp.search_data.products) {
                 setData(resp.search_data.products)
                 setRefresh(!refresh)
             }
         }
     }
 
-    const showResult = ()=>{
-        let returnValue=null
-        data.forEach((product, index)=>{
-            returnValue=<Fragment>
+    const showResult = () => {
+        let returnValue = null
+        data.forEach((product, index) => {
+            returnValue = <Fragment>
                 {returnValue}
                 <Link href={product.old_product_id}>
-                    <a key={"product"+index}>
+                    <a key={"product" + index}>
                         <Image src={WEBASSETS + product.img_path} alt={product.name} layout={`fill`} objectFit={`cover`} />
                         <span>{product.name}</span>
                         <p className={`text-xs`}>
@@ -53,7 +53,7 @@ function SearchModal(props) {
     }
 
     const mobileView = (
-        <div className={`fixed inset-0 z-20 bg-white/90`}>
+        <div className={`fixed inset-0 z-50 bg-white/90`}>
             <div className="container">
                 <div onClick={searchExecution} className={`mt-12 flex mx-3`}>
                     <input
@@ -62,7 +62,7 @@ function SearchModal(props) {
                         value={searchTerm}
                         placeholder="Enter your search text"
                         className={`flex-1 text-sm border-0 border-b border-black focus:border-black bg-transparent focus:ring-offset-0 focus:ring-0 focus:ring-offset-transparent focus:shadow-none`}
-                        onChange={e=>setSearchTerm(e.target.value)}
+                        onChange={e => setSearchTerm(e.target.value)}
                     />
                     <button className={`bg-black text-sm text-white px-4 py-2`}>
                         SEARCH
@@ -70,7 +70,7 @@ function SearchModal(props) {
                 </div>
                 <button className={`w-10 h-10 absolute right-0 top-0`} onClick={closeModal}>
                     <svg xmlns="http://www.w3.org/2000/svg" className={`w-10 h-10`} viewBox="0 0 24 24">
-                        <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                        <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" />
                     </svg>
                 </button>
             </div>
@@ -78,24 +78,24 @@ function SearchModal(props) {
         </div>);
 
     const browserView = (
-        <div className={`fixed inset-0 z-20 bg-white/90`}>
-            <div className="container">
+        <div className={`fixed inset-0 z-50 bg-white/90`}>
+            <div className="w-10/12 mx-auto">
                 <div onClick={searchExecution} className={`mt-10 flex`}>
                     <input
                         type="text"
                         name="searchInput"
                         value={searchTerm}
                         placeholder="Enter your search text"
-                        className={`flex-1 text-xl border-0 border-b-2 border-black focus:border-black bg-transparent focus:ring-offset-0 focus:ring-0 focus:ring-offset-transparent focus:shadow-none`}
-                        onChange={e=>setSearchTerm(e.target.value)}
+                        className={`flex-1 text-xl border-0 border-b border-black focus:border-black bg-transparent focus:ring-offset-0 focus:ring-0 focus:ring-offset-transparent focus:shadow-none`}
+                        onChange={e => setSearchTerm(e.target.value)}
                     />
                     <button className={`bg-black text-white px-8`}>
                         SEARCH
                     </button>
                 </div>
-                <button className={`w-10 h-10 absolute right-10 top-10`} onClick={closeModal}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className={`w-10 h-10`} viewBox="0 0 24 24">
-                        <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                <button className={`w-10 h-10 absolute right-8 top-8`} onClick={closeModal}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                     </svg>
                 </button>
                 {showResult()}

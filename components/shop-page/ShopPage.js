@@ -7,7 +7,7 @@
 
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
-import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
+import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Menu from "../navbar/Menu";
 import Footer from "../footer/Footer";
@@ -16,6 +16,8 @@ import BlockHeader from "../common/blockHeader";
 import Header from "../navbar/Header";
 
 import ProductCard from "./ProductCard";
+import MobileShopPage from "./MobileShopPage";
+import { apiCall } from "../../helpers/apiCall";
 
 
 function ShopPage(props) {
@@ -31,7 +33,7 @@ function ShopPage(props) {
             if (p.is_visible)
                 newData.push(p)
         })
-        // console.log("NEW DATA", newData)
+        console.log("NEW DATA", newData)
         setVisibleData(newData)
     }, [data.data])
     useEffect(() => {
@@ -73,20 +75,22 @@ function ShopPage(props) {
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
             <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                   alt={"loader"}/>
+                alt={"loader"} />
         </span>
     </span>
 
     if (!dataStore.mobile)
         return (
             <Fragment>
-                <PageHead url={"/" + hpid} id={hpid} isMobile={dataStore.mobile}/>
-
-                <CategoryHeaderVideo category={category}>
-                    <Header type={"shopMenu"}/>
-                </CategoryHeaderVideo>
-                <Header type={navControl ? "minimal" : "menu"} isMobile={false} filterData={data ? data.filter_count : {}}
-                        category={hpid}/>
+                <PageHead url={"/" + hpid} id={hpid} isMobile={dataStore.mobile} />
+                {navControl || <Header type={"shopMenu"} />}
+                <CategoryHeaderVideo category={category} />
+                {navControl
+                    ? <Header type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
+                        category={hpid} />
+                    : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
+                        category={hpid} />
+                }
                 <BlockHeader
                     space={"py-5"}
                     titleStyle={"text-center"}
@@ -97,12 +101,12 @@ function ShopPage(props) {
                 {(data)
                     ? <main className={`grid grid-cols-3 gap-5 container pb-20`}>
                         {visibleData && visibleData.map((prod, index) => {
-                            return <ProductCard prod={prod} key={index} isAccessory={(category === "scarves" || category === "jewellery")}/>
+                            return <ProductCard prod={prod} key={index} isAccessory={(category === "scarves" || category === "jewellery")} />
                         })}
                     </main>
                     : loader
                 }
-                <Footer isMobile={dataStore.mobile}/>
+                <Footer isMobile={dataStore.mobile} />
             </Fragment>
         );
 }
