@@ -192,13 +192,12 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         if (index !== selectedAddressIndex) {
             setSelectedAddressIndex(index)
             setAddress(dataStore.userAddresses[index])
-            if (index)
-                updateDataStore("selectedAddress", dataStore.userAddresses[index])
+            updateDataStore("selectedAddress", dataStore.userAddresses[index])
+            updateDataStore("addressIndex",index)
+            updateCompleteness(true)
         }
         if (edit !== editAddress)
             setEditAddress(edit)
-        if(index)
-            updateCompleteness(true)
     }
 
     useEffect(() => {

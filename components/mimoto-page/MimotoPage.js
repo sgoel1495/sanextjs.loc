@@ -13,20 +13,9 @@ import Footer from "../footer/Footer";
 import Image from "next/image";
 import Header from "../navbar/Header";
 import MimotoProductCard from "./MimotoProductCard";
-import { apiCall } from "../../helpers/apiCall";
 import MimotoSlider from "./MimotoSlider";
+import Loader from "../common/Loader";
 
-/*
-const fetchData = async (apiToken, category) => {
-    const callObject = await apiCall("getMimotoProducts", apiToken, { name: category })
-    console.log("CALL OBJECT", callObject)
-    return (callObject.hasOwnProperty("response")
-        && callObject.hasOwnProperty("msg")
-        && callObject.msg === "Products Found"
-    ) ? callObject.response : {}
-}
-
- */
 
 function MimotoPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -51,7 +40,6 @@ function MimotoPage(props) {
     console.log("Visible Data",visibleData)
 
 
-    const [loading, setLoading] = useState(false);
     console.log("DATA MIMOTO MAIN PAGE", data)
 
     const [navControl, setNavControl] = React.useState(false);
@@ -84,28 +72,29 @@ function MimotoPage(props) {
                     : <Menu type={"minimal"} isMobile={false} filterData={data ? data.filter_count : {}}
                         category={props.hpid} />
                 }
-                {(loading)
-                    ? loader
-                    : (data && data.hasOwnProperty("mimoto_collection"))
+                {(data)
+                    ? (data.hasOwnProperty("mimoto_collection"))
                         ? <div className="w-11/12 mx-auto flex items-start gap-14 relative mt-8">
-                            <MimotoSlider className="flex-1 block sticky top-20 inset-x-0 bg-[#f7f7f7]" data={data} />
+                            <MimotoSlider className="flex-1 block sticky top-20 inset-x-0 bg-[#f7f7f7]" data={data}/>
                             <main className={`flex-[2] relative`}>
                                 <div className="flex justify-end sticky top-[3rem] inset-x-0 bg-white z-[1] py-3">
                                     <button className="flex items-center uppercase text-sm gap-x-1">
                                         Filter
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24">
-                                            <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z" />
+                                            <path
+                                                d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/>
                                         </svg>
                                     </button>
                                 </div>
                                 <div className="grid grid-cols-2 gap-6">
                                     {data && visibleData && visibleData.map((prod, index) => {
-                                        return <MimotoProductCard prod={prod} key={index} />
+                                        return <MimotoProductCard prod={prod} key={index}/>
                                     })}
                                 </div>
                             </main>
                         </div>
                         : null
+                    : <Loader />
                 }
                 <Footer isMobile={dataStore.mobile} />
             </Fragment>

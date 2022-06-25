@@ -16,6 +16,7 @@ import BlockHeader from "../common/blockHeader";
 import Header from "../navbar/Header";
 
 import ProductCard from "./ProductCard";
+import Loader from "../common/Loader";
 
 
 function ShopPage(props) {
@@ -70,12 +71,6 @@ function ShopPage(props) {
         }
 
      */
-    const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
-        <span className={"block relative w-14 aspect-square"}>
-            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                   alt={"loader"}/>
-        </span>
-    </span>
 
     if (!dataStore.mobile)
         return (
@@ -100,7 +95,7 @@ function ShopPage(props) {
                             return <ProductCard prod={prod} key={index} isAccessory={(category === "scarves" || category === "jewellery")}/>
                         })}
                     </main>
-                    : loader
+                    : <Loader />
                 }
                 <Footer isMobile={dataStore.mobile}/>
             </Fragment>

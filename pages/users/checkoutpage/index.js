@@ -15,7 +15,7 @@ import OtpModal from "../../../components/checkout-page/OtpModal";
 
 function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
-
+    console.log("============= DATASTORE",dataStore)
     useEffect(()=>{
         if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === 0))
             updateDataStore("currentOrderId", Date.now())
@@ -25,26 +25,62 @@ function UsersCheckoutPage() {
     const [giftPaymentComplete, setGiftPaymentComplete] = useState(false)
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-
     const [showOTPModal, setShowOTPModal] = useState(false)
 
-    const placeOrder = async () => {
-        console.log(dataStore.currentOrderId,dataStore.currentOrderInCart)
-        // this userO is different
+    const updateAddressForOrder = async ()=>{
         const userO = getUserO(dataStore,true)
-        const queryObject = {
-            user:userO,
-            order:dataStore.currentOrderInCart.order
+        userO["address_index"]=dataStore.addressIndex
+        // step1 is update the address. Need orderid and address index
+        if(!dataStore.userData.contact) {
+            userO["address"] = {0: dataStore.selectedAddress}
+            userO["account"] = dataStore.currentOrderInCart.account
         }
-        console.log("Place Order Query Object",queryObject)
-        const step1Call = await apiCall("savePayment",dataStore.apiToken,queryObject)
+
+        const queryObject = {user:userO, order:{order_id:dataStore.currentOrderId}}
+        const addressCall = await apiCall("deliveryAddress",dataStore.apiToken,queryObject)
+        console.log("Update Address",addressCall)
+    }
+
+    const doStep1ForCOD = async ()=>{
+        // same for logged in or not
+        const userO = getUserO(dataStore,true)
+        const queryObject = {user:userO, order:dataStore.currentOrderInCart.order}
+        const step1Call = await apiCall("savePayment", dataStore.apiToken, queryObject)
+        // the OTP On this call is to be avoided
         console.log("STEP1 CALL",step1Call)
-        dataStore.place_order_step1 = step1Call
+        if(step1Call.message && step1Call.message==="Payment initiated"){
+            setShowOTPModal(true)
+        } else {
+            setMessage("Something went wrong. Please try again later")
+            setShow(true)
+        }
+    }
+
+    const doStep1ForCCDC = async ()=>{
+        if(dataStore.userData.contact){
+
+        } else {
+
+        }
+
+    }
+
+    const placeOrder = async () => {
+        console.log("============== Datastore",dataStore)
+        await updateAddressForOrder()
+
+        // step1 api for COD:
+        if(dataStore.currentOrderInCart.order.payment_mode==="COD")
+            await doStep1ForCOD()
+
     }
 
     const otpVerified = (verified)=>{
-        dataStore.currentOrderInCart.otp_verified = verified
-        updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+        if(verified){
+            dataStore.currentOrderInCart.otp_verified = verified
+            updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
+        }
+
     }
 
     console.log("addressComplete && giftPaymentComplete",addressComplete, giftPaymentComplete)
