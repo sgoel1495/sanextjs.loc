@@ -52,6 +52,9 @@ function CurrencySwitcher(props) {
             >
                 {options}
             </select>
+            {
+                props.type ==="menu" && <div className={"w-full h-full bg-white absolute top-0"}/>
+            }
         </div>
     );
 

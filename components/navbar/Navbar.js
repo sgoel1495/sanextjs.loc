@@ -93,13 +93,14 @@ function Navbar(props) {
                 </div>
             </>;
             break;
+        case "menu":
         case "minimal":
             browserView =
                 <nav className={navStyle + " flex items-center gap-x-4"}>
                     <SaltIcon type={props.type} isMobile={false} />
                     <SidebarMenuHamburger type={props.type} isMobile={false} />
                     <CurrencySwitcher type={props.type} isMobile={false} />
-                    <Menu type={props.type} isMobile={false} filterData={props.filterData} />
+                    <Menu type={"minimal"} isMobile={false} filterData={props.filterData} />
                     <SearchMenu type={props.type} isMobile={false} />
                     <SidebarMenuCart type={props.type} isMobile={false} />
                 </nav>

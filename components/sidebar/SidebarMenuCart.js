@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, { Fragment, useContext, useState } from "react";
+import React, {Fragment, useContext, useState} from "react";
 import ReactDom from "react-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Autoplay } from "swiper";
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore, {Autoplay} from "swiper";
 import "swiper/css";
 import AppWideContext from "../../store/AppWideContext";
-import { apiCall } from "../../helpers/apiCall";
+import {apiCall} from "../../helpers/apiCall";
 import ProductCartView from "../common/ProductCartView";
 
 SwiperCore.use([Autoplay]);
@@ -18,8 +18,8 @@ SwiperCore.use([Autoplay]);
  */
 
 function CartModal(props) {
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
-    const { closeModal } = props;
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const {closeModal} = props;
     const [tailoredProduct, setTailoredProduct] = useState(null)
     const [showEditTailored, setShowEditTailored] = useState(false)
     const [showViewTailored, setShowViewTailored] = useState(false)
@@ -58,7 +58,7 @@ function CartModal(props) {
                                 <div className={`p-2 bg-theme-50 border border-theme-200`}>
                                     <span className={`block relative w-full h-64`}>
                                         <Image src={WEBASSETS + `/assets/faq/S${index + 1}.jpg`} alt="return policy"
-                                            layout="fill" objectFit="cover" />
+                                               layout="fill" objectFit="cover"/>
                                     </span>
                                 </div>
                             </SwiperSlide>
@@ -129,7 +129,7 @@ function CartModal(props) {
                                 <div className={`p-1.5 bg-yellow-600 border border-theme-200`}>
                                     <div className="bg-white p-5">
                                         <span className={`block relative w-36 h-36 mx-auto`}>
-                                            <Image src={item.media} alt={item.alt} layout="fill" objectFit="contain" />
+                                            <Image src={item.media} alt={item.alt} layout="fill" objectFit="contain"/>
                                         </span>
                                         <p className={`text-right font-600 text-xs`}>- {item.headline}</p>
                                     </div>
@@ -195,7 +195,7 @@ function CartModal(props) {
                                         <Link href={item.link}>
                                             <a className={`block relative w-8 h-8`}>
                                                 <Image src={WEBASSETS + "/assets/images/fb-icon-color.png"}
-                                                    alt={`Facebook Link`} layout="fill" objectFit="contain" />
+                                                       alt={`Facebook Link`} layout="fill" objectFit="contain"/>
                                             </a>
                                         </Link>
                                         <div>
@@ -273,7 +273,7 @@ function CartModal(props) {
                     <button className={`w-8 h-8 float-right`} onClick={closeModal}>
                         <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} viewBox="0 0 24 24">
                             <path
-                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" />
+                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
                         </svg>
                     </button>
                     <div className={`text-center font-600 tracking-wider mb-10`}>
@@ -283,7 +283,7 @@ function CartModal(props) {
                                 <Link href="/users/checkoutpage">
                                     <a className="inline-flex mb-5 text-white bg-black px-5 py-3">CHECKOUT</a>
                                 </Link>
-                                <ProductCartView />
+                                <ProductCartView/>
                             </Fragment>
                             : null
                         }
@@ -327,53 +327,71 @@ function CartModal(props) {
                     <div>
                         <label htmlFor="bust">BUST</label>
                         <input type="number" name="bust"
-                            onChange={(showEditTailored ? (e) => { updateTailored("bust", e.target.value) } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("bust", e.target.value)
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     <div>
                         <label htmlFor="waist">WAIST</label>
                         <input type="number" name="waist"
-                            onChange={(showEditTailored ? (e) => { updateTailored("waist", e.target.value) } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("waist", e.target.value)
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     <div>
                         <label htmlFor="wearing_waist">WEARING WAIST / STOMACH</label>
                         <input type="number" name="wearing_waist"
-                            onChange={(showEditTailored ? (e) => { updateTailored("wearing_waist", e.target.value) } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("wearing_waist", e.target.value)
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     <div>
                         <label htmlFor="hips">HIPS</label>
                         <input type="number" name="hips"
-                            onChange={(showEditTailored ? (e) => { updateTailored("hips", e.target.value) } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("hips", e.target.value)
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     <div>
                         <label htmlFor="biceps">BICEPS</label>
                         <input type="number" name="biceps"
-                            onChange={(showEditTailored ? (e) => { updateTailored("biceps", e.target.value) } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("biceps", e.target.value)
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     <div>
                         <label htmlFor="height_f">Height</label>
                         <input type="text" name="height_f"
-                            onChange={(showEditTailored ? (e) => { updateTailored("height_f", e.target.value + " ft") } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("height_f", e.target.value + " ft")
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                         <input type="text" name="height_i"
-                            onChange={(showEditTailored ? (e) => { updateTailored("height_i", e.target.value + " inch") } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("height_i", e.target.value + " inch")
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     <div>
                         <label htmlFor="shoulder">SHOULDER</label>
                         <input type="number" name="shoulder"
-                            onChange={(showEditTailored ? (e) => { updateTailored("shoulder", e.target.value) } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("shoulder", e.target.value)
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     <div>
                         <label htmlFor="others">OTHERS</label>
                         <input type="text" name="others"
-                            onChange={(showEditTailored ? (e) => { updateTailored("others", e.target.value) } : () => void 0)}
-                            disabled={!!(showViewTailored)} />
+                               onChange={(showEditTailored ? (e) => {
+                                   updateTailored("others", e.target.value)
+                               } : () => void 0)}
+                               disabled={!!(showViewTailored)}/>
                     </div>
                     {(showEditTailored)
                         ? <div onClick={saveTailored}>SAVE</div>
@@ -395,7 +413,7 @@ function CartModal(props) {
 
 
 function SidebarMenuCart(props) {
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [showSidebarMenuCart, setShowSidebarMenuCart] = useState(false);
     React.useEffect(() => {
@@ -418,7 +436,7 @@ function SidebarMenuCart(props) {
 
 
     return (
-        <>
+        <span className={`block relative w-6 ${iconHeight}`}>
             <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{(dataStore.userCart.length === 0) ? null : dataStore.userCart.length}</span>
                 <Image
@@ -428,9 +446,12 @@ function SidebarMenuCart(props) {
                     objectFit={`contain`}
                 />
             </span>
-            {showSidebarMenuCart && ReactDom.createPortal(<CartModal data={data} closeModal={closeModal.bind(this)} />,
+            {
+                props.type === "menu" && <div className={"w-full h-full bg-white absolute top-0"}/>
+            }
+            {showSidebarMenuCart && ReactDom.createPortal(<CartModal data={data} closeModal={closeModal.bind(this)}/>,
                 document.getElementById("cartside"))}
-        </>
+        </span>
     );
 }
 
