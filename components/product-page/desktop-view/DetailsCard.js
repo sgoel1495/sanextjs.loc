@@ -294,7 +294,7 @@ const DetailsCard = ({ data, hpid }) => {
                     ?<span className={""} key={"divide" + index}>|</span>
                     :null
                 }
-                <span key={"div" + index} className={(selectedSize == size) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(size)}>
+                <span key={"sdsda" + index} className={(selectedSize == size) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} onClick={() => setSelectedSize(size)}>
                     {size}
                 </span>
             </Fragment>
