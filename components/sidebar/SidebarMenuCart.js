@@ -437,7 +437,9 @@ function SidebarMenuCart(props) {
 
     return (
         <span className={`block relative w-6 ${iconHeight}`}>
-            <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
+
+            {
+                props.type !== "menu" && <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
                 <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{(dataStore.userCart.length === 0) ? null : dataStore.userCart.length}</span>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
@@ -446,8 +448,6 @@ function SidebarMenuCart(props) {
                     objectFit={`contain`}
                 />
             </span>
-            {
-                props.type === "menu" && <div className={"w-full h-full bg-white absolute top-0"}/>
             }
             {showSidebarMenuCart && ReactDom.createPortal(<CartModal data={data} closeModal={closeModal.bind(this)}/>,
                 document.getElementById("cartside"))}

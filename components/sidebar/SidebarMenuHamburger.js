@@ -448,22 +448,21 @@ function SidebarMenuHamburger(props) {
 
     const browserView = <Fragment>
         {(navigationData.length > 0)
-            ? <Fragment>
-                <div onClick={() => setShowSidebarMenu(true)}
-                     className={`relative cursor-pointer w-6 ${iconHeight}`}>
-                    <Image
-                        src={WEBASSETS + "/assets/images/menuicon_v1.png"}
-                        alt="menuicon"
-                        layout={`fill`}
-                        objectFit={`contain`}
-                    />
-
-                </div>
+            ? <span className={`relative w-6 ${iconHeight}`}>
                 {
-                    props.type ==="menu" && <div className={"w-full h-full bg-white absolute top-0"}/>
+                    props.type !=="menu" && <div onClick={() => setShowSidebarMenu(true)}
+                                                 className={`relative cursor-pointer w-6 ${iconHeight}`}>
+                        <Image
+                            src={WEBASSETS + "/assets/images/menuicon_v1.png"}
+                            alt="menuicon"
+                            layout={`fill`}
+                            objectFit={`contain`}
+                        />
+
+                    </div>
                 }
-                <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu}/>,
-            </Fragment>
+                <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu}/>
+            </span>
             : <Fragment>TeaCii Loading</Fragment>}
     </Fragment>;
 

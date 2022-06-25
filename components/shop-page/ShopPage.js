@@ -17,6 +17,8 @@ import Header from "../navbar/Header";
 
 import ProductCard from "./ProductCard";
 import Loader from "../common/Loader";
+import MobileShopPage from "./MobileShopPage";
+import { apiCall } from "../../helpers/apiCall";
 
 
 function ShopPage(props) {
@@ -95,7 +97,7 @@ function ShopPage(props) {
                             return <ProductCard prod={prod} key={index} isAccessory={(category === "scarves" || category === "jewellery")}/>
                         })}
                     </main>
-                    : <Loader />
+                    : loader
                 }
                 <Footer isMobile={dataStore.mobile}/>
             </Fragment>

@@ -49,7 +49,8 @@ function SaltIcon(props) {
 
     const browserView = (
         <span className={`relative ${sizeClass}`}>
-            <Link href="/" passHref>
+            {
+                props.type !=="menu" && <Link href="/" passHref>
                 <span className={`block relative cursor-pointer ${sizeClass}`}>
                     <Image
                         src={WEBASSETS + `/assets/images/${logo}`}
@@ -59,9 +60,7 @@ function SaltIcon(props) {
                         objectFit={`contain`}
                     />
                 </span>
-            </Link>
-            {
-                props.type ==="menu" && <div className={"w-full h-full bg-white absolute top-0"}/>
+                </Link>
             }
         </span>
     );

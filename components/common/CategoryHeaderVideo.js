@@ -68,7 +68,7 @@ function CategoryHeaderVideo(props) {
     return (
         <section>
             {props.children}
-            <span className={"relative block pt-[5.5rem] h-[54rem] overflow-hidden"}>
+            <span className={"relative block overflow-hidden"}>
                 <video autoPlay muted className={`w-full h-fit`} loop style={{background: `no-repeat url("${WEBASSETS}/assets/videos/${category}.jpg")`}} ref={videoRef}>
                     <source
                         src={WEBASSETS + "/assets/videos/" + category + ".mp4"}
