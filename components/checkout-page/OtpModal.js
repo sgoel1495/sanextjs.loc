@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import {Fragment, useCallback, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import { apiCall } from "../../helpers/apiCall";
 import getUserO from "../../helpers/getUserO";
@@ -34,7 +34,7 @@ function OtpModal(props) {
         }
     }, [counter, otpValidity])
 
-    const requestOTP = async () => {
+    const requestOTP = useCallback(async () => {
         const otpCall = await apiCall("codOtp", dataStore.apiToken, {
             user: getUserO(dataStore, true, true),
             order: { order_id: dataStore.currentOrderId }
@@ -49,12 +49,13 @@ function OtpModal(props) {
         } else
             return false
 
-    }
+    },[dataStore])
 
     useEffect(() => {
-        requestOTP()
-            .then(resp=>console.log("OTP REQUEST SENT"))
-    },[])
+        if(!otpValidity)
+            requestOTP()
+                .then(resp=>console.log("OTP REQUEST SENT"))
+    },[requestOTP,otpValidity])
 
     const resendOTP = async () => {
         await requestOTP()
