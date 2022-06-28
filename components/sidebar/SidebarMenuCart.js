@@ -6,8 +6,8 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Autoplay} from "swiper";
 import "swiper/css";
 import AppWideContext from "../../store/AppWideContext";
-import {apiCall} from "../../helpers/apiCall";
 import ProductCartView from "../common/ProductCartView";
+import qtyInCart from "../../helpers/qtyInCart";
 
 SwiperCore.use([Autoplay]);
 
@@ -277,7 +277,7 @@ function CartModal(props) {
                         </svg>
                     </button>
                     <div className={`text-center font-600 tracking-wider mb-10`}>
-                        <p className={`text-sm mb-6`}>YOUR CART {dataStore.userCart.length > 0 && `(${dataStore.userCart.length})`}</p>
+                        <p className={`text-sm mb-6`}>YOUR CART {qtyInCart(dataStore)}</p>
                         {(dataStore.userCart.length > 0)
                             ? <Fragment>
                                 <Link href="/users/checkoutpage">
@@ -440,7 +440,7 @@ function SidebarMenuCart(props) {
 
             {
                 props.type !== "menu" && <span onClick={() => setShowSidebarMenuCart(true)} className={`block relative w-6 cursor-pointer ${iconHeight}`}>
-                <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{(dataStore.userCart.length === 0) ? null : dataStore.userCart.length}</span>
+                <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{qtyInCart(dataStore)}</span>
                 <Image
                     src={WEBASSETS + "/assets/images/cart.png"}
                     alt="carticon"
