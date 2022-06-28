@@ -57,7 +57,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_product_by_id";
             body = {
                 token: apiToken,
-                product_id: queryObject.product_id
+                ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}

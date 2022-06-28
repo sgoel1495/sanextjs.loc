@@ -1,0 +1,85 @@
+1. Posible values for category are:-
+"tops", "shirts", "pants", "skirts", "dresses", "outerwear", "scarves", "belts", "tunics", "jewellery", "jumpsuits", "new-arrivals", "best-selling", “sale”, “same-pattern”, “same-color”, “any tag”
+
+(Filter are applicable on items category and new-arrivals only.)
+
+2. skip and limit:-
+These two field should be in integer.
+
+
+3. Alternate body with filter apply
+
+Note:- sorted_by possible values : “price-asc”, “price-desc”, “best-selling-count-desc”, “created-at-desc”
+
+{
+"product": {
+"token": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
+"category": "tops",
+"skip": 0,
+"limit": 10,
+"sorted_by": "price-desc",
+"filter_by": {
+"category":["tops"],
+"color": ["red","blue"]
+}
+}
+}
+
+4. Request to get same-color prods:-
+
+{
+"product": {
+"token": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
+"category": "same-color",
+"skip": 0,
+"limit": 10,
+"category-name": "FAB_324_BROWN_MUSTARD_CHECKS_MOSSLYCRA",
+"curr-product-id": "Dresses-Waffle-Dropshoulderdress"
+}
+}
+
+
+5. Request to get same-pattern prods:-
+
+{
+"product": {
+"token": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
+"category": "same-pattern",
+"skip": 0,
+"limit": 10,
+"category-name": "P155",
+"curr-product-id": "Dresses-Waffle-Dropshoulderdress"
+}
+}
+
+6. Request to get sale prods:-
+
+{
+"product": {
+"token": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
+"category": "sale",
+"skip": 0,
+"limit": 10}
+}
+
+7. Request to get tag(group) prods:-
+
+{
+"product": {
+"token": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
+"category": "poly-crepe",
+"skip": 0,
+"limit": 10}
+}
+
+8. Product for getting New-Arrival with slider
+
+{
+"product": {
+"token": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
+"category": "new-arrivals",
+"skip": 0,
+"limit": 10
+}
+}
+

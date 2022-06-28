@@ -1,0 +1,73 @@
+{
+  "status": 200,
+  "msg": "success",
+  "response": {
+    "tagline": null,
+    "asset_origin": "http://103.90.242.46:84",
+    "filter_count": "",
+    "total_products_exist": 4,
+    "data": [
+      {
+        "asset_id": "Tops-Banana-Milkshake-DartedSleeveTop",
+        "cate_visible": true,
+        "category": "tops",
+        "coll_visible": true,
+        "in_stock": "true",
+        "inventory": "{\"xs\"=\u003e0, \"s\"=\u003e0, \"m\"=\u003e0, \"l\"=\u003e0, \"xl\"=\u003e0, \"xxl\"=\u003e0, \"f\"=\u003e0}",
+        "is_prod_new": true,
+        "is_visible": true,
+        "multi_color": false,
+        "name": "Banana Milkshake",
+        "old_product_id": "Tops-Banana-Milkshake-DartedSleeveTop",
+        "price": 1850,
+        "size_avail": "",
+        "tag_line": "Darted Sleeve Top",
+        "single_view_img": "/assets/Tops-Banana-Milkshake-DartedSleeveTop/new.jpg",
+        "double_view_img": "/assets/Tops-Banana-Milkshake-DartedSleeveTop/thumb.mob.jpg",
+        "belong_to": "",
+        "usd_price": 26
+      },
+      {
+        "asset_id": "Tops-Mocha-PleatedSleeveTop",
+        "cate_visible": true,
+        "category": "tops",
+        "coll_visible": true,
+        "in_stock": "true",
+        "inventory": "{\"xs\"=\u003e0, \"s\"=\u003e0, \"m\"=\u003e0, \"l\"=\u003e0, \"xl\"=\u003e0, \"xxl\"=\u003e0, \"f\"=\u003e0}",
+        "is_prod_new": true,
+        "is_visible": true,
+        "multi_color": false,
+        "name": "Mocha",
+        "old_product_id": "Tops-Mocha-PleatedSleeveTop",
+        "price": 2150,
+        "size_avail": "[{\"Size\"=\u003e\"XS\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e24, \"Hip\"=\u003e34, \"Length\"=\u003e19.5}, {\"Size\"=\u003e\"S\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e26, \"Hip\"=\u003e36, \"Length\"=\u003e20}, {\"Size\"=\u003e\"M\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e28, \"Hip\"=\u003e38, \"Length\"=\u003e20.5}, {\"Size\"=\u003e\"L\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e30, \"Hip\"=\u003e40, \"Length\"=\u003e21}, {\"Size\"=\u003e\"XL\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e32, \"Hip\"=\u003e42, \"Length\"=\u003e21.5}]",
+        "tag_line": "Pleated Sleeve Top",
+        "single_view_img": "/assets/Tops-Mocha-PleatedSleeveTop/new.jpg",
+        "double_view_img": "/assets/Tops-Mocha-PleatedSleeveTop/thumb.mob.jpg",
+        "belong_to": "",
+        "usd_price": 31
+      },
+      {
+        "asset_id": "Tops-Belle-LinenAsymmetricColorblockedTop",
+        "cate_visible": true,
+        "category": "tops",
+        "coll_visible": true,
+        "in_stock": "true",
+        "inventory": "{\"xs\"=\u003e0, \"s\"=\u003e0, \"m\"=\u003e0, \"l\"=\u003e0, \"xl\"=\u003e0, \"xxl\"=\u003e0, \"f\"=\u003e0}",
+        "is_prod_new": true,
+        "is_visible": true,
+        "multi_color": false,
+        "name": "Belle",
+        "old_product_id": "Tops-Belle-LinenAsymmetricColorblockedTop",
+        "price": 2450,
+        "size_avail": "[{\"Size\"=\u003e\"XS\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e24, \"Hip\"=\u003e34, \"Length\"=\u003e19.5}, {\"Size\"=\u003e\"S\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e26, \"Hip\"=\u003e36, \"Length\"=\u003e20}, {\"Size\"=\u003e\"M\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e28, \"Hip\"=\u003e38, \"Length\"=\u003e20.5}, {\"Size\"=\u003e\"L\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e30, \"Hip\"=\u003e40, \"Length\"=\u003e21}, {\"Size\"=\u003e\"XL\", \"AvailQty\"=\u003e5, \"Waist\"=\u003e32, \"Hip\"=\u003e42, \"Length\"=\u003e21.5}]",
+        "tag_line": "Linen Asymmetric Colorblocked Top",
+        "single_view_img": "/assets/Tops-Belle-LinenAsymmetricColorblockedTop/new.jpg",
+        "double_view_img": "/assets/Tops-Belle-LinenAsymmetricColorblockedTop/thumb.mob.jpg",
+        "belong_to": "",
+        "usd_price": 35
+      }
+    ]
+  },
+  "new_arr_carousal": {}
+}

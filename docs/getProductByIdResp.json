@@ -1,0 +1,140 @@
+{
+  "status": 200,
+  "msg": "success",
+  "response": {
+    "product_id": "Tops-Sale-Raisin-Green-AsymmetricOverlapTop",
+    "cate_id": "cate_01",
+    "name": "Raisin-Green",
+    "collection": "Knit",
+    "tag_line": "Asymmetric Overlap Top",
+    "price": 1650.0,
+    "usd_price": 24,
+    "paired_products": [
+      {
+        "asset_id": "/assets/Pants_Jedi_CropPantswSideZip/thumb.png",
+        "category": "pants",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Jedi",
+        "old_product_id": "Pants_Jedi_CropPantswSideZip",
+        "price": 2800.0,
+        "tag_line": "The must have Crop Pants",
+        "usd_price": 40.0
+      },
+      {
+        "asset_id": "/assets/Skirts-Coherent-A-LineSkirtwithButtons/thumb.png",
+        "category": "skirts",
+        "in_stock": "true",
+        "is_international": true,
+        "name": "Coherent",
+        "old_product_id": "Skirts-Coherent-A-LineSkirtwithButtons",
+        "price": 2350.0,
+        "tag_line": "A-Line Skirt with Buttons",
+        "usd_price": 33.0
+      }
+    ],
+    "filter-fabric": "knits",
+    "filter-category": "tops",
+    "filter-collection": "knit",
+    "filter-sleeve-length": "sleeveless",
+    "filter-fit-or-style": "",
+    "filter-neckline": "scoop",
+    "filter-collar": "",
+    "filter-rise": "",
+    "filter-pattern": "solids",
+    "filter-color": "green",
+    "filter-multi-color": "false",
+    "cate_visible": true,
+    "is_visible": true,
+    "asset_id": "Tops-Raisin-Green-AsymmetricOverlapTop",
+    "pattern_no": "P194",
+    "color_name": "Green",
+    "category": "tops",
+    "fabric_code": "FAB_168_TEXTURED_KNIT_GREEN",
+    "multi_color": false,
+    "hide_sizes": [
+      ""
+    ],
+    "fit": "fitted",
+    "inventory": {
+      "xs": 0,
+      "s": 0,
+      "m": 0,
+      "l": 0,
+      "xl": 1,
+      "xxl": 0,
+      "f": 0
+    },
+    "is_customize": false,     // ~Bool values to show customization or not
+    "sleeve_length": "sleeveless",
+    "sleeve_length_opt": [],
+    "dress_length": "",
+    "dress_length_opt": [],
+    "is_basic": false,
+    "multi_color_id": "",
+    "images": [
+      "/assets/Tops-Raisin-Green-AsymmetricOverlapTop/Front.jpg",
+      "/assets/Tops-Raisin-Green-AsymmetricOverlapTop/Back.jpg",
+      "/assets/Tops-Raisin-Green-AsymmetricOverlapTop/Side.jpg",
+      "/assets/Tops-Raisin-Green-AsymmetricOverlapTop/Macro.jpg"
+    ],
+    "is_international": false,
+    //~ Icons  with asset link and name
+    "icons_fea": {
+      "stretch": true,
+      "ironing_required": false,
+      "wrinkle_free": true,
+      "machine_wash": true,
+      "9_9_clothing": true,
+      "lined": false,
+      "100_cotton": false,
+      "reusable": false,
+      "sweat_free": false,
+      "comfortable": false,
+      "high_breathable": false,
+      "mild_breathable": false,
+      "mild_stretch": false,
+      "extra_stretch": true
+    },
+    "icon_assets": [
+      {
+        "9_9_clothing": "/assets/images/icons/9-9-clothing_v1.svg"
+      },
+      {
+        "machine_wash": "/assets/images/icons/Machine-Wash_v1.svg"
+      },
+      {
+        "stretch": "/assets/images/icons/Stretch_v1.svg"
+      },
+      {
+        "extra_stretch": "/assets/images/icons/Extra_Stretch_v1.svg"
+      },
+      {
+        "wrinkle_free": "/assets/images/icons/Wrinkle-free_v1.svg"
+      }
+    ],
+    "is_sale": true,
+    "sale_price": "990",
+    "sale_name": "end of season sale",
+    "description": [
+      "A Dressy Statement Top",
+      " Raisin-Green is the perfect Work Meets Play Top",
+      " The asymmetric overlap in the front makes it look dressy and formal at the same time",
+      " Pair it with neutral color bottoms and you're all set to take on the day and the evening",
+      " Color May Vary Slightly Due To Screen Settings"
+    ],
+    "fabric_care": [
+      "Professional Dry Clean Recommended.",
+      "Machine Wash Cold with Like Colors",
+      "Mild to No Ironing Required",
+      "Color May Vary Slightly Due To Screen Settings"
+    ],
+    "details": [
+      "Asymmetric Overlap Panel"
+    ],
+    "fabric": [
+      "Polyester Elastane Blend, Soft Drapable Medium Weight Fabric with Extra Stretch, Moss Texture"
+    ]
+  },
+  "estimated_delivery_date": "May 29 - May 30"
+}
