@@ -241,7 +241,7 @@ navigationDataInit.push(
         child: [
             {
                 title: `TERMS & CONDITIONS`,
-                link: `/salt/terms-condition`
+                link: `/salt/terms-and-condition`
             },
             {
                 title: `PRIVACY POLICY`,
@@ -321,7 +321,7 @@ function HamburgerModal(props) {
         {(props.data && props.data.length > 0)
             ? <><div className={`bg-theme-900/50 fixed top-0 z-50 h-full w-full`+[props.visible?" left-0":" hidden"]} onClick={closeModal}/>
                 <div
-                    className={"max-w-[300px] z-[51] h-full bg-white overflow-x-hidden flex flex-col fixed top-0 transition-[left] duration-300 "+[props.visible?"left-0":"left-[-300px]"]}
+                    className={"max-w-[300px] z-[51] h-screen bg-white overflow-x-hidden flex flex-col fixed top-0 transition-[left] duration-300 "+[props.visible?"left-0":"left-[-300px]"]}
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="flex items-center justify-between p-4 border-b border-theme-200">

@@ -74,11 +74,10 @@ function SaltShippingNReturnsPage() {
         return showSRData;
     }
 
-
     return (
         <Fragment>
             <PageHead url="/salt/shipping-returns" id="shippingnreturns" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
             <CategoryHeaderImage category={category} />
             <section className={"container my-20" + [dataStore.mobile ? " px-4" : " grid gap-x-20 grid-cols-2"]}>
                 {dataStore.mobile && <span className={"block text-center text-2xl font-bold capitalize"}>Shipping & returns</span>}

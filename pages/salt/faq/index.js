@@ -56,7 +56,7 @@ function SaltFaqPage() {
                         {showFaqData}
                         <Accordion
                             title={ele.question}
-                            titleStyle={"bg-black/10 py-7 px-6"}
+                            titleStyle={"bg-black/10 px-4 py-5 lg:py-7 lg:px-6"}
                             titleTextStyle={`text-[#777] text-sm font-500 uppercase`}
                             bodyStyle={"bg-black/5"}
                         >
@@ -101,6 +101,7 @@ function SaltFaqPage() {
         </>
     )
 }
+
 
 
 export default SaltFaqPage;

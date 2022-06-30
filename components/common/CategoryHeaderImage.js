@@ -15,23 +15,27 @@ function CategoryHeaderImage(props) {
     const category = props.category;
     let showCategoryName = true;
     let imageSource = WEBASSETS + "/assets/";
-    let imageClass = ""
+    let imageClass = "";
+    let objectPosition = "";
     switch (category) {
         case "FAQ":
             imageSource = imageSource + "images/TnC.2.jpg";
             break;
         case "Shipping & Returns":
             imageSource = imageSource + "images/TnC.2.jpg";
-            imageClass = "ml-[-72vw]"
+            imageClass = "ml-[-72vw]";
+            objectPosition = "74% 0";
             break;
         case "Cancellation & Modifications":
             imageSource = imageSource + "images/TnC.2.jpg";
+            objectPosition = "45% 0";
             break;
         case "Contact Us":
             imageSource = imageSource + (dataStore.mobile ? "images/ContactUs.mob.2_v1.jpg" : "images/ContactUs.2_v1.jpg");
             break;
         case "Terms & Conditions":
             imageSource = imageSource + "images/TnC.1.jpg";
+            objectPosition = "45% 0";
             break;
         case "Privacy Policy":
             imageSource = imageSource + "images/TnC.1.jpg";
@@ -45,6 +49,7 @@ function CategoryHeaderImage(props) {
             showCategoryName = false;
             break;
         default:
+            objectPosition = "72% 32px"
             break;
     }
 
@@ -56,13 +61,12 @@ function CategoryHeaderImage(props) {
                     layout={`fill`}
                     objectFit={`cover`}
                     alt={category}
-                    objectPosition={"72% 32px"}
+                    objectPosition={objectPosition}
                 />
             </div>
         )
-    }
-    return (
-        <section className={`relative mt-8`}>
+    } else return (
+        <section className={`relative`}>
             <span className={`block relative w-full h-[70vh]`}>
                 <Image src={imageSource} alt={category} layout={`fill`} objectFit={`cover`} />
             </span>
