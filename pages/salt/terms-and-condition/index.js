@@ -13,7 +13,7 @@ import Header from "../../../components/navbar/Header";
 
 function SaltTermsAndConditionPage() {
     const { dataStore } = useContext(AppWideContext);
-
+    console.log("================================================================ is MObile", dataStore.mobile)
     const category = "Terms & Conditions";
     const blockStyle = `flex flex-col gap-y-4`;
     const blockLeadStyle = `font-600`;
