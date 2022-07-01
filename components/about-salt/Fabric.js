@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ParallaxBlock from "../common/ParallaxBlock";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import useScrollDirection from "../../hooks/useScrollDirection";
 
 /**
  * @todo @Sambhav css pls
@@ -15,9 +16,11 @@ function Fabric(props) {
 
     //let oldValue, newValue = 0;
     const [oldValue,setOldValue]=useState(0)
-    const [scrollDirection, setScrollDirection] = React.useState(false);
+    const scrollDirection = useScrollDirection()
+    /*
+    const [scrollDirection, setScrollDirection] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const scrollController= (_e)=>{
             const newValue = window.scrollY
             if (oldValue < newValue) {
@@ -34,14 +37,14 @@ function Fabric(props) {
             window.removeEventListener("scroll",scrollController)
         }
     }, [oldValue]);
-
+    */
     // GSAP Animation
     gsap.registerPlugin(ScrollTrigger);
 
     let GSAPBlock1Animation = React.useRef(null);
     let GSAPBlock2Animation = React.useRef(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         gsap.fromTo(
             GSAPBlock1Animation,
             {

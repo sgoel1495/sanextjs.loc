@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
 import AppWideContext from "./store/AppWideContext";
 import Toast from "./components/common/Toast";
 
@@ -16,7 +16,7 @@ function CreateMyAccount(props) {
         setRefresh(!refresh)
     }
 
-    useEffect(() => {
+    const updateCompleteness = useCallback(()=>{
         let completeness = true
         if (createAccount) {
             completeness = (
@@ -33,6 +33,10 @@ function CreateMyAccount(props) {
         updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
         if (completeness !== props.createAccount)
             props.updateCreateAccount(completeness)
+    },[createAccount,dataStore.currentOrderInCart.account,props.createAccount])
+
+    useEffect(() => {
+        updateCompleteness()
     }, [refresh])
 
     const labelClass = "block font-500 mb-1";

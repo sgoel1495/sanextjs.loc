@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ParallaxBlock from "../common/ParallaxBlock";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import useScrollDirection from "../../hooks/useScrollDirection";
 
 /**
  * @todo @Sambhav css pls
@@ -12,27 +13,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 function OurDesign(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
-    const [oldValue,setOldValue]=useState(0)
-    const [scrollDirection, setScrollDirection] = React.useState(false);
-
-    React.useEffect(() => {
-        const scrollController= (_e)=>{
-            const newValue = window.scrollY
-            if (oldValue < newValue) {
-                setScrollDirection(true)
-                setOldValue(newValue)
-            } else if (oldValue > newValue) {
-                setScrollDirection(false)
-                setOldValue(newValue)
-            }
-        }
-        window.addEventListener('scroll', scrollController);
-
-        return ()=>{
-            window.removeEventListener("scroll",scrollController)
-        }
-    }, [oldValue]);
+    const scrollDirection = useScrollDirection()
     /*
     let oldValue, newValue = 0;
     const [scrollDirection, setScrollDirection] = React.useState(false)
