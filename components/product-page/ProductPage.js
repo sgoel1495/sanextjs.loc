@@ -5,6 +5,7 @@ import Header from "../navbar/Header";
 import DesktopView from "./desktop-view/DesktopView";
 import { apiDictionary } from "../../helpers/apiDictionary";
 import MobileView from "./mobile-view/MobileView";
+import useNavControl from "../../hooks/useNavControl";
 
 /**
  * @param props has isMobile and hpid
@@ -15,7 +16,8 @@ import MobileView from "./mobile-view/MobileView";
 function ProductPage(props) {
     const { dataStore } = useContext(AppWideContext);
     const [data, setData] = useState(null);
-
+    const navControl = useNavControl(0)
+    /*
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
         const isSet = (window.scrollY > 0)
@@ -29,6 +31,8 @@ function ProductPage(props) {
         };
     }, [controller]);
 
+
+     */
     const fetchData = useCallback(() => {
         const callObject = apiDictionary("getProduct", dataStore.apiToken, { product_id: props.hpid });
 

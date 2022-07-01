@@ -2,7 +2,7 @@
  * @params {isMobile} props
  * @constructor
  */
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import SaltIcon from "./SaltIcon";
@@ -49,7 +49,7 @@ function Navbar(props) {
     }
 
     let mobileView, browserView;
-
+    console.log("PROPTYPE --------- ",props.type)
     switch (props.type) {
         case "shopMenu":
             browserView =
@@ -61,16 +61,16 @@ function Navbar(props) {
                     <SearchMenu type={props.type} isMobile={false}/>
                     <SidebarMenuCart type={props.type} isMobile={false}/>
                 </nav>
-            mobileView = <>
+            mobileView = <Fragment>
                 <div className={navStyle + " flex items-center justify-between bg-white"}>
-                    <SidebarMenuHamburger isMobile={true}/>
-                    <SaltIcon isMobile={true} type={props.type}/>
+                    <SidebarMenuHamburger isMobile={true} />
+                    <SaltIcon isMobile={true} type={props.type} />
                     <p className={'text-[10px] font-500 leading-none'}>BESPOKE &amp; <br/> CUSTOM CLOTHING</p>
-                    <SearchMenu isMobile={true}/>
-                    <SidebarMenuCart isMobile={true}/>
+                    <SearchMenu isMobile={true} />
+                    <SidebarMenuCart isMobile={true} />
                 </div>
-                <div className={"z-30 sticky top-0 pt-2 flex items-center bg-white"} ref={menuRef}>
-                    <Link href={"/"} >
+                <div className="z-30 sticky top-0 pt-2 flex items-center bg-white" ref={menuRef}>
+                    <Link href="/" >
                         <a className="block px-4">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 1024" className='w-5 h-5'>
                                 <path d="M169.387067 0h1020.161199v1020.1612H169.387067z" fill="#FFFFFF"
@@ -81,16 +81,16 @@ function Navbar(props) {
                             </svg>
                         </a>
                     </Link>
-                    <ul className={"inline-flex gap-5 items-center justify-between overflow-x-scroll z-20 text-xs font-600 py-2"}>
+                    <ul className="inline-flex gap-5 items-center justify-between overflow-x-scroll z-20 text-xs font-600 py-2">
                         <li className='min-w-max'>
-                            <Link href={"/new-arrivals/all"}>
+                            <Link href="/new-arrivals/all">
                                 <a>NEW IN</a>
                             </Link>
                         </li>
                         <Menu isMobile={true}/>
                     </ul>
                     <div
-                        className={"absolute w-full shadow-[7.1px_7.1px_14.6px_0.5px_rgb(0,0,0,0.08)] transition-[top] duration-700 ease-in-out"}
+                        className="absolute w-full shadow-[7.1px_7.1px_14.6px_0.5px_rgb(0,0,0,0.08)] transition-[top] duration-700 ease-in-out"
                         style={{
                             top: show ? menuRef.current.getBoundingClientRect().bottom - 5 : 0,
                             left: show ? 0 : -1000
@@ -98,9 +98,14 @@ function Navbar(props) {
                         {props.subMenu}
                     </div>
                 </div>
-            </>;
-            break;
+            </Fragment>;
+            break
+
         case "menu":
+            browserView = null
+            mobileView = null
+            break
+
         case "minimal":
             browserView =
                 <nav className={navStyle + " flex items-center gap-x-4"}>
@@ -178,7 +183,7 @@ function Navbar(props) {
                             <Link href={"/homepage/signin"}>
                                 <a>
                                     <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav"
-                                           width={iconHeightWeight} height={iconHeightWeight}/>
+                                           width={iconHeightWeight} height={iconHeightWeight} />
                                 </a>
                             </Link>
                         </li>
@@ -191,6 +196,7 @@ function Navbar(props) {
                     </ul>
                 </div>
             </>;
+            break
     }
 
 

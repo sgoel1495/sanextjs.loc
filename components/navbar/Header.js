@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import InfoBand from "../info-band/InfoBand";
 import Navbar from "./Navbar";
 import Menu from "./Menu";
+import useNavControl from "../../hooks/useNavControl";
 
 /**
  *
@@ -18,26 +19,16 @@ import Menu from "./Menu";
  **/
 
 const Header = (props) => {
-    const [navControl, setNavControl] = React.useState(false);
-    const controller = useCallback(() => {
-        const isSet = (window.scrollY > 0)
-        if (isSet !== navControl)
-            setNavControl(isSet)
-    }, [navControl])
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
-    }, [controller]);
+
+    const navControl = useNavControl(0)
 
     const mobileView = (props.type === "minimal")
         ? <div className={"fixed inset-x-0 top-0 z-20"}>
-            <InfoBand/>
+            <InfoBand />
             <Navbar {...props} />
         </div>
         : <div>
-            <InfoBand/>
+            <InfoBand />
             <Navbar {...props} />
         </div>
     const browserView = (props.type === "minimal" || props.type === "menu")
@@ -45,7 +36,7 @@ const Header = (props) => {
             <Navbar {...props} />
         </div>
         : <div className={"navigator z-30 duration-300 hover:bg-white transition-colors sticky top-0 right-0 left-0" + [navControl ? ' bg-white/90' : ' bg-white/95']}>
-            <InfoBand/>
+            <InfoBand />
             <Navbar {...props} />
         </div>
 

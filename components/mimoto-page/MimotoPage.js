@@ -15,6 +15,7 @@ import Header from "../navbar/Header";
 import MimotoProductCard from "./MimotoProductCard";
 import MimotoSlider from "./MimotoSlider";
 import Loader from "../common/Loader";
+import useNavControl from "../../hooks/useNavControl";
 
 
 function MimotoPage(props) {
@@ -41,7 +42,8 @@ function MimotoPage(props) {
 
 
     console.log("DATA MIMOTO MAIN PAGE", data)
-
+    const navControl = useNavControl(window.innerHeight - 20)
+    /*
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
         const isSet = (window.scrollY > window.innerHeight - 20)
@@ -53,14 +55,13 @@ function MimotoPage(props) {
         return () =>
             window.removeEventListener('scroll', controller)
     }, [controller]);
-
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
             <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
                 alt={"loader"} />
         </span>
     </span>
-
+*/
     if (!dataStore.mobile)
         return (
             <Fragment>

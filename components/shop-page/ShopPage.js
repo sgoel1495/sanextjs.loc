@@ -19,6 +19,7 @@ import ProductCard from "./ProductCard";
 import Loader from "../common/Loader";
 import MobileShopPage from "./MobileShopPage";
 import { apiCall } from "../../helpers/apiCall";
+import useNavControl from "../../hooks/useNavControl";
 
 
 function ShopPage(props) {
@@ -40,7 +41,8 @@ function ShopPage(props) {
     useEffect(() => {
         initVisibleData()
     }, [initVisibleData])
-
+    const navControl = useNavControl(window.innerHeight - 20)
+    /*
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {
         const isSet = (window.scrollY > window.innerHeight - 20)
@@ -52,6 +54,8 @@ function ShopPage(props) {
         return () =>
             window.removeEventListener('scroll', controller)
     }, [controller]);
+
+     */
     /**
      * @todo API - Please tell the api which gives the tagline for categories << HArdcoded
      *
