@@ -47,7 +47,7 @@ function MoreColours ({hpid}) {
             })
             .catch(e=>console.log(e.message))
 
-    },[hpid])
+    },[hpid,dataStore.apiToken])
 
     const mobileView = null
     const browserView = ()=>{
