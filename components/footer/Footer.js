@@ -35,7 +35,6 @@ function Footer(props) {
     console.log("================================================================FOOTER is MObile", dataStore.mobile)
     const mobileView = props.minimal ?
         <footer className={`bg-[${props.color}] p-4`}>
-            <Fragment>MOBILE VIEW</Fragment>
             <div className="text-sm flex flex-col gap-5 items-center mb-10 text-black/50 font-500">
                 <p className="text-sm font-bold">SALT CARE Team is happy to help! We will get back to you within 24
                     hours.</p>
@@ -84,7 +83,6 @@ function Footer(props) {
             </div>
         </footer>
         : <footer className="bg-[#222222] py-2">
-            <Fragment>MOBILE VIEW</Fragment>
             <h2 className={"text-5xl font-bold text-[#6C93E5] text-center tracking-[-3.5px] pt-10 pb-12"}>Hi there!</h2>
             <div className="px-[10%] pb-[15%] text-white text-sm">
                 <h5>
@@ -176,7 +174,6 @@ function Footer(props) {
     const blockHeader = "font-500 mb-2 leading-none";
     const focusStyle = "focus:ring-offset-0 focus:ring-0";
     const browserView = <footer className={"bg-[#f5f5f5] text-[#777] pt-10 grid grid-cols-3 tracking-wider text-sm"}>
-        <Fragment>BROWSER VIEW</Fragment>
         <div className={"px-4"}>
             <h6 className={blockHeader}>GET ON OUR LIST FOR MORE!</h6>
             <p className={"mb-4 font-300"}>Sign Up for new looks, insider styling tips, exclusive offers and more.</p>

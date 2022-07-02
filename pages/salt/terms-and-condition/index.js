@@ -18,7 +18,6 @@ function SaltTermsAndConditionPage() {
     const blockStyle = `flex flex-col gap-y-4`;
     const blockLeadStyle = `font-600`;
     const mobileParaStyle = `mb-4`;
-
     const mobileView = (
         <section className='my-16'>
             <div className='w-full px-[13%] mx-auto text-[#525252d6] text-justify mb-36'>
@@ -518,15 +517,21 @@ function SaltTermsAndConditionPage() {
         </section>
     );
 
-    return (
-        <Fragment>
+    const [forceRefresh,setForceRefresh] = useState(false)
+    useEffect(()=>{
+        if(!forceRefresh)
+            setForceRefresh(true)
+    },[forceRefresh])
+
+    return forceRefresh
+        ?<Fragment>
             <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile} />
             <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
             <CategoryHeaderImage category={category} />
-            {(dataStore.mobile) ? <Fragment>MOBILE</Fragment> : <Fragment>BROWSER</Fragment>}
+            {(dataStore.mobile) ? mobileView : browserView}
             <Footer minimal={true} color={"#f5f5f5"} />
         </Fragment>
-    );
+        : null
 }
 
 export default SaltTermsAndConditionPage;
