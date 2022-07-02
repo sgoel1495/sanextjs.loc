@@ -11,7 +11,7 @@ function useNavControl(val=0){
         if(window) {
             if(val<0)
                 val = window.innerHeight + val
-            console.log("LOG VAL",val)
+
             window.addEventListener("scroll", controller);
         }
         return () => {

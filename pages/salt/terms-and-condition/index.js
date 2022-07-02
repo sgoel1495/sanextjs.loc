@@ -523,8 +523,8 @@ function SaltTermsAndConditionPage() {
             <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile} />
             <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
             <CategoryHeaderImage category={category} />
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />
+            {(dataStore.mobile) ? <Fragment>MOBILE</Fragment> : <Fragment>BROWSER</Fragment>}
+            <Footer minimal={true} color={"#f5f5f5"} />
         </Fragment>
     );
 }
