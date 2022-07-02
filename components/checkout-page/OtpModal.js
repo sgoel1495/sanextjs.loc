@@ -94,7 +94,7 @@ function OtpModal(props) {
         await updateUserDataAfterLogin(dataStore.userData.contact, dataStore.apiToken, {}, [])
         const toReset = {
             "orderPromo": {},
-            "currentOrderId": 0,
+            "currentOrderId": "",
             "currentOrderInCart": {
                 "address": {},
                 "measurement": {},

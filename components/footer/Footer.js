@@ -19,7 +19,7 @@ function Footer(props) {
         "msg": "Already sign up for NewsLetter"
         "msg": "sign up successfully for NewsLetter"
      */
-    console.log("DATASTORE FOOTER", dataStore.mobile)
+
     const newsletterSignup = async () => {
         const newEmail = newsletterRef.current.value;
         if (isValidEmail(newEmail)) {
@@ -32,7 +32,6 @@ function Footer(props) {
         }
     }
 
-    console.log("================================================================FOOTER is MObile", dataStore.mobile)
     const mobileView = props.minimal ?
         <footer className={`bg-[${props.color}] p-4`}>
             <div className="text-sm flex flex-col gap-5 items-center mb-10 text-black/50 font-500">

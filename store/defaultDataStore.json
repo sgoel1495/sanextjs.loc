@@ -105,7 +105,7 @@
   "userCart": [],
   "userOrderHistory": {},
   "orderPromo": {},
-  "currentOrderId": 0,
+  "currentOrderId": "",
   "currentOrderInCart": {
     "address": {},
     "measurement": {},

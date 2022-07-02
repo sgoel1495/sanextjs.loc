@@ -125,7 +125,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     console.log("userOrderHistory",userOrderHistory);
 /*
   "orderPromo": {},
-  "currentOrderId": 0,
+  "currentOrderId": "",
   "currentOrderInCart": {
     "address": {},
     "measurement": {},
@@ -147,7 +147,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
         "userMeasurements":userMeasurements,
         "userOrderHistory":userOrderHistory,
         "orderPromo": {},
-        "currentOrderId": 0,
+        "currentOrderId": "",
         "currentOrderInCart": {
             "address": {},
             "measurement": {},

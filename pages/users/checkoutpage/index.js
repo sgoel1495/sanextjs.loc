@@ -17,8 +17,8 @@ function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     console.log("============= DATASTORE",dataStore)
     useEffect(()=>{
-        if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === 0))
-            updateDataStore("currentOrderId", Date.now())
+        if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === ""))
+            updateDataStore("currentOrderId", Date.now().toString())
     },[dataStore,updateDataStore])
 
     const [addressComplete, setAddressComplete] = useState(false)
