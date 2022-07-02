@@ -41,7 +41,7 @@ function ShopPage(props) {
     useEffect(() => {
         initVisibleData()
     }, [initVisibleData])
-    const navControl = useNavControl(window.innerHeight - 20)
+    const navControl = useNavControl( -20)
     /*
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {

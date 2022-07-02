@@ -42,7 +42,7 @@ function MimotoPage(props) {
 
 
     console.log("DATA MIMOTO MAIN PAGE", data)
-    const navControl = useNavControl(window.innerHeight - 20)
+    const navControl = useNavControl(-20)
     /*
     const [navControl, setNavControl] = React.useState(false);
     const controller = useCallback(() => {

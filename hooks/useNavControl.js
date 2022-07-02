@@ -6,9 +6,14 @@ function useNavControl(val=0){
         const isSet = (window.scrollY > val)
         if (isSet !== navControl)
             setNavControl(isSet)
-    }, [navControl])
+    }, [navControl,val])
     useEffect(() => {
-        window.addEventListener("scroll", controller);
+        if(window) {
+            if(val<0)
+                val = window.innerHeight + val
+            console.log("LOG VAL",val)
+            window.addEventListener("scroll", controller);
+        }
         return () => {
             window.removeEventListener('scroll', controller)
         };
