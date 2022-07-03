@@ -11,6 +11,12 @@ function CategoryFilterModal(props) {
 
     const [filterExpand, setFilterExpand] = useState(false);
 
+    console.log("Modal FILTER DATA",props.filterData)
+
+    const resetFilterCategory = (cat)=>{
+
+    }
+
     return (
         <div className={`bg-theme-900/50 fixed inset-0 z-50`} onClick={() => props.setShowSidebarMenu(false)}>
             <div
@@ -33,7 +39,10 @@ function CategoryFilterModal(props) {
                                 <div key={index}>
                                     <div className="flex gap-x-2 font-500 items-center mb-2">
                                         <h6 className="text-h6 uppercase flex-1">{item.name}</h6>
-                                        <button className="text-sm underline underline-offset-2 leading-none">Reset</button>
+                                        <button className="text-sm underline underline-offset-2 leading-none"
+                                        onClick={()=>resetFilterCategory(item.name)}>
+                                            Reset
+                                        </button>
                                     </div>
                                     <form onSubmit={e => e.preventDefault()} className={`flex flex-col gap-3`}>
                                         {item.filters.map((filter, i) => {
@@ -78,6 +87,8 @@ function CategoryFilterSidebar(props) {
     const [checkboxData, setCheckboxData] = useState(null);
     const [dataChanged, setDataChanged] = useState(false);
     const [filterData, setFilterData] = useState([])
+
+    console.log("Updated FilterData", filterData)
 
     const updateCheckboxData = (key, value) => {
         checkboxData[key] = value;
