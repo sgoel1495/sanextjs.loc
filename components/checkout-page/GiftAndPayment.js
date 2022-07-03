@@ -54,7 +54,7 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     }, [isGift,giftCompleteness,payMode,giftPaymentComplete,updateCompleteness])
 
     const updatePayMode = (mode)=>{
-
+        console.log("payment mode set as ",mode)
         if(mode==="COD"){
             dataStore.currentOrderInCart.shipping_fee = 80
         } else {

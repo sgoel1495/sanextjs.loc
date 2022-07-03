@@ -156,6 +156,9 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
             setMessage("Email is incorrect");
             setShow(true);
             completeness = false
+        } else {
+            dataStore.userServe.email = address.email
+            updateDataStore("userServe",dataStore.userServe)
         }
 
         if (dataStore.currCurrency === "inr" && address.zip_code.length !== 6) {

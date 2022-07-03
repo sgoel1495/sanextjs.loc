@@ -12,6 +12,7 @@ import {apiCall} from "../../../helpers/apiCall";
 import Toast from "../../../components/common/Toast";
 import ReactDom from "react-dom";
 import OtpModal from "../../../components/checkout-page/OtpModal";
+import addToCartNotLoggedIn from "../../../helpers/addToCartNotLoggedIn";
 
 function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
@@ -68,6 +69,10 @@ function UsersCheckoutPage() {
     const placeOrder = async () => {
         console.log("============== Datastore",dataStore)
         await updateAddressForOrder()
+
+        // let us update cart for non logged in
+        if(!dataStore.userData.contact)
+            await addToCartNotLoggedIn(dataStore)
 
         // step1 api for COD:
         if(dataStore.currentOrderInCart.order.payment_mode==="COD")
