@@ -15,10 +15,11 @@ function WhySalt(props) {
     const mobileView = (
         <ParallaxBlock
             bgImage={WEBASSETS + "/assets/images/mimoto-11.jpg"}
-            bodyStyle={`items-start justify-between pt-20`}
+            bodyStyle={`items-start pt-20`}
+            verticalAlign={'justify-start'}
         >
-            <div className={`bg-[#f7f7f7] py-2 mr-8 text-justify`}>
-                <p className={`text-xl text-center bg-black/80 text-white font-cursive italic pt-1 w-4/5`}>Why Salt ?</p>
+            <div className={`bg-[#f7f7f7] py-2 mr-8 text-justify w-11/12`}>
+                <p className={`text-[20px] text-center bg-black/80 text-white font-cursive italic pt-1 w-4/5`}>Why Salt ?</p>
                 <div className={`p-3 text-[11px] font-500 leading-3`}>
                     <p>SALT Attire brings to you the sharpest assortment of women’s work wear of pants, shirts, dresses, skirts, and tops. The size, fit, fabric, and finishing of our clothes are subjected to multiple layers of test so that you get the most comfortable and most practical work wear that is one of India’s first collection of 9-9 clothes. We understand your need for functionality along with fashion when it comes to formal wear. And we also believe that shouldn’t need a trip to London or New York. Because fashion and functionality need not be mutually exclusive, right?</p>
                     <p className={`mb-2`}>Every piece of clothing that you pick up from the SALT collection is eligible to be worn both in office and for all your other official appointments. Hence, no lugging around extra clothes for that dinner party you might have to attend after office. This is one of the many ways in which we at SALT bring together the best of fashion along with complete functionality.</p>
