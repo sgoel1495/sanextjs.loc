@@ -10,12 +10,6 @@ function PageById(){
     const router = useRouter();
     const query = router.query;
 
-    const [forceRefresh,setForceRefresh] = useState(false)
-    useEffect(()=>{
-        if(!forceRefresh)
-            setForceRefresh(true)
-    },[forceRefresh])
-
     const whereToGo = ()=>{
         if(!router || !query || !query.pageid)
             return <Loader />
@@ -33,6 +27,13 @@ function PageById(){
                 break
         }
     }
+
+    const [forceRefresh,setForceRefresh] = useState(false)
+    useEffect(()=>{
+        if(!forceRefresh)
+            setForceRefresh(true)
+    },[forceRefresh])
+
 
     return forceRefresh
         ? whereToGo()

@@ -11,6 +11,7 @@ import Header from "../../components/navbar/Header";
 import { apiCall } from "../../helpers/apiCall";
 
 import sleep from "../../helpers/sleep";
+import Loader from "../../components/common/Loader";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -185,13 +186,31 @@ function LooksPage(props) {
         return showLookData;
     }
 
-    const mobileView = null;
-    const browserView = null
+    const mobileView = <Fragment>
+        <PageHead url="/looks" id="looks" isMobile={true} />
+        <Header type={"minimal"} />
+        <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
+            <BlockHeader
+                space={"py-5"}
+                titleStyle={"text-center py-10 tracking-wider"}
+            >
+                <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
+                <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
+                    className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
+            </BlockHeader>
+            {(data)
+                ?<main className={`px-10 grid grid-cols-3 gap-7`} >
+                    {lookData()}
+                </main>
+                :loader
+            }
+        </section>
+        <Footer isMobile={true} />
+    </Fragment>
 
-    if(!dataStore.mobile)
-        return <Fragment>
-            <PageHead url="/looks" id="looks" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} />
+    const browserView = <Fragment>
+            <PageHead url="/looks" id="looks" isMobile={false} />
+            <Header type={"shopMenu"} />
             <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
                 <BlockHeader
                     space={"py-5"}
@@ -208,10 +227,21 @@ function LooksPage(props) {
                     :loader
                 }
             </section>
-            <Footer isMobile={dataStore.mobile} />
+            <Footer isMobile={false} />
         </Fragment>
-    else
-        return null
+
+    const [forceRefresh,setForceRefresh] = useState(false)
+    useEffect(()=>{
+        if(!forceRefresh)
+            setForceRefresh(true)
+    },[forceRefresh])
+
+
+    return forceRefresh
+        ? dataStore.mobile
+            ? mobileView
+            : browserView
+        : <Loader />
 
 }
 
