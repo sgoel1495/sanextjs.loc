@@ -17,22 +17,7 @@ function ProductPage(props) {
     const { dataStore } = useContext(AppWideContext);
     const [data, setData] = useState(null);
     const navControl = useNavControl(0)
-    /*
-    const [navControl, setNavControl] = React.useState(false);
-    const controller = useCallback(() => {
-        const isSet = (window.scrollY > 0)
-        if(isSet!==navControl)
-            setNavControl(isSet)
-    },[navControl])
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
-    }, [controller]);
 
-
-     */
     const fetchData = useCallback(() => {
         const callObject = apiDictionary("getProduct", dataStore.apiToken, { product_id: props.hpid });
 
