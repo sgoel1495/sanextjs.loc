@@ -18,6 +18,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     const [createAccount, setCreateAccount] = useState(false)
     const [editAddress, setEditAddress] = useState(true)
     const [selectedAddressIndex, setSelectedAddressIndex] = useState(null)
+    const [addressSaved,setAddressSaved] = useState(false)
 
     const emptyAddress = {
         "name": "",
@@ -134,6 +135,8 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         // update the parent if different.
         if (completeness !== addressComplete)
             updateCompleteness(completeness)
+
+        setAddressSaved(completeness)
 
     }
 
@@ -434,8 +437,13 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                         <div className="col-span-full flex justify-center gap-10 text-sm">
                             <button className="border border-black px-4 py-1.5">Cancel</button>
                             <button className="bg-black px-4 py-1.5 text-white tracking-widest font-500"
-                                onClick={checkAndSave}>SAVE
+                                onClick={checkAndSave}>
+                                SAVE
                             </button>
+                            {addressSaved
+                                ? <span> saved </span>
+                                :null
+                            }
                         </div>
                     </div>
                     <Toast show={show} hideToast={() => setShow(false)}>
