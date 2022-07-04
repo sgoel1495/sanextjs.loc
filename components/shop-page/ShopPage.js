@@ -33,7 +33,7 @@ function ShopPage(props) {
             if (p.is_visible)
                 newData.push(p)
         })
-        // console.log("NEW DATA", newData)
+        console.log("NEW DATA", newData)
         setVisibleData(newData)
     }, [data.data])
     useEffect(() => {
