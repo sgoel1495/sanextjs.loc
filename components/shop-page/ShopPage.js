@@ -29,16 +29,24 @@ function ShopPage(props) {
     const [visibleData, setVisibleData] = useState([])
     const initVisibleData = useCallback(() => {
         const newData = [];
+        const filterActive = !!(dataStore.filter.length>0)
         data.data.forEach(p => {
-            if (p.is_visible)
+            if (
+                p.is_visible
+                && (!filterActive || dataStore.filter.includes(p.asset_id))
+            )
                 newData.push(p)
         })
-        // console.log("NEW DATA", newData)
+        console.log("NEW DATA", newData)
+        console.log("Filter DATA", dataStore.filter)
+
         setVisibleData(newData)
-    }, [data.data])
-    useEffect(() => {
+    }, [dataStore.refreshFilter])
+
+    useEffect(()=>{
         initVisibleData()
-    }, [initVisibleData])
+    },[dataStore.refreshFilter])
+
     const navControl = useNavControl(-20)
     /*
     const [navControl, setNavControl] = React.useState(false);
