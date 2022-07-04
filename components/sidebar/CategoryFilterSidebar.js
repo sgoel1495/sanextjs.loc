@@ -37,22 +37,18 @@ function Checkbox (props) {
         <label htmlFor={props.item.name + props.filter}
                className={`block capitalize text-sm`}>{props.filter}</label>
         <span
-            className={`text-black/50 text-xs font-600`}>({props.count})} {isChecked}</span>
+            className={`text-black/50 text-xs font-600`}>({props.count}) {isChecked}</span>
     </div>
 
 
 }
 
 function CategoryFilterModal(props) {
-    const { updateDataStore } = useContext(AppWideContext);
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [filterExpand, setFilterExpand] = useState(false);
     const [refresh,setRefresh]=useState(false)
 
     const [checkedBoxes,setCheckedBoxes] = useState({})
-
-    useEffect(()=>{
-        updateDataStore("filter",checkedBoxes)
-    },[checkedBoxes])
 
     const initArray = ()=>{
         const initArray={}
@@ -65,33 +61,69 @@ function CategoryFilterModal(props) {
         initArray()
     },[props.filterData])
 
+    const getCategory = ()=>{
+        let returnValue = ""
+        Object.keys(props.originalData).forEach(key=>{
+            if(key.includes("category-"))
+                returnValue = key.substring(9)
+        })
+        return returnValue
+    }
+
     useEffect(()=>{
         const keys = Object.keys(checkedBoxes)
         const newFilter = {}
         console.log("Keys",keys,keys.length)
 
         // case before init
-        if(keys.length===0) {
-            updateDataStore("filter",newFilter)
+        if(keys.length===0)
             return
-        }
+
         // case after init
         let haveData = false
         const queryObject = {
-            category:"",
+            category:getCategory(),
             skip:0,
             limit:10000,
-            sorted_by:"price-desc"
+            sorted_by:"price-desc",
             filter_by:{}
         }
         for(let x=0;x<keys.length;x++){
             console.log("======== I HAVE DATA ==========",checkedBoxes[keys[x]])
             if(checkedBoxes[keys[x]].length>0){
                 haveData= true
-
+                queryObject.filter_by[keys[x]] = checkedBoxes[keys[x]]
             }
-
         }
+        let isChanged = false
+        if(haveData){
+            console.log("======== COMPLETED QUERY ==========",queryObject)
+            apiCall("getProducts", dataStore.apiToken, queryObject)
+                .then(resp=>{
+                    //console.log("RESPONSE",resp)
+                    const limitProducts = []
+                    if(resp.response && resp.response.data){
+                        resp.response.data.forEach(p=>{
+                            limitProducts.push(p.asset_id)
+                            if(!dataStore.filter.includes(p.asset_id))
+                                isChanged = true
+                        })
+                    }
+                    if(limitProducts.length !==dataStore.filter.length)
+                        isChanged = true
+                    if(isChanged) {
+                        updateDataStore("filter", limitProducts)
+                        updateDataStore("refreshFilter", !dataStore.refreshFilter)
+                    }
+                })
+                .catch(e=>console.log(e.message))
+        } else {
+            if(dataStore.filter.length!==0) {
+                updateDataStore("filter", [])
+                updateDataStore("refreshFilter",!dataStore.refreshFilter)
+            }
+        }
+
     },[refresh,updateDataStore,checkedBoxes])
 
     const resetFilterCategory = (cat)=>{
@@ -181,7 +213,7 @@ function CategoryFilterSidebar(props) {
     const [dataChanged, setDataChanged] = useState(false);
     const [filterData, setFilterData] = useState([])
 
-    console.log("Updated FilterData", filterData)
+    console.log("Props FilterData", props.filterData)
 
     const updateCheckboxData = (key, value) => {
         checkboxData[key] = value;

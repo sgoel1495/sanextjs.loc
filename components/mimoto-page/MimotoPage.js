@@ -29,18 +29,22 @@ function MimotoPage(props) {
     const [data, setData] = useState(props.data);
     const [visibleData, setVisibleData] = useState([])
     const initVisibleData = useCallback(()=>{
+        const filterActive = !!(dataStore.filter.length>0)
         const newData = [];
         data.products.forEach(p=>{
-            if(p.is_visible)
+            if(
+                p.is_visible
+                && (!filterActive || dataStore.filter.includes(p.asset_id))
+            )
                 newData.push(p)
         })
-        console.log("NEW DATA",newData)
+
         setVisibleData(newData)
-    },[data.products])
+    },[dataStore.refreshFilter])
+
     useEffect(()=>{
-            initVisibleData()
-    },[initVisibleData])
-    console.log("Visible Data",visibleData)
+        initVisibleData()
+    },[dataStore.refreshFilter])
 
 
     console.log("DATA MIMOTO MAIN PAGE", data)
