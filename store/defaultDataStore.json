@@ -105,6 +105,7 @@
   "userCart": [],
   "userOrderHistory": {},
   "orderPromo": {},
+  "fiveDayDelivery": false,
   "currentOrderId": "",
   "currentOrderInCart": {
     "address": {},
