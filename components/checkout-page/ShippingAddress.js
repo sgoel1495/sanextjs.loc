@@ -49,6 +49,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         address[key] = value
         setAddress(address)
         setRefresh(!refresh)
+        updateDataStore("selectedAddress",address)
     }
 
     const updateZipcode = async (zip) => {

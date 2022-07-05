@@ -29,7 +29,7 @@ function UsersCheckoutPage() {
     const [showOTPModal, setShowOTPModal] = useState(false)
 
     const updateAddressForOrder = async ()=>{
-        const userO = getUserO(dataStore,true)
+        const userO = getUserO(dataStore,true, true)
         userO["address_index"]=dataStore.addressIndex
         // step1 is update the address. Need orderid and address index
         if(!dataStore.userData.contact) {
