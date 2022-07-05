@@ -9,9 +9,16 @@ import AppWideContext from "../../store/AppWideContext";
  * @constructor
  */
 function DisplayAddress({ addressIndex }) {
-    const { dataStore } = useContext(AppWideContext)
+    const { dataStore, updateDataStore } = useContext(AppWideContext)
     const [selectedAddress, setSelectedAddress] = useState(null)
 
+    const updateAddress = (index, param1, param2=false)=>{
+        addressIndex(index, param1)
+        if(param2) {
+            setSelectedAddress(index)
+            updateDataStore("selectedAddress",dataStore.userAddresses[index])
+        }
+    }
 
     const display = () => {
         let returnValue = null
@@ -28,12 +35,12 @@ function DisplayAddress({ addressIndex }) {
                             <p className="text-xs text-[#555]">T: {address.phone}</p>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                            <button className="underline text-[#555]" onClick={() => addressIndex(index, true)}>Edit</button>
+                            <button className="underline text-[#555]" onClick={() => updateAddress(index, true)}>Edit</button>
                             {(index === selectedAddress)
                                 ? <button className="px-5 py-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-full" fill="#008000" stroke="#008000" strokeWidth={2}><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg>
                                 </button>
-                                : <button className="shadow-lg border border-[#777] px-5 py-2" onClick={() => { setSelectedAddress(index); addressIndex(index, false) }}>
+                                : <button className="shadow-lg border border-[#777] px-5 py-2" onClick={() => updateAddress(index,false,true)}>
                                     Ship Here
                                 </button>
                             }
