@@ -1,7 +1,6 @@
-import React, {useCallback} from 'react';
+import React, {Fragment} from 'react';
 import InfoBand from "../info-band/InfoBand";
 import Navbar from "./Navbar";
-import Menu from "./Menu";
 import useNavControl from "../../hooks/useNavControl";
 
 /**
@@ -24,19 +23,19 @@ const Header = (props) => {
 
     const mobileView = (props.type === "minimal")
         ? <div className={"fixed inset-x-0 top-0 z-20"}>
-            <InfoBand />
+            <InfoBand/>
             <Navbar {...props} />
         </div>
-        : <div>
-            <InfoBand />
+        : <Fragment>
+            <InfoBand/>
             <Navbar {...props} />
-        </div>
+        </Fragment>
     const browserView = (props.type === "minimal" || props.type === "menu")
         ? <div className={"navigator sticky top-0 z-20 bg-white"}>
             <Navbar {...props} />
         </div>
         : <div className={"navigator z-30 duration-300 hover:bg-white transition-colors sticky top-0 right-0 left-0" + [navControl ? ' bg-white/90' : ' bg-white/95']}>
-            <InfoBand />
+            <InfoBand/>
             <Navbar {...props} />
         </div>
 

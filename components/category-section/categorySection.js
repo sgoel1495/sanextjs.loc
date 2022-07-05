@@ -65,7 +65,7 @@ const CategorySection = () => {
                             >
                                 {carousalResp.response.data.mob.imgs.map((item, index) => {
                                     return <SwiperSlide key={index}>
-                                        <Link href={carousalResp.response.data.mob.links[index]}>
+                                        <Link href={carousalResp.response.data.mob.links[index] ? carousalResp.response.data.mob.links[index] : ""}>
                                             <a className={'block relative h-[65vh] w-full'}>
                                                 <Image
                                                     src={WEBASSETS + item}
