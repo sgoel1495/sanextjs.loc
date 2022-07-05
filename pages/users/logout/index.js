@@ -9,12 +9,11 @@ function UsersLogoutPage() {
         const userData = {
             "contact": null
         };
-        const userWallet = {
-            "email": "",
-            "phone_number": "",
-            "user_name": "",
-            "wallet_amount": 0,
-            "usd_wallet_amount": 0
+        let userWallet = {
+            "WalletAmount": 0,
+            "TotalCr": 0,
+            "TotalDr": 0,
+            "Wallet":[]
         };
         const userServe = {
             "email": "",

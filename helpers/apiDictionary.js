@@ -273,7 +273,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_user_wallet";
             body = {
                 token: apiToken,
-                ...queryObject
+                user: {...queryObject}
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}

@@ -10,14 +10,13 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     const walletCall = await apiCall("userWallet", apiToken, { contact: username });
 
     let userWallet = {
-        "email": "",
-        "phone_number": "",
-        "user_name": "",
-        "wallet_amount": 0,
-        "usd_wallet_amount": 0
+        "WalletAmount": 0,
+        "TotalCr": 0,
+        "TotalDr": 0,
+        "Wallet":[]
     };
-    if (walletCall.hasOwnProperty("response") && walletCall.response && walletCall.response.email)
-        userWallet = {...walletCall.response};
+    if (walletCall.user)
+        userWallet = {...walletCall.user};
 
     //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, { contact: username });
