@@ -29,25 +29,25 @@ function LooksPage(props) {
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
-/*
-    useEffect(()=>{
-
-        if(
-            !data
-            && dataStore.apiToken
-            && pagination
-        )
-            fetchData()
-                .then(resp=>{
-                    setData(resp)
-                })
-                .catch(e=>console.log(e.message))
-                .finally(()=>{
-                    console.log("Full Data Loaded")
-                })
-
-    },[data, dataStore.apiToken, pagination])
-*/
+    /*
+        useEffect(()=>{
+    
+            if(
+                !data
+                && dataStore.apiToken
+                && pagination
+            )
+                fetchData()
+                    .then(resp=>{
+                        setData(resp)
+                    })
+                    .catch(e=>console.log(e.message))
+                    .finally(()=>{
+                        console.log("Full Data Loaded")
+                    })
+    
+        },[data, dataStore.apiToken, pagination])
+    */
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
@@ -199,42 +199,42 @@ function LooksPage(props) {
                     className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
             </BlockHeader>
             {(data)
-                ?<main className={`px-10 grid grid-cols-3 gap-7`} >
+                ? <main className={`px-10 grid grid-cols-3 gap-7`} >
                     {lookData()}
                 </main>
-                :loader
+                : loader
             }
         </section>
         <Footer isMobile={true} />
     </Fragment>
 
     const browserView = <Fragment>
-            <PageHead url="/looks" id="looks" isMobile={false} />
-            <Header type={"shopMenu"} />
-            <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
-                <BlockHeader
-                    space={"py-5"}
-                    titleStyle={"text-center py-10 tracking-wider"}
-                >
-                    <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
-                    <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
-                        className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
-                </BlockHeader>
-                {(data)
-                    ?<main className={`px-10 grid grid-cols-3 gap-7`} >
-                        {lookData()}
-                    </main>
-                    :loader
-                }
-            </section>
-            <Footer isMobile={false} />
-        </Fragment>
+        <PageHead url="/looks" id="looks" isMobile={false} />
+        <Header type={"shopMenu"} />
+        <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
+            <BlockHeader
+                space={"py-5"}
+                titleStyle={"text-center py-10 tracking-wider"}
+            >
+                <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
+                <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
+                    className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
+            </BlockHeader>
+            {(data)
+                ? <main className={`px-10 grid grid-cols-3 gap-7`} >
+                    {lookData()}
+                </main>
+                : loader
+            }
+        </section>
+        <Footer isMobile={false} />
+    </Fragment>
 
-    const [forceRefresh,setForceRefresh] = useState(false)
-    useEffect(()=>{
-        if(!forceRefresh)
+    const [forceRefresh, setForceRefresh] = useState(false)
+    useEffect(() => {
+        if (!forceRefresh)
             setForceRefresh(true)
-    },[forceRefresh])
+    }, [forceRefresh])
 
 
     return forceRefresh
@@ -248,7 +248,7 @@ function LooksPage(props) {
 export async function getStaticProps() {
     const fetchData = async () => {
         let gotData = false;
-        const callObject = await apiCall("getLooksData", process.env.API_TOKEN, { look_id: "", limit: 10000, skip: 0})
+        const callObject = await apiCall("getLooksData", process.env.API_TOKEN, { look_id: "", limit: 10000, skip: 0 })
         if (
             callObject.hasOwnProperty("response")
             && callObject.response.hasOwnProperty("look")
@@ -261,7 +261,7 @@ export async function getStaticProps() {
 
     return {
         props: {
-            data:await fetchData()
+            data: await fetchData()
         }
     }
 }
