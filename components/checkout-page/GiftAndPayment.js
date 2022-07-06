@@ -14,6 +14,7 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
         gift_msg_to: "",
         gift_msg_from: ""
     })
+    const [amountDue, setAmountDue]=
     const [payMode, setPayMode] = useState(null)
     const [giftCompleteness,setGiftCompleteness] = useState(false)
 
