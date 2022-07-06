@@ -16,8 +16,8 @@ function MeasurementModal0({ closeModal, isMobile, addNew, pastOrders, measurePr
     const mobileView = null;
     const browserView = () => {
         return (
-            <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[5%] px-[10%]" onClick={closeModal}>
-                <div className="bg-white border-2 border-black relative h-[720px] w-[920px] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[8%] px-[10%]" onClick={closeModal}>
+                <div className="bg-white border-2 border-black relative h-full w-[920px] flex flex-col" onClick={e => e.stopPropagation()}>
                     <div className="overflow-auto flex-1">
                         <button className="absolute top-0 right-8 text-2xl z-50" onClick={closeModal}>X</button>
                         <p className="uppercase text-xl font-500 text-[#777] text-center my-5">SELECT MEASUREMENTS</p>

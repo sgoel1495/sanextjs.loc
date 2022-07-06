@@ -97,7 +97,7 @@ function NewArrivalsSwiper(props) {
                 titleStyle={"text-[#b5ddf5] font-600 flex justify-center items-center gap-3 leading-none"}
             >
                 <span className={"text-h1"}>~</span>
-                <span className={'font-cursive italic text-h1'}>new</span>
+                <span className={'font-cursive italic text-h1 mt-[6px]'}>new</span>
                 <span className={"tracking-widest text-h4 uppercase"}>Arrivals</span>
                 <span className={"text-h1"}>~</span>
             </BlockHeader>

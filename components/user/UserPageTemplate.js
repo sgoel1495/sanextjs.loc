@@ -3,7 +3,7 @@ import UsersSideMenu from './UsersSideMenu';
 
 function UserPageTemplate(props) {
     return (
-        <div className="xl:w-3/5 mx-auto flex divide-x items-start gap-x-8 mt-28 min-h-[80vh]">
+        <div className="xl:w-3/5 mx-auto flex divide-x items-start gap-x-8 min-h-[80vh]">
             <div className="flex-1 py-3">
                 <UsersSideMenu mobile={false} />
             </div>

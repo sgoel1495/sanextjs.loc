@@ -45,7 +45,7 @@ function SidebarMenuUser(props) {
     const mobileView = null;
     const browserView = (
         <>
-        <span onClick={openModal} className={`block relative w-6 ${iconHeight}`}>
+        <span onMouseEnter={openModal} className={`block relative w-6 ${iconHeight}`}>
             {
                 props.type === "shopMenu" ?
                     <div className={"float-right text-right"}>
