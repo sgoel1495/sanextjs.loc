@@ -122,20 +122,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     console.log("userCart",userCart);
     console.log("userMeasurements",userMeasurements);
     console.log("userOrderHistory",userOrderHistory);
-/*
-  "orderPromo": {},
-  "currentOrderId": "",
-  "currentOrderInCart": {
-    "address": {},
-    "measurement": {},
-    "account": {},
-    "order": {},
-    "payment": {},
-    "otp_verified": false
-  },
-  "place_order_step1": {}
 
- */
     return {
         "userData":userData,
         "userWallet":userWallet,
@@ -156,7 +143,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
             "shipping_fee": 0,
             "otp_verified": false
         },
-        "place_order_step1": {}
+        "useWallet": false
     }
 }
 

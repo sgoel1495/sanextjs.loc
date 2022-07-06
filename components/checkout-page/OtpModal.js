@@ -102,7 +102,7 @@ function OtpModal(props) {
                 "shipping_fee": 0,
                 "otp_verified": false
             },
-            "place_order_step1": {}
+            "useWallet": false
         }
         Object.keys(toReset).forEach(key => {
             updateDataStore(key, toReset[key])

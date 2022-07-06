@@ -2,6 +2,9 @@ import Link from "next/link";
 import Toast from "../common/Toast";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
+import currencyFormatter from "../../helpers/currencyFormatter";
+import promoDiscountValue from "../../helpers/promoDiscountValue";
+import orderTotal from "../../helpers/orderTotal";
 
 function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
@@ -14,9 +17,10 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
         gift_msg_to: "",
         gift_msg_from: ""
     })
-    const [amountDue, setAmountDue]=
+
     const [payMode, setPayMode] = useState(null)
     const [giftCompleteness,setGiftCompleteness] = useState(false)
+    const [useWallet,setUseWallet] = useState(dataStore.useWallet)
 
     const updateGift = (key, value) => {
         giftData[key] = value
@@ -61,7 +65,7 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
         } else {
             dataStore.currentOrderInCart.shipping_fee = 0
         }
-        dataStore.currentOrderInCart.order={
+        const newOrderObject = {
             order_id: dataStore.currentOrderId,
             is_gift: isGift,
             gift_msg: giftData.gift_msg,
@@ -74,8 +78,18 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
             curr_currency: "inr",
             ex_rate: 1
         }
+        const orderTotal = orderTotal(dataStore)
+        if(dataStore.useWallet && orderTotal===0)
+            newOrderObject.payment_mode= "wallet"
+        dataStore.currentOrderInCart.order = newOrderObject
         updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
         setPayMode(mode)
+    }
+
+    const updateUserWallet = ()=>{
+        const newValue = !useWallet
+        updateDataStore("userWallet",newValue)
+        setUseWallet(newValue)
     }
 
     const labelClass = "block text-[#777] font-600 mb-1";
@@ -116,6 +130,15 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
                 : null
             }
             <p className="text-xl mb-2">Payment</p>
+            {(dataStore.userWallet.WalletAmount > 0)
+                ?<label>
+                    <input type="checkbox" checked={useWallet} onChange={() => updateUserWallet()}/>
+                    Use Wallet ({(dataStore.currCurrency === "inr")
+                        ? currencyFormatter("INR").format(dataStore.userWallet.WalletAmount)
+                        : currencyFormatter("USD").format(dataStore.userWallet.WalletAmount)
+                    })
+                </label>
+                :null}
             <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" value={payMode} onChange={(e) => updatePayMode(e.target.value)}>
                 <label className="flex items-center gap-2">
                     <input type="radio" value="COD" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
