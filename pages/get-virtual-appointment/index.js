@@ -165,7 +165,7 @@ function GetVirtualAppointmentPage() {
             <PageHead url="/salt/get-virtual-appointment" id="virtualappointment" isMobile={dataStore.mobile}/>
             <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
             <CategoryHeaderImage category={category}/>
-            <section className="container my-20 select-none">
+            <section className="w-3/5 mx-auto my-20 select-none">
                 {(dataStore.mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={dataStore.mobile}/>

@@ -1,7 +1,7 @@
-import React, {Fragment, useEffect, useState, useCallback, useContext} from "react";
+import React, { Fragment, useEffect, useState, useCallback, useContext } from "react";
 import ReactDom from "react-dom";
 import AppWideContext from "../../store/AppWideContext";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 
 /**
  * @todo Data for the category filter
@@ -10,168 +10,169 @@ import {apiCall} from "../../helpers/apiCall";
  */
 
 
-function Checkbox (props) {
-    const [isChecked,setIsChecked] = useState(false)
-    useEffect(()=>{
+function Checkbox(props) {
+    const [isChecked, setIsChecked] = useState(false)
+    useEffect(() => {
         const result = !!(props.checkBoxes[props.item.name] && props.checkBoxes[props.item.name].includes(props.filter))
-        if(result!=isChecked)
+        if (result != isChecked)
             setIsChecked(result)
-    },[props.checkBoxes,props.refresh])
+    }, [props.checkBoxes, props.refresh])
 
-    const handleCheckboxChange = (e)=>{
+    const handleCheckboxChange = (e) => {
         const newVal = !isChecked
-        props.handleCheckboxChange(props.item.name, props.filter,newVal)
+        props.handleCheckboxChange(props.item.name, props.filter, newVal)
         setIsChecked(newVal)
     }
 
-    return <div className="flex gap-2 items-center justify-start leading-none" key={props.item.name + props.filter}>
-        <input
-            checked={isChecked}
-            onChange={(e)=>handleCheckboxChange(e)}
-            type="checkbox"
-            className={`text-black border-black/20 focus:ring-offset-0 focus:ring-0 cursor-pointer`}
-
-            id={props.item.name + props.filter}
-            name={props.item.name + props.filter}
-        />
-        <label htmlFor={props.item.name + props.filter}
-               className={`block capitalize text-sm`}>{props.filter}</label>
-        <span
-            className={`text-black/50 text-xs font-600`}>({props.count}) {isChecked}</span>
-    </div>
-
-
+    return (
+        <div className="flex gap-2 items-center justify-start leading-none" key={props.item.name + props.filter}>
+            <input
+                checked={isChecked}
+                onChange={(e) => handleCheckboxChange(e)}
+                type="checkbox"
+                className={`text-black border-black/20 focus:ring-offset-0 focus:ring-0 cursor-pointer`}
+                id={props.item.name + props.filter}
+                name={props.item.name + props.filter}
+            />
+            <label htmlFor={props.item.name + props.filter} className={`block capitalize text-sm`}>{props.filter}</label>
+            <span className={`text-black/50 text-xs font-600`}>({props.count}) {isChecked}</span>
+        </div>
+    );
 }
 
 function CategoryFilterModal(props) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [filterExpand, setFilterExpand] = useState(false);
-    const [refresh,setRefresh]=useState(false)
+    const [refresh, setRefresh] = useState(false);
+    const [checkedBoxes, setCheckedBoxes] = useState(dataStore.filterCheckboxes);
 
-    const [checkedBoxes,setCheckedBoxes] = useState(dataStore.filterCheckboxes)
-
-    const initArray = ()=>{
-        const initArray={}
-        props.filterData.forEach(item=>{
-            initArray[item.name]=[]
+    const initArray = () => {
+        const initArray = {}
+        props.filterData.forEach(item => {
+            initArray[item.name] = []
         })
         setCheckedBoxes(initArray)
     }
-    useEffect(()=>{
-        if(Object.keys(checkedBoxes).length===0)
+    useEffect(() => {
+        if (Object.keys(checkedBoxes).length === 0)
             initArray()
-    },[props.filterData])
+    }, [props.filterData])
 
-    const getCategory = ()=>{
+    const getCategory = () => {
         let returnValue = ""
-        Object.keys(props.originalData).forEach(key=>{
-            if(key.includes("category-"))
+        Object.keys(props.originalData).forEach(key => {
+            if (key.includes("category-"))
                 returnValue = key.substring(9)
         })
         return returnValue
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         const keys = Object.keys(checkedBoxes)
         const newFilter = {}
-        console.log("Keys",keys,keys.length)
+        console.log("Keys", keys, keys.length)
 
         // case before init
-        if(keys.length===0)
+        if (keys.length === 0)
             return
 
         // case after init
         let haveData = false
         const queryObject = {
-            category:getCategory(),
-            skip:0,
-            limit:10000,
-            sorted_by:"price-desc",
-            filter_by:{}
+            category: getCategory(),
+            skip: 0,
+            limit: 10000,
+            sorted_by: "price-desc",
+            filter_by: {}
         }
-        for(let x=0;x<keys.length;x++){
-            console.log("======== I HAVE DATA ==========",checkedBoxes[keys[x]])
-            if(checkedBoxes[keys[x]].length>0){
-                haveData= true
+        for (let x = 0; x < keys.length; x++) {
+            console.log("======== I HAVE DATA ==========", checkedBoxes[keys[x]])
+            if (checkedBoxes[keys[x]].length > 0) {
+                haveData = true
                 queryObject.filter_by[keys[x]] = checkedBoxes[keys[x]]
             }
         }
         let isChanged = false
-        if(haveData){
-            console.log("======== COMPLETED QUERY ==========",queryObject)
+        if (haveData) {
+            console.log("======== COMPLETED QUERY ==========", queryObject)
             apiCall("getProducts", dataStore.apiToken, queryObject)
-                .then(resp=>{
+                .then(resp => {
                     //console.log("RESPONSE",resp)
                     const limitProducts = []
-                    if(resp.response && resp.response.data){
-                        resp.response.data.forEach(p=>{
+                    if (resp.response && resp.response.data) {
+                        resp.response.data.forEach(p => {
                             limitProducts.push(p.asset_id)
-                            if(!dataStore.filter.includes(p.asset_id))
+                            if (!dataStore.filter.includes(p.asset_id))
                                 isChanged = true
                         })
                     }
-                    if(limitProducts.length !==dataStore.filter.length)
+                    if (limitProducts.length !== dataStore.filter.length)
                         isChanged = true
-                    if(isChanged) {
+                    if (isChanged) {
                         updateDataStore("filter", limitProducts)
                         updateDataStore("refreshFilter", !dataStore.refreshFilter)
                     }
                 })
-                .catch(e=>console.log(e.message))
+                .catch(e => console.log(e.message))
         } else {
-            if(dataStore.filter.length!==0) {
+            if (dataStore.filter.length !== 0) {
                 updateDataStore("filter", [])
-                updateDataStore("refreshFilter",!dataStore.refreshFilter)
+                updateDataStore("refreshFilter", !dataStore.refreshFilter)
             }
         }
 
-    },[refresh,updateDataStore,checkedBoxes])
+    }, [refresh, updateDataStore, checkedBoxes])
 
-    const resetFilterCategory = (cat)=>{
-        checkedBoxes[cat]=[]
+    const resetFilterCategory = (cat) => {
+        checkedBoxes[cat] = []
         setCheckedBoxes(checkedBoxes)
         setRefresh(!refresh)
-        updateDataStore("filterCheckboxes",checkedBoxes)
+        updateDataStore("filterCheckboxes", checkedBoxes)
     }
 
-    const handleCheckboxChange = (name,item, isTrue)=>{
+    const handleCheckboxChange = (name, item, isTrue) => {
         //it is a toggle
         const index = checkedBoxes[name].indexOf(item)
-        if(isTrue && index===-1)
+        if (isTrue && index === -1)
             checkedBoxes[name].push(item)
-        else if(!isTrue && index!== -1)
+        else if (!isTrue && index !== -1)
             checkedBoxes[name].splice(index, 1);
         // once another box is clicked, the reset gets reset
         setCheckedBoxes(checkedBoxes)
-        updateDataStore("filterCheckboxes",checkedBoxes)
+        updateDataStore("filterCheckboxes", checkedBoxes)
         setRefresh(!refresh)
     }
 
-    const showFilters = ()=>{
+    const showFilters = () => {
         return props.filterData.map((item, index) => {
             return (
                 <div key={index}>
                     <div className="flex gap-x-2 font-500 items-center mb-2">
                         <h6 className="text-h6 uppercase flex-1">{item.name}</h6>
-                        <div className="text-sm underline underline-offset-2 leading-none"
-                             onClick={()=>resetFilterCategory(item.name)}>
+                        <button
+                            type="button"
+                            className="text-sm underline underline-offset-2 leading-none"
+                            onClick={() => resetFilterCategory(item.name)}
+                        >
                             Reset
-                        </div>
+                        </button>
                     </div>
                     <div className={`flex flex-col gap-3`}>
                         {item.filters.map((filter, i) => {
                             return (
-                                <Checkbox handleCheckboxChange={handleCheckboxChange.bind(this)}
-                                          filter={filter} item={item} count={props.originalData[item.key[i]]}
-                                          checkBoxes={checkedBoxes} refresh={refresh}
+                                <Checkbox
+                                    handleCheckboxChange={handleCheckboxChange.bind(this)}
+                                    filter={filter} item={item} count={props.originalData[item.key[i]]}
+                                    checkBoxes={checkedBoxes} refresh={refresh}
                                 />
                             )
                         })}
                         {item.filters.length > 4
-                            ? <div
+                            ? <button
+                                type="button"
                                 className="text-[#00aff0] w-fit inline-block ml-5"
                                 onClick={() => setFilterExpand(prev => !prev)}
-                            >+{item.filters.length - 4} more</div>
+                            >+{item.filters.length - 4} more</button>
                             : null
                         }
                     </div>

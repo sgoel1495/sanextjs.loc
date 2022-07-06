@@ -20,8 +20,8 @@ function AccountMenu(props) {
     const mobileView = null;
 
     const browserView = (
-        <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-10`} onClick={props.closeModal}>
-            <div className={"bg-white h-fit pb-20 flex flex-col items-end text-xs uppercase font-500 pr-20"} style={{ paddingTop: topSpace + 10 + 'px' }} onClick={e => e.stopPropagation()}>
+        <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-10`} onClick={props.closeModal} onMouseOver={props.closeModal}>
+            <div className={"bg-white h-fit pb-20 flex flex-col items-end text-xs uppercase font-500 pr-20"} style={{ paddingTop: topSpace + 10 + 'px' }} onClick={e => e.stopPropagation()} onMouseOver={e => e.stopPropagation()}>
                 <Link href="/users/profile">
                     <a>My Profile</a>
                 </Link>
