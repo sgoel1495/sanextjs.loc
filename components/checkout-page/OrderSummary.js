@@ -1,19 +1,16 @@
 import React, { useContext, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
+import currencyFormatter from "../../helpers/currencyFormatter";
+import orderTotal from "../../helpers/orderTotal";
+import promoDiscountValue from "../../helpers/promoDiscountValue";
+import rawOrderTotal from "../../helpers/rawOrderTotal";
+import compareDecimalNumbers from "../../helpers/compareDecimalNumbers";
 
 function OrderSummary() {
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
-    const dollarUS = Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-    });
-    const rupeeIndian = Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-    });
     const { dataStore } = useContext(AppWideContext);
     const firstDate = new Date()
     firstDate.setDate(firstDate.getDate() + 10)
@@ -22,33 +19,13 @@ function OrderSummary() {
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
 
-    const promoDiscountValue = (
-        dataStore.orderPromo
-        && dataStore.orderPromo.discount_hash
-        && dataStore.orderPromo.discount_hash.is_promocode_applied
-    )
-        ? (dataStore.currCurrency === "inr")
-            ? dataStore.orderPromo.discount_hash.discount_inr
-            : dataStore.orderPromo.discount_hash.discount_usd
-        : 0.00
+    const curr = dataStore.currCurrency.toUpperCase()
+    const rawOrdTotal = rawOrderTotal(dataStore)
+    const {finalPayable,toPay} = orderTotal(dataStore)
 
-    const promoDiscount = (dataStore.currCurrency === "inr")
-        ? rupeeIndian.format(promoDiscountValue)
-        : dollarUS.format(promoDiscountValue)
-
-    const orderTotal = () => {
-        let inrTotal = 0
-        let usdTotal = 0
-        Object.values(dataStore.userCart).forEach(cartItem => {
-            inrTotal += cartItem.price * cartItem.qty
-            usdTotal += cartItem.usd_price * cartItem.qty
-        })
-        const shippingFee = dataStore.currentOrderInCart.shipping_fee
-        return (dataStore.currCurrency === "inr")
-            ? rupeeIndian.format(inrTotal - promoDiscountValue + shippingFee)
-            : dollarUS.format(usdTotal - promoDiscountValue + shippingFee)
-    }
-    const total = orderTotal()
+    const rawTotal = currencyFormatter(curr).format(rawOrdTotal)
+    const walletPay = currencyFormatter(curr).format(toPay)
+    const total =  currencyFormatter(curr).format(finalPayable)
 
     return (
         <div className="bg-[#f1f2f3] py-6 px-5 mt-12">
@@ -58,25 +35,32 @@ function OrderSummary() {
                 <tbody>
                     <tr>
                         <td>Bag Total</td>
-                        <td>{total}</td>
+                        <td>{rawTotal}</td>
                     </tr>
                     <tr>
                         <td>Promo</td>
-                        <td>{promoDiscount}</td>
+                        <td>{currencyFormatter(curr).format(promoDiscountValue(dataStore))}</td>
                     </tr>
                     <tr>
                         <td>Shipping Charges</td>
-                        <td>{(dataStore.currentOrderInCart.shipping_fee===0)
-                                ?<span>FREE</span>
-                                :(dataStore.currCurrency === "inr")
-                                    ? rupeeIndian.format(dataStore.currentOrderInCart.shipping_fee)
-                                    : dollarUS.format(dataStore.currentOrderInCart.shipping_fee)
+                        <td>{(compareDecimalNumbers(dataStore.currentOrderInCart.shipping_fee,0)==="=")
+                            ?<span>FREE</span>
+                            :<span>currencyFormatter(curr).format(dataStore.currentOrderInCart.shipping_fee)</span>
                         }</td>
                     </tr>
                     <tr>
                         <td>Alteration Services</td>
                         <td>FREE</td>
                     </tr>
+                    {<tr>
+                        <td>Wallet</td>
+                        <td>{(dataStore.useWallet && dataStore.userWallet.WalletAmount > 0)
+                            ?(compareDecimalNumbers(finalPayable,0)==="=")
+                                ? walletPay
+                                : currencyFormatter(curr).format(dataStore.userWallet.WalletAmount)
+                            :<span>₹0.00</span>
+                        }</td>
+                    </tr>}
                 </tbody>
             </table>
             <div className="flex font-600 text-[#777] mt-5">

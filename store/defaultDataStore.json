@@ -81,11 +81,10 @@
     "contact": null
   },
   "userWallet": {
-    "email": "",
-    "phone_number": "",
-    "user_name": "",
-    "wallet_amount": 0,
-    "usd_wallet_amount": 0
+    "WalletAmount": 0,
+    "TotalCr": 0,
+    "TotalDr": 0,
+    "Wallet":[]
   },
   "showSidebarMenuUser": false,
   "userServe":{
@@ -116,7 +115,7 @@
     "shipping_fee": 0,
     "otp_verified": false
   },
-  "place_order_step1": {},
+  "useWallet": false,
   "refreshFilter": false,
   "filter": [],
   "filterCheckboxes": {}
