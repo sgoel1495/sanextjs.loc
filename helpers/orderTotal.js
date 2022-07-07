@@ -13,7 +13,7 @@ export default function orderTotal (dataStore) {
         if(total>dataStore.userWallet.WalletAmount)
             total -= dataStore.userWallet.WalletAmount
         else
-            total = 0
+            total = 0.00
 
     return {finalPayable:total,toPay:toPay}
 }

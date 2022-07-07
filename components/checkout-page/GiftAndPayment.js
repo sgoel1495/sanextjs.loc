@@ -3,8 +3,8 @@ import Toast from "../common/Toast";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import currencyFormatter from "../../helpers/currencyFormatter";
-import promoDiscountValue from "../../helpers/promoDiscountValue";
 import orderTotal from "../../helpers/orderTotal";
+import compareDecimalNumbers from "../../helpers/compareDecimalNumbers";
 
 function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
@@ -21,6 +21,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     const [payMode, setPayMode] = useState(null)
     const [giftCompleteness,setGiftCompleteness] = useState(false)
     const [useWallet,setUseWallet] = useState(dataStore.useWallet)
+
+    const {finalPayable,toPay} = orderTotal(dataStore)
 
     const updateGift = (key, value) => {
         giftData[key] = value
@@ -59,13 +61,12 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
     }, [isGift,giftCompleteness,payMode,giftPaymentComplete,updateCompleteness])
 
     const updatePayMode = (mode)=>{
-        console.log("payment mode set as ",mode)
         if(mode==="COD"){
-            dataStore.currentOrderInCart.shipping_fee = 80
+            dataStore.currentOrderInCart.shipping_fee = 80.00
         } else {
-            dataStore.currentOrderInCart.shipping_fee = 0
+            dataStore.currentOrderInCart.shipping_fee = 0.00
         }
-        const newOrderObject = {
+        dataStore.currentOrderInCart.order = {
             order_id: dataStore.currentOrderId,
             is_gift: isGift,
             gift_msg: giftData.gift_msg,
@@ -78,18 +79,16 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
             curr_currency: "inr",
             ex_rate: 1
         }
-        const orderTotal = orderTotal(dataStore)
-        if(dataStore.useWallet && orderTotal===0)
-            newOrderObject.payment_mode= "wallet"
-        dataStore.currentOrderInCart.order = newOrderObject
         updateDataStore("currentOrderInCart",dataStore.currentOrderInCart)
-        setPayMode(mode)
+
     }
 
     const updateUserWallet = ()=>{
         const newValue = !useWallet
-        updateDataStore("userWallet",newValue)
+        updateDataStore("useWallet",newValue)
         setUseWallet(newValue)
+        if(!payMode)
+            setPayMode("COD")
     }
 
     const labelClass = "block text-[#777] font-600 mb-1";
@@ -131,17 +130,19 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
             }
             <p className="text-xl mb-2">Payment</p>
             {(dataStore.userWallet.WalletAmount > 0)
-                ?<label>
+                ?<label className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-1">
                     <input type="checkbox" checked={useWallet} onChange={() => updateUserWallet()}/>
-                    Use Wallet ({(dataStore.currCurrency === "inr")
+                    Use Wallet ( {(dataStore.currCurrency === "inr")
                         ? currencyFormatter("INR").format(dataStore.userWallet.WalletAmount)
                         : currencyFormatter("USD").format(dataStore.userWallet.WalletAmount)
-                    })
+                    } )
                 </label>
                 :null}
-            <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" value={payMode} onChange={(e) => updatePayMode(e.target.value)}>
+            <div className="bg-[#f1f2f3] py-5 px-8 grid grid-cols-3" >
                 <label className="flex items-center gap-2">
-                    <input type="radio" value="COD" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
+                    <input type="radio" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0"
+                           checked={!!(payMode==="COD")} onChange={() => updatePayMode("COD")}
+                    />
                     <span className="text-[#777] font-600">
                         Cash on Delivery
                         <Link href="/salt/shipping-returns">
@@ -150,11 +151,15 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness }) {
                     </span>
                 </label>
                 <label className="flex items-center gap-2">
-                    <input type="radio" value="CC" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
+                    <input type="radio" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0"
+                           checked={!!(payMode==="CC")} onChange={() => updatePayMode("CC")}
+                    />
                     <span className="text-[#777] font-600">Credit Cards</span>
                 </label>
                 <label className="flex items-center gap-2">
-                    <input type="radio" value="DC" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0" />
+                    <input type="radio" name="paymentMode" className="text-[#777] focus:ring-transparent focus:ring-offset-0"
+                           checked={!!(payMode==="DC")} onChange={() => updatePayMode("DC")}
+                    />
                     <span className="text-[#777] font-600">Debit Cards / Net Banking</span>
                 </label>
             </div>

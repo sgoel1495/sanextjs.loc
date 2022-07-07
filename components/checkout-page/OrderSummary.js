@@ -5,6 +5,7 @@ import currencyFormatter from "../../helpers/currencyFormatter";
 import orderTotal from "../../helpers/orderTotal";
 import promoDiscountValue from "../../helpers/promoDiscountValue";
 import rawOrderTotal from "../../helpers/rawOrderTotal";
+import compareDecimalNumbers from "../../helpers/compareDecimalNumbers";
 
 function OrderSummary() {
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -38,13 +39,13 @@ function OrderSummary() {
                     </tr>
                     <tr>
                         <td>Promo</td>
-                        <td>{currencyFormatter(curr).format(promoDiscountValue())}</td>
+                        <td>{currencyFormatter(curr).format(promoDiscountValue(dataStore))}</td>
                     </tr>
                     <tr>
                         <td>Shipping Charges</td>
-                        <td>{(dataStore.currentOrderInCart.shipping_fee===0)
-                                ?<span>FREE</span>
-                                :(currencyFormatter(curr).format(dataStore.currentOrderInCart.shipping_fee)
+                        <td>{(compareDecimalNumbers(dataStore.currentOrderInCart.shipping_fee,0)==="=")
+                            ?<span>FREE</span>
+                            :<span>currencyFormatter(curr).format(dataStore.currentOrderInCart.shipping_fee)</span>
                         }</td>
                     </tr>
                     <tr>
@@ -54,10 +55,10 @@ function OrderSummary() {
                     {<tr>
                         <td>Wallet</td>
                         <td>{(dataStore.useWallet && dataStore.userWallet.WalletAmount > 0)
-                            ?(finalPayable==0)
-                                ? currencyFormatter(curr).format(walletPay)
+                            ?(compareDecimalNumbers(finalPayable,0)==="=")
+                                ? walletPay
                                 : currencyFormatter(curr).format(dataStore.userWallet.WalletAmount)
-                            :null
+                            :<span>₹0.00</span>
                         }</td>
                     </tr>}
                 </tbody>
