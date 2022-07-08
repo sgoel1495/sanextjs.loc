@@ -49,7 +49,7 @@ function Navbar(props) {
     }
 
     let mobileView, browserView;
-    console.log("PROPTYPE --------- ",props.type)
+
     switch (props.type) {
         case "shopMenu":
             browserView =
@@ -102,10 +102,6 @@ function Navbar(props) {
             break
 
         case "menu":
-            browserView = null
-            mobileView = null
-            break
-
         case "minimal":
             browserView =
                 <nav className={navStyle + " flex items-center gap-x-4"}>

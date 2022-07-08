@@ -26,10 +26,12 @@ const Header = (props) => {
             <InfoBand/>
             <Navbar {...props} />
         </div>
-        : <Fragment>
+        : <>
+            <div/>
             <InfoBand/>
             <Navbar {...props} />
-        </Fragment>
+        </>
+
     const browserView = (props.type === "minimal" || props.type === "menu")
         ? <div className={"navigator sticky top-0 z-20 bg-white"}>
             <Navbar {...props} />
@@ -39,7 +41,7 @@ const Header = (props) => {
             <Navbar {...props} />
         </div>
 
-    return props.isMobile ? mobileView : browserView
+    return !props.isMobile ? browserView : mobileView
 };
 
 export default Header;

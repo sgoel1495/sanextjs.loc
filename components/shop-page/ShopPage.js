@@ -48,20 +48,7 @@ function ShopPage(props) {
     }, [dataStore.refreshFilter])
 
     const navControl = useNavControl(-20)
-    /*
-    const [navControl, setNavControl] = React.useState(false);
-    const controller = useCallback(() => {
-        const isSet = (window.scrollY > window.innerHeight - 20)
-        if (navControl !== isSet)
-            setNavControl(isSet)
-    }, [navControl])
-    useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () =>
-            window.removeEventListener('scroll', controller)
-    }, [controller]);
 
-     */
     /**
      * @todo API - Please tell the api which gives the tagline for categories << HArdcoded
      *
@@ -70,6 +57,7 @@ function ShopPage(props) {
     const tag_line = "Designed for timelessness and crafted with utmost love, the premium quality tops & blouses in a wide palette of prints and colours are made for both work & beyond.";
 
     const [activeLayout, setActiveLayout] = useState("2");
+
     const displayMobileData = () => {
         let returnValue = null
         let breakSpeedKeys
@@ -116,12 +104,12 @@ function ShopPage(props) {
         return returnValue
     }
 
-    const mobileView = <Fragment>
+    const mobileView = <div>
         <PageHead url={"/" + hpid} id={hpid} isMobile={true} />
         <Header type={"shopMenu"} isMobile={true} category={hpid}
-            subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category}
+            subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} filterData={data ? data.filter_count : {}}
                 activeLayout={activeLayout} minimal={true} />} />
-        <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} />
+        <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} filterData={data ? data.filter_count : {}} />
         {data
             ? <main className={`grid grid-cols-${activeLayout} gap-5 container py-5 px-5 bg-[#faf4f0]`}>
                 {displayMobileData()}
@@ -129,7 +117,7 @@ function ShopPage(props) {
             : Loader
         }
         <Footer isMobile={true} />
-    </Fragment>
+    </div>
 
 
     const browserView = <Fragment>
