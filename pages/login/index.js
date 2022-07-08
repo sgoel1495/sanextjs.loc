@@ -1,4 +1,3 @@
-
 import {useRouter} from "next/router";
 import {Fragment, useContext, useEffect} from "react";
 import AppWideContext from "../../store/AppWideContext";
@@ -9,7 +8,7 @@ function LogInPage() {
     useEffect(() => {
         updateDataStore("showSidebarMenuUser", true);
         router.back();
-    }, [updateDataStore,router])
+    }, [updateDataStore, router])
     return <Fragment></Fragment>;
 }
 
