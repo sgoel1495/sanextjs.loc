@@ -24,7 +24,6 @@ import Media from "../components/media/Index"
 import Reviews from "../components/review-section/Index"
 
 /**
- * @todo assign mobile view and browser view
  * @returns {JSX.Element}
  * @constructor
  */
@@ -60,8 +59,17 @@ function RootPage() {
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
-            <Header isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView}
+
+            {(dataStore.mobile) ?
+                <>
+                    <Header isMobile={true}/>
+                    {mobileView}
+                </> :
+                <>
+                    <Header isMobile={false}/>
+                    {browserView}
+                </>
+            }
             <Footer isMobile={dataStore.mobile}/>
         </Fragment>
     )
