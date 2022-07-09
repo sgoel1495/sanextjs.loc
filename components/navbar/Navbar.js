@@ -61,13 +61,14 @@ function Navbar(props) {
                     <SearchMenu type={props.type} isMobile={false}/>
                     <SidebarMenuCart type={props.type} isMobile={false}/>
                 </nav>
+
             mobileView = <Fragment>
                 <div className={navStyle + " flex items-center justify-between bg-white"}>
                     <SidebarMenuHamburger isMobile={true} />
                     <SaltIcon isMobile={true} type={props.type} />
                     <p className={'text-[10px] font-500 leading-none'}>BESPOKE &amp; <br/> CUSTOM CLOTHING</p>
                     <SearchMenu isMobile={true} />
-                    <SidebarMenuCart isMobile={true} />
+                    <SidebarMenuCart isMobile={true}  />
                 </div>
                 <div className="z-30 sticky top-0 pt-2 flex items-center bg-white" ref={menuRef}>
                     <Link href="/" >

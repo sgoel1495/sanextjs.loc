@@ -4,9 +4,10 @@ import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
 import getUserO from "../../helpers/getUserO";
 
-function ProductCartView(){
+function ProductCartView({mockData}) {
+    console.log(mockData)
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore,updateDataStore } = useContext(AppWideContext);
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
 
     const userO = getUserO(dataStore)
 
@@ -14,10 +15,12 @@ function ProductCartView(){
         //retrieve from api and update
         if (dataStore.userData.contact) {
             let userCart = [];
-            const cartCall = await apiCall("getCart", dataStore.apiToken, { "user": userO });
+            const cartCall = await apiCall("getCart", dataStore.apiToken, {"user": userO});
 
             if (cartCall.response && Array.isArray(cartCall.response)) {
-                userCart = cartCall.response.filter(item => { return item.qty != null })
+                userCart = cartCall.response.filter(item => {
+                    return item.qty != null
+                })
             }
             updateDataStore("userCart", userCart)
         } else {
@@ -30,7 +33,7 @@ function ProductCartView(){
             const updateProduct = {
                 product_cart_id: dataStore.userCart[i].cart_id
             }
-            const updateCall = await apiCall("removeCart", dataStore.apiToken, { "user": userO, product: updateProduct });
+            const updateCall = await apiCall("removeCart", dataStore.apiToken, {"user": userO, product: updateProduct});
         } else {
             dataStore.userCart.splice(i, 1)
         }
@@ -52,7 +55,7 @@ function ProductCartView(){
                 product_cart_id: dataStore.userCart[i].cart_id,
                 qty: dataStore.userCart[i].qty
             }
-            await apiCall("updateCart", dataStore.apiToken, { "user": userO, product: updateProduct });
+            await apiCall("updateCart", dataStore.apiToken, {"user": userO, product: updateProduct});
         }
         await refreshCart()
 
@@ -76,7 +79,8 @@ function ProductCartView(){
                                 </div>
                             </div>
                             <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X</button>
+                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X
+                                </button>
                                 <div>
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
                                     <p className="text-[10px]">{p.tag_line}</p>
@@ -114,7 +118,8 @@ function ProductCartView(){
                                 </div>
                             </div>
                             <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X</button>
+                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(index)}>X
+                                </button>
                                 <div>
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
                                     <p className="text-[10px]">{p.tag_line}</p>
@@ -129,9 +134,11 @@ function ProductCartView(){
                                 </div> */}
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty:
-                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(index, -1)}>-</div>
+                                    <div className="text-[#555] cursor-pointer"
+                                         onClick={() => changeQty(index, -1)}>-</div>
                                     <div>{p.qty}</div>
-                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(index, 1)}>+</div>
+                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(index, 1)}>+
+                                    </div>
                                 </div>
                                 <p className="text-right text-[#777] text-xs">
                                     {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
@@ -146,8 +153,8 @@ function ProductCartView(){
     }
 
 
-    const mobileView=null
-    const browserView=<Fragment>
+    const mobileView = null
+    const browserView = <Fragment>
         {productCartView()}
     </Fragment>
 

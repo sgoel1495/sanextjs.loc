@@ -61,7 +61,6 @@ function NewArrivalsSwiper(props) {
                 navigation={false}
             >
                 {actualData.map((item, index) => {
-                    console.log(item)
                     return (
                         <SwiperSlide key={index}>
                             <Link href={item.link} >
