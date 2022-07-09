@@ -7,7 +7,7 @@
 
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
-import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Footer from "../footer/Footer";
 import Image from "next/image";
@@ -23,20 +23,27 @@ import Loader from "../common/Loader";
 function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
-    const { dataStore } = useContext(AppWideContext);
-    const { category, hpid } = props
+    const {dataStore} = useContext(AppWideContext);
+    const {category, hpid} = props
     const [data, setData] = useState(props.data);
     const [visibleData, setVisibleData] = useState([])
+
     const initVisibleData = useCallback(() => {
-        const newData = [];
-        const filterActive = !!(dataStore.filter.length > 0)
-        data.data.forEach(p => {
-            if (
-                p.is_visible
-                && (!filterActive || dataStore.filter.includes(p.asset_id))
-            )
-                newData.push(p)
-        })
+        let newData = [];
+        const filterActive = (dataStore.filter.length > 0)
+        if (filterActive) {
+            dataStore.filter.forEach(asset_id => {
+                let product = data.data.find(asset => asset.asset_id === asset_id)
+                if (product) {
+                    if (product.is_visible) {
+                        newData.push(product)
+                    }
+                }
+            })
+        } else {
+            newData = [...data.data]
+        }
+
         console.log("NEW DATA", newData)
         console.log("Filter DATA", dataStore.filter)
 
@@ -74,7 +81,7 @@ function ShopPage(props) {
 
                     returnValue = <Fragment>
                         {returnValue}
-                        <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"} />
+                        <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"}/>
                         <div className={`col-span-${activeLayout} -mx-5 mt-6`}>
                             <p className={`font-900 text-sm tracking-widest uppercase px-4 mb-2`}>shop
                                 by {breakSpeedKeys[keyIndex]}</p>
@@ -85,7 +92,7 @@ function ShopPage(props) {
                                             className={"block h-24 aspect-square relative border-2 border-white rounded-[35%] overflow-hidden"}>
                                             <Image
                                                 src={WEBASSETS + "/assets/" + breakSpeed[key] + "/square-crop.jpg"}
-                                                layout={"fill"} objectFit={`cover`} alt={key} />
+                                                layout={"fill"} objectFit={`cover`} alt={key}/>
                                         </span>
                                         <span className={`block uppercase text-xs text-center`}>{key}</span>
                                     </div>))
@@ -96,7 +103,7 @@ function ShopPage(props) {
                 }
                 returnValue = <Fragment>
                     {returnValue}
-                    <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"} />
+                    <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"}/>
                 </Fragment>
             })
         }
@@ -105,28 +112,28 @@ function ShopPage(props) {
     }
 
     const mobileView = <div>
-        <PageHead url={"/" + hpid} id={hpid} isMobile={true} />
+        <PageHead url={"/" + hpid} id={hpid} isMobile={true}/>
         <Header type={"shopMenu"} isMobile={true} category={hpid}
-            subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} filterData={data ? data.filter_count : {}}
-                activeLayout={activeLayout} minimal={true} />} />
-        <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} filterData={data ? data.filter_count : {}} />
+                subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} filterData={data ? data.filter_count : {}}
+                                               activeLayout={activeLayout} minimal={true}/>}/>
+        <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} filterData={data ? data.filter_count : {}}/>
         {data
             ? <main className={`grid grid-cols-${activeLayout} gap-5 container py-5 px-5 bg-[#faf4f0]`}>
                 {displayMobileData()}
             </main>
             : Loader
         }
-        <Footer isMobile={true} />
+        <Footer isMobile={true}/>
     </div>
 
 
     const browserView = <Fragment>
-        <PageHead url={"/" + hpid} id={hpid} isMobile={false} />
+        <PageHead url={"/" + hpid} id={hpid} isMobile={false}/>
         <CategoryHeaderVideo category={category}>
-            <Header type={"shopMenu"} />
+            <Header type={"shopMenu"}/>
         </CategoryHeaderVideo>
         <Header type={navControl ? "minimal" : "menu"} isMobile={false} filterData={data ? data.filter_count : {}}
-            category={hpid} />
+                category={hpid}/>
         <BlockHeader
             space={"py-5"}
             titleStyle={"text-center"}
@@ -138,12 +145,12 @@ function ShopPage(props) {
             ? <main className={`grid grid-cols-3 gap-5 container pb-20`}>
                 {visibleData && visibleData.map((prod, index) => {
                     return <ProductCard prod={prod} key={index}
-                        isAccessory={(category === "scarves" || category === "jewellery")} />
+                                        isAccessory={(category === "scarves" || category === "jewellery")}/>
                 })}
             </main>
             : Loader
         }
-        <Footer isMobile={false} />
+        <Footer isMobile={false}/>
     </Fragment>
 
     return dataStore.mobile ? mobileView : browserView
