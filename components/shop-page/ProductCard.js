@@ -137,7 +137,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
             </div>
         }
         return <div className={"relative"}>
-            <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} />
+            <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true} />
             {prod.is_prod_new && <span
                 className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 -left-2 font-bold"}>NEW</span>}
             <Link href={"/" + prod.asset_id}>
@@ -202,7 +202,7 @@ const ProductCard = ({ prod, isMobile, wide, portrait, isAccessory }) => {
                     }}
                     className={`group relative`}
                 >
-                    <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id} />
+                    <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id} isMobile={false} />
                     <Link href={"/" + prod.asset_id}>
                         <a>
                             <ShopDataBlockImage

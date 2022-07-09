@@ -20,14 +20,15 @@ function Navbar(props) {
     const [show, setShow] = useState(false)
 
     const toggleShow = useCallback(() => {
-        if (show) {
-            if ((window.scrollY - menuRef.current.getBoundingClientRect().bottom) < subMenuRef.current.clientHeight)
-                setShow(false)
+        if (menuRef.current && subMenuRef.current)
+            if (show) {
+                if ((window.scrollY - menuRef.current.getBoundingClientRect().bottom) < subMenuRef.current.clientHeight)
+                    setShow(false)
 
-        } else {
-            if (window.scrollY - menuRef.current.getBoundingClientRect().bottom > subMenuRef.current.clientHeight)
-                setShow(true)
-        }
+            } else {
+                if (window.scrollY - menuRef.current.getBoundingClientRect().bottom > subMenuRef.current.clientHeight)
+                    setShow(true)
+            }
     }, [show])
 
     useEffect(() => {
@@ -63,14 +64,14 @@ function Navbar(props) {
                 </nav>
             mobileView = <Fragment>
                 <div className={navStyle + " flex items-center justify-between bg-white"}>
-                    <SidebarMenuHamburger isMobile={true} />
-                    <SaltIcon isMobile={true} type={props.type} />
+                    <SidebarMenuHamburger isMobile={true}/>
+                    <SaltIcon isMobile={true} type={props.type}/>
                     <p className={'text-[10px] font-500 leading-none'}>BESPOKE &amp; <br/> CUSTOM CLOTHING</p>
-                    <SearchMenu isMobile={true} />
-                    <SidebarMenuCart isMobile={true} />
+                    <SearchMenu isMobile={true}/>
+                    <SidebarMenuCart isMobile={true}/>
                 </div>
                 <div className="z-30 sticky top-0 pt-2 flex items-center bg-white" ref={menuRef}>
-                    <Link href="/" >
+                    <Link href="/">
                         <a className="block px-4">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 1024" className='w-5 h-5'>
                                 <path d="M169.387067 0h1020.161199v1020.1612H169.387067z" fill="#FFFFFF"
@@ -179,7 +180,7 @@ function Navbar(props) {
                             <Link href={"/homepage/signin"}>
                                 <a>
                                     <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav"
-                                           width={iconHeightWeight} height={iconHeightWeight} />
+                                           width={iconHeightWeight} height={iconHeightWeight}/>
                                 </a>
                             </Link>
                         </li>

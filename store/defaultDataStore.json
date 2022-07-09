@@ -1,5 +1,5 @@
 {
-  "mobile": false,
+  "mobile": null,
   "currCurrency": "inr",
   "currSymbol": "₹",
   "apiToken": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
