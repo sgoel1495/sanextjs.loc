@@ -18,10 +18,12 @@ import ProductCard from "./ProductCard";
 import useNavControl from "../../hooks/useNavControl";
 import CategoryHeaderMobile from "./CategoryHeaderMobile";
 import Loader from "../common/Loader";
+import {useRouter} from "next/router";
 
 
 function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const router = useRouter();
     //all paths start with shop-
     const {dataStore} = useContext(AppWideContext);
     const {category, hpid} = props
@@ -76,35 +78,45 @@ function ShopPage(props) {
                 if (index % 8 === 7) {
                     let keyIndex = ((index + 1) / 8) - 1
                     let breakSpeed = null
-                    if (keyIndex > -1 && keyIndex < breakSpeedKeys.length)
+                    if (keyIndex > -1 && keyIndex < breakSpeedKeys.length) {
                         breakSpeed = data.break_speed[breakSpeedKeys[keyIndex]]
-
+                        returnValue = <Fragment>
+                            {returnValue}
+                            <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"}/>
+                            <div className={`col-span-${activeLayout} -mx-5 mt-6`}>
+                                <p className={`font-900 text-sm tracking-widest uppercase px-4 mb-2`}>shop
+                                    by {breakSpeedKeys[keyIndex]}</p>
+                                <div className={"flex overflow-x-scroll"}>
+                                    {breakSpeed && Object.keys(breakSpeed).map((key, index) => (
+                                        <div key={index} className={"pb-3 " + [index === 0 ? "mx-4" : "mr-4"]}
+                                             onClick={() => router.push("/group/" + key + "?category=" + category)}>
+                                            <span
+                                                className={"block h-24 aspect-square relative border-2 border-white rounded-[35%] overflow-hidden"}
+                                            >
+                                                <Image
+                                                    src={WEBASSETS + "/assets/" + breakSpeed[key] + "/square-crop.jpg"}
+                                                    layout={"fill"} objectFit={`cover`} alt={key}
+                                                />
+                                            </span>
+                                            <span className={`block uppercase text-xs text-center`}>{key.replace("-", "")}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </Fragment>
+                    } else {
+                        returnValue = <Fragment>
+                            {returnValue}
+                            <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"}/>
+                        </Fragment>
+                    }
+                } else {
                     returnValue = <Fragment>
                         {returnValue}
                         <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"}/>
-                        <div className={`col-span-${activeLayout} -mx-5 mt-6`}>
-                            <p className={`font-900 text-sm tracking-widest uppercase px-4 mb-2`}>shop
-                                by {breakSpeedKeys[keyIndex]}</p>
-                            <div className={"flex overflow-x-scroll"}>
-                                {breakSpeed && Object.keys(breakSpeed).map((key, index) => (
-                                    <div key={index} className={"pb-3 " + [index === 0 ? "mx-4" : "mr-4"]}>
-                                        <span
-                                            className={"block h-24 aspect-square relative border-2 border-white rounded-[35%] overflow-hidden"}>
-                                            <Image
-                                                src={WEBASSETS + "/assets/" + breakSpeed[key] + "/square-crop.jpg"}
-                                                layout={"fill"} objectFit={`cover`} alt={key}/>
-                                        </span>
-                                        <span className={`block uppercase text-xs text-center`}>{key}</span>
-                                    </div>))
-                                }
-                            </div>
-                        </div>
                     </Fragment>
                 }
-                returnValue = <Fragment>
-                    {returnValue}
-                    <ProductCard prod={prod} key={index} isMobile={true} wide={activeLayout === "1"}/>
-                </Fragment>
+
             })
         }
 

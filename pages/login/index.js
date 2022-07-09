@@ -5,10 +5,7 @@ import AppWideContext from "../../store/AppWideContext";
 function LogInPage() {
     const {updateDataStore} = useContext(AppWideContext);
     const router = useRouter();
-    useEffect(() => {
-        updateDataStore("showSidebarMenuUser", true);
-        router.back();
-    }, [updateDataStore, router])
+
     return <Fragment></Fragment>;
 }
 

@@ -20,14 +20,15 @@ function Navbar(props) {
     const [show, setShow] = useState(false)
 
     const toggleShow = useCallback(() => {
-        if (show) {
-            if ((window.scrollY - menuRef.current.getBoundingClientRect().bottom) < subMenuRef.current.clientHeight)
-                setShow(false)
+        if (menuRef.current && subMenuRef.current)
+            if (show) {
+                if ((window.scrollY - menuRef.current.getBoundingClientRect().bottom) < subMenuRef.current.clientHeight)
+                    setShow(false)
 
-        } else {
-            if (window.scrollY - menuRef.current.getBoundingClientRect().bottom > subMenuRef.current.clientHeight)
-                setShow(true)
-        }
+            } else {
+                if (window.scrollY - menuRef.current.getBoundingClientRect().bottom > subMenuRef.current.clientHeight)
+                    setShow(true)
+            }
     }, [show])
 
     useEffect(() => {
@@ -61,14 +62,13 @@ function Navbar(props) {
                     <SearchMenu type={props.type} isMobile={false}/>
                     <SidebarMenuCart type={props.type} isMobile={false}/>
                 </nav>
-
             mobileView = <Fragment>
                 <div className={navStyle + " flex items-center justify-between bg-white"}>
                     <SidebarMenuHamburger isMobile={true} />
                     <SaltIcon isMobile={true} type={props.type} />
                     <p className={'text-[10px] font-500 leading-none'}>BESPOKE &amp; <br/> CUSTOM CLOTHING</p>
                     <SearchMenu isMobile={true} />
-                    <SidebarMenuCart isMobile={true}  />
+                    <SidebarMenuCart isMobile={true} />
                 </div>
                 <div className="z-30 sticky top-0 pt-2 flex items-center bg-white" ref={menuRef}>
                     <Link href="/" >

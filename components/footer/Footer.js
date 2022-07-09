@@ -4,7 +4,7 @@
  */
 
 import Link from "next/link";
-import React, {createRef, Fragment, useContext, useEffect, useState} from 'react';
+import React, {createRef, Fragment, useContext, useState} from 'react';
 import isValidEmail from "../../helpers/isValidEmail";
 import {apiCall} from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
@@ -331,7 +331,7 @@ function Footer(props) {
                 : null
             }
         </Toast>
-        {(dataStore.mobile) ? mobileView : browserView}
+        {(props.isMobile) ? mobileView : browserView}
     </Fragment>
 
 }
