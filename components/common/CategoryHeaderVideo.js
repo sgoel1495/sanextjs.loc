@@ -65,11 +65,13 @@ function CategoryHeaderVideo(props) {
             titleStyle = " text-left float-left pl-28"
     }
 
+    console.log("================= CATEGORY", category)
+
     //@TODO We do not have any carousel data.
     return (
         <section>
             {props.children}
-            {(category==="best-selling")
+            {(props.category === "best-selling")
                 ? null
                 : <span className={"relative block overflow-hidden"}>
                 <video autoPlay muted className={`w-full h-fit`} loop
@@ -82,15 +84,20 @@ function CategoryHeaderVideo(props) {
                     Your browser does not support video tag. Please upgrade.
                 </video>
             </span>}
-            {(category === "best-selling")
+            {(props.category === "best-selling")
                 ? null
                 : <div className={`absolute inset-0 top-[40vh] h-fit ` + containerStyle}>
                     <div className={`bg-black pt-10 pb-4 px-[2vw] w-[32%] text-white leading-none ` + titleStyle}>
-                        {superText && <><span
-                            className={`block text-md uppercase font-semibold font-cursive`}>{superText}</span><br/></>}
-                        <span className={`block font-cursive uppercase ` + textStyle}>
-                        {category === "masks" ? <>COTTON<br/>MASKS</> : category}
-                    </span>}
+                        {superText && <>
+                            <span
+                            className={`block text-md uppercase font-semibold font-cursive`}>
+                                {superText}
+                            </span>
+                            <br/>
+                            </>}
+                            <span className={`block font-cursive uppercase ` + textStyle}>
+                                {category === "masks" ? <>COTTON<br/>MASKS</> : category}
+                            </span>
                         {subText &&
                             <span className={`block text-sm leading-6 font-light mb-4 mt-[-15px]`}>{subText}</span>}
                     </div>
