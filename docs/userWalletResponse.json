@@ -1,0 +1,26 @@
+{
+  "msg": "Found",
+  "user": {
+    "WalletAmount": 20000.0,
+    "TotalCr": 20000.0,
+    "TotalDr": 0,
+    "Wallet": [
+      {
+        "credit": 15000,
+        "debit": 0,
+        "dateTime": "2022-05-30 20:36:58 +0530",
+        "OrderID_index": "",
+        "comment": "add cash in wallet for testing",
+        "balance": 15000
+      },
+      {
+        "credit": 5000,
+        "debit": 0,
+        "dateTime": "2022-07-05 21:05:41 +0530",
+        "OrderID_index": "",
+        "comment": "add cash in wallet for testing",
+        "balance": 20000
+      }
+    ]
+  }
+}

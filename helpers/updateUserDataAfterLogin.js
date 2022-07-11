@@ -10,14 +10,13 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     const walletCall = await apiCall("userWallet", apiToken, { contact: username });
 
     let userWallet = {
-        "email": "",
-        "phone_number": "",
-        "user_name": "",
-        "wallet_amount": 0,
-        "usd_wallet_amount": 0
+        "WalletAmount": 0,
+        "TotalCr": 0,
+        "TotalDr": 0,
+        "Wallet":[]
     };
-    if (walletCall.hasOwnProperty("response") && walletCall.response && walletCall.response.email)
-        userWallet = {...walletCall.response};
+    if (walletCall.user)
+        userWallet = {...walletCall.user};
 
     //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, { contact: username });
@@ -123,20 +122,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     console.log("userCart",userCart);
     console.log("userMeasurements",userMeasurements);
     console.log("userOrderHistory",userOrderHistory);
-/*
-  "orderPromo": {},
-  "currentOrderId": 0,
-  "currentOrderInCart": {
-    "address": {},
-    "measurement": {},
-    "account": {},
-    "order": {},
-    "payment": {},
-    "otp_verified": false
-  },
-  "place_order_step1": {}
 
- */
     return {
         "userData":userData,
         "userWallet":userWallet,
@@ -147,7 +133,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
         "userMeasurements":userMeasurements,
         "userOrderHistory":userOrderHistory,
         "orderPromo": {},
-        "currentOrderId": 0,
+        "currentOrderId": "",
         "currentOrderInCart": {
             "address": {},
             "measurement": {},
@@ -157,7 +143,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
             "shipping_fee": 0,
             "otp_verified": false
         },
-        "place_order_step1": {}
+        "useWallet": false
     }
 }
 

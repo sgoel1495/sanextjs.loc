@@ -1,6 +1,6 @@
 import PageHead from "../../../components/PageHead";
 import AppWideContext from "../../../store/AppWideContext";
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
@@ -10,7 +10,7 @@ import Image from "next/image";
 
 function BlogAboutSaltPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
     const category = "About Salt";
 
@@ -24,7 +24,7 @@ function BlogAboutSaltPage() {
                     <Link href={blog.link}>
                         <a className={`block`}>
                             <span className="block relative w-full aspect-square">
-                                <Image src={WEBASSETS + blog.img} alt={blog.title} layout={`fill`} objectFit={`contain`}/>
+                                <Image src={WEBASSETS + blog.img} alt={blog.title} layout={`fill`} objectFit={`contain`} />
                             </span>
                             <div className="px-4 py-2">
                                 <p className={`text-sm font-500 mb-2 tracking-widest`}>{blog.category}</p>
@@ -40,7 +40,7 @@ function BlogAboutSaltPage() {
 
     const mobileView = null;
     const browserView = (
-        <>
+        <section className="w-9/12 mx-auto mb-10">
             <div className="text-center mt-5 mb-20">
                 <p className={`text-2xl font-700 font-cursive`}>About Salt</p>
                 <p>Our Values</p>
@@ -48,18 +48,18 @@ function BlogAboutSaltPage() {
             <main className="grid grid-cols-3 gap-28">
                 {showBlogPosts()}
             </main>
-        </>
+        </section>
     );
 
     return (
         <Fragment>
-            <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
-            <CategoryHeaderImage category={category}/>
-            <section className="container mb-10">
-                {(dataStore.mobile) ? mobileView : browserView}
-            </section>
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={dataStore.mobile} />
+            <Header type={dataStore.mobile ? "minimal" : ""} isMobile={dataStore.mobile} />
+            <div className="h-[436px] overflow-hidden">
+            <CategoryHeaderImage category={category} />
+            </div>
+            {(dataStore.mobile) ? mobileView : browserView}
+            <Footer isMobile={dataStore.mobile} />
         </Fragment>);
 
 }

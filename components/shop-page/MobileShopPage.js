@@ -64,3 +64,14 @@ const MobileShopPage = ({data, loading, loaderRef, category, hpid}) => {
 };
 
 export default MobileShopPage;
+
+/*
+                <MobileShopPage
+                    loaderRef={loaderRef}
+                    loading={loading}
+                    data={data}
+                    category={category}
+                    hpid={hpid}
+                />
+
+ */

@@ -64,8 +64,8 @@ function ReviewsPage() {
         <Fragment>
             <PageHead url="/reviews" id="reviews" isMobile={dataStore.mobile}/>
             <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
-            <div className="grid place-items-center mt-28 mb-10">
-                <div className={"border-[5px] border-black/10 py-3 px-6 uppercase tracking-wide"}>
+            <div className="grid place-items-center mt-8 mb-10">
+                <div className={"border-[5px] border-black/10 w-[170px] py-3 uppercase tracking-wide"}>
                     <h4 className={`text-h4 font-600 text-center`}>Reviews</h4>
                 </div>
             </div>

@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import ParallaxBlock from "../common/ParallaxBlock";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import useScrollDirection from "../../hooks/useScrollDirection";
 
 /**
  * @todo @Sambhav css pls
@@ -14,10 +15,12 @@ function Fabric(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     //let oldValue, newValue = 0;
-    const [oldValue,setOldValue]=useState(0)
-    const [scrollDirection, setScrollDirection] = React.useState(false);
+    const [oldValue, setOldValue] = useState(0)
+    const scrollDirection = useScrollDirection()
+    /*
+    const [scrollDirection, setScrollDirection] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const scrollController= (_e)=>{
             const newValue = window.scrollY
             if (oldValue < newValue) {
@@ -34,14 +37,14 @@ function Fabric(props) {
             window.removeEventListener("scroll",scrollController)
         }
     }, [oldValue]);
-
+    */
     // GSAP Animation
     gsap.registerPlugin(ScrollTrigger);
 
     let GSAPBlock1Animation = React.useRef(null);
     let GSAPBlock2Animation = React.useRef(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         gsap.fromTo(
             GSAPBlock1Animation,
             {
@@ -84,25 +87,25 @@ function Fabric(props) {
         <>
             <ParallaxBlock
                 bgImage={WEBASSETS + "/assets/images/mimoto-7.jpg"}
-                bodyStyle={`items-start pt-24 gap-y-3`}
+                bodyStyle={`items-start pt-24 gap-y-4`}
                 verticalAlign={'justify-start'}
             >
                 <div className={`font-cursive italic font-600 bg-white p-4 mr-20 duration-200 ${scrollDirection ? 'translate-x-0' : '-translate-x-full opacity-0'}`}>
-                    <p className={`text-[#be6a74] text-sm leading-[1.25]`}>“These fabrics are so flimsy. And the polyester ones are so heavy, for this weather.”</p>
+                    <p className={`text-[#be6a74] text-[13px] leading-[1.25]`}>“These fabrics are so flimsy. And the polyester ones are so heavy, for this weather.”</p>
                 </div>
-                <div className={`mr-8 bg-white/70 py-4 px-2`}>
-                    <p className={`text-xl font-cursive italic px-5 font-600 leading-none text-[#794e4d]`}>Fabric</p>
-                    <div className="bg-white/70 p-3 text-xs text-justify leading-3">
+                <div className={`mr-8 bg-white/70 py-4 px-2 w-10/12`}>
+                    <p className={`text-[19px] font-cursive italic px-5 font-600 leading-none text-[#794e4d]`}>Fabric</p>
+                    <div className="bg-white/70 p-3 text-[12px] text-justify leading-3">
                         <p className={`mb-5`}>After traveling across various markets in search for that perfect fabric,(We must&apos;ve crossed over 10 million steps on fitbit too!), we brought together a
                             selection of fabrics which are aesthetically pleasing, feel good on your skin and are very comfortable for all day wear.</p>
                         <p>These are of premium quality, lightweight and durable. Our polyesters are light weight, all weather, easy to maintain and wrinkle free.</p>
                     </div>
                 </div>
             </ParallaxBlock>
-            <div className={`h-[80vh] grid place-items-center content-center text-center font-600 font-cursive italic px-12`}>
-                <p className={`text-black/50 font-sans font-600 mb-10 not-italic text-xs`}>Store B: (A European brand)</p>
+            <div className={`h-[80vh] grid place-items-center content-center text-center font-600 font-cursive italic px-14`}>
+                <p className={`text-black/50 font-sans font-600 mb-10 not-italic text-[10px]`}>Store B: (A European brand)</p>
                 <div className={`mb-5`}>
-                    <p className={`text-lg`}>“Finally a good collection in terms of the design, style and some good prints too”</p>
+                    <p className={`text-[19px]`}>“Finally a good collection in terms of the design, style and some good prints too”</p>
                 </div>
                 <div
                     className={`mb-5`}
@@ -110,20 +113,20 @@ function Fabric(props) {
                         GSAPBlock1Animation = el
                     }}
                 >
-                    <p className={`text-sm text-black/70 mb-2`}>Radhika now picks a handful of clothes and goes to the trial room. On trying the dress,</p>
-                    <p className={`text-lg`}>“Isn’t this a Size M? Why is it so tight around my arms and then awkwardly loose on the bust”</p>
+                    <p className={`text-[10px] text-black/70 mb-2`}>Radhika now picks a handful of clothes and goes to the trial room. On trying the dress,</p>
+                    <p className={`text-[19px]`}>“Isn’t this a Size M? Why is it so tight around my arms and then awkwardly loose on the bust”</p>
                 </div>
                 <div
                     ref={el => {
                         GSAPBlock2Animation = el
                     }}
                 >
-                    <p className={`text-sm text-black/70 mb-2`}>Dissuaded she moves on to try the pants</p>
-                    <p className={`text-lg`}>This size is fitting me really tight from the hip and if I take a size bigger it will be loose”</p>
+                    <p className={`text-[10px] text-black/70 mb-2`}>Dissuaded she moves on to try the pants</p>
+                    <p className={`text-[19px]`}>This size is fitting me really tight from the hip and if I take a size bigger it will be loose”</p>
                 </div>
             </div>
             <div className={`h-[80vh] grid place-items-center content-center text-center font-cursive italic`}>
-                <p className={`text-5xl`}>“Sigh!”</p>
+                <p className={`text-[40px]`}>“Sigh!”</p>
             </div>
         </>
     );

@@ -50,12 +50,12 @@ function SidebarMenuUser(props) {
                 props.type === "shopMenu" ?
                     <div className={"float-right text-right"}>
                         <span className={"block text-sm tracking-wide"}>Account</span>
-                        <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userData.contact||"Login/Signup"}</span>
+                        <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userServe.user_name||"Login/Signup"}</span>
                     </div>
                     :
-                    (dataStore.userWallet.user_name!=="") ?
+                    (dataStore.userServe.user_name!=="") ?
                         <div className="rounded-full bg-slate-400 text-center cursor-pointer">
-                            <span className="text-sm text-white font-600 text-center">{dataStore.userWallet.user_name[0].toUpperCase()}</span>
+                            <span className="text-sm text-white font-600 text-center">{dataStore.userServe.user_name[0].toUpperCase()}</span>
                         </div>
                         :
                         <Image

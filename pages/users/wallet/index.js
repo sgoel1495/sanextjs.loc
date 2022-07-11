@@ -5,6 +5,7 @@ import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
+import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
 
 function UsersWalletPage() {
     const router = useRouter();
@@ -14,12 +15,16 @@ function UsersWalletPage() {
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
 
+    console.log("============== DATA STORE ========",dataStore)
     const mobileView = null;
     const browserView = (
         <UserPageTemplate>
             <p className="text-[28px] mb-2">My Wallet</p>
             <div className="bg-[#f1f2f3] px-8 py-5 w-full">
-                <p className="text-[#777] font-500 mt-4">No Record Found!</p>
+                <p className="text-[28px] mb-2">SALT Store Credit</p>
+                <p className="text-[#777] font-500 mt-4">
+                    Available Balance: {dataStore.currSymbol} {formatTwoDecimal(dataStore.userWallet.WalletAmount)}
+                </p>
             </div>
             <div className="bg-[#f1f2f3] px-8 py-5 w-full">
                 <form action="" className="flex gap-x-5">

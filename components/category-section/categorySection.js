@@ -38,10 +38,12 @@ const CategorySection = () => {
             <div className={"py-6 w-screen overflow-x-scroll scrollbar-none bg-[#f0eae6]"}>
                 <div className={"flex gap-2"}>
                     {resp && resp.response && resp.response.map((item, index) => {
-                        return <div key={index} className='inline-flex flex-col items-center gap-3'>
-                            <ImageBlock src={WEBASSETS + item.asset_id} alt={item.category} style={"w-[100px] aspect-square rounded-[35%]"}/>
-                            <span className={"text-black text-[10px] uppercase tracking-wide font-600"}>{item.category}</span>
-                        </div>
+                        return <Link key={index} href={"/shop-" + item.category}>
+                            <div className='inline-flex flex-col items-center gap-3'>
+                                <ImageBlock src={WEBASSETS + item.asset_id} alt={item.category} style={"w-[100px] aspect-square rounded-[35%]"}/>
+                                <span className={"text-black text-[10px] uppercase tracking-wide font-600"}>{item.category}</span>
+                            </div>
+                        </Link>
                     })}
                 </div>
             </div>
@@ -65,7 +67,7 @@ const CategorySection = () => {
                             >
                                 {carousalResp.response.data.mob.imgs.map((item, index) => {
                                     return <SwiperSlide key={index}>
-                                        <Link href={carousalResp.response.data.mob.links[index]}>
+                                        <Link href={carousalResp.response.data.mob.links[index] ? carousalResp.response.data.mob.links[index] : ""}>
                                             <a className={'block relative h-[65vh] w-full'}>
                                                 <Image
                                                     src={WEBASSETS + item}

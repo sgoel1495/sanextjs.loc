@@ -11,6 +11,7 @@ import Header from "../../components/navbar/Header";
 import { apiCall } from "../../helpers/apiCall";
 
 import sleep from "../../helpers/sleep";
+import Loader from "../../components/common/Loader";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -28,25 +29,25 @@ function LooksPage(props) {
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
-/*
-    useEffect(()=>{
-
-        if(
-            !data
-            && dataStore.apiToken
-            && pagination
-        )
-            fetchData()
-                .then(resp=>{
-                    setData(resp)
-                })
-                .catch(e=>console.log(e.message))
-                .finally(()=>{
-                    console.log("Full Data Loaded")
-                })
-
-    },[data, dataStore.apiToken, pagination])
-*/
+    /*
+        useEffect(()=>{
+    
+            if(
+                !data
+                && dataStore.apiToken
+                && pagination
+            )
+                fetchData()
+                    .then(resp=>{
+                        setData(resp)
+                    })
+                    .catch(e=>console.log(e.message))
+                    .finally(()=>{
+                        console.log("Full Data Loaded")
+                    })
+    
+        },[data, dataStore.apiToken, pagination])
+    */
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
@@ -185,40 +186,69 @@ function LooksPage(props) {
         return showLookData;
     }
 
-    const mobileView = null;
-    const browserView = null
+    const mobileView = <Fragment>
+        <PageHead url="/looks" id="looks" isMobile={true} />
+        <Header type={"minimal"} />
+        <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
+            <BlockHeader
+                space={"py-5"}
+                titleStyle={"text-center py-10 tracking-wider"}
+            >
+                <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
+                <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
+                    className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
+            </BlockHeader>
+            {(data)
+                ? <main className={`px-10 grid grid-cols-3 gap-7`} >
+                    {lookData()}
+                </main>
+                : loader
+            }
+        </section>
+        <Footer isMobile={true} />
+    </Fragment>
 
-    if(!dataStore.mobile)
-        return <Fragment>
-            <PageHead url="/looks" id="looks" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} />
-            <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
-                <BlockHeader
-                    space={"py-5"}
-                    titleStyle={"text-center py-10 tracking-wider"}
-                >
-                    <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
-                    <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
-                        className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
-                </BlockHeader>
-                {(data)
-                    ?<main className={`px-10 grid grid-cols-3 gap-7`} >
-                        {lookData()}
-                    </main>
-                    :loader
-                }
-            </section>
-            <Footer isMobile={dataStore.mobile} />
-        </Fragment>
-    else
-        return null
+    const browserView = <Fragment>
+        <PageHead url="/looks" id="looks" isMobile={false} />
+        <Header type={"shopMenu"} />
+        <section className={`bg-[#E6E1DB] py-20 overflow-auto`}>
+            <BlockHeader
+                space={"py-5"}
+                titleStyle={"text-center py-10 tracking-wider"}
+            >
+                <h3 className={`text-h4 font-600`}>SHOP THE LOOK</h3>
+                <h4 className={`text-h6 text-[#a76b2c] uppercase leading-none font-600`}>Looks <span
+                    className={`font-cursive italic text-h3 lowercase`}>we</span> Love</h4>
+            </BlockHeader>
+            {(data)
+                ? <main className={`px-10 grid grid-cols-3 gap-7`} >
+                    {lookData()}
+                </main>
+                : loader
+            }
+        </section>
+        <Footer isMobile={false} />
+    </Fragment>
+
+    const [forceRefresh, setForceRefresh] = useState(false)
+    useEffect(() => {
+        if (!forceRefresh)
+            setForceRefresh(true)
+    }, [forceRefresh])
+
+
+    return forceRefresh
+        ? dataStore.mobile
+            ? mobileView
+            : browserView
+        : <Loader />
 
 }
 
 export async function getStaticProps() {
     const fetchData = async () => {
         let gotData = false;
-        const callObject = await apiCall("getLooksData", process.env.API_TOKEN, { look_id: "", limit: 10000, skip: 0})
+        const callObject = await apiCall("getLooksData", process.env.API_TOKEN, { look_id: "", limit: 10000, skip: 0 })
         if (
             callObject.hasOwnProperty("response")
             && callObject.response.hasOwnProperty("look")
@@ -231,7 +261,7 @@ export async function getStaticProps() {
 
     return {
         props: {
-            data:await fetchData()
+            data: await fetchData()
         }
     }
 }

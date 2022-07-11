@@ -18,8 +18,6 @@ function OtpModal(props) {
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
 
-
-
     useEffect(() => {
         const current = Date.now()
         if (otpValidity) {
@@ -94,7 +92,7 @@ function OtpModal(props) {
         await updateUserDataAfterLogin(dataStore.userData.contact, dataStore.apiToken, {}, [])
         const toReset = {
             "orderPromo": {},
-            "currentOrderId": 0,
+            "currentOrderId": "",
             "currentOrderInCart": {
                 "address": {},
                 "measurement": {},
@@ -104,7 +102,7 @@ function OtpModal(props) {
                 "shipping_fee": 0,
                 "otp_verified": false
             },
-            "place_order_step1": {}
+            "useWallet": false
         }
         Object.keys(toReset).forEach(key => {
             updateDataStore(key, toReset[key])
@@ -120,11 +118,11 @@ function OtpModal(props) {
                     <p className="text-[#777] mb-8">We have sent an OTP for COD verification on your below<br/>mentioned details:</p>
                     <div className="inline-flex gap-2 items-center text-[#777]">
                         <span>Email:</span>
-                        <span>{dataStore.currentOrderInCart.address.email}</span>
+                        <span>{dataStore.selectedAddress.email}</span>
                     </div>
                     <div className="inline-flex gap-2 items-center text-[#777]">
                         <span>Phone:</span>
-                        <span>{dataStore.currentOrderInCart.address.phone}</span>
+                        <span>{dataStore.selectedAddress.phone}</span>
                     </div>
                     {(placing)
                         ? null

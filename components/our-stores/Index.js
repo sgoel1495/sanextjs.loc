@@ -84,19 +84,19 @@ const Index = () => {
                 </div>
                 <form onSubmit={bookApointment}>
                     <div className="grid grid-cols-2 gap-3">
-                        <select name={"apt_type"} className={inputStyle + " col-span-2 py-4"} onChange={(e) => setType(e.target.value)}>
-                            <option value="" selected>SELECT APPOINTMENT TYPE</option>
+                        <select value={type} name={"apt_type"} className={inputStyle + " col-span-2 py-4"} onChange={(e) => setType(e.target.value)}>
+                            <option value="" >SELECT APPOINTMENT TYPE</option>
                             <option value="physical">Store Appointment</option>
                             <option value="virtual">Virtual Styling Session (Zoom/Google Meet)</option>
                         </select>
                         {
-                            type === "physical" && <select className={inputStyle + " col-span-2 py-4"} name={"store_location"}>
-                                <option value="DLF MEGA MALL" selected>DLF MEGA MALL</option>
+                            type === "physical" && <select defaultValue="DLF MEGA MALL" className={inputStyle + " col-span-2 py-4"} name={"store_location"}>
+                                <option value="DLF MEGA MALL">DLF MEGA MALL</option>
                             </select>
                         }
                         <input name={"appt_date"} className={inputStyle + " w-full"} type="date" min={DateTime.now().plus({days: 1}).toISODate()}/>
-                        <select name={"time"} className={inputStyle}>
-                            <option value="" selected>SELECT TIME</option>
+                        <select defaultValue="" name={"time"} className={inputStyle}>
+                            <option value="">SELECT TIME</option>
                             {
                                 (new Interval.fromDateTimes(DateTime.now().set({hour: 1, minute: 0}), DateTime.now().set({
                                     hour: 23,
@@ -112,8 +112,8 @@ const Index = () => {
                         <input className={inputStyle + " col-span-2"} type="tel" placeholder='PHONE NUMBER' name={"phone"}/>
                         <div className={"my-2 col-span-2 text-center"}>
                             <label className={"text-xs font-400"}>HAVE YOU SHOPPED WITH US BEFORE ?</label>
-                            <select className={focusStyle + " border-none  bg-transparent text-xs font-600 text-center text-[#797979] h-8 py-1"} name={"is_custome"}>
-                                <option value="" selected>PLEASE SELECT</option>
+                            <select defaultValue="" className={focusStyle + " border-none  bg-transparent text-xs font-600 text-center text-[#797979] h-8 py-1"} name={"is_custome"}>
+                                <option value="">PLEASE SELECT</option>
                                 <option value="yes">YES</option>
                                 <option value="no">NO</option>
                             </select>

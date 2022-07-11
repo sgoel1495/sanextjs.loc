@@ -18,6 +18,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
     const [createAccount, setCreateAccount] = useState(false)
     const [editAddress, setEditAddress] = useState(true)
     const [selectedAddressIndex, setSelectedAddressIndex] = useState(null)
+    const [addressSaved,setAddressSaved] = useState(false)
 
     const emptyAddress = {
         "name": "",
@@ -48,6 +49,7 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         address[key] = value
         setAddress(address)
         setRefresh(!refresh)
+        updateDataStore("selectedAddress",address)
     }
 
     const updateZipcode = async (zip) => {
@@ -135,6 +137,8 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
         if (completeness !== addressComplete)
             updateCompleteness(completeness)
 
+        setAddressSaved(completeness)
+
     }
 
     const addressCompleteness = () => {
@@ -156,6 +160,9 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
             setMessage("Email is incorrect");
             setShow(true);
             completeness = false
+        } else {
+            dataStore.userServe.email = address.email
+            updateDataStore("userServe",dataStore.userServe)
         }
 
         if (dataStore.currCurrency === "inr" && address.zip_code.length !== 6) {
@@ -431,8 +438,13 @@ function ShippingAddress({ addressComplete, updateCompleteness }) {
                         <div className="col-span-full flex justify-center gap-10 text-sm">
                             <button className="border border-black px-4 py-1.5">Cancel</button>
                             <button className="bg-black px-4 py-1.5 text-white tracking-widest font-500"
-                                onClick={checkAndSave}>SAVE
+                                onClick={checkAndSave}>
+                                SAVE
                             </button>
+                            {addressSaved
+                                ? <span> saved </span>
+                                :null
+                            }
                         </div>
                     </div>
                     <Toast show={show} hideToast={() => setShow(false)}>

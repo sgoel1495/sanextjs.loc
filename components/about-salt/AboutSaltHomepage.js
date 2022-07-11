@@ -72,14 +72,14 @@ function AboutSaltHomepage(props) {
                         return (
                             <Link href={item.link} key={index}>
                                 <a className={blockStyle}>
-                                <span className={"relative block h-[300px] w-full"}>
-                                    <Image
-                                        src={item.image}
-                                        alt={item.title + " lazy"}
-                                        layout="fill"
-                                        objectFit="cover"
-                                    />
-                                </span>
+                                    <span className={"relative block h-[300px] w-full"}>
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title + " lazy"}
+                                            layout="fill"
+                                            objectFit="cover"
+                                        />
+                                    </span>
                                     <p className={blockHeaderStyle}>{item.title}</p>
                                     <p className={blockParaStyle}>{item.description}</p>
                                 </a>

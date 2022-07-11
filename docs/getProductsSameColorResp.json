@@ -1,0 +1,37 @@
+{
+  "status": 200,
+  "msg": "success",
+  "response": {
+    "tagline": null,
+    "asset_origin": "http://103.90.242.46:84",
+    "filter_count": "",
+    "total_products_exist": 2,
+    "data": [
+      {
+        "asset_id": "Dresses-Elsa-SheathDresswithTuckDetail",
+        "belong_to": "",
+        "cate_visible": true,
+        "category": "dresses",
+        "coll_visible": true,
+        "fabric_codes": [
+          "FAB_586_MINT_POLKA_PRINT_FIONA",
+          "FAB_291_MINT_CREPE_LINING"
+        ],
+        "in_stock": "true",
+        "inventory": "{\"xs\"=\u003e0, \"s\"=\u003e0, \"m\"=\u003e0, \"l\"=\u003e0, \"xl\"=\u003e0, \"xxl\"=\u003e0, \"f\"=\u003e0}",
+        "is_prod_new": true,
+        "is_visible": true,
+        "multi_color": false,
+        "name": "Elsa",
+        "old_product_id": "Dresses-Elsa-SheathDresswithTuckDetail",
+        "price": 2950,
+        "size_avail": "",
+        "tag_line": "Sheath Dress with Tuck Detail",
+        "single_view_img": "/assets/Dresses-Elsa-SheathDresswithTuckDetail/new.jpg",
+        "double_view_img": "/assets/Dresses-Elsa-SheathDresswithTuckDetail/thumb.mob.jpg",
+        "usd_price": 42
+      }
+    ]
+  },
+  "new_arr_carousal": {}
+}

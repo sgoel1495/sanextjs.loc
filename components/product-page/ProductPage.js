@@ -5,6 +5,7 @@ import Header from "../navbar/Header";
 import DesktopView from "./desktop-view/DesktopView";
 import { apiDictionary } from "../../helpers/apiDictionary";
 import MobileView from "./mobile-view/MobileView";
+import useNavControl from "../../hooks/useNavControl";
 
 /**
  * @param props has isMobile and hpid
@@ -15,19 +16,7 @@ import MobileView from "./mobile-view/MobileView";
 function ProductPage(props) {
     const { dataStore } = useContext(AppWideContext);
     const [data, setData] = useState(null);
-
-    const [navControl, setNavControl] = React.useState(false);
-    const controller = useCallback(() => {
-        const isSet = (window.scrollY > 0)
-        if(isSet!==navControl)
-            setNavControl(isSet)
-    },[navControl])
-    React.useEffect(() => {
-        window.addEventListener("scroll", controller);
-        return () => {
-            window.removeEventListener('scroll', controller)
-        };
-    }, [controller]);
+    const navControl = useNavControl(0)
 
     const fetchData = useCallback(() => {
         const callObject = apiDictionary("getProduct", dataStore.apiToken, { product_id: props.hpid });
@@ -51,7 +40,7 @@ function ProductPage(props) {
         return <div>
             <PageHead url={"/" + props.hpid} id={props.hpid} isMobile={dataStore.mobile} />
             <Header type={!dataStore.mobile && navControl ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
-            {(dataStore.Mobile) ? <MobileView hpid={props.hpid} data={data} /> : <DesktopView hpid={props.hpid} data={data} />}
+            {(dataStore.mobile) ? <MobileView hpid={props.hpid} data={data} /> : <DesktopView hpid={props.hpid} data={data} />}
         </div>;
     else
         return <></>

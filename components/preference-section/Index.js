@@ -24,7 +24,7 @@ const Index = (props) => {
                             <div className='py-3 mx-4'>
                                 <Link href={item['home_url']}>
                                     <a className={"block text-sm uppercase font-900 uppercase tracking-widest mb-2"} style={{ color: item['title_color'].replace(";", "") }} >
-                                        {item['name']}
+                                        {item['display_name']}
                                     </a>
                                 </Link>
                                 <div className={"grid " + [item['template_count'] === 3 ? "grid-cols-2 gap-5" : "grid-cols-3 gap-2"]}>

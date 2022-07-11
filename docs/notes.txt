@@ -9,6 +9,8 @@ TeaCii Test User
 jomapps.jb@gmail.com
 cenario
 
+Test Server Site http://103.90.242.46:84/
+
 ====================================
 CC Avenue
 merchant_id:     130447

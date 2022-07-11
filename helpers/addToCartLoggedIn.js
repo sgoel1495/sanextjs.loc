@@ -16,3 +16,22 @@ export default async function addToCartLoggedIn(apiToken, userO, cart, updateDat
             updateDataStore("userServe", {...serveCall.response})
     }
 }
+
+/*
+Non Tailored
+{
+   "user" : { "email" : "",
+     "is_guest" : true,
+     "temp_user_id" : "1599477182"
+   },
+   "cart" : { "product_id" : "Tops-Colva-NotchNeckLinenTop",
+       "size" : "M",
+       "qty" : "1",
+       "is_sale" : "false",
+       "is_tailor" : "false",
+       "sleeve_length" : "",
+       "dress_length" : ""
+   },
+  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+}
+ */

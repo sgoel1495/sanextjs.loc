@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ParallaxBlock from "../common/ParallaxBlock";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import useScrollDirection from "../../hooks/useScrollDirection";
 
 /**
  * @todo @Sambhav css pls
@@ -12,27 +13,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 function OurDesign(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
-    const [oldValue,setOldValue]=useState(0)
-    const [scrollDirection, setScrollDirection] = React.useState(false);
-
-    React.useEffect(() => {
-        const scrollController= (_e)=>{
-            const newValue = window.scrollY
-            if (oldValue < newValue) {
-                setScrollDirection(true)
-                setOldValue(newValue)
-            } else if (oldValue > newValue) {
-                setScrollDirection(false)
-                setOldValue(newValue)
-            }
-        }
-        window.addEventListener('scroll', scrollController);
-
-        return ()=>{
-            window.removeEventListener("scroll",scrollController)
-        }
-    }, [oldValue]);
+    const scrollDirection = useScrollDirection()
     /*
     let oldValue, newValue = 0;
     const [scrollDirection, setScrollDirection] = React.useState(false)
@@ -86,18 +67,18 @@ function OurDesign(props) {
                 bodyStyle={`items-start pt-12`}
                 verticalAlign={'justify-start'}
             >
-                <div className={`bg-white p-4 font-cursive italic font-600 duration-200 ${scrollDirection ? 'translate-x-0' : 'opacity-0 -translate-x-full'}`}>
-                    <p className={`text-xs text-black/70`}>After looking through a few work-wear racks, she thinks</p>
-                    <p className={`text-xs font-700 leading-none`}>&quot;These styles are not even qualified for work-wear.&quot;</p>
+                <div className={`bg-white mr-8 p-4 font-cursive italic font-600 duration-200 ${scrollDirection ? 'translate-x-0' : 'opacity-0 -translate-x-full'}`}>
+                    <p className={`text-[10px] text-black/70`}>After looking through a few work-wear racks, she thinks</p>
+                    <p className={`text-[11px] font-700 leading-none`}>&quot;These styles are not even qualified for work-wear.&quot;</p>
                 </div>
                 <div className={`bg-black/80 mr-8 text-white py-4`}>
-                    <p className={`text-xl font-cursive italic px-8 leading-none`}>Our Designs</p>
-                    <div className="p-4 text-xs leading-[1.15] text-justify bg-black/80">
+                    <p className={`text-[19px] font-cursive italic px-8 leading-none mb-2`}>Our Designs</p>
+                    <div className="pb-5 px-5 text-[12px] leading-[13px] text-justify bg-black/80">
                         <p className='mb-4'>
                             Our design team has a simple philosophy, design a nine to nine wardrobe for the contemporary working woman. We have anticipated your needs, your lifestyle, your schedule to
                             create designs which are functional, sophisticated and chic. We focus on clean cuts with finer detailing. We understand the need for functionality without compromising on the
                             aesthetic appeal.
-                        </p>
+                        </p><br />
                         <p>
                             Yes!, you can wear something comfortable and flattering into the office without a second thought. At Salt, we create elevated basics that are work appropriate; with no plunging necklines or high slits. Also, for any designs that require the clothing to be sheer, we
                             provide a camisole.
@@ -107,16 +88,16 @@ function OurDesign(props) {
             </ParallaxBlock>
             <div className={`h-screen grid content-start text-center px-12 pt-36 font-600 font-cursive italic`}>
                 <div className='mb-10'>
-                    <p className={`text-xs text-black/70`}>Radhika then adds further,</p>
-                    <p className={`text-xl leading-none`}>“These natural fabrics are so flimsy. And the polyester fabrics are so heavy, for this weather”</p>
+                    <p className={`text-[13px] text-black/70`}>Radhika then adds further,</p>
+                    <p className={`text-[19px] leading-none`}>“These natural fabrics are so flimsy. And the polyester fabrics are so heavy, for this weather”</p>
                 </div>
                 <div
                     ref={el => {
                         GSAPBlockAnimation = el
                     }}
                 >
-                    <p className={`text-xs text-black/70`}>She stumbles on some cotton,</p>
-                    <p className={`text-xl leading-none`}>“Oh Crisp Cottons! But how will I even get through to ironing some of these and they’ll wrinkle so easily“</p>
+                    <p className={`text-[13px] text-black/70`}>She stumbles on some cotton,</p>
+                    <p className={`text-[19px] leading-none`}>“Oh Crisp Cottons! But how will I even get through to ironing some of these and they’ll wrinkle so easily“</p>
                 </div>
             </div>
         </>

@@ -51,32 +51,34 @@ const Index = (props) => {
                 </a>
             </Link>
             <div className={"grid grid-cols-2 -mt-[4px]"}>
-                <Link href={"/blog/about-salt/styling-service"} passHref>
-                    <ImageBlock src={"/assets/images/styling_service_800.jpg"} alt='Styled for you!' style=" -mr-[2px]" />
+                <Link href={"/blog/about-salt/styling-service"}>
+                    <a>
+                        <ImageBlock src={"/assets/images/styling_service_800.jpg"} alt='Styled for you!' style=" -mr-[2px]" />
+                    </a>
                 </Link>
                 <div className="flex flex-col justify-evenly pl-5">
-                    <Link href={"/blog/about-salt/styling-service"} passHref>
-                        <div>
+                    <Link href={"/blog/about-salt/styling-service"}>
+                        <a>
                             <p className={blockLeadClass}>Styled</p>
                             <p className={blockLeadParaClass}>for you!</p>
-                        </div>
+                        </a>
                     </Link>
-                    <Link href={"/blog/about-salt/styling-service"} passHref>
-                        <div className={blockChildClass}>
+                    <Link href={"/blog/about-salt/styling-service"}>
+                        <a className={blockChildClass}>
                             <p>DISCOVER WHAT</p>
                             <p>LOOKS GREAT ON YOU!</p>
-                        </div>
+                        </a>
                     </Link>
-                    <Link href={"/blog/about-salt/styling-service"} passHref>
-                        <div className={blockChildClass}>
+                    <Link href={"/blog/about-salt/styling-service"}>
+                        <a className={blockChildClass}>
                             <p>PERSONALISED STYLING</p>
-                        </div>
+                        </a>
                     </Link>
-                    <Link href={"/blog/about-salt/styling-service"} passHref>
-                        <div className={blockChildClass}>
+                    <Link href={"/blog/about-salt/styling-service"}>
+                        <a className={blockChildClass}>
                             <p>FASHION DESIGNERS</p>
                             <p>GUIDE YOU</p>
-                        </div>
+                        </a>
                     </Link>
                     <Link href={"#book_now_link"}>
                         <a className={blockChildClass + ' font-900'}>

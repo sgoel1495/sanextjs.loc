@@ -12,13 +12,16 @@ import {apiCall} from "../../../helpers/apiCall";
 import Toast from "../../../components/common/Toast";
 import ReactDom from "react-dom";
 import OtpModal from "../../../components/checkout-page/OtpModal";
+import addToCartNotLoggedIn from "../../../helpers/addToCartNotLoggedIn";
+import orderTotal from "../../../helpers/orderTotal";
+import compareDecimalNumbers from "../../../helpers/compareDecimalNumbers";
 
 function UsersCheckoutPage() {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
-    console.log("============= DATASTORE",dataStore)
+
     useEffect(()=>{
-        if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === 0))
-            updateDataStore("currentOrderId", Date.now())
+        if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === ""))
+            updateDataStore("currentOrderId", Date.now().toString())
     },[dataStore,updateDataStore])
 
     const [addressComplete, setAddressComplete] = useState(false)
@@ -28,7 +31,7 @@ function UsersCheckoutPage() {
     const [showOTPModal, setShowOTPModal] = useState(false)
 
     const updateAddressForOrder = async ()=>{
-        const userO = getUserO(dataStore,true)
+        const userO = getUserO(dataStore,true, true)
         userO["address_index"]=dataStore.addressIndex
         // step1 is update the address. Need orderid and address index
         if(!dataStore.userData.contact) {
@@ -38,7 +41,8 @@ function UsersCheckoutPage() {
 
         const queryObject = {user:userO, order:{order_id:dataStore.currentOrderId}}
         const addressCall = await apiCall("deliveryAddress",dataStore.apiToken,queryObject)
-        console.log("Update Address",addressCall)
+
+        return addressCall
     }
 
     const doStep1ForCOD = async ()=>{
@@ -47,7 +51,7 @@ function UsersCheckoutPage() {
         const queryObject = {user:userO, order:dataStore.currentOrderInCart.order}
         const step1Call = await apiCall("savePayment", dataStore.apiToken, queryObject)
         // the OTP On this call is to be avoided
-        console.log("STEP1 CALL",step1Call)
+
         if(step1Call.message && step1Call.message==="Payment initiated"){
             setShowOTPModal(true)
         } else {
@@ -66,17 +70,63 @@ function UsersCheckoutPage() {
     }
 
     const placeOrder = async () => {
-        console.log("============== Datastore",dataStore)
-        await updateAddressForOrder()
+        // Update the wallet as payment
+        const {finalPayable} = orderTotal(dataStore)
+        if(dataStore.useWallet && compareDecimalNumbers(finalPayable,0)==="=") {
+            dataStore.currentOrderInCart.order.payment_mode = "wallet"
+        }
 
-        // step1 api for COD:
-        if(dataStore.currentOrderInCart.order.payment_mode==="COD")
-            await doStep1ForCOD()
+        const userEmailO = getUserO(dataStore,true)
+        const userContactO = getUserO(dataStore,true, true)
 
+        /*
+        Steps:-
+1. Add to cart
+2. Get cart
+3. Get order summary
+4. Address for delivery
+5. save payment details
+6. Send otp for COD
+7. Verify otp fot COD
+         */
+        // Step 1/7 1. Add to cart
+        if(!dataStore.userData.contact)
+            await addToCartNotLoggedIn(dataStore)
+
+        // Step2/7 2. Get cart
+        const gotCartCall = await apiCall("getCart", dataStore.apiToken, {user:userEmailO})
+        let gotCart = []
+        if(gotCartCall.response)
+            gotCart = gotCartCall.response
+
+        // Step3/7 3. Get order summary
+        const gotOrderSummaryCall = await apiCall("getOrderSummary", dataStore.apiToken, {user:userContactO})
+        let gotOrderSummary = []
+        if(gotOrderSummary.cart)
+            gotOrderSummary = gotOrderSummaryCall.cart
+
+        // Step4/7 4. Address for delivery
+        const addressCall = await updateAddressForOrder()
+        let partialOrder = {}
+        if(addressCall.msg2 && addressCall.msg2==="Partial Order created")
+            partialOrder = addressCall
+
+        // step5/7 save_payment_details:
+        if(dataStore.currentOrderInCart.order.payment_mode==="COD"
+            || dataStore.currentOrderInCart.order.payment_mode==="wallet"){
+            // same for logged in or not
+            const queryObject = {user:userContactO, order:dataStore.currentOrderInCart.order}
+            const step1Call = await apiCall("savePayment", dataStore.apiToken, queryObject)
+            // the OTP On this call is to be avoided
+
+            if(step1Call.message && step1Call.message==="Payment initiated"){
+                setShowOTPModal(true)
+            } else {
+                setMessage("Something went wrong. Please try again later")
+                setShow(true)
+            }
+        }
     }
-
-
-    console.log("addressComplete && giftPaymentComplete",addressComplete, giftPaymentComplete)
 
     const mobileView = null
     const browserView = <Fragment>

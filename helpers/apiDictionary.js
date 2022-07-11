@@ -57,7 +57,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_product_by_id";
             body = {
                 token: apiToken,
-                product_id: queryObject.product_id
+                ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
@@ -273,7 +273,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/get_user_wallet";
             body = {
                 token: apiToken,
-                ...queryObject
+                user: {...queryObject}
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
@@ -480,6 +480,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+
+        case "getOrderSummary":
+            url += "/checkout/get_order_summary";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+
 
             //====================== INSTAGRAM
         case "instagramToken":

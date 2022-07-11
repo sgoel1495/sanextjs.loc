@@ -13,8 +13,8 @@ function InspiredByTrueStory(props) {
     const beforeStyle = `before:absolute before:inset-0 before:bg-white before:animate-typewriter`;
 
     const mobileView = (
-        <div className={`h-[97vh] flex items-start justify-end`}>
-            <p className={`text-xl leading-normal text-black/50 font-300 w-max relative inspired_story mr-10 mt-40 ${afterStyle} ${beforeStyle}`}>
+        <div className={`h-screen flex items-start justify-end`}>
+            <p className={`text-base leading-normal text-black/50 font-300 w-max relative inspired_story mr-20 mt-20 ${afterStyle} ${beforeStyle}`}>
                 Inspired by a true story !
             </p>
         </div>

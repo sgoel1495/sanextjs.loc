@@ -38,6 +38,7 @@ const ProductCard = ({prod}) => {
             </div>
         </>
     );
+
     return <div onMouseEnter={() => setIsOver(true)} onMouseLeave={() => setIsOver(false)}>
         <Link href={"/" + prod.asset_id}>
             <a className={"block bg-white text-center relative z-0"}>

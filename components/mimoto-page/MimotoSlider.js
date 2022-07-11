@@ -27,7 +27,7 @@ function MimotoSlider({ data, ...props }) {
     useEffect(() => {
         const fetchMimotoCollection = async () => {
             const resp = await apiCall("getMimotoCollection", dataStore.apiToken)
-            console.log("collection data",resp)
+            console.log("collection data", resp)
             if (resp.hasOwnProperty("response") && resp.response.hasOwnProperty("mimoto"))
                 setCollectionArray([...resp.response.mimoto])
 
@@ -42,7 +42,7 @@ function MimotoSlider({ data, ...props }) {
         return (
             <Swiper
                 navigation={true}
-                className="w-72"
+                className="w-72 relative"
             >
                 {collectionData.map((item, index) => (
                     <SwiperSlide className="" key={index}>
@@ -64,21 +64,21 @@ function MimotoSlider({ data, ...props }) {
 
     return (data)
         ? <div className={props.className}>
-            <div>
+            <div className="bg-red-400 w-full aspect-[5/4] relative">
+                <div className={"relative w-full aspect-[5/4]"}>
+                    <Image src={WEBASSETS + data.mimoto_collection.mob_img_path} layout={`fill`} objectFit={`cover`} alt={data.mimoto_collection.collection_id} />
+                </div>
                 <Link href={data.mimoto_collection.url}>
-                    <a>
-                        <div className={"relative w-full aspect-square"}>
-                            <Image src={WEBASSETS + data.mimoto_collection.mob_img_path} layout={`fill`} objectFit={`cover`} alt={data.mimoto_collection.collection_id} />
-                            <div className="bg-red z-50">
-                                <span>{data.mimoto_collection.display_name}</span>
-                                <span>{data.mimoto_collection.tagline}</span>
-                                <span>{data.mimoto_collection.description}</span>
-                            </div>
+                    <a className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-10 bg-[#ffffffe6]">
+                        <div className="text-center mt-2">
+                            <p className="text-[30px] tracking-[3px] leading-[36px] capitalize">{data.mimoto_collection.name}</p>
+                            <p className="text-[11px] tracking-[1px] leading-[13px]">{data.mimoto_collection.tagline}</p>
                         </div>
+                        <p className="px-4 py-2 text-[12px] tracking-[.5px] text-justify font-600">{data.mimoto_collection.description}</p>
                     </a>
                 </Link>
             </div>
-            <div className="w-full">
+            <div className="relative w-full">
                 {displayCollection()}
             </div>
         </div>

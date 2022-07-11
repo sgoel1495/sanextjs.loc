@@ -5,18 +5,17 @@ import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import { apiCall } from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
-import emptyMeasurement from "../../../store/emptyMeasurement.json"
 import MeasurementModal0 from "../../../components/user/MeasurementModal0"
 import MeasurementModal1 from "../../../components/user/MeasurementModal1";
 import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
-import PastOrdersMeasurementModal from "../../../components/user/PastOrdersMeasurementModal";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
 import addToCartLoggedIn from "../../../helpers/addToCartLoggedIn";
 import getUserO from "../../../helpers/getUserO";
 import returnSizes from "../../../helpers/returnSizes";
 import {Fragment} from "react";
+import MoreColours from "../../common/MoreColours";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -353,13 +352,7 @@ const DetailsCard = ({ data, hpid }) => {
                     <a href='#product_details' className={"uppercase text-sm"}>product details</a>
                 </div>
                 <div className="flex items-center justify-center mb-5">5.0 ★ ★ ★ ★ ★</div>
-                <div>
-                    <span className={"block"}>More Colors</span>
-                    <div className={"flex"}>
-                        <span className={"w-10 h-10 rounded-full bg-[red]"} />
-                        <span className={"w-10 h-10 rounded-full bg-[blue]"} />
-                    </div>
-                </div>
+                <MoreColours hpid={hpid} />
             </div>
             <div className={"bg-white mt-2 flex justify-evenly text-xs border-4 border-black/10 py-2"}>
                 <Link href={"/salt/shipping-returns"} key="shipping">
