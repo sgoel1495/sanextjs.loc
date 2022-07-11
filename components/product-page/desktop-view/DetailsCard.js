@@ -5,12 +5,10 @@ import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import { apiCall } from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
-import emptyMeasurement from "../../../store/emptyMeasurement.json"
 import MeasurementModal0 from "../../../components/user/MeasurementModal0"
 import MeasurementModal1 from "../../../components/user/MeasurementModal1";
 import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
-import PastOrdersMeasurementModal from "../../../components/user/PastOrdersMeasurementModal";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
 import addToCartLoggedIn from "../../../helpers/addToCartLoggedIn";

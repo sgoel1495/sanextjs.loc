@@ -1,16 +1,9 @@
 import React, {useContext, useState} from 'react';
-import ReactDom from 'react-dom';
 import WishListButton from '../../../common/WishListButton';
 import AppWideContext from '../../../../store/AppWideContext';
 import appSettings from '../../../../store/appSettings';
 import Image from 'next/image';
 import Accordion from '../../../common/accordion';
-import SizeGuide from '../../SizeGuide';
-import MeasurementModal0 from '../../../user/MeasurementModal0';
-import MeasurementModal1 from '../../../user/MeasurementModal1';
-import MeasurementModal2 from '../../../user/MeasurementModal2';
-import MeasurementModal3 from '../../../user/MeasurementModal3';
-import StandardSizeModal from '../StandardSizewModal'
 import SizeSelect from "./SizeSelect";
 import {apiCall} from "../../../../helpers/apiCall";
 import Link from "next/link";
@@ -76,7 +69,7 @@ const ProductDetails = ({data, hpid}) => {
                             <div className={"w-full bg-[#f6f1ef] text-[#997756] py-4 flex flex-col items-center rounded-[8vw]"}>
                                 <span>We're sorry, this item is temporarily SOLD OUT!</span>
                                 <span>We can notify you when back in stock.</span>
-                                <NotifyMe/>
+                                <NotifyMe name={data.name}/>
                             </div>
                         </div>
                     </div>

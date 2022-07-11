@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import ReactDom from "react-dom";
 
-const NotifyMe = () => {
+const NotifyMe = (props) => {
     const [showNotify, setShowNotify] = useState(false)
 
     return (
@@ -12,8 +12,11 @@ const NotifyMe = () => {
             {
                 showNotify && ReactDom.createPortal(<div className={['bg-black/60 h-screen fixed inset-0 z-[100] grid place-items-center py-[8%] px-[5%]']}
                                                       onClick={() => setShowNotify(false)}>
-                    <div className={"bg-white h-full w-full rounded-[8vw] border-4 border-[#b3aeab]"}>
-                        <span>Notify Me!</span>
+                    <div className={"bg-white h-full w-full rounded-[8vw] border-4 border-[#b3aeab] flex flex-col items-center py-5"}>
+                        <div className={"flex flex-col items-center tracking-widest text-lg text-[#997756]"}>
+                            <span>Notify Me!</span>
+                            <span className={"text-center"}>When {props.name} is available</span>
+                        </div>
                     </div>
                 </div>, document.getElementById('notifyModal'))
             }
