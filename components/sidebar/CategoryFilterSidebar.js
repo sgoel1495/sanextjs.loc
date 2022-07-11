@@ -2,6 +2,7 @@ import React, {Fragment, useEffect, useState, useCallback, useContext} from "rea
 import ReactDom from "react-dom";
 import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
+import {useRouter} from "next/router";
 
 /**
  * @todo Data for the category filter
@@ -75,6 +76,7 @@ function Checkbox(props) {
 }
 
 function CategoryFilterModal(props) {
+    const router = useRouter()
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [filterExpand, setFilterExpand] = useState(false);
     const [refresh, setRefresh] = useState(false);
@@ -88,6 +90,12 @@ function CategoryFilterModal(props) {
         })
         setCheckedBoxes(initArray)
     }
+
+    React.useEffect(() => {
+        if (router.query.sorted_by) {
+            setSorting(router.query.sorted_by)
+        }
+    }, [router.query])
 
     useEffect(() => {
         if (Object.keys(checkedBoxes).length === 0)

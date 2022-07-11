@@ -5,6 +5,7 @@ import Footer from "../../../components/footer/Footer";
 import AppWideContext from "../../../store/AppWideContext";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Header from "../../../components/navbar/Header";
+import {isMobile} from "react-device-detect";
 
 
 /**
@@ -14,7 +15,7 @@ import Header from "../../../components/navbar/Header";
 
 function SaltContactUsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
+    const [mobile, setMobile] = useState(false)
     const category = "Contact Us";
 
     const containerStyle = {
@@ -43,6 +44,10 @@ function SaltContactUsPage() {
     const onUnmount = useCallback(function callback(map) {
         setMap(null)
     }, []);
+
+    React.useEffect(() => {
+        setMobile(isMobile)
+    }, [])
 
     const mobileView = (
         <section className="container mt-20 mb-48 flex flex-col gap-y-6 items-center text-center leading-5">
@@ -118,11 +123,11 @@ function SaltContactUsPage() {
 
     return (
         <Fragment>
-            <PageHead url="/salt/contact-us" id="contactus" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            <PageHead url="/salt/contact-us" id="contactus" isMobile={mobile} />
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile} />
             <CategoryHeaderImage category={category} />
-            {dataStore.mobile ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#ffffff"} />
+            {mobile ? mobileView : browserView}
+            <Footer isMobile={mobile} minimal={true} color={"#ffffff"} />
         </Fragment>
     )
 

@@ -98,7 +98,7 @@ function ShopPage(props) {
                                                     layout={"fill"} objectFit={`cover`} alt={key}
                                                 />
                                             </span>
-                                            <span className={`block uppercase text-xs text-center`}>{key.replace("-", "")}</span>
+                                            <span className={`block uppercase text-xs text-center`}>{key.replace(/-n-/g, " & ").replace(/-/g, " ")}</span>
                                         </div>
                                     ))}
                                 </div>
