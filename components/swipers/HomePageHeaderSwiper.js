@@ -19,6 +19,7 @@ import Link from "next/link";
 SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay]);
 
 function HomePageHeaderSwiper(props) {
+    console.log(props.isMobile)
     const { dataStore } = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     let imgs = [], links, transition_time;
@@ -66,7 +67,7 @@ function HomePageHeaderSwiper(props) {
                             {(links[index] && links[index] != "")
                                 ? <SwiperSlide key={index}>
                                     <Link href={links[index]} passHref>
-                                        <span className={'block relative h-[100vh] z-10'}>
+                                        <span className={props.isMobile?'block relative h-[50vh] z-10':'block relative h-[100vh] z-10'}>
                                             {overlay}
                                             <Image
                                                 src={WEBASSETS + item}

@@ -13,8 +13,8 @@ function HomePage() {
     return (
         <Fragment>
             <PageHead
-                url="/homepage/signin"
-                id="signin"
+                url="/homepage/"
+                id="homepage"
                 isMobile={dataStore.mobile}
             />
             <Header

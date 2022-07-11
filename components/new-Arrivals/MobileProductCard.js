@@ -39,16 +39,20 @@ const ProductCard = ({prod}) => {
         </>
     );
 
-    return <div onMouseEnter={() => setIsOver(true)} onMouseLeave={() => setIsOver(false)}>
-        <Link href={"/" + prod.asset_id}>
-            <a className={"block bg-white text-center relative z-0"}>
-                <WishlistButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id}/>
+    return <div>
+        <a href={prod.link} className={"block rounded-3xl overflow-hidden mx-4"}>
+            <span className="block relative aspect-square w-full">
                 <ArrivalDataBlockImage src={imgPath} alt={prod.name}/>
-                <div className="grid grid-cols-2 items-center h-16">
-                    {isOver ? showProdDetail : showProd}
-                </div>
-            </a>
-        </Link>
+            </span>
+            <div className={"bg-white flex prods-center py-6 px-4 mb-1"}>
+                {/*<div className='flex-1 leading-none'>*/}
+                {/*    <h5 className={'text-h5 font-600 font-cursive italic'}>{prod.name}</h5>*/}
+                {/*    <p className="text-[8.5px] font-600 text-black/70 uppercase tracking-widest">{prod.tag}</p>*/}
+                {/*</div>*/}
+                {/*<p className="text-sm tracking-wide text-black/70">{"currSymbol"}{prod.price}</p>*/}
+                {showProd}
+            </div>
+        </a>
     </div>;
 };
 

@@ -20,14 +20,15 @@ function Navbar(props) {
     const [show, setShow] = useState(false)
 
     const toggleShow = useCallback(() => {
-        if (show) {
-            if ((window.scrollY - menuRef.current.getBoundingClientRect().bottom) < subMenuRef.current.clientHeight)
-                setShow(false)
+        if (menuRef.current && subMenuRef.current)
+            if (show) {
+                if ((window.scrollY - menuRef.current.getBoundingClientRect().bottom) < subMenuRef.current.clientHeight)
+                    setShow(false)
 
-        } else {
-            if (window.scrollY - menuRef.current.getBoundingClientRect().bottom > subMenuRef.current.clientHeight)
-                setShow(true)
-        }
+            } else {
+                if (window.scrollY - menuRef.current.getBoundingClientRect().bottom > subMenuRef.current.clientHeight)
+                    setShow(true)
+            }
     }, [show])
 
     useEffect(() => {
