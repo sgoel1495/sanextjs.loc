@@ -221,6 +221,7 @@ function CategoryFilterModal(props) {
                                     handleCheckboxChange={handleCheckboxChange.bind(this)}
                                     filter={filter} item={item} count={props.originalData[item.key[i]]}
                                     checkBoxes={checkedBoxes} refresh={refresh}
+                                    key={i}
                                 />
                             )
                         })}
