@@ -67,7 +67,7 @@ const ProductDetails = ({data, hpid}) => {
                     <div className={"absolute h-full w-full"}>
                         <div className={"h-full w-full bg-white/75 rounded-[8vw] grid place-items-center px-4 text-xs"}>
                             <div className={"w-full bg-[#f6f1ef] text-[#997756] py-4 flex flex-col items-center rounded-[8vw]"}>
-                                <span>We're sorry, this item is temporarily SOLD OUT!</span>
+                                <span>We&apos;re sorry, this item is temporarily SOLD OUT!</span>
                                 <span>We can notify you when back in stock.</span>
                                 <NotifyMe name={data.name}/>
                             </div>

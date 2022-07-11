@@ -44,14 +44,14 @@ function NewArrivalsAllPage(props) {
         {(data)
             ? <main className={`px-5`}>
                 {data.data && data.data.filter(prod => prod.is_visible).slice(0, 8).map((prod, index) => {
-                    return <div className={"py-4"}>
-                        <MobileProductCard prod={prod} key={index} isMobile={true} wide={index <= 7}/>
+                    return <div className={"py-4"}  key={index}>
+                        <MobileProductCard prod={prod} isMobile={true} wide={index <= 7}/>
                     </div>
                 })}
                 <div className={"grid grid-cols-2 gap-5"}>
                 {data.data && data.data.filter(prod => prod.is_visible).slice(8).map((prod, index) => {
-                    return <div className={"py-4"}>
-                        <MobileProductCard prod={prod} key={index} isMobile={true}/>
+                    return <div className={"py-4"} key={index}>
+                        <MobileProductCard prod={prod} isMobile={true}/>
                     </div>
                 })}
                 </div>
