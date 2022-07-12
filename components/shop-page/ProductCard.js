@@ -134,7 +134,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                     {currencySymbol}
                                     {(currCurrency === "inr") ? prod.price : prod.usd_price}
                                 </p>
-                                <WishListButton pid={prod.asset_id}/>
+                                <WishListButton pid={prod.asset_id} isMobile={true}/>
                             </div>
                         </div>
                     </a>

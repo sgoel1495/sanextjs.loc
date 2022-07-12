@@ -5,6 +5,7 @@ import {useRouter} from "next/router";
 import ReactDom from "react-dom";
 import AccountMenu from "../user/AccountMenu";
 import UserLogin from "../user/login/UserLogin";
+import Toast from "./Toast";
 
 /**
  * @NoteG the favs of a user are available in api
@@ -51,12 +52,7 @@ const WishListButton = (props) => {
                 setPidChecked(true);
             }
         } else {
-            //login required
-            if (props.isMobile) {
-                await router.push("/login");
-            } else {
-                setShowLogin(true)
-            }
+            setShowLogin(true)
         }
     };
 
@@ -73,10 +69,16 @@ const WishListButton = (props) => {
             </svg>
         }
         {
-            showLogin && ReactDom.createPortal(
+            props.isMobile ?
+                <Toast show={showLogin} hideToast={() => setShowLogin(false)}>
+                    <span>Please login first.</span>
+                </Toast>
+                :
+                showLogin && ReactDom.createPortal(
                 <UserLogin closeModal={() => setShowLogin(false)}/>,
                 document.getElementById("userband"))
         }
+
     </button>;
 }
 

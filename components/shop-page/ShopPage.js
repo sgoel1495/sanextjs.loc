@@ -22,6 +22,7 @@ import {useRouter} from "next/router";
 
 
 function ShopPage(props) {
+    console.log("=========== SHOP PAGE DATA RECEIVED IN PROPS",props.data)
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
     //all paths start with shop-
@@ -69,7 +70,7 @@ function ShopPage(props) {
 
     const displayMobileData = () => {
         let returnValue = null
-        let breakSpeedKeys
+        let breakSpeedKeys = []
         if (data && data.break_speed)
             breakSpeedKeys = Object.keys(data.break_speed)
 
@@ -150,7 +151,7 @@ function ShopPage(props) {
             space={"py-5"}
             titleStyle={"text-center"}
         >
-            <h3 className={`text-h4 font-600 mb-4 uppercase`}>{category}</h3>
+            <h3 className={`text-h4 font-600 mb-4 uppercase`}>{(category==="best-selling")?"TOP SELLING PRODUCTS":category}</h3>
             <h4 className={`text-h6 leading-none font-cursive italic font-600 text-black/70`}>{tag_line}</h4>
         </BlockHeader>
         {(data)
