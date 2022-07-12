@@ -45,15 +45,15 @@ function NewArrivalsAllPage(props) {
             ? <main className={`px-5`}>
                 {data.data && data.data.filter(prod => prod.is_visible).slice(0, 8).map((prod, index) => {
                     return <div className={"py-4"}>
-                        <MobileProductCard prod={prod} key={index} isMobile={true} wide={index <= 7}/>
+                        <MobileProductCard prod={prod} key={index} isMobile={true} wide={true}/>
                     </div>
                 })}
                 <div className={"grid grid-cols-2 gap-5"}>
-                {data.data && data.data.filter(prod => prod.is_visible).slice(8).map((prod, index) => {
-                    return <div className={"py-4"}>
-                        <MobileProductCard prod={prod} key={index} isMobile={true}/>
-                    </div>
-                })}
+                    {data.data && data.data.filter(prod => prod.is_visible).slice(8).map((prod, index) => {
+                        return <div className={"py-4"}>
+                            <MobileProductCard prod={prod} key={index} isMobile={true}/>
+                        </div>
+                    })}
                 </div>
 
             </main>
