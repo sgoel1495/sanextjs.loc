@@ -460,7 +460,7 @@ const mobileNavigationDataInit = [
         id: "login",
         title: `Login/Signup`,
         description: ``,
-        link: `/login`,
+        link: `/homepage/signin`,
         centered: true,
         style: "!mt-12",
         subStyle: "italic !font-700 !text-xs text-black/60",

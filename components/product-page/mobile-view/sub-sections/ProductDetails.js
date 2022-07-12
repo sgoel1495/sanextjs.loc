@@ -26,6 +26,15 @@ const ProductDetails = ({data, hpid}) => {
         feature_icons = {...feature_icons, ...icon};
     });
 
+    let tags = Object.keys(data).map((key) => {
+        if (key.startsWith('filter') && key !== "filter-collection" && key !== "filter-multi-color" && data[key]) {
+            return {
+                "display": data[key].replace("-", " ") + (key.includes("sleeve") ? " Sleeves" : "") + (key.includes("fit") ? " Fit" : ""),
+                "value": data[key]
+            }
+        }
+    }).filter((key) => key)
+
     const checkDelivery = async () => {
         if (pincode == null)
             return;
@@ -111,11 +120,11 @@ const ProductDetails = ({data, hpid}) => {
                 </div>
                 <p className={'text-xs mb-5 mt-5 uppercase text-center'}>return policy</p>
                 <div className='flex justify-start flex-wrap w-full'>
-                    {['shirts', 'Long Sleeves'].map((item, index) => {
+                    {tags.map((item, index) => {
                         return (
-                            <p className={'rounded-full capitalize font-cursive italic font-600 bg-[#faede3] border-2 border-white px-3 pt-1 text-sm mb-4 mr-4'} key={index}>
-                                {item}
-                            </p>
+                            <Link href={"/group/" + item.value}>
+                                <p className={"rounded-full bg-[#ffefe5] py-2 px-3 text-black font-500 mr-3 mb-3 capitalize border-2 border-white text-xs"} key={index}>{item.display}</p>
+                            </Link>
                         );
                     })}
                 </div>
