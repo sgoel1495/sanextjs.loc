@@ -457,52 +457,73 @@ const mobileNavigationDataInit = [
         link: `/get-appointment`
     },
     {
+        id: "login",
+        title: `Login/Signup`,
+        description: ``,
+        link: `/login`,
+        centered: true,
+        style: "!mt-12",
+        subStyle: "italic !font-700 !text-xs text-black/60",
+        icon: "/assets/images/usericon.png"
+    },
+    {
         title: `SHIPPING & RETURNS`,
         description: ``,
         link: `/salt/shipping-returns`,
-        style: "mt-12"
+        centered: true,
     },
     {
         title: `CANCELLATION & MODIFICATIONS`,
         description: ``,
+        centered: true,
         link: `/salt/cancellation-modifications`
     },
     {
         title: `FAQ`,
         description: ``,
+        centered: true,
         link: `/salt/faq`
     },
     {
         title: `SITEMAP`,
         description: ``,
+        centered: true,
         link: `#`
     },
     {
         title: `CONTACT US`,
         description: ``,
+        centered: true,
         link: `/salt/contact-us`
-    },
-    {
-        title: `LEGAL & COOKIES`,
-        description: ``,
-        child: [
-            {
-                title: `TERMS & CONDITIONS`,
-                link: `/salt/terms-and-condition`
-            },
-            {
-                title: `PRIVACY POLICY`,
-                link: `/salt/privacy-policy`
-            }
-        ]
     }
 ];
 
 const SelfLink = (props) => {
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+
     const mobileView = <a className={`block px-4 py-3 text-black tracking-[-0.5px] capitalize ` + [props.style ? props.style : ""]}>
                 <span className={`block leading-none font-900 capitalize`}>
                     {props.title.toLowerCase()}
                     {props.new && <sup><NewTag white={true}/></sup>}
+                </span>
+        {props.description && <span className="text-xs block leading-none">{props.description}</span>}
+    </a>;
+    const mobileCenteredView = <a className={`block px-4 py-3 text-black tracking-[-0.5px] text-center mt-2 flex flex-col items-center ` + [props.style ? props.style : ""]}>
+        {
+            props.icon &&
+            <span className={`block relative h-6 w-6 mb-1`}>
+                    <Image
+                        src={WEBASSETS + props.icon}
+                        alt="user icon"
+                        layout={`fill`}
+                        priority={false}
+                        objectFit={`contain`}
+                    />
+                </span>
+        }
+        <span className={`block leading-none font-200 capitalize text-sm ` + [props.subStyle ? props.subStyle : ""]}>
+                    {props.title.toLowerCase()}
+            {props.new && <sup><NewTag white={true}/></sup>}
                 </span>
         {props.description && <span className="text-xs block leading-none">{props.description}</span>}
     </a>;
@@ -515,7 +536,7 @@ const SelfLink = (props) => {
     </a>;
     return (
         <Link href={props.link}>
-            {props.isMobile ? mobileView : browserView}
+            {props.isMobile ? props.centered ? mobileCenteredView : mobileView : browserView}
         </Link>
     )
 }
@@ -530,21 +551,21 @@ const ChildLink = props => {
         </div>
         {props.description && <span className="text-xs block leading-none">{props.description}</span>}
     </>;
-    let mobileTitle = <>
+    let mobileTitle = <div className={props.centered && " text-center mr-[-3rem]"}>
         <div className={`text-black leading-none font-900 capitalize tracking-[-0.5px]`}>
             {props.title.toLowerCase()}
             {props.new && <sup><NewTag white={true}/></sup>}
         </div>
         {props.description && <span className="text-xs block leading-none capitalize">{props.description}</span>}
-    </>;
+    </div>;
 
     return (
         <Accordion
             onClick={() => setViewState(!viewState)}
-            style={"group text-black/70"}
+            style={"relative group text-black/70 pb-2 " + [viewState ? 'bg-[#f7f7f7] ' : ""] + props.style}
             animationDuration={"duration-200"}
             title={props.isMobile ? mobileTitle : browserTitle}
-            titleStyle={`px-4 py-3 ${viewState ? 'bg-black/5' : 'group-hover:bg-black/5'}`}
+            titleStyle={`px-4 py-3 `}
             accordionIconOpen={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
                     <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
@@ -558,13 +579,13 @@ const ChildLink = props => {
             bodyStyle={`ml-2 ${viewState ? 'my-2' : ''}`}
         >
             {props.child &&
-            <ul className={`bg-white`}>
+            <ul>
                 {props.child.map((item, index) => {
                     return (
                         <li key={index}>
                             <Link href={item.link} key={index}>
-                                <a className={`block px-4 py-1 hover:bg-black/5 text-sm`}>
-                                    {item.title}
+                                <a className={props.isMobile ? props.centered ? "block text-center py-2 text-xs capitalize font-600 text-black/80" : `block pl-8 py-2 text-xs capitalize font-600 text-black/80` : `block px-4 py-1 hover:bg-black/5 text-sm`}>
+                                    {item.title.toLowerCase()}
                                     {item.new && <NewTag/>}
                                 </a>
                             </Link>
@@ -586,7 +607,7 @@ function HamburgerModal(props) {
             ? <>
                 <div className={`bg-theme-900/50 fixed top-0 z-50 h-full w-full` + [props.visible ? " left-0" : " hidden"]} onClick={closeModal}/>
                 <div
-                    className={"max-w-[300px] z-[51] h-screen bg-white overflow-x-hidden flex flex-col fixed top-0 transition-[left] duration-300 " + [props.visible ? "left-0" : "left-[-300px]"]}
+                    className={"w-[300px] z-[51] h-screen bg-white overflow-x-hidden flex flex-col fixed top-0 transition-[left] duration-300 " + [props.visible ? "left-0" : "left-[-300px]"]}
                     onClick={(e) => e.stopPropagation()}
                 >
                     {
@@ -620,6 +641,8 @@ function HamburgerModal(props) {
                                 new={item.new}
                                 child={item.child}
                                 isMobile={props.isMobile}
+                                centered={item.centered}
+                                style={item.style}
                             />
                             : <SelfLink
                                 key={index}
@@ -629,6 +652,9 @@ function HamburgerModal(props) {
                                 new={item.new}
                                 style={item.style}
                                 isMobile={props.isMobile}
+                                centered={item.centered}
+                                subStyle={item.subStyle}
+                                icon={item.icon}
                             />)}
                     </div>
                 </div>
@@ -656,7 +682,58 @@ function SidebarMenuHamburger(props) {
 
     useEffect(() => {
         if (mobile) {
-            setNavigationData(mobileNavigationDataInit)
+            if (dataStore.userData.contact != null) {
+                let navigation = mobileNavigationDataInit.map(item => {
+                    if (item.id !== "login") {
+                        return item
+                    } else {
+                        return {
+                            title: "My Account",
+                            description: dataStore.userServe.user_name,
+                            link: `#`,
+                            centered: true,
+                            style: "!mt-12",
+                            child: [
+                                {
+                                    title: `MY PROFILE`,
+                                    link: `/users/profile`
+                                },
+                                {
+                                    title: `MY ORDERS`,
+                                    link: `/users/orderhistory`
+                                },
+                                {
+                                    title: `MY WALLET`,
+                                    link: `/users/wallet`
+                                },
+                                {
+                                    title: `REDEEM VOUCHER`,
+                                    link: `/users/wallet`
+                                },
+                                {
+                                    title: `MY FAVOURITES`,
+                                    link: `/users/favourites`
+                                },
+                                {
+                                    title: `MY MEASUREMENTS`,
+                                    link: `/users/measurements`
+                                },
+                                {
+                                    title: `MY REFERRAL`,
+                                    link: `/users/my-referral`
+                                },
+                                {
+                                    title: `LOGOUT`,
+                                    link: `/users/logout`
+                                }
+                            ]
+                        }
+                    }
+                })
+                setNavigationData(navigation)
+            } else {
+                setNavigationData(mobileNavigationDataInit)
+            }
         } else if (dataStore.userData.contact != null) {
             setNavigationData([
                 {
