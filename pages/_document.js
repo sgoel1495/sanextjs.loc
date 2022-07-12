@@ -25,6 +25,7 @@ class MyDocument extends Document {
                     <div id="measurementmodal"></div>
                     <div id="paymentpopup"></div>
                     <div id="bottomDrawer"></div>
+                    <div id="notifyModal"></div>
                     <Main />
                     <NextScript />
                 </body>

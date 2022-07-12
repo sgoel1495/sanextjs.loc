@@ -4,88 +4,34 @@ import AppWideContext from "../../store/AppWideContext";
 import ReactDom from "react-dom";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
 
-const drawerButtonClass = "block bg-[#faf4f0] border-2 border-white shadow-[4px_4px_6px_0.6px_rgba(0,0,0,0.1)] leading-none"
-
-const DrawerFilter = props => {
-    return (
-        <>
-            <h3 className="text-h5 font-900 uppercase text-center mt-2 mb-5">Filter By</h3>
-            <div className="flex flex-col items-center gap-5 flex-1">
-                <div className="flex-1 overflow-y-auto">
-                    Filter Data
-                </div>
-                <button className={drawerButtonClass + " rounded-full uppercase font-900 py-3 px-8 tracking-widest"}>Apply</button>
-            </div>
-        </>
-    )
-}
-
-const DrawerSort = props => {
-    const sortButtonClass = drawerButtonClass + " rounded-2xl font-cursive capitalize pb-3 pt-4 px-2"
-    return (
-        <>
-            <h3 className="text-h5 font-900 uppercase text-center mt-2 mb-5">Sort By</h3>
-            <div className="grid grid-cols-2 gap-4">
-                <button className={sortButtonClass}>Price low to high</button>
-                <button className={sortButtonClass}>Price high to low</button>
-                <button className={sortButtonClass}>Most popular</button>
-                <button className={sortButtonClass}>New arrivals</button>
-            </div>
-        </>
-    )
-}
-
-const BottomDrawer = props => {
-    return (
-        <>
-            <div
-                className="fixed inset-0 z-50 flex align-bottom"
-                onClick={props.onClose}
-            >
-                <div
-                    className='relative flex flex-col mt-auto h-2/3 w-full bg-[#faf4f0] text-[#997756] rounded-t-[7.5vw] border-2 border-[#faede3] shadow-[0_7px_12px_12px_rgba(0,0,0,0.13)] overflow-hidden p-4'
-                    onClick={e => e.stopPropagation()}
-                >
-                    <button className="absolute right-0 top-0 p-2" onClick={props.onClose}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox='0 0 24 24' className="w-8 h-8 text-black/50">
-                            <path fill="currentColor"
-                                  d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z">
-                            </path>
-                        </svg>
-                    </button>
-                    {props.children}
-                </div>
-            </div>
-        </>
-    )
-}
-
-const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal, filterData, group}) => {
+const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal, filterData, group, groups}) => {
     const {dataStore} = useContext(AppWideContext);
 
     const [dropDownView, setDropDownView] = useState(false);
-    const [bottomDrawer, setBottomDrawer] = useState(false);
-    const [drawerData, setDrawerData] = useState(null);
 
     const dropData = [];
-    const categories = {categories: dataStore.categories, accessories: dataStore.accessories}
-
-    categories.categories.forEach((ele) => {
-        dropData.push({
-            id: ele.category,
-            link: ele.link,
-            category: ele.category,
-            new: ele.new
+    if (group) {
+        groups.map((item) => {
+            dropData.push({
+                link: item.home_url,
+                category: item.display_name,
+            });
+        })
+    } else {
+        const categories = {categories: dataStore.categories, accessories: dataStore.accessories}
+        categories.categories.forEach((ele) => {
+            dropData.push({
+                link: ele.link,
+                category: ele.category,
+            });
         });
-    });
-    categories.accessories.forEach((ele) => {
-        dropData.push({
-            id: ele.category,
-            link: ele.link,
-            category: ele.category,
-            new: ele.new
+        categories.accessories.forEach((ele) => {
+            dropData.push({
+                link: ele.link,
+                category: ele.category,
+            });
         });
-    });
+    }
 
     useEffect(() => {
         setDropDownView(false)
@@ -95,17 +41,13 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal,
             <div className={minimal ? "flex justify-between bg-[#faf4f0]" : "bg-[#faf4f0]"}>
                 <div className="relative">
                     <div className="inline-flex px-4 items-center justify-start" onClick={() => {
-                        if (!group)
-                            setDropDownView(!dropDownView)
+                        setDropDownView(!dropDownView)
                     }}>
                         <p className="text-h4 uppercase font-900 text-[#333231]">{category}</p>
-                        {
-                            group ||
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
-                                <path fill="#ec9c98" d="M11.178 19.569a.998.998 0 0 0 1.644 0l9-13A.999.999 0 0 0 21 5H3a1.002 1.002 0 0 0-.822 1.569l9 13z"/>
-                            </svg>
-                        }
 
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
+                            <path fill="#ec9c98" d="M11.178 19.569a.998.998 0 0 0 1.644 0l9-13A.999.999 0 0 0 21 5H3a1.002 1.002 0 0 0-.822 1.569l9 13z"/>
+                        </svg>
                     </div>
                     {dropDownView
                         ? <div className="absolute inset-x-0 top-full shadow bg-[#2f2f2f] px-4  max-h-[200px] overflow-y-auto z-20">
@@ -119,7 +61,9 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal,
                             {dropData.map((item, index) => {
                                 return (
                                     <Link href={item.link} key={index} passHref>
-                                        <span className="block py-2.5 font-700 text-center uppercase text-white" key={index}>{item.category}</span>
+                                        <div className={"py-2.5 font-700 text-center uppercase text-white"}>
+                                            <span className={item.category===category && "border-b-2"} key={index}>{item.category}</span>
+                                        </div>
                                     </Link>
                                 )
                             })}
@@ -162,12 +106,6 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal,
                         </div>
                     </div>}
             </div>
-            {bottomDrawer && ReactDom.createPortal(
-                <BottomDrawer onClose={() => setBottomDrawer(false)}>
-                    {drawerData}
-                </BottomDrawer>,
-                document.getElementById("bottomDrawer"))
-            }
         </>
     );
 };

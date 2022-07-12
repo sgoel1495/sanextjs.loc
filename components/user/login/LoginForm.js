@@ -93,7 +93,7 @@ const LoginForm = (props) => {
 
         const loginOtp = (uname, otp) => {
             setLoading(true)
-            let api = apiDictionary("userOTPLogin", dataStore.apiToken, { username: uname, otp: otp })
+            let api = apiDictionary("userOTPLogin", dataStore.apiToken, { username: uname, otp: parseInt(otp) })
             fetch(api.url, api.fetcher).then((response) => {
                 if (response.status === 200) {
                     response.json().then(data => {

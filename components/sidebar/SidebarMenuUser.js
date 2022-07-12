@@ -50,7 +50,7 @@ function SidebarMenuUser(props) {
                 props.type === "shopMenu" ?
                     <div className={"float-right text-right"}>
                         <span className={"block text-sm tracking-wide"}>Account</span>
-                        <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userData.contact||"Login/Signup"}</span>
+                        <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userServe.user_name||"Login/Signup"}</span>
                     </div>
                     :
                     (dataStore.userServe.user_name!=="") ?
