@@ -10,6 +10,7 @@ import Footer from "../../../components/footer/Footer";
 import {apiCall} from "../../../helpers/apiCall";
 import {useRouter} from "next/router";
 import MobileProductCard from "../../../components/shop-page/ProductCard"
+import {isMobile} from "react-device-detect";
 
 function NewArrivalsIdPage(props) {
     const category = "new-arrivals"
@@ -17,7 +18,11 @@ function NewArrivalsIdPage(props) {
     const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState([]);
     const [carousal, setCarousal] = useState(props.carousal);
+    const [mobile,setMobile] = useState(false);
     const router = useRouter()
+    React.useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     /*
         {
             ""ProductId"": ""Outerwear-Gallant-Suit-Set-FullSuitSet"",
@@ -111,7 +116,7 @@ function NewArrivalsIdPage(props) {
                 {(data)
                     ? <main className={`px-10 grid grid-cols-3 gap-10`}>
                         {data && data.map((prod, index) => {
-                            return <ProductCard prod={prod} isMobile={dataStore.mobile} key={index} isAccessory={false}/>
+                            return <ProductCard prod={prod} isMobile={false} key={index} isAccessory={false}/>
                         })}
                     </main>
                     : loader
@@ -121,11 +126,11 @@ function NewArrivalsIdPage(props) {
     );
 
     return <>
-        <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={dataStore.mobile}/>
-        <Header type={dataStore.mobile ? "minimal" : ""} isMobile={dataStore.mobile}/>
-        <HomePageHeaderSwiper page={"newArrival"} isMobile={dataStore.mobile} slides={carousal}/>
-        {dataStore.mobile ? mobileView : browserView}
-        <Footer isMobile={dataStore.mobile}/>
+        <PageHead url="//new-arrivals/all" id="new-arrivals-all" isMobile={mobile}/>
+        <Header type={mobile ? "shopMenu" : ""} isMobile={mobile}/>
+        <HomePageHeaderSwiper page={"newArrival"} isMobile={mobile} slides={carousal}/>
+        {mobile ? mobileView : browserView}
+        <Footer isMobile={mobile}/>
     </>
 }
 

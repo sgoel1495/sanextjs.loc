@@ -10,7 +10,6 @@ import ExploreSection from "./sub-sections/ExploreSection";
 
 const MobileView = ({ hpid, data }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    console.log(data)
     return (
         <>
             <div className={"bg-[#f6f1ef]"}>
