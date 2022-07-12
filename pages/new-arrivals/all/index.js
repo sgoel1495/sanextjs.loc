@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import Image from "next/image";
@@ -7,8 +7,8 @@ import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwip
 import BlockHeader from "../../../components/common/blockHeader";
 import ProductCard from "../../../components/new-Arrivals/ProductCard";
 import MobileProductCard from "../../../components/shop-page/ProductCard"
-import {apiCall} from "../../../helpers/apiCall";
-import {isMobile} from "react-device-detect";
+import { apiCall } from "../../../helpers/apiCall";
+import { isMobile } from "react-device-detect";
 
 /**
  * @todo @team Swiper data
@@ -29,31 +29,31 @@ function NewArrivalsAllPage(props) {
     }, [])
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
-                            <span className={"block relative w-14 aspect-square"}>
-                                <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                                       alt={"loader"}/>
-                            </span>
-                    </span>
+        <span className={"block relative w-14 aspect-square"}>
+            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
+                alt={"loader"} />
+        </span>
+    </span>
 
     const mobileView = <section className={"bg-[#faf4f0] pb-20"}>
         <div className="flex tracking-widest text-h4 items-center justify-center">
             <span>~</span>
-            <span className="text-center p-2">Newly Launched<br/>Products</span>
+            <span className="text-center p-2">Newly Launched<br />Products</span>
             <span>~</span>
         </div>
         {(data)
             ? <main className={`px-5`}>
                 {data.data && data.data.filter(prod => prod.is_visible).slice(0, 8).map((prod, index) => {
-                    return <div className={"py-4"}  key={index}>
-                        <MobileProductCard prod={prod} isMobile={true} wide={index <= 7}/>
+                    return <div className={"py-4"} key={index}>
+                        <MobileProductCard prod={prod} isMobile={true} wide={true} />
                     </div>
                 })}
                 <div className={"grid grid-cols-2 gap-5"}>
-                {data.data && data.data.filter(prod => prod.is_visible).slice(8).map((prod, index) => {
-                    return <div className={"py-4"} key={index}>
-                        <MobileProductCard prod={prod} isMobile={true}/>
-                    </div>
-                })}
+                    {data.data && data.data.filter(prod => prod.is_visible).slice(8).map((prod, index) => {
+                        return <div className={"py-4"} key={index}>
+                            <MobileProductCard prod={prod} isMobile={true} />
+                        </div>
+                    })}
                 </div>
 
             </main>
@@ -72,7 +72,7 @@ function NewArrivalsAllPage(props) {
             {(data)
                 ? <main className={`px-10 grid grid-cols-3 gap-10`}>
                     {data.data && data.data.filter(prod => prod.is_visible).map((prod, index) => {
-                        return <ProductCard prod={prod} key={index}/>
+                        return <ProductCard prod={prod} key={index} />
                     })}
                 </main>
                 : loader
@@ -81,11 +81,11 @@ function NewArrivalsAllPage(props) {
     );
 
     return <>
-        <PageHead url="/new-arrivals/all" id="new-arrivals-all" isMobile={mobile}/>
-        <Header type={mobile ? "shopMenu" : ""} isMobile={mobile}/>
-        <HomePageHeaderSwiper page={"newArrival"} isMobile={mobile} slides={carousal}/>
+        <PageHead url="/new-arrivals/all" id="new-arrivals-all" isMobile={mobile} />
+        <Header type={mobile ? "shopMenu" : ""} isMobile={mobile} />
+        <HomePageHeaderSwiper page={"newArrival"} isMobile={mobile} slides={carousal} />
         {mobile ? mobileView : browserView}
-        <Footer isMobile={mobile}/>
+        <Footer isMobile={mobile} />
     </>
 }
 
