@@ -26,7 +26,6 @@ function EndOfSeasonSale(props) {
             {category: "sale", limit: 10000, skip: 0}
         ).then(resp => {
             if (resp.status === 200) {
-                console.log(resp)
                 setData(resp.response.data.filter(item => item.is_visible));
             }
         })
