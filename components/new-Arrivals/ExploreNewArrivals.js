@@ -1,20 +1,20 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
 import Image from "next/image";
 import Link from 'next/link';
-import { Swiper, SwiperSlide } from "swiper/react";
+import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import 'swiper/css/effect-fade';
 import "swiper/css/pagination"
 import "swiper/css/navigation"
-import SwiperCore, { Pagination, Navigation, Autoplay, EffectFade } from 'swiper';
+import SwiperCore, {Pagination, Navigation, Autoplay, EffectFade} from 'swiper';
 
 SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay]);
 
 const ExploreNewArrivals = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const resp = useApiCall("exploreNewArrivals", dataStore.apiToken);
     const [activeIndex, setActive] = React.useState(0)
 
@@ -22,7 +22,9 @@ const ExploreNewArrivals = () => {
     if (resp && resp.response)
         return (
             <div className='py-8'>
-                <a href={"/new-arrivals/all"} className='font-cursive italic leading-none text-2xl text-black/80 mb-5 block text-center'>Explore All New Arrivals</a>
+                <a href={"/new-arrivals/all"}
+                   className='font-cursive italic leading-none text-2xl text-black/80 mb-5 block text-center'>Explore
+                    All New Arrivals</a>
                 <div className={"grid grid-cols-2 gap-4"}>
                     <div className={"flex flex-col justify-evenly items-end text-right"}>
                         {resp.response.left_text.map((item, index) => {
@@ -69,7 +71,9 @@ const ExploreNewArrivals = () => {
                     <div className="col-span-2 flex items-center justify-center gap-2">
                         {resp.response.left_text.map((_, index) => {
                             return (
-                                <span className={`block w-2.5 h-2.5 rounded-full ${activeIndex === index ? 'bg-[#dbd5d3]' : 'bg-[#faf3f0]'}`} key={index} />
+                                <span
+                                    className={`block w-2.5 h-2.5 rounded-full ${activeIndex === index ? 'bg-[#dbd5d3]' : 'bg-[#faf3f0]'}`}
+                                    key={index}/>
                             )
                         })}
                     </div>
