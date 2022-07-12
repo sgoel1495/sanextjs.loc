@@ -18,7 +18,7 @@ function NewArrivalsIdPage(props) {
     const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState([]);
     const [carousal, setCarousal] = useState(props.carousal);
-    const [mobile,setMobile] = useState(false);
+    const [mobile, setMobile] = useState(false);
     const router = useRouter()
     React.useEffect(() => {
         setMobile(isMobile)

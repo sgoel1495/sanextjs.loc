@@ -5,6 +5,9 @@ import Link from "next/link";
 import {NewTag} from "../common/Tags";
 import Accordion from "../common/accordion";
 import AppWideContext from "../../store/AppWideContext";
+import {isMobile} from "react-device-detect";
+import SearchMenu from "../search/SearchMenu";
+import CurrencySwitcher from "../navbar/CurrencySwitcher";
 
 /**
  * @todo account signin pending
@@ -13,8 +16,7 @@ import AppWideContext from "../../store/AppWideContext";
  */
 
 
-const navigationDataInit = [];
-navigationDataInit.push(
+const navigationDataInit = [
     {
         title: `NEW ARRIVALS`,
         description: `Recently Launched`,
@@ -249,18 +251,271 @@ navigationDataInit.push(
             }
         ]
     }
-);
+];
+const mobileNavigationDataInit = [
+    {
+        title: `NEW ARRIVALS`,
+        description: `Recently Launched`,
+        link: "/new-arrivals/all"
+    },
+    {
+        title: `POPULAR`,
+        description: `Our Bestselling items`,
+        link: `/best-selling`
+    },
+    {
+        title: `GIFT CARDS`,
+        description: `Show Your Love`,
+        link: `/giftcards`
+    },
+    {
+        title: `STEAL DEAL`,
+        description: `Flat Price`,
+        new: true,
+        link: `/end-of-season-sale`
+    },
+    {
+        title: `SHOP THE LOOK`,
+        description: `Looks We Love`,
+        link: `/looks`
+    },
+    {
+        title: `COTTON MASKS`,
+        description: `For Your Protection`,
+        new: true,
+        link: `/shop-masks`
+    },
+    {
+        title: `TOPS`,
+        description: `Blouses, Shirts & Tunics`,
+        child: [
+            {
+                title: `BLOUSES`,
+                link: `/shop-tops`
+            },
+            {
+                title: `SHIRTS`,
+                link: `/shop-shirts`
+            },
+            {
+                title: `TUNICS`,
+                link: `/shop-tunics`
+            }
+        ]
+    },
+    {
+        title: `JUMPSUITS`,
+        description: `Easy To Wear & Stylish`,
+        new: true,
+        link: `/shop-jumpsuits`
+    },
+    {
+        title: `DRESSES`,
+        description: `Desk to Dinner`,
+        link: `/shop-dresses`
+    },
+    {
+        title: `SWEATERS`,
+        description: `Winter Wears`,
+        new: true,
+        link: `/shop-sweaters`
+    },
+    {
+        title: `TROUSERS`,
+        description: `Tailored Trousers`,
+        link: `/shop-tailored-pants`
+    },
+    {
+        title: `SHORTS`,
+        description: `Raise Your Chic`,
+        new: true,
+        link: `/shop-shorts`
+    },
+    {
+        title: `SKIRTS`,
+        description: `Tailored Skirts`,
+        link: `/shop-tailored-skirts`
+    },
+    {
+        title: `OUTERWEAR`,
+        description: `Jackets & Capes`,
+        link: `/shop-outerwear`
+    },
+    {
+        title: `ACCESSORIES`,
+        description: `Scarves, Belts & Jewellery`,
+        child: [
+            {
+                title: `SCARVES`,
+                link: `/shop-scarves`
+            },
+            {
+                title: `BELTS`,
+                link: `/shop-belts`
+            },
+            {
+                title: `JEWELLERY`,
+                new: true,
+                link: `/shop-jewellery`
+            },
+            {
+                title: `MASKS`,
+                new: true,
+                link: `/shop-masks`
+            }
+        ]
+    },
+    {
+        title: `SHOP BY PREFERENCES`,
+        description: `Preferred Your Style First`,
+        child: [
+            {
+                title: `COTTON & LINENS`,
+                link: `/group/cottons-&-linens`
+            },
+            {
+                title: `POLKA DOTS`,
+                link: `/group/polka`
+            },
+            {
+                title: `STRIPES`,
+                link: `/group/stripes`
+            },
+            {
+                title: `BOARDROOM DRESSES`,
+                link: `/group/boardroom-dresses`
+            },
+            {
+                title: `FORMAL JACKETS & BLAZERS`,
+                link: `/group/formal-jackets-&-blazers`
+            },
+            {
+                title: `FLORAL PRINT`,
+                link: `/group/floral-&-foliage-print`
+            },
+            {
+                title: `ALL THINGS SOLIDS`,
+                link: `/group/solids`
+            }
+        ]
+    },
+    {
+        title: `REVIEWS`,
+        description: `What Customers Say About Us`,
+        link: `/reviews`
+    },
+    {
+        title: `DISCOVER SALT`,
+        description: `Our Philosophy`,
+        child: [
+            {
+                title: `OUR STORY`,
+                link: `/salt/about-us`
+            },
+            {
+                title: `OUR DESIGN`,
+                link: `/salt/about-us/our-design`
+            },
+            {
+                title: `FABRIC`,
+                link: `/salt/about-us/fabric`
+            },
+            {
+                title: `SIZE & FIT`,
+                link: `/salt/about-us/size-fit`
+            },
+            {
+                title: `FINISHING & DETAILS`,
+                link: `/salt/about-us/finishing-details`
+            },
+            {
+                title: `WHY SALT?`,
+                link: `/salt/about-us/why-salt`
+            },
+            {
+                title: `CONTACT US`,
+                link: `/salt/about-us/contact-us`
+            }
+        ]
+    },
+    {
+        title: `ABOUT US`,
+        description: `Our Services`,
+        new: true,
+        link: `/blog/about-salt`
+    },
+    {
+        title: `VIRTUAL APPOINTMENT`,
+        description: `Online Styling`,
+        new: true,
+        link: `/get-virtual-appointment`
+    },
+    {
+        title: `IN-STORE APPOINTMENT`,
+        description: `Styling Assistance`,
+        new: true,
+        link: `/get-appointment`
+    },
+    {
+        title: `SHIPPING & RETURNS`,
+        description: ``,
+        link: `/salt/shipping-returns`,
+        style: "mt-12"
+    },
+    {
+        title: `CANCELLATION & MODIFICATIONS`,
+        description: ``,
+        link: `/salt/cancellation-modifications`
+    },
+    {
+        title: `FAQ`,
+        description: ``,
+        link: `/salt/faq`
+    },
+    {
+        title: `SITEMAP`,
+        description: ``,
+        link: `#`
+    },
+    {
+        title: `CONTACT US`,
+        description: ``,
+        link: `/salt/contact-us`
+    },
+    {
+        title: `LEGAL & COOKIES`,
+        description: ``,
+        child: [
+            {
+                title: `TERMS & CONDITIONS`,
+                link: `/salt/terms-and-condition`
+            },
+            {
+                title: `PRIVACY POLICY`,
+                link: `/salt/privacy-policy`
+            }
+        ]
+    }
+];
 
 const SelfLink = (props) => {
-    return (
-        <Link href={props.link}>
-            <a className={`block px-4 py-3 text-black/70 hover:bg-black/5 ` + [props.style ? props.style : ""]}>
+    const mobileView = <a className={`block px-4 py-3 text-black tracking-[-0.5px] capitalize ` + [props.style ? props.style : ""]}>
+                <span className={`block leading-none font-900 capitalize`}>
+                    {props.title.toLowerCase()}
+                    {props.new && <sup><NewTag white={true}/></sup>}
+                </span>
+        {props.description && <span className="text-xs block leading-none">{props.description}</span>}
+    </a>;
+    const browserView = <a className={`block px-4 py-3 text-black/70 hover:bg-black/5 ` + [props.style ? props.style : ""]}>
                 <span className={`block leading-none font-600`}>
                     {props.title}
                     {props.new && <NewTag/>}
                 </span>
-                {props.description && <span className="text-xs block leading-none">{props.description}</span>}
-            </a>
+        {props.description && <span className="text-xs block leading-none">{props.description}</span>}
+    </a>;
+    return (
+        <Link href={props.link}>
+            {props.isMobile ? mobileView : browserView}
         </Link>
     )
 }
@@ -268,20 +523,27 @@ const SelfLink = (props) => {
 const ChildLink = props => {
     const [viewState, setViewState] = useState(false);
 
+    let browserTitle = <>
+        <div className={`leading-none font-600`}>
+            {props.title}
+            {props.new && <NewTag/>}
+        </div>
+        {props.description && <span className="text-xs block leading-none">{props.description}</span>}
+    </>;
+    let mobileTitle = <>
+        <div className={`text-black leading-none font-900 capitalize tracking-[-0.5px]`}>
+            {props.title.toLowerCase()}
+            {props.new && <sup><NewTag white={true}/></sup>}
+        </div>
+        {props.description && <span className="text-xs block leading-none capitalize">{props.description}</span>}
+    </>;
+
     return (
         <Accordion
             onClick={() => setViewState(!viewState)}
             style={"group text-black/70"}
             animationDuration={"duration-200"}
-            title={
-                <>
-                    <div className={`leading-none font-600`}>
-                        {props.title}
-                        {props.new && <NewTag/>}
-                    </div>
-                    {props.description && <span className="text-xs block leading-none">{props.description}</span>}
-                </>
-            }
+            title={props.isMobile ? mobileTitle : browserTitle}
             titleStyle={`px-4 py-3 ${viewState ? 'bg-black/5' : 'group-hover:bg-black/5'}`}
             accordionIconOpen={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
@@ -317,23 +579,39 @@ const ChildLink = props => {
 
 function HamburgerModal(props) {
     const {closeModal} = props;
+
+
     return <Fragment>
         {(props.data && props.data.length > 0)
-            ? <><div className={`bg-theme-900/50 fixed top-0 z-50 h-full w-full`+[props.visible?" left-0":" hidden"]} onClick={closeModal}/>
+            ? <>
+                <div className={`bg-theme-900/50 fixed top-0 z-50 h-full w-full` + [props.visible ? " left-0" : " hidden"]} onClick={closeModal}/>
                 <div
-                    className={"max-w-[300px] z-[51] h-screen bg-white overflow-x-hidden flex flex-col fixed top-0 transition-[left] duration-300 "+[props.visible?"left-0":"left-[-300px]"]}
+                    className={"max-w-[300px] z-[51] h-screen bg-white overflow-x-hidden flex flex-col fixed top-0 transition-[left] duration-300 " + [props.visible ? "left-0" : "left-[-300px]"]}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="flex items-center justify-between p-4 border-b border-theme-200">
-                        <span className="font-600">Menu</span>
-                        <button onClick={closeModal}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} viewBox="0 0 24 24">
-                                <path
-                                    d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
-                            </svg>
-                        </button>
-                    </div>
+                    {
+                        props.isMobile ||
+                        <div className="flex items-center justify-between p-4 border-b border-theme-200">
+                            <span className="font-600">Menu</span>
+                            <button onClick={closeModal}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} viewBox="0 0 24 24">
+                                    <path
+                                        d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    }
+
                     <div className={`flex-1 overflow-y-auto font-500 pb-40`}>
+                        {
+                            props.isMobile && <>
+                                <SearchMenu type={"hamMenu"} mobile={true} closeModal={closeModal}/>
+                                <div className={"px-4 py-3 flex justify-start items-center"}>
+                                    <span className={"italic normal-case text-xs text-gray-400 font-600"}>Shipping Outside India ?</span>
+                                    <CurrencySwitcher isMobile={true} type={"hamMenu"} className={"text-[0.6rem] py-0 h-5"}/>
+                                </div>
+                            </>
+                        }
                         {props.data.map((item, index) => item.child
                             ? <ChildLink
                                 key={index}
@@ -341,6 +619,7 @@ function HamburgerModal(props) {
                                 description={item.description}
                                 new={item.new}
                                 child={item.child}
+                                isMobile={props.isMobile}
                             />
                             : <SelfLink
                                 key={index}
@@ -349,6 +628,7 @@ function HamburgerModal(props) {
                                 description={item.description}
                                 new={item.new}
                                 style={item.style}
+                                isMobile={props.isMobile}
                             />)}
                     </div>
                 </div>
@@ -364,14 +644,20 @@ function SidebarMenuHamburger(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [navigationData, setNavigationData] = useState([]);
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
+    const [mobile, setMobile] = useState(false)
 
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     useEffect(() => {
         if (showSidebarMenu) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
     }, [showSidebarMenu]);
 
     useEffect(() => {
-        if (dataStore.userData.contact != null) {
+        if (mobile) {
+            setNavigationData(mobileNavigationDataInit)
+        } else if (dataStore.userData.contact != null) {
             setNavigationData([
                 {
                     title: dataStore.userServe.user_name,
@@ -420,7 +706,7 @@ function SidebarMenuHamburger(props) {
                     link: `login`
                 }, ...navigationDataInit]);
         }
-    }, [dataStore.userData.contact, dataStore.userServe.user_name]);
+    }, [dataStore.userData.contact, dataStore.userServe.user_name, mobile]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);
@@ -435,23 +721,12 @@ function SidebarMenuHamburger(props) {
             iconHeight = "h-6"
     }
 
-    const mobileView = (
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="h-6 w-6">
-                <rect y="3" width="50" height="2"/>
-                <rect y="17" width="50" height="2"/>
-                <rect y="31" width="50" height="2"/>
-                <rect y="45" width="50" height="2"/>
-            </svg>
-        </div>
-    );
-
-    const browserView = <Fragment>
+    return <Fragment>
         {(navigationData.length > 0)
             ? <span className={`relative w-6 ${iconHeight}`}>
                 {
-                    props.type !=="menu" && <div onClick={() => setShowSidebarMenu(true)}
-                                                 className={`relative cursor-pointer w-6 ${iconHeight}`}>
+                    props.type !== "menu" && <div onClick={() => setShowSidebarMenu(true)}
+                                                  className={`relative cursor-pointer w-6 ${iconHeight}`}>
                         <Image
                             src={WEBASSETS + "/assets/images/menuicon_v1.png"}
                             alt="menuicon"
@@ -461,12 +736,10 @@ function SidebarMenuHamburger(props) {
 
                     </div>
                 }
-                <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu}/>
+                <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu} isMobile={mobile}/>
             </span>
-            : <Fragment>TeaCii Loading</Fragment>}
+            : <Fragment/>}
     </Fragment>;
-
-    return props.isMobile ? mobileView : browserView
 }
 
 export default SidebarMenuHamburger;
