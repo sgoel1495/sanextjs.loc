@@ -1,2 +1,8 @@
 {
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/0aaf6437-131f-41cc-a7e1-41f6c4c6cae5/microsoft.web/sites/subscriptions/0aaf6437-131f-41cc-a7e1-41f6c4c6cae5/resourceGroups/saltattire/providers/Microsoft.Web/sites/saltattire",
+    "appService.deploySubpath": "."
 }
