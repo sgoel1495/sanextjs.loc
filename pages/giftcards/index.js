@@ -27,13 +27,13 @@ function GiftcardsPage() {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [showGiftReceiverModal, setShowGiftReceiverModal] = useState(false)
     const [giftReceiverModalData, setGiftReceiverModalData] = useState({})
-    const [mobile,setMobile] = useState(false);
+    const [mobile, setMobile] = useState(false);
     const [data, setData] = useState(null);
     const resp = useApiCall("giftcards", dataStore.apiToken);
 
-    useEffect(()=>{
+    useEffect(() => {
         setMobile(isMobile)
-    },[])
+    }, [])
 
     useEffect(() => {
         if (resp
@@ -117,20 +117,20 @@ function GiftcardsPage() {
                 <Image src={WEBASSETS + "/assets/images/SALT_logo.png"} alt="salt logo" layout={`fill`}
                        objectFit={`contain`}/>
             </div>
-            <form className={`container flex flex-col gap-y-5  font-cursive`}>
+            <form className={`container flex items-center flex-col gap-y-5 font-cursive`}>
                 <div>
                     <p className={`text-h1`}>Have a gift card?</p>
                     <p>Check your balance</p>
                 </div>
                 <input
-                    className={`block w-1/3 text-center border-0 border-b-2 border-black w-full focus:ring-offset-0 focus:ring-0`}
+                    className={`block w-64 bg-transparent text-center border-0 border-b-[1px] border-black focus:outline-none focus:outline-0`}
                     type="text" maxLength="50" name="gc_number" placeholder="Enter gift card code" id="gc_number"
                 />
-                <div>
-                    <p>Your Balance - <span id="gift_amount"/></p>
-                    <p>This code is already redeemed</p>
-                </div>
-                <button type="button" className={`bg-black text-white pt-3 pb-2 px-10 text-sm`}>CHECK BALANCE</button>
+                {/*<div>*/}
+                {/*    <p>Your Balance - <span id="gift_amount"/></p>*/}
+                {/*    <p>This code is already redeemed</p>*/}
+                {/*</div>*/}
+                <button type="button" className={`mt-10 bg-black text-white pt-3 pb-2 px-10 text-sm`}>CHECK BALANCE</button>
             </form>
         </section>
         <NewArrivalsBlock isMobile={true} currencySymbol={currencySymbol} currCurrency={currCurrency}
