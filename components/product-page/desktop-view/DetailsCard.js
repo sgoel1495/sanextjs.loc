@@ -198,25 +198,7 @@ const DetailsCard = ({ data, hpid }) => {
             setShowToast(true)
             return
         }
-        // lets add to cart
-        /*
-        "{
-   ""user"" : { ""email"" : """",
-     ""is_guest"" : true,
-     ""temp_user_id"" : ""1599477182""
-   },
-   ""cart"" : { ""product_id"" : ""Tops-Colva-NotchNeckLinenTop"",
-       ""size"" : ""M"",
-       ""qty"" : ""1"",
-       ""is_sale"" : ""false"",
-       ""is_tailor"" : ""false"",
-       ""sleeve_length"" : """",
-       ""dress_length"" : """"
-   },
-  ""token"" : ""b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0""
-}"
 
-         */
         let tempId = null;
         if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id == "") {
             tempId = Date.now()
@@ -302,19 +284,6 @@ const DetailsCard = ({ data, hpid }) => {
             {returnValue}
         </div>
     }
-
-    /*
-    <div className={"flex justify-between font-600 mb-4 text-black/60"}>
-        {["XS", "S", "M", "L", "XL", "XXL"].map((item, index) => {
-        if (index > 0)
-            return <>
-                <span className={""} key={"div" + index}>|</span>
-                <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
-            </>
-        return <span className={(selectedSize == item) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"} key={index} onClick={() => setSelectedSize(item)}>{item}</span>
-    })}
-</div>
-*/
 
     return (
         <div>
