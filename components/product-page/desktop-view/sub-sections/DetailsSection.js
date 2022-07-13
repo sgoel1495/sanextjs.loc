@@ -1,12 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import Image from "next/image";
 import AppWideContext from "../../../../store/AppWideContext";
 import appSettings from "../../../../store/appSettings";
+import Link from "next/link";
 
-const DetailsSection = ({ theme, data }) => {
+const DetailsSection = ({theme, data}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
@@ -28,9 +29,16 @@ const DetailsSection = ({ theme, data }) => {
     let feature_icons = {}
 
     data.icon_assets.forEach((icon) => {
-        feature_icons = { ...feature_icons, ...icon }
+        feature_icons = {...feature_icons, ...icon}
     })
-
+    let tags = Object.keys(data).map((key) => {
+        if (key.startsWith('filter') && key !== "filter-collection" && key !== "filter-multi-color" && data[key]) {
+            return {
+                "display": data[key].replace("-", " ") + (key.includes("sleeve") ? " Sleeves" : "") + (key.includes("fit") ? " Fit" : ""),
+                "value": data[key]
+            }
+        }
+    }).filter((key) => key)
     return (
         <div className={[`flex-[5] p-4 text-${theme}`]}>
             <div className={"flex justify-between px-10"}>
@@ -54,15 +62,17 @@ const DetailsSection = ({ theme, data }) => {
                 {Object.keys(data.icons_fea).filter(key => data.icons_fea[key]).map((key, index) => (
                     <div className={"text-center flex flex-col justify-center items-center w-[33%]"} key={index}>
                         <div className={"relative aspect-square h-11 grayscale fill-black"}>
-                            <Image src={WEBASSETS + feature_icons[key]} alt='' layout={"fill"} objectFit={`cover`} />
+                            <Image src={WEBASSETS + feature_icons[key]} alt='' layout={"fill"} objectFit={`cover`}/>
                         </div>
                         <span className={"block"}>{key.replace("9_", "9-").replace(/_/g, " ")}</span>
                     </div>
                 ))}
             </div>
             <div className='flex items-center flex-wrap justify-start'>
-                {["shirts", "Long Sleeves"].map((item, index) => {
-                    return <p className={"rounded-full bg-[#d3d3d35c] py-2 px-5 text-black font-500 mr-4 mb-4 capitalize"} key={index}>{item}</p>
+                {tags.map((item, index) => {
+                    return <Link href={"/group/" + item.value}>
+                        <p className={"rounded-full bg-[#d3d3d35c] py-2 px-5 text-black font-500 mr-4 mb-4 capitalize"} key={index}>{item.display}</p>
+                    </Link>
                 })}
             </div>
             <div className='mb-8'>
@@ -79,19 +89,19 @@ const DetailsSection = ({ theme, data }) => {
             <div className={"flex mb-8"}>
                 <div className={"text-center flex flex-col justify-center items-center w-[33%]"}>
                     <div className={"relative aspect-square h-11"}>
-                        <Image src={WEBASSETS + "/assets/images/measure_yourself.svg"} alt='' layout={"fill"} objectFit={`cover`} />
+                        <Image src={WEBASSETS + "/assets/images/measure_yourself.svg"} alt='' layout={"fill"} objectFit={`cover`}/>
                     </div>
                     <p className={"font-600 text-sm"}>MADE TO MEASURE</p>
                 </div>
                 <div className={"text-center flex flex-col justify-center items-center w-[33%]"}>
                     <div className={"relative aspect-square h-11"}>
-                        <Image src={WEBASSETS + "/assets/images/free_shipping.svg"} alt='' layout={"fill"} objectFit={`cover`} />
+                        <Image src={WEBASSETS + "/assets/images/free_shipping.svg"} alt='' layout={"fill"} objectFit={`cover`}/>
                     </div>
                     <p className={"font-600 text-sm"}>FREE SHIPPING</p>
                 </div>
                 <div className={"text-center flex flex-col justify-center items-center w-[33%]"}>
                     <div className={"relative aspect-square h-11"}>
-                        <Image src={WEBASSETS + "/assets/images/perfect_fit.svg"} alt='' layout={"fill"} objectFit={`cover`} />
+                        <Image src={WEBASSETS + "/assets/images/perfect_fit.svg"} alt='' layout={"fill"} objectFit={`cover`}/>
                     </div>
                     <p className={"font-600 text-sm"}>PERFECT FIT GUARANTEE</p>
                 </div>

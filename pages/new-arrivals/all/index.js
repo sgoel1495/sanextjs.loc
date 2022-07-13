@@ -55,7 +55,6 @@ function NewArrivalsAllPage(props) {
                         </div>
                     })}
                 </div>
-
             </main>
             : loader
         }

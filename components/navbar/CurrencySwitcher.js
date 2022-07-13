@@ -28,9 +28,9 @@ function CurrencySwitcher(props) {
         </Fragment>;
     })
 
-    const updateCurrency = (c)=>{
+    const updateCurrency = (c) => {
         updateDataStore("currCurrency", c)
-        updateDataStore("currSymbol",currencyData[c].curr_symbol)
+        updateDataStore("currSymbol", currencyData[c].curr_symbol)
     }
 
     let height;
@@ -45,11 +45,11 @@ function CurrencySwitcher(props) {
     const browserView = (
         <div className={`${height} flex items-center w-16`}>
             {
-                props.type !=="menu" && <select
+                props.type !== "menu" && <select
                     id="currency-switcher"
                     className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
                     value={currCurrency}
-                    onChange={e=>updateCurrency(e.target.value)}
+                    onChange={e => updateCurrency(e.target.value)}
                 >
                     {options}
                 </select>
@@ -58,10 +58,10 @@ function CurrencySwitcher(props) {
     );
 
     const mobileView = (
-        <div className={`${height} flex items-center right-0 absolute pr-2`}>
+        <div className={`${height} flex items-center pr-2 ` + [props.type === "hamMenu" ? "ml-2" : "right-0 absolute"]}>
             <select
                 id="currency-switcher"
-                className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${focusStyle}`}
+                className={`border-0 border-b py-0 pl-1 pr-6 text-sm bg-transparent ${props.className} ${focusStyle} `}
                 value={currCurrency}
                 onChange={(event) => updateDataStore("currCurrency", event.target.value)}
             >

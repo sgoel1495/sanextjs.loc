@@ -25,7 +25,7 @@ function CartModal(props) {
     const [showEditTailored, setShowEditTailored] = useState(false)
     const [showViewTailored, setShowViewTailored] = useState(false)
 
-    dataStore.userCart ? console.log(dataStore.userCart) : console.log("Cart empty")
+    dataStore.userCart ? console.log(dataStore.userCart) : console.log("Cart empty") // TODO to be removed during integrations
 
     const imageClass = "block relative w-40 h-40";
     const blockHeader = "border-4 border-theme-200 p-2 uppercase mb-5 tracking-wide mx-5"
@@ -35,7 +35,7 @@ function CartModal(props) {
     const returnPolicy = (
         <>
             <Link href="#faq_slides">
-                <a className={`block ${blockHeader} `}>
+                <a className={`block ${blockHeader} mt-10`}>
                     <h6 className={`text-h6 font-600 text-center mb-1`}>Our Return Policy</h6>
                     <ul className={`text-theme-600 text-xs`}>
                         <li key="money-back">Money Back Guarantee For Pre-paid.</li>
@@ -243,6 +243,29 @@ function CartModal(props) {
     let mockProduct = [
         {
             asset_id: "/assets/Dresses-Bobby-FauxWrapPolkaDress/thumb.jpg",
+            cart_id: "Dresses-Bobby-FauxWrapPolkaDress+X",
+            color: {name: "MULTICOLOR"},
+            is_tailor: false,
+            multi_color: false,
+            name: "Bobbyl",
+            order: {
+                dress_length: "",
+                is_sale: false,
+                is_tailor: false,
+                product_id: "Dresses-Bobby-FauxWrapPolkaDress",
+                qty: "1",
+                size: "XS",
+                sleeve_length: ""
+            },
+            price: 2950,
+            product_id: "Dresses-Bobby-FauxWrapPolkaDress",
+            qty: "1",
+            size: "XS",
+            tag_line: "Faux Wrap Polka Dress",
+            usd_price: 52,
+        },
+        {
+            asset_id: "/assets/Dresses-Bobby-FauxWrapPolkaDress/thumb.jpg",
             cart_id: "Dresses-Bobby-FauxWrapPolkaDress+XS",
             color: {name: "MULTICOLOR"},
             is_tailor: false,
@@ -263,8 +286,8 @@ function CartModal(props) {
             size: "XS",
             tag_line: "Faux Wrap Polka Dress",
             usd_price: 52,
-        }
-    ]
+        },
+    ] //TODO to be removed during integrations
 
     const quickEditTailored = (p) => {
         setTailoredProduct(p)
@@ -311,52 +334,81 @@ function CartModal(props) {
     const mobileView = () => {
         let returnValue =
             <div className={`bg-theme-900/50 m-1`}>
-                <div
-                    className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden ml-auto p-2"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <a className={`w-7 h-7 absolute right-[3%] p-1.5`} href={"/"}>
-                        <img
-                            src={WEBASSETS + "/assets/images/cancel.png"}
-                            alt="cancel"
-                        />
-                    </a>
-                    <div className={`text-center font-600 tracking-wider px-2 mb-10 border-2 border-solid`}>
-                        <p className={`text-sm mt-3 mb-6 text-center`}>YOUR CART {qtyInCart(dataStore)}</p>
-                        {(dataStore.userCart.length > 0)
-                            ? <Fragment>
-                                <Link href="/users/checkoutpage">
-                                    <a className="inline-flex mb-5 text-white bg-black px-5 py-3">CHECKOUT</a>
-                                </Link>
-                                <ProductCartView mockData={dataStore.userCart}/>
-                            </Fragment>
-                            : <Fragment>
-                                <span className={`block relative w-16 h-16 mx-auto mb-4`}>
-                            <Image
-                                id="emptycart"
-                                src={WEBASSETS + "/assets/images/empty_bag.png"}
-                                alt="empty_cart"
-                                layout="fill"
-                                objectFit="cover"
-                            />
-                        </span>
-                                <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
-                                <p className={`text-sm mb-4`}>There is nothing in your cart. Let&apos;s add some
-                                    items.</p>
-                                <Link href="/new-arrivals/all">
-                                    <a className="flex justify-center underline uppercase text-sm my-4">Continue
-                                        Shopping</a>
-                                </Link>
-                            </Fragment>
+                <div className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden ml-auto p-2">
+                    <div className={`text-center font-600 tracking-wider px-1 border-2 border-solid`}>
+                        {
+                            dataStore.userCart.length > 0
+                                ? <Fragment>
+                                            <span className={"flex justify-between"}>
+                                                <span className={" pt-1"}> YOUR CART: </span>
+                                                 <span className={" pt-1"}>{dataStore.currSymbol} 1000</span>
+                                               <span>
+                                                    <a href={"/"}
+                                                       className={`w-7 h-7 absolute top-[10%] right-[4%] p-1.5`}>
+                                                    <img
+                                                        src={WEBASSETS + "/assets/images/cancel.png"}
+                                                        alt="cancel"
+                                                    />
+                                                    </a>
+                                               </span>
+                                            </span>
+                                    <div className={"my-1 border-solid border-b-2 border-neutral-300"}/>
+                                    <ProductCartView mockData={dataStore.userCart}/>
+
+                                </Fragment>
+                                : <Fragment>
+                                    <a className={`w-7 h-7 absolute right-[4%] p-1.5`} href={"/"}>
+                                        <img
+                                            src={WEBASSETS + "/assets/images/cancel.png"}
+                                            alt="cancel"
+                                        />
+                                    </a>
+                                    <p className={`px-1 text-sm mt-3 mb-6 text-center`}>YOUR CART {qtyInCart(dataStore)}</p>
+
+                                    <span className={`block relative w-16 h-16 mx-auto mb-4`}>
+                                                <Image
+                                                    id="emptycart"
+                                                    src={WEBASSETS + "/assets/images/empty_bag.png"}
+                                                    alt="empty_cart"
+                                                    layout="fill"
+                                                    objectFit="cover"
+                                                />
+                                                </span>
+                                    <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
+                                    <p className={`text-sm mb-4 px-1`}>There is nothing in your cart. Let&apos;s add some
+                                        items.</p>
+                                    <Link href="/new-arrivals/all">
+                                        <a
+                                            className="flex justify-center underline uppercase text-sm mt-8"
+                                            onClick={updateDataStore("userCart", mockProduct)} //  TODO to be removed during integrations
+                                        >
+                                            Continue Shoppings
+                                        </a>
+                                    </Link>
+                                </Fragment>
                         }
 
-                        {(dataStore.userCart.length > 0)
-                            ? <Link href="/users/checkoutpage">
-                                <a className="inline-flex my-5 text-white bg-black px-5 py-3">CHECKOUT</a>
-                            </Link>
-                            : null
-                        }
                     </div>
+                    {dataStore.userCart.length > 0 ?
+                        <div className={"inline-flex w-full text-center m-auto my-6"}>
+                            <Link href="/users/checkoutpage">
+                                <a
+                                    className="flex-1 w-full px-1 py-1 text-xs"
+                                >
+                                    Continue<br/>
+                                    Shopping
+                                </a>
+                            </Link>
+                            <Link href="/users/checkoutpage">
+                                <a
+                                    className="flex-1 text-white bg-black w-full px-1 py-1 text-xs"
+                                >
+                                    PROCEED&nbsp;TO<br/>
+                                    CHECKOUT
+                                </a>
+                            </Link>
+                        </div> : null
+                    }
                     {returnPolicy}
                     {mediaBuzz()}
                     {testimonials()}
@@ -457,12 +509,10 @@ function CartModal(props) {
         return (
             <Fragment>
                 <BareHeading/>
-                {/*{dataStore.mobile ? mobileView : browserView}*/}
                 {returnValue}
                 <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
             </Fragment>
         )
-
     }
 
     const browserView = () => {
@@ -479,7 +529,7 @@ function CartModal(props) {
                     {/*    </svg>*/}
                     {/*</button>
 
-                    Website doesn't have this comp. TODO to be removed
+                     TODO to be removed as Website doesn't have this comp.
 
                     */}
 

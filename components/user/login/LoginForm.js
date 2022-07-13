@@ -1,6 +1,6 @@
-import React, { useContext, useRef, useState } from 'react';
-import { validateUsername } from "../../../helpers/loginSignUpHelpers";
-import { apiDictionary } from "../../../helpers/apiDictionary";
+import React, {useContext, useRef, useState} from 'react';
+import {validateUsername} from "../../../helpers/loginSignUpHelpers";
+import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
@@ -14,17 +14,18 @@ const LoginForm = (props) => {
     const password = useRef(null);
     const [loading, setLoading] = useState(false);
     const [otpSent, setOTPSent] = useState(false)
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
 
     React.useEffect(() => {
         loadFbLoginApi()
     }, [])
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,dataStore.userMeasurements,dataStore.userCart);
-        Object.keys(updateData).forEach((key)=>{
+        const updateData = await updateUserDataAfterLogin(username, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
+        Object.keys(updateData).forEach((key) => {
             updateDataStore(key, updateData[key]);
         })
+        localStorage.setItem("userData", JSON.stringify(updateData["userData"]));
     }
 
     const loadFbLoginApi = () => {
@@ -78,8 +79,9 @@ const LoginForm = (props) => {
                                 props.showToast("We've sent an OTP to your Email or Phone!")
                             } else {
                                 saveUserDataAfterSuccessfulLogin(uname)
-                                    .then(()=>{})
-                                    .catch(e=>console.log(e.message))
+                                    .then(() => {
+                                    })
+                                    .catch(e => console.log(e.message))
                             }
                         } else {
                             props.showToast(data['response']['body'].toUpperCase());
@@ -93,7 +95,7 @@ const LoginForm = (props) => {
 
         const loginOtp = (uname, otp) => {
             setLoading(true)
-            let api = apiDictionary("userOTPLogin", dataStore.apiToken, { username: uname, otp: parseInt(otp) })
+            let api = apiDictionary("userOTPLogin", dataStore.apiToken, {username: uname, otp: parseInt(otp)})
             fetch(api.url, api.fetcher).then((response) => {
                 if (response.status === 200) {
                     response.json().then(data => {
@@ -111,7 +113,7 @@ const LoginForm = (props) => {
 
         const statusChangeCallback = (response) => {
             if (response.status === 'connected') {
-                window.FB.api('/me', { locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender' }, function (response) {
+                window.FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender'}, function (response) {
                     saveUserDataAfterSuccessfulLogin(response.email)
                     //console.log('FB ID:' + response.id + 'Name:' + response.first_name + ',' + response.last_name + 'Email:' + response.email + 'Gender:' + response.gender)
                 })
@@ -129,7 +131,7 @@ const LoginForm = (props) => {
         const handleFBLogin = () => {
             window.FB.login((resp) => {
                 checkLoginState()
-            }, { scope: 'public_profile,email' });
+            }, {scope: 'public_profile,email'});
         }
 
         switch (action) {
@@ -178,7 +180,7 @@ const LoginForm = (props) => {
                 >
                     {
                         loading ?
-                            <Loader className="text-grey" />
+                            <Loader className="text-grey"/>
                             :
                             otpSent ? <>Verify OTP</> : <>Sign In</>
                     }
@@ -192,7 +194,7 @@ const LoginForm = (props) => {
                 >
                     {
                         loading ?
-                            <Loader className="text-grey" />
+                            <Loader className="text-grey"/>
                             :
                             otpSent ? <>Resend OTP</> : <>Login Using OTP</>
                     }
@@ -205,10 +207,10 @@ const LoginForm = (props) => {
                 >
                     {
                         loading ?
-                            <Loader className="text-grey" />
+                            <Loader className="text-grey"/>
                             :
                             otpSent ? <>Back</> : <>
-                                <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain" />
+                                <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain"/>
                                 <span>LOGIN</span>
                             </>
 

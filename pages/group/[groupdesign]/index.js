@@ -56,10 +56,10 @@ function GroupDesignPage() {
 
     const mobileView = <Fragment>
         {img &&
-            <img
-                src={WEBASSETS + img}
-                alt={design}
-            />}
+        <img
+            src={WEBASSETS + img}
+            alt={design}
+        />}
         <CategoryHeaderMobile group={true} category={design} groups={resp ? resp.response : []}/>
         {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={true} wide={true}/>)}
     </Fragment>;

@@ -20,6 +20,11 @@ const Toast = (props) => {
     // Tailwind CSS
     const toastClasses = dataStore.mobile ? ['bg-black', 'p-4', 'w-full', 'text-white', 'text-sm', 'mt-1', 'z-[100]'] : ['bg-black', 'fade-up', 'fixed', 'top-20', 'right-20', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1', 'z-[100]'];
 
+    if (props.customBg) {
+        toastClasses.shift()
+        toastClasses.push(`bg-[${props.customBg}]`)
+    }
+
     useEffect(() => {
         if (props.show) {
             if (ref.current) {

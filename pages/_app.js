@@ -10,6 +10,7 @@ import React, {useEffect, useState, useCallback, Fragment} from 'react';
 //import App from "next/app";
 import {isMobile} from "react-device-detect";
 import Script from 'next/script'
+import {updateUserDataAfterLogin} from "../helpers/updateUserDataAfterLogin";
 
 
 function MyApp({Component, pageProps}) {
@@ -35,6 +36,18 @@ function MyApp({Component, pageProps}) {
         setDataStore({...dataStore});
         setRefresh(!refresh);
     }, [dataStore, refresh])
+
+    useEffect(() => {
+        let userData = localStorage.getItem("userData")
+        if (userData) {
+            userData = JSON.parse(userData)
+            if (userData.contact) {
+                updateUserDataAfterLogin(userData.contact, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart).then(updateData => {
+                    setDataStore({...dataStore, ...updateData});
+                })
+            }
+        }
+    }, [])
 
     useEffect(() => {
         if (dataStore.mobile != isMobile)
