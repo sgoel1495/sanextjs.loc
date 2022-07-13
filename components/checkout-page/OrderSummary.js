@@ -25,13 +25,9 @@ function OrderSummary() {
     const walletPay = currencyFormatter(curr).format(toPay);
     const total = currencyFormatter(curr).format(finalPayable);
 
-    const mobileView =
-    (
-        <div className='bg-[#f1f2f3] py-6 px-5 mt-12'>
-            <p className='text-xl mb-2'>Order Summary</p>
-            <div>
-                Estimated Delivery {monthNames[firstDate.getMonth()]} {firstDate.getDate()} - {monthNames[secondDate.getMonth()]} {secondDate.getDate()}
-            </div>
+    const mobileView = (
+        <div className=' p-4 border border-solid border-gray-200 mx-3 mt-2'>
+            <p className='text-xl mb-2 mt-4 text-center'>Order Summary</p>
             <table className='order_summary_table'>
                 <tbody>
                     <tr>
@@ -43,19 +39,10 @@ function OrderSummary() {
                         <td>{currencyFormatter(curr).format(promoDiscountValue(dataStore))}</td>
                     </tr>
                     <tr>
-                        <td>Shipping Charges</td>
-                        <td>
-                            {compareDecimalNumbers(dataStore.currentOrderInCart.shipping_fee, 0) === "=" ? (
-                                <span>FREE</span>
-                            ) : (
-                                <span>currencyFormatter(curr).format(dataStore.currentOrderInCart.shipping_fee)</span>
-                            )}
-                        </td>
+                        <td>Gross Total</td>
+                        <td>{11111}</td>
                     </tr>
-                    <tr>
-                        <td>Alteration Services</td>
-                        <td>FREE</td>
-                    </tr>
+
                     {
                         <tr>
                             <td>Wallet</td>
@@ -72,6 +59,20 @@ function OrderSummary() {
                             </td>
                         </tr>
                     }
+                    <tr>
+                        <td>Shipping Charges</td>
+                        <td>
+                            {compareDecimalNumbers(dataStore.currentOrderInCart.shipping_fee, 0) === "=" ? (
+                                <span>FREE</span>
+                            ) : (
+                                <span>currencyFormatter(curr).format(dataStore.currentOrderInCart.shipping_fee)</span>
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Alteration Services</td>
+                        <td>FREE</td>
+                    </tr>
                 </tbody>
             </table>
             <div className='flex font-600 text-[#777] mt-5'>

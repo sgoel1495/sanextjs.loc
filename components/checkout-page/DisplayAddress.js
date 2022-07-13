@@ -8,7 +8,7 @@ import AppWideContext from "../../store/AppWideContext";
  * @param editAddressIndex has 2 values. Index which tells the address in question and 2 whether to edit it
  * @constructor
  */
-function DisplayAddress({ addressIndex }) {
+function DisplayAddress({ addressIndex ,setShowEditScreen}) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [selectedAddress, setSelectedAddress] = useState(null);
 
@@ -68,7 +68,13 @@ function DisplayAddress({ addressIndex }) {
                             <p className='text-xs text-[#555]'>T: {address.phone}</p>
                         </div>
                         <div className='flex items-center justify-evenly text-sm'>
-                            <button className='underline text-[#555]' onClick={() => updateAddress(index, true)}>
+                            <button
+                                className='underline text-[#555]'
+                                onClick={() => {
+                                    setShowEditScreen(true);
+                                }}
+                            >
+                                {/* onClick={() => updateAddress(index, true)}> */}
                                 Edit
                             </button>
                             {index === selectedAddress ? (

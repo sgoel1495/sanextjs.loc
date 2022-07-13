@@ -9,7 +9,7 @@ import validator from "validator";
 import capitalizeTheFirstLetterOfEachWord from "../../helpers/capitalizeFirstWordOfEveryString";
 import DisplayAddress from "./DisplayAddress";
 
-function ShippingAddress({ addressComplete, updateCompleteness,setActive }) {
+function ShippingAddress({ addressComplete, updateCompleteness, setActive }) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const cAddress = dataStore.selectedAddress || dataStore.defaultdAddress;
     const [message, setMessage] = useState(null);
@@ -20,6 +20,8 @@ function ShippingAddress({ addressComplete, updateCompleteness,setActive }) {
     const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
     const [addressSaved, setAddressSaved] = useState(false);
 
+    // Added this temp state to show edit screem this will be removed on integration --Dhiraj
+    const [showEditScreen, setShowEditScreen] = useState(false);
     const emptyAddress = {
         name: "",
         lastname: "",
@@ -246,9 +248,29 @@ function ShippingAddress({ addressComplete, updateCompleteness,setActive }) {
     const mobileView = (
         <Fragment>
             <p className='text-l font-bold mb-2 pt-2 text-center'>Shipping Address</p>
-            {true ? (
+            {!showEditScreen ? (
                 <div className='grid grid-cols-1 mx-6'>
-                    <DisplayAddress addressIndex={addressIndex.bind(this)} />
+                    <DisplayAddress setShowEditScreen={setShowEditScreen} addressIndex={addressIndex.bind(this)} />
+                    <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
+                        <div
+                            onClick={() => {
+                                setActive(1);
+                            }}
+                            className='cursor-pointer font-600 text-black py-2'
+                        >
+                            <button className='font-600'>&lt; BACK </button>
+                            <p className='text-xs uppercase'>Payment Amount</p>
+                        </div>
+                        <div
+                            onClick={() => {
+                                setActive(3);
+                            }}
+                            className='bg-black py-2 cursor-pointer text-white'
+                        >
+                            <button className='font-600'> NEXT &gt;</button>
+                            <p className='text-xs uppercase'>Review Address</p>
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <Fragment>
@@ -408,32 +430,29 @@ function ShippingAddress({ addressComplete, updateCompleteness,setActive }) {
                             </div>
                         )}
                     </div>
-                 
+                    <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
+                        <div
+                            onClick={() => {
+                                setShowEditScreen(false);
+                            }}
+                            className='bg-black py-2 cursor-pointer text-gray-300 mr-0.5'
+                        >
+                            <button className='font-600 uppercase'>Cancel </button>
+                        </div>
+                        <div
+                            onClick={() => {
+                                setShowEditScreen(false);
+                            }}
+                            className='bg-black py-2 cursor-pointer text-white'
+                        >
+                            <button className='font-600 uppercase'> Update</button>
+                        </div>
+                    </div>
                     <Toast show={show} hideToast={() => setShow(false)}>
                         <span>{message}</span>
                     </Toast>
                 </Fragment>
             )}
-               <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
-                        <div
-                            onClick={() => {
-                                setActive(1);
-                            }}
-                            className='cursor-pointer font-600 text-black py-2'
-                        >
-                            <button className='font-600'>&lt; BACK </button>
-                            <p className='text-xs uppercase'>Payment Amount</p>
-                        </div>
-                        <div
-                            onClick={() => {
-                                setActive(3);
-                            }}
-                            className='bg-black py-2 cursor-pointer text-white'
-                        >
-                            <button className='font-600'> NEXT &gt;</button>
-                            <p className='text-xs uppercase'>Review Address</p>
-                        </div>
-                    </div>
         </Fragment>
     );
     const browserView = () => {

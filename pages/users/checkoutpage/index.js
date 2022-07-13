@@ -16,7 +16,7 @@ import OtpModal from "../../../components/checkout-page/OtpModal";
 import addToCartNotLoggedIn from "../../../helpers/addToCartNotLoggedIn";
 import orderTotal from "../../../helpers/orderTotal";
 import compareDecimalNumbers from "../../../helpers/compareDecimalNumbers";
-import Image from "next/image"; 
+import Image from "next/image";
 import AdditionalSizeDetail from "../../../components/checkout-page/mobile-view/AdditionalSizeDetails";
 import OrderDetails from "../../../components/checkout-page/mobile-view/OrderDetails";
 
@@ -125,10 +125,11 @@ function UsersCheckoutPage() {
             }
         }
     };
+
     let ActiveForm = <></>;
     switch (active) {
         case 1:
-            ActiveForm = <OrderDetails setActive={setActive} />
+            ActiveForm = <OrderDetails setActive={setActive} />;
             break;
         case 2:
             ActiveForm = <ShippingAddress setActive={setActive} addressComplete={addressComplete} updateCompleteness={setAddressComplete.bind(this)} />;
@@ -137,7 +138,9 @@ function UsersCheckoutPage() {
             ActiveForm = <AdditionalSizeDetail setActive={setActive} />;
             break;
         case 4:
-            ActiveForm =  <GiftAndPayment giftPaymentComplete={giftPaymentComplete} updateCompleteness={setGiftPaymentComplete.bind(this)} setActive={setActive} />
+            ActiveForm = (
+                <GiftAndPayment giftPaymentComplete={giftPaymentComplete} updateCompleteness={setGiftPaymentComplete.bind(this)} setActive={setActive} />
+            );
             break;
         case 5:
             ActiveForm = <ReviewOrder setActive={setActive} />;
