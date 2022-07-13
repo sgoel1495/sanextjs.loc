@@ -24,14 +24,18 @@ function HomePageHeaderSwiper(props) {
     let imgs = [], links, transition_time;
     let overlay = null;
     let apiToken;
-    if (props.page === "newArrival") {
+    if (props.page === "newArrival" || props.page === "best-selling") {
         if (props.slides) {
             imgs = props.slides.imgs.map((img) => props.isMobile ? img.replace("web", "mob") : img.replace("mob", "web"))
-            links = props.slides.imgs_path.map((link) => "/" + link)
+            if (props.slides.imgs_path) {
+                links = props.slides.imgs_path.map((link) => "/" + link)
+            } else {
+                links = new Array(props.slides.imgs.length).fill("#")
+            }
             transition_time = props.slides.transition_time
             overlay = <span className={"block relative w-full z-20 " + [props.isMobile ? " aspect-square" : " h-full"]}>
                 <Image
-                    src={WEBASSETS + (props.isMobile ? props.slides.foreground_path.replace("web", "mob").replace("v1", "v2") : props.slides.foreground_path.replace("mob", "web").replace("v2", "v1"))}
+                    src={WEBASSETS + (props.isMobile ? props.slides.foreground_path.replace("web", "mob").replace("v1", props.page === "best-selling" ? "v1" : "v2") : props.slides.foreground_path.replace("mob", "web").replace("v2", "v1"))}
                     alt={'header-overlay'}
                     layout="fill"
                     objectFit="cover"
@@ -66,7 +70,7 @@ function HomePageHeaderSwiper(props) {
                             {(links[index] && links[index] !== "")
                                 ? <SwiperSlide key={index}>
                                     <Link href={links[index]} passHref>
-                                        <span className={'block relative z-10 '+[props.isMobile ? " w-full aspect-square" : " h-[100vh]"]}>
+                                        <span className={'block relative z-10 ' + [props.isMobile ? " w-full aspect-square" : " h-[100vh]"]}>
                                             {overlay}
                                             <Image
                                                 src={WEBASSETS + item}
