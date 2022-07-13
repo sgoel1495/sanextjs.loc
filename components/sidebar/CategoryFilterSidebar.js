@@ -97,6 +97,11 @@ function CategoryFilterModal(props) {
         }
     }, [router.query])
 
+    React.useEffect(() => {
+        setSorting("")
+        updateDataStore("filterCheckboxes", {})
+    }, [router.route])
+
     useEffect(() => {
         if (Object.keys(checkedBoxes).length === 0)
             initArray()

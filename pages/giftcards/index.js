@@ -1,4 +1,5 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useReducer, useState} from "react";
+import ReactDom from "react-dom";
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import Footer from "../../components/footer/Footer";
@@ -27,6 +28,9 @@ function GiftcardsPage() {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [showGiftReceiverModal, setShowGiftReceiverModal] = useState(false)
     const [giftReceiverModalData, setGiftReceiverModalData] = useState({})
+    const [code, setCode] = useReducer((state,e)=>{
+        return e.target.value
+    },"");
     const [mobile, setMobile] = useState(false);
     const [data, setData] = useState(null);
     const resp = useApiCall("giftcards", dataStore.apiToken);
@@ -38,7 +42,7 @@ function GiftcardsPage() {
     useEffect(() => {
         if (resp
             && resp.hasOwnProperty("msg")
-            && resp.msg == "found"
+            && resp.msg === "found"
             && resp.hasOwnProperty("giftcards")
         )
             setData(resp.giftcards);
@@ -71,8 +75,6 @@ function GiftcardsPage() {
                                                 className="grid place-items-center content-center bg-black text-white"
                                                 onClick={() => {
                                                     setShowGiftReceiverModal(true)
-                                                    console.log("Add to bag dabaya")
-                                                    console.log("statte -showGiftReceiverModal", showGiftReceiverModal)
                                                     setGiftReceiverModalData({
                                                         gc_title: card.display_name,
                                                         gc_price: card.price
@@ -99,7 +101,7 @@ function GiftcardsPage() {
     }
 
     const mobileView = <>
-        <section className={`container my-20`}>
+        <section className={`container`}>
             <BlockHeader space={"py-12"}
                          titleStyle={"font-600 font-cursive flex justify-center items-center gap-3 leading-none"}>
                 <span className={"flex items-center gap-4"}>
@@ -108,7 +110,7 @@ function GiftcardsPage() {
                     <span>~</span>
                 </span>
             </BlockHeader>
-            <div className="grid grid-cols-2 gap-12">
+            <div className="grid grid-cols-2 gap-5 px-5">
                 {showGiftCards("mobile")}
             </div>
         </section>
@@ -119,18 +121,18 @@ function GiftcardsPage() {
             </div>
             <form className={`container flex items-center flex-col gap-y-5 font-cursive`}>
                 <div>
-                    <p className={`text-h1`}>Have a gift card?</p>
-                    <p>Check your balance</p>
+                    <p className={`text-h4`}>Have a gift card?</p>
+                    <p className={`text-base`}>Check your balance</p>
                 </div>
                 <input
-                    className={`block w-64 bg-transparent text-center border-0 border-b-[1px] border-black focus:outline-none focus:outline-0`}
-                    type="text" maxLength="50" name="gc_number" placeholder="Enter gift card code" id="gc_number"
+                    className={`pb-0 w-64 bg-transparent text-center border-0 border-b-[1px] border-black text-xs h-5 !focus:outline-none !focus:outline-0`}
+                    type="text" maxLength="50" placeholder="Enter gift card code" onChange={setCode} value={code}
                 />
                 {/*<div>*/}
                 {/*    <p>Your Balance - <span id="gift_amount"/></p>*/}
                 {/*    <p>This code is already redeemed</p>*/}
                 {/*</div>*/}
-                <button type="button" className={`mt-10 bg-black text-white pt-3 pb-2 px-10 text-sm`}>CHECK BALANCE</button>
+                <button type="button" className={`mt-10 bg-black text-white py-3 pb-2 px-10 text-sm`}>CHECK BALANCE</button>
             </form>
         </section>
         <NewArrivalsBlock isMobile={true} currencySymbol={currencySymbol} currCurrency={currCurrency}
@@ -162,7 +164,7 @@ function GiftcardsPage() {
                 </div>
                 <input
                     className={`block w-1/3 text-center border-0 border-b-2 border-black focus:border-black bg-transparent focus:ring-offset-0 focus:ring-0`}
-                    type="text" maxLength="50" name="gc_number" placeholder="Enter gift card code" id="gc_number"
+                    type="text" maxLength="50" name="gc_number" placeholder="Enter gift card code" id="gc_number" onChange={setCode} value={code}
                 />
                 <div>
                     <p>Your Balance - <span id="gift_amount"/></p>
@@ -182,14 +184,14 @@ function GiftcardsPage() {
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={mobile}/>
-            <Header type={mobile ? "minimal" : ""} isMobile={mobile}/>
+            <Header type={mobile ? "shopMenu" : ""} isMobile={mobile}/>
             {showGiftReceiverModal
-                ? <GiftReceiverModal
+                ? ReactDom.createPortal(<GiftReceiverModal
                     showModal={showGiftReceiverModal}
                     setShowModal={setShowGiftReceiverModal}
                     gc_price={giftReceiverModalData.gc_price}
                     gc_title={giftReceiverModalData.gc_title}
-                />
+                />, document.getElementById("measurementmodal"))
                 : null}
             {(mobile) ? mobileView : browserView}
             <Footer isMobile={mobile}/>

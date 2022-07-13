@@ -1,20 +1,24 @@
-import React, { Fragment, useContext, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, {Fragment, useContext, useEffect, useState} from "react";
+import {useRouter} from "next/router";
 import AppWideContext from "../../../../store/AppWideContext";
-import UsersSideMenu from "../../../../components/user/UsersSideMenu";
+import UsersMenu from "../../../../components/user/UsersMenu";
 import AddressForm from "../../../../components/user/AddressForm";
 import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";
 import UserPageTemplate from "../../../../components/user/UserPageTemplate";
+import {isMobile} from "react-device-detect";
 
 function UsersAddAddressPage() {
     const router = useRouter();
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
-
+    const [mobile, setMobile] = useState(false);
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
 
     const address = {
         "name": "",
@@ -29,11 +33,13 @@ function UsersAddAddressPage() {
         "city": ""
     }
 
-    const mobileView = null;
+    const mobileView = <UserPageTemplate mobile={true}>
+        <AddressForm index={-1} address={address}/>
+    </UserPageTemplate>
     const browserView = () => {
         return (
             <UserPageTemplate>
-                <AddressForm index={-1} address={address} />
+                <AddressForm index={-1} address={address}/>
             </UserPageTemplate>
         );
     }
@@ -41,9 +47,9 @@ function UsersAddAddressPage() {
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
-            <Header type={"shopMenu"} />
-            {(dataStore.mobile) ? mobileView : browserView()}
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            {(mobile) ? mobileView : browserView()}
         </Fragment>
     )
 }

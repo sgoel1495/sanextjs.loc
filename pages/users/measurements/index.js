@@ -1,29 +1,29 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
-import { useRouter } from "next/router";
-import UsersSideMenu from "../../../components/user/UsersSideMenu";
+import {useRouter} from "next/router";
 import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import ReactDom from "react-dom";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
 import MeasurementModal1 from "../../../components/user/MeasurementModal1";
 import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
-import { apiCall } from "../../../helpers/apiCall";
+import {apiCall} from "../../../helpers/apiCall";
 import getUserO from "../../../helpers/getUserO";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
+import {isMobile} from "react-device-detect";
 
 function UsersMeasurementsPage() {
     const router = useRouter();
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
 
-
+    const [mobile, setMobile] = useState(false);
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
@@ -34,7 +34,9 @@ function UsersMeasurementsPage() {
         setCurrentMeasurement(currentMeasurement);
         setRefresh(!refresh);
     }
-
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     const measurementKeys = Object.keys(dataStore.userMeasurements);
 
     const measurementBlocks = () => {
@@ -163,7 +165,32 @@ function UsersMeasurementsPage() {
         updateDataStore("userMeasurements", dataStore.userMeasurements)
     }
 
-    const mobileView = null;
+    const mobileView = <UserPageTemplate mobile={true}>
+        <p className="text-[28px]">Measurement Summary</p>
+        <div className="flex gap-8 w-full">
+            <div className="flex-1 bg-[#f1f2f3] px-6 py-8 font-600 text-[#555]">
+                <p>User Id: {dataStore.userData.contact}</p>
+                <p>Total Measurement(s): {measurementKeys.length}</p>
+            </div>
+            <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
+                <button
+                    className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"
+                    onClick={() => showModal(emptyMeasurement)}>ADD NEW
+                </button>
+            </div>
+        </div>
+        <div>
+            <p className="text-[28px] mt-4">Measurements</p>
+            {(measurementKeys.length > 0)
+                ? <div>{measurementBlocks()}</div>
+                : <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
+                    <p>No measurement found!</p>
+                    <p>Please add measurement.</p>
+                </div>
+            }
+        </div>
+    </UserPageTemplate>
+
     const browserView = () => {
         return (
             <UserPageTemplate>
@@ -173,8 +200,11 @@ function UsersMeasurementsPage() {
                         <p>User Id: {dataStore.userData.contact}</p>
                         <p>Total Measurement(s): {measurementKeys.length}</p>
                     </div>
-                    <div className="flex-1 bg-[#f1f2f3] grid place-items-center" >
-                        <button className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => showModal(emptyMeasurement)}>ADD NEW</button>
+                    <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
+                        <button
+                            className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"
+                            onClick={() => showModal(emptyMeasurement)}>ADD NEW
+                        </button>
                     </div>
                 </div>
                 <div>
@@ -193,47 +223,47 @@ function UsersMeasurementsPage() {
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
-            <Header type={"shopMenu"} />
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
             {(dataStore.mobile) ? mobileView : browserView()}
-            <Footer isMobile={dataStore.mobile} />
+            <Footer isMobile={dataStore.mobile}/>
             {showModal1 &&
-                ReactDom.createPortal(
-                    <MeasurementModal1
-                        closeModal={closeModal.bind(this)}
-                        isMobile={dataStore.isMobile}
-                        measurement={currentMeasurement}
-                        lastModal={null}
-                        nextModal={nextModal.bind(this)}
-                        updateValues={updateValues.bind(this)}
-                        product={null}
-                    />,
-                    document.getElementById("measurementmodal"))
+            ReactDom.createPortal(
+                <MeasurementModal1
+                    closeModal={closeModal.bind(this)}
+                    isMobile={dataStore.isMobile}
+                    measurement={currentMeasurement}
+                    lastModal={null}
+                    nextModal={nextModal.bind(this)}
+                    updateValues={updateValues.bind(this)}
+                    product={null}
+                />,
+                document.getElementById("measurementmodal"))
             }
             {showModal2 &&
-                ReactDom.createPortal(
-                    <MeasurementModal2
-                        closeModal={closeModal.bind(this)}
-                        isMobile={dataStore.isMobile}
-                        measurement={currentMeasurement}
-                        nextModal={nextModal.bind(this)}
-                        lastModal={lastModal.bind(this)}
-                        updateValues={updateValues.bind(this)}
-                        product={null}
-                    />,
-                    document.getElementById("measurementmodal"))
+            ReactDom.createPortal(
+                <MeasurementModal2
+                    closeModal={closeModal.bind(this)}
+                    isMobile={dataStore.isMobile}
+                    measurement={currentMeasurement}
+                    nextModal={nextModal.bind(this)}
+                    lastModal={lastModal.bind(this)}
+                    updateValues={updateValues.bind(this)}
+                    product={null}
+                />,
+                document.getElementById("measurementmodal"))
             }
             {showModal3 &&
-                ReactDom.createPortal(
-                    <MeasurementModal3
-                        closeModal={closeModal.bind(this)}
-                        isMobile={dataStore.isMobile}
-                        measurement={currentMeasurement}
-                        lastModal={lastModal.bind(this)}
-                        saveModal={saveModal.bind(this)}
-                        product={null}
-                    />,
-                    document.getElementById("measurementmodal"))
+            ReactDom.createPortal(
+                <MeasurementModal3
+                    closeModal={closeModal.bind(this)}
+                    isMobile={dataStore.isMobile}
+                    measurement={currentMeasurement}
+                    lastModal={lastModal.bind(this)}
+                    saveModal={saveModal.bind(this)}
+                    product={null}
+                />,
+                document.getElementById("measurementmodal"))
             }
         </Fragment>
     )

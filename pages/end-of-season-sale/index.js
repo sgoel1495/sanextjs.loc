@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../components/swipers/HomePageHeaderSwiper";
@@ -6,10 +6,7 @@ import Footer from "../../components/footer/Footer";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import MobileProductCard from "../../components/shop-page/ProductCard";
-import BlockHeader from "../../components/common/blockHeader";
-import ProductCard from "../../components/new-Arrivals/ProductCard";
 import Image from "next/image";
-import CategoryHeaderMobile from "../../components/shop-page/CategoryHeaderMobile";
 import AppWideContext from "../../store/AppWideContext";
 
 function EndOfSeasonSale(props) {
