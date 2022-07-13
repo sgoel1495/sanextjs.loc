@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import {useRouter} from "next/router";
 import PageHead from "../../../components/PageHead";
@@ -6,6 +6,7 @@ import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import Image from "next/image";
+import {isMobile} from "react-device-detect";
 
 const mockData = [
     {
@@ -25,6 +26,7 @@ const mockData = [
 
 
 function UsersFavouritesPage() {
+    const [mobile, setMobile] = useState(false);
     const router = useRouter();
     const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -35,6 +37,9 @@ function UsersFavouritesPage() {
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
 
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     const FavProdCard = ({favProduct}) => {
         return (<>
             {
@@ -92,10 +97,10 @@ function UsersFavouritesPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/favourites"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/favourites"} id={"profile"} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            {(mobile) ? mobileView : browserView}
+            <Footer isMobile={mobile}/>
         </Fragment>
     )
 }

@@ -6,7 +6,6 @@ import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
-import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
 import Image from "next/image";
 import Toast from "../../../components/common/Toast";
 

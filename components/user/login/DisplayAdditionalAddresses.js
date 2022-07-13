@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { Fragment, useContext } from "react";
+import {Fragment, useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 
 function DisplayAdditionalAddresses(props) {
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
 
     const browserAddressList = () => {
-        let returnValue = null;
 
+        let returnValue = null;
         dataStore.userAddresses.forEach((address, index) => {
             returnValue = (
                 <>
@@ -36,10 +36,20 @@ function DisplayAdditionalAddresses(props) {
             );
         });
 
-        return (returnValue) ? returnValue : <p className="text-[#777] mb-10 font-500">No additional address on record</p>;
+        return (returnValue) ? returnValue :
+            <p className="text-[#777] mb-10 font-500">No additional address on record</p>;
     }
 
-    const mobileView = null;
+    const mobileView = <>
+        <div >
+            {browserAddressList()}
+        </div>
+        <Link href="/users/addressbook/add">
+            <a className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2">
+                ADD NEW ADDRESSES
+            </a>
+        </Link>
+    </>
     const browserView = (
         <>
             <div className="grid grid-cols-2 gap-8 w-full">
@@ -55,6 +65,7 @@ function DisplayAdditionalAddresses(props) {
 
     return (props.mobile) ? mobileView : browserView;
 }
+
 export default DisplayAdditionalAddresses;
 
 /*

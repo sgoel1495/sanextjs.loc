@@ -4,7 +4,6 @@ import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import {useRouter} from "next/router";
-import UsersMenu from "../../../components/user/UsersMenu";
 import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import ReactDom from "react-dom";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
@@ -14,6 +13,7 @@ import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 import {apiCall} from "../../../helpers/apiCall";
 import getUserO from "../../../helpers/getUserO";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
+import {isMobile} from "react-device-detect";
 
 function UsersMeasurementsPage() {
     const router = useRouter();
@@ -23,7 +23,7 @@ function UsersMeasurementsPage() {
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
 
-
+    const [mobile, setMobile] = useState(false);
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
@@ -34,7 +34,9 @@ function UsersMeasurementsPage() {
         setCurrentMeasurement(currentMeasurement);
         setRefresh(!refresh);
     }
-
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     const measurementKeys = Object.keys(dataStore.userMeasurements);
 
     const measurementBlocks = () => {

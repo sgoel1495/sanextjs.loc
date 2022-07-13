@@ -8,15 +8,19 @@ import DefaultAddressBookInformation from "../../../components/user/DefaultAddre
 import {useRouter} from "next/router";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
+import {isMobile} from "react-device-detect";
 
 function UsersProfilePage() {
+    const [mobile, setMobile] = useState(false);
     const router = useRouter();
     const {dataStore} = useContext(AppWideContext);
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
-
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     const mobileView = () => {
         return (<UserPageTemplate mobile={true}>
             <ContactInformation mobile={true}/>
@@ -40,10 +44,10 @@ function UsersProfilePage() {
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView() : browserView()}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            {(mobile) ? mobileView() : browserView()}
+            <Footer isMobile={mobile}/>
         </Fragment>
     )
 }
