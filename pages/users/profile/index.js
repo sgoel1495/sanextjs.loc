@@ -3,12 +3,10 @@ import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
-import UsersSideMenu from "../../../components/user/UsersSideMenu";
 import ContactInformation from "../../../components/user/ContactInformation";
 import DefaultAddressBookInformation from "../../../components/user/DefaultAddressBookInformation";
 import {useRouter} from "next/router";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
-import UserScreenTemplate from "../../../components/user/mobile/UserScreenTemplate";
 import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
 
 function UsersProfilePage() {
@@ -20,7 +18,7 @@ function UsersProfilePage() {
     }, [dataStore.userData.contact, router])
 
     const mobileView = () => {
-        return (<UserScreenTemplate>
+        return (<UserPageTemplate mobile={true}>
             <ContactInformation mobile={true}/>
             {/*<MyWalletInformation/>*/}
             <div className={"p-4 bg-[#f1f2f3]"}>
@@ -28,7 +26,7 @@ function UsersProfilePage() {
                 <p className="font-700 pb-10">{dataStore.currSymbol} {formatTwoDecimal(dataStore.userWallet.WalletAmount)}</p>
             </div>
             <DefaultAddressBookInformation mobile={true} manage={true}/>
-        </UserScreenTemplate>)
+        </UserPageTemplate>)
     }
     const browserView = () => {
         return (

@@ -4,7 +4,7 @@ import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import { useRouter } from "next/router";
-import UsersSideMenu from "../../../components/user/UsersSideMenu";
+import UsersMenu from "../../../components/user/UsersMenu";
 import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import ReactDom from "react-dom";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
