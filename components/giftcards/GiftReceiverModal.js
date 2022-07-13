@@ -5,6 +5,7 @@ import isValidEmail from "../../helpers/isValidEmail";
 const GiftReceiverModal = (props) => {
     const [error, setError] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
+    const [copy, setCopy] = useState(false)
     const [payload, setPayload] = useReducer((state, e) => {
         if (error === e.target.name) {
             setError("")
@@ -15,47 +16,103 @@ const GiftReceiverModal = (props) => {
     }, {})
 
 
-    const save = () => {
-        //sender check
+    const checkSender = () => {
         if (!payload['sender_name']) {
             setErrorMsg("Please Fill Sender Name")
             setError("sender_name")
-            return;
+            return false;
         }
         if (!payload['sender_email']) {
             setError("sender_email")
             setErrorMsg("Please Fill Sender Email")
-            return;
+            return false;
         }
         if (!isValidEmail(payload['sender_email'])) {
             setError("sender_email")
             setErrorMsg("Please Fill Valid Sender Email")
-            return;
+            return false;
         }
         if (!payload['sender_telephone']) {
             setError("sender_telephone")
             setErrorMsg("Please Fill Sender Phone")
-            return;
+            return false;
         }
-        //recipient check
+        return true;
+    }
+
+    const checkRecipient = () => {
         if (!payload['recipient_name']) {
             setError("recipient_name")
             setErrorMsg("Please Fill Recipient Name")
-            return;
+            return false;
         }
         if (!payload['recipient_email']) {
             setError("recipient_email")
             setErrorMsg("Please Fill Recipient Email")
-            return;
+            return false;
         }
         if (!isValidEmail(payload['recipient_email'])) {
             setError("recipient_email")
             setErrorMsg("Please Fill Valid Recipient Email")
-            return;
+            return false;
         }
         if (!payload['recipient_telephone']) {
             setError("recipient_telephone")
             setErrorMsg("Please Fill Recipient Phone")
+            return false;
+        }
+        return true
+    }
+
+    const copySender = (e) => {
+        if (e.target.checked) {
+            if (!checkSender()) {
+                return
+            }
+            setPayload({
+                target: {
+                    value: payload['sender_name'],
+                    name: "recipient_name"
+                }
+            })
+            setPayload({
+                target: {
+                    value: payload['sender_email'],
+                    name: "recipient_email"
+                }
+            })
+            setPayload({
+                target: {
+                    value: payload['sender_telephone'],
+                    name: "recipient_telephone"
+                }
+            })
+        } else {
+            setPayload({
+                target: {
+                    value: "",
+                    name: "recipient_name"
+                }
+            })
+            setPayload({
+                target: {
+                    value: "",
+                    name: "recipient_email"
+                }
+            })
+            setPayload({
+                target: {
+                    value: "",
+                    name: "recipient_telephone"
+                }
+            })
+        }
+        setCopy(e.target.checked)
+    }
+
+    const save = () => {
+
+        if (!checkSender() || !checkRecipient()) {
             return;
         }
         //    add to cart code
@@ -67,7 +124,6 @@ const GiftReceiverModal = (props) => {
                 <div className={"text-right pr-1 font-800"}>
                     <button onClick={() => {
                         props.setShowModal(false);
-                        console.log("x clicked")
                     }}>X
                     </button>
                 </div>
@@ -116,6 +172,8 @@ const GiftReceiverModal = (props) => {
                                name="same_as_sender"
                                maxLength="255"
                                className={"bg-[#f1f2f3]"}
+                               onChange={copySender}
+                               checked={copy}
                         />
                         <span className={"flex-9"}>Same as Sender Details</span>
                     </span>
@@ -125,6 +183,7 @@ const GiftReceiverModal = (props) => {
                                maxLength="255"
                                value={payload["recipient_name"]}
                                className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "recipient_name" && "border-rose-500"]}
+                               onChange={setPayload}
                         />
                         <input type="email"
                                placeholder="Recipient Email"
@@ -132,6 +191,7 @@ const GiftReceiverModal = (props) => {
                                maxLength="255"
                                value={payload["recipient_email"]}
                                className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "recipient_email" && "border-rose-500"]}
+                               onChange={setPayload}
                         />
                         <input type="mobile"
                                placeholder="Recipient Phone"
@@ -139,6 +199,7 @@ const GiftReceiverModal = (props) => {
                                maxLength="255"
                                value={payload["recipient_telephone"]}
                                className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "recipient_telephone" && "border-rose-500"]}
+                               onChange={setPayload}
                         />
                     </div>
                 </div>

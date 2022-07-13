@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BlockHeader from "../common/blockHeader";
 import WishListButton from "../common/WishListButton";
+import {NewTag} from "../common/Tags";
 
 
 /**
@@ -11,8 +12,14 @@ import WishListButton from "../common/WishListButton";
  */
 
 const ImageBlock = (props) => (
-    <span className={`block relative w-full aspect-square`}>
+    <span className={`block relative w-full ` + [props.isMobile ? "aspect-[2/3]" : "aspect-square"]}>
         <Image src={props.src} alt={props.alt} layout={`fill`} objectFit={`cover`}/>
+        {
+            props.outOfStock &&
+            <div className={"absolute top-[50%] left-[50%] translate-x-[-50%] bg-black/50 text-white font-600 text-xs py-[1px] w-[75%]"}>
+                SOLD OUT
+            </div>
+        }
     </span>
 )
 
@@ -20,14 +27,15 @@ function NewArrivalsBlock(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const [data, setData] = useState(null);
-    const resp = useApiCall("giftcards", props.apiToken);
+    const resp = useApiCall("getProducts", props.apiToken, {category: "new-arrivals", limit: 10, skip: 0});
+    console.log(resp)
     useEffect(() => {
         if (resp
-            && resp.hasOwnProperty("msg")
-            && resp.msg == "found"
-            && resp.hasOwnProperty("giftcards")
+            && resp.status === 200
+            && resp.msg === "success"
+            && resp.hasOwnProperty("response")
         )
-            setData(resp.giftcards);
+            setData(resp.response.data.filter(product => product.is_visible));
     }, [resp]);
 
     const showNewArrivals = () => {
@@ -65,27 +73,21 @@ function NewArrivalsBlock(props) {
                 if (props.isMobile && index < 4) {
                     sgc = <Fragment>
                         {sgc}
-                        <Link href="/sale/Sweaters-Sale-Flurry-V-NeckSleevelessSweater">
-                            <a className={"block bg-white text-center relative z-0 group border-b"}>
-                                {props.isMobile ? '' : <WishListButton className={`absolute right-4 top-4 z-10`}
-                                                                       pid="Sweaters-Sale-Flurry-V-NeckSleevelessSweater"/>}
+                        <Link href={product.asset_id}>
+                            <a className={"block bg-white text-center relative z-0 group"}>
                                 <ImageBlock
-                                    src={WEBASSETS + "/assets/Dresses-Crimson-Dream-FauxWrapPleatedMidiDress/new.jpg"}
+                                    src={WEBASSETS + product.double_view_img}
                                     alt="Dresses-Crimson-Dream-FauxWrapPleatedMidiDress"
+                                    isMobile={true}
+                                    outOfStock={product.in_stock !== "true"}
                                 />
-                                <div className="relative h-16 leading-none flex items-center">
+                                <div className="flex items-center">
                                     <div className={`bg-white w-full`}>
-                                        <p className={`text-h5 font-600 font-cursive`}>Crimson Dream</p>
-                                        <p className={`text-sm font-500`}>faux wrap pleated midi dress</p>
-                                    </div>
-                                    <div
-                                        className={`hidden group-hover:grid grid-cols-2 items-center absolute inset-0 bg-white`}>
-                                        <span className={`font-800`}>SIZE</span>
-                                        <div
-                                            className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
-                                            <span className={`uppercase text-white/50`}>Add to bag</span>
-                                            <p className={`text-xs`}>{props.currencySymbol}1,268</p>
+                                        <div className={""}>
+                                            {product.is_prod_new && <NewTag small={true}/>}
                                         </div>
+                                        <p className={`text-sm font-600`}>{product.name}</p>
+                                        <p className={`text-xs`}>{props.currencySymbol}1,268</p>
                                     </div>
                                 </div>
                             </a>
@@ -97,10 +99,12 @@ function NewArrivalsBlock(props) {
         return sgc;
     }
 
-    const mobileView = <div className="grid grid-cols-2 gap-12 mb-10">
+    const mobileView = <div className="grid grid-cols-2 gap-x-5 gap-y-10 mb-10 px-5">
         {showNewArrivals()}
-        <div className="justify-self-center">
-            <button className={`bg-black text-white py-2 px-4`}> &gt; TAP FOR MORE &lt; </button>
+        <div className="justify-self-center col-span-2">
+            <Link href={"/new-arrivals/all"}>
+                <button className={`bg-black text-white py-2 px-4`}> &gt; TAP FOR MORE &lt; </button>
+            </Link>
         </div>
     </div>
 
