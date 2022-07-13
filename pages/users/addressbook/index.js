@@ -22,9 +22,9 @@ function UsersAddressBookPage() {
     }, [])
 
     const mobileView = <UserPageTemplate mobile={true}>
-        <p className="text-[28px]">Default Addresses</p>
-        <DefaultAddressBookInformation mobile={true}/>
-        <p className="text-[28px] mt-4">Additional Addresses</p>
+        <p className="text-[28px] ml-3">Default Addresses</p>
+        <DefaultAddressBookInformation mobile={true} showEdit={true}/>
+        <p className="text-[28px] mt-4 ml-3">Additional Addresses</p>
         <DisplayAdditionalAddresses mobile={true}/>
     </UserPageTemplate>
     const browserView = () => {
