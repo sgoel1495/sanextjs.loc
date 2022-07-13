@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import AppWideContext from "../../../../store/AppWideContext";
-import UsersSideMenu from "../../../../components/user/UsersSideMenu";
+import UsersMenu from "../../../../components/user/UsersMenu";
 import AddressForm from "../../../../components/user/AddressForm";
 import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";

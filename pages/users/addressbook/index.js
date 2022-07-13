@@ -3,7 +3,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
-import UsersSideMenu from "../../../components/user/UsersSideMenu";
+import UsersMenu from "../../../components/user/UsersMenu";
 import ContactInformation from "../../../components/user/ContactInformation";
 import DefaultAddressBookInformation from "../../../components/user/DefaultAddressBookInformation";
 import { useRouter } from "next/router";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from 'next/router';
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 
 const links = [
     { title: "Profile", link: "/users/profile" },
@@ -14,10 +14,27 @@ const links = [
     { title: "My Referral", link: "/users/my-referral" }
 ]
 
-function UsersSideMenu(props) {
+function UsersMenu(props) {
     const router = useRouter();
 
-    const mobileView = null;
+    const mobileView = () => {
+        let returnValue = null;
+        links.forEach((link, index) => {
+            returnValue = <Fragment>
+                {returnValue}
+                <li key={index} className={"border-b-[1px] text-center"}>
+                    <Link href={link.link}>
+                        <a className={'block hover:bg-[#f1f2f3] py-2 text-[#555] text-[15px] font-500 ' + [router.asPath === link.link ? "bg-[#f1f2f3]" : null]}>{link.title}</a>
+                    </Link>
+                </li>
+            </Fragment>;
+        })
+        return (
+            <ul className="grid grid-cols-2 border-t-[1px] mx-5">
+                {returnValue}
+            </ul>
+        );
+    };
     const browserView = () => {
         let returnValue = null;
         links.forEach((link, index) => {
@@ -37,7 +54,7 @@ function UsersSideMenu(props) {
         );
     };
 
-    return (props.mobile) ? mobileView : browserView();
+    return (props.mobile) ? mobileView() : browserView();
 }
 
-export default UsersSideMenu;
+export default UsersMenu;
