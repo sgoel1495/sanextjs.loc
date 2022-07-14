@@ -75,10 +75,10 @@ function UsersOrderHistoryPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/orderhistory"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/orderhistory"} id={"profile"} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            {(mobile) ? mobileView : browserView}
+            <Footer isMobile={mobile}/>
         </Fragment>
     )
 }

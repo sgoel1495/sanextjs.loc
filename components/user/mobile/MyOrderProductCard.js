@@ -312,7 +312,7 @@ const MyOrderProductCard = ({product}) => {
             </div>
         </div>
         {
-            showModal
+            showModal > 0
             && ReactDom.createPortal(
                 <Modal
                     setShowModal={setShowModal}
