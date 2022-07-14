@@ -5,6 +5,7 @@ import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
+import {isMobile} from "react-device-detect";
 
 const basicFields = [
     {
@@ -88,6 +89,7 @@ const passwordFields = [
 ]
 
 function UsersAccountPage() {
+    const [mobile, setMobile] = useState(false);
     const {dataStore} = useContext(AppWideContext);
     const [changePasswordCheckbox, setChangePasswordCheckbox] = useState(false)
     const router = useRouter();
@@ -95,6 +97,10 @@ function UsersAccountPage() {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
+
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
 
     const labelClass = "block text-[14px] mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
@@ -107,7 +113,7 @@ function UsersAccountPage() {
                 <div className="grid grid-cols-4 gap-6 mb-5">
                     {basicFields?.map((item, index) => {
                         return (
-                            <div className={`col-span-${item[!dataStore.mobile ? "columnSpace" : "mobColumnSpace"]}`}
+                            <div className={`col-span-${item[!mobile ? "columnSpace" : "mobColumnSpace"]}`}
                                  key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
                                 <input className={inputClass} type={item.inputType}/>
@@ -167,10 +173,10 @@ function UsersAccountPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/account"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/account"} id={"profile"} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            {(mobile) ? mobileView : browserView}
+            <Footer isMobile={mobile}/>
         </Fragment>
     )
 }

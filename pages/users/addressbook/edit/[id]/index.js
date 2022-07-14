@@ -1,19 +1,23 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, {Fragment, useContext, useEffect, useState} from "react";
+import {useRouter} from "next/router";
 import AppWideContext from "../../../../../store/AppWideContext";
-import UsersMenu from "../../../../../components/user/UsersMenu";
 import PageHead from "../../../../../components/PageHead";
 import Header from "../../../../../components/navbar/Header";
 import AddressForm from "../../../../../components/user/AddressForm";
 import UserPageTemplate from "../../../../../components/user/UserPageTemplate";
+import {isMobile} from "react-device-detect";
 
 function AddAddressEditByIdPage() {
     const router = useRouter();
-    const { dataStore } = useContext(AppWideContext);
+    const {dataStore} = useContext(AppWideContext);
     const addressId = router.query.id
+    const [mobile, setMobile] = useState(false);
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     useEffect(() => {
         if (!addressId || dataStore.userData.contact == null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId + 1)) {
-            console.log("Illegal access",addressId)
+            console.log("Illegal access", addressId)
             router.replace("/"); // no illegal access
         }
     }, [addressId, dataStore.userData.contact, dataStore.userAddresses, dataStore.userAddresses.length, router])
@@ -21,11 +25,13 @@ function AddAddressEditByIdPage() {
 
     const address = dataStore.userAddresses[addressId];
 
-    const mobileView = null;
+    const mobileView = <UserPageTemplate mobile={true}>
+        <AddressForm index={addressId} address={address}/>
+    </UserPageTemplate>
     const browserView = () => {
         return (
             <UserPageTemplate>
-                <AddressForm index={addressId} address={address} />
+                <AddressForm index={addressId} address={address}/>
             </UserPageTemplate>
         );
     }
@@ -33,9 +39,9 @@ function AddAddressEditByIdPage() {
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
-            <Header type={"shopMenu"} />
-            {(dataStore.mobile) ? mobileView : browserView()}
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            {(mobile) ? mobileView : browserView()}
         </Fragment>
     )
 }

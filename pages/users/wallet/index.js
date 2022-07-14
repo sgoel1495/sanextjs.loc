@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import {useRouter} from "next/router";
 import PageHead from "../../../components/PageHead";
@@ -6,15 +6,19 @@ import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
+import {isMobile} from "react-device-detect";
 
 function UsersWalletPage() {
+    const [mobile, setMobile] = useState(false);
     const router = useRouter();
     const {dataStore} = useContext(AppWideContext);
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
     }, [dataStore.userData.contact, router])
-
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     const mobileView = <UserPageTemplate mobile={true}>
         <p className="text-[28px] my-2">My Wallet</p>
         <div className="bg-[#f1f2f3] px-8 py-5 w-full">
@@ -54,10 +58,10 @@ function UsersWalletPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/wallet"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/wallet"} id={"profile"} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            {(mobile) ? mobileView : browserView}
+            <Footer isMobile={mobile}/>
         </Fragment>
     )
 }
