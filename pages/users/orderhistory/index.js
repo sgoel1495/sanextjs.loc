@@ -1,11 +1,11 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../../store/AppWideContext";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
-import {isMobile} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import Image from "next/image";
 import MyOrderProductCard from "../../../components/user/mobile/MyOrderProductCard";
 
@@ -36,7 +36,7 @@ function UsersOrderHistoryPage() {
 
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
 
     useEffect(() => {
         if (dataStore.userData.contact == null)
@@ -50,7 +50,7 @@ function UsersOrderHistoryPage() {
         const mobileView = <>
             {
                 props.productData.map((product, productIndex) => {
-                    return <MyOrderProductCard product={product}/>
+                    return <MyOrderProductCard key={productIndex} product={product} />
                 })
             }
         </>
@@ -65,7 +65,7 @@ function UsersOrderHistoryPage() {
     const mobileView = (
         <UserPageTemplate mobile={true}>
             <p className="text-[28px] mb-2 mx-2">My Orders</p>
-            <MyOrderProducts productData={mockData}/>
+            <MyOrderProducts productData={mockData} />
         </UserPageTemplate>
     )
     const browserView = (
@@ -75,10 +75,10 @@ function UsersOrderHistoryPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/orderhistory"} id={"profile"} isMobile={mobile}/>
-            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            <PageHead url={"/users/orderhistory"} id={"profile"} isMobile={mobile} />
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile} />
             {(mobile) ? mobileView : browserView}
-            <Footer isMobile={mobile}/>
+            <Footer isMobile={mobile} />
         </Fragment>
     )
 }
