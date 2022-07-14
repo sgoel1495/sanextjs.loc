@@ -53,6 +53,7 @@ function UsersMeasurementsPage() {
                 />
             </Fragment>
         });
+        return returnValue
     }
 
     const nextModal = () => {
