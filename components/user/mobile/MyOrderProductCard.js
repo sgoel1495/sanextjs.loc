@@ -195,38 +195,37 @@ const Modal = (props) => {
             innerHTML: (
                 <>
                     <span
-                        className={"absolute -top-1 right-1"}
+                        className={"absolute top-2 right-2"}
                         onClick={() => {
                             props.setShowModal(false)
                         }}
                     >
                         X
                     </span>
-                    <div className={"flex flex-col items-center"}>
-                        <div className={"uppercase text-center flex flex-col px-10"}>
-                            <h1 className={"mb-5 uppercase"}>Rating and Review</h1>
+                    <div className={"flex flex-col "}>
+                        <div className={"mt-10 uppercase items-center flex flex-col px-10"}>
+                            <h1 className={"mb-5"}>Track your order</h1>
                             <span>
-                                ({props.data.orderID})
-                            </span>
-                            <span>
-                                {props.data.title}
+                                (#{props.data.orderID})
                             </span>
                         </div>
-                        <div>
-
+                        <span className="text-xs mt-1">
+                            {props.data.date}
+                        </span>
+                        <div className="flex gap-2 mt-4">
+                            <span className="text-gray-800 text-xs">
+                                01:30:47&nbsp;AM
+                            </span>
+                            <span className="border-r-[1px] border-black" />
+                            <span>
+                                <h6>Order Confirmed</h6>
+                                <p className="text-gray-800 text-xs">Thank you! We are excited to serve you!</p>
+                            </span>
                         </div>
-
-                        <button
-                            onClick={() => {
-                                props.setShowModal(false)
-                            }}
-                            className="bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-10">
-                            save
-                        </button>
                     </div>
                 </>
             ),
-            style: ""
+            style: "p-3 h-[60vh]"
         }
     ]
 
