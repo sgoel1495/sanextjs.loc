@@ -13,7 +13,7 @@ function EndOfSeasonSale(props) {
     const [mobile, setMobile] = useState(false)
     const [carousal] = useState(props.carousal);
     const [data] = useState(props.data);
-    console.log(data[1])
+
     useEffect(() => {
         setMobile(isMobile)
     }, [])

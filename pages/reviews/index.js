@@ -6,18 +6,24 @@ import Footer from "../../components/footer/Footer";
 import Link from "next/link";
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
+import {isMobile} from "react-device-detect";
 
 
 function ReviewsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
-
+    const [mobile, setMobile] = useState(false)
     const [data, setData] = useState(null);
     const resp = useApiCall("reviews", dataStore.apiToken);
+
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
+
     useEffect(() => {
         if (resp
             && resp.hasOwnProperty("msg")
-            && resp.msg == "Successfully Get"
+            && resp.msg === "Successfully Get"
             && resp.hasOwnProperty("reviews")
         )
             setData(resp.reviews);
@@ -62,15 +68,15 @@ function ReviewsPage() {
 
     return (
         <Fragment>
-            <PageHead url="/reviews" id="reviews" isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
+            <PageHead url="/reviews" id="reviews" isMobile={mobile}/>
+            <Header type={mobile?"minimal":""} isMobile={mobile}/>
             <div className="grid place-items-center mt-8 mb-10">
                 <div className={"border-[5px] border-black/10 w-[170px] py-3 uppercase tracking-wide"}>
                     <h4 className={`text-h4 font-600 text-center`}>Reviews</h4>
                 </div>
             </div>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
-                {(dataStore.mobile) ? mobileView : browserView}
+                {(mobile) ? mobileView : browserView}
             </section>
         </Fragment>
     );
