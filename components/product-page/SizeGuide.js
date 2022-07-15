@@ -250,7 +250,43 @@ function SizeGuide({ closeModal, isMobile }) {
         )
     }
 
-    const mobileView = null;
+    const mobileView = ()=> {
+        return (
+            <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center" onClick={closeModal}>
+                <div className="bg-white relative h-[90vh] flex flex-col overflow-y-auto" onClick={e => e.stopPropagation()}>
+                    <button className="absolute top-0 right-4 text-2xl z-50" onClick={closeModal}>X</button>
+                    <div className="text-center my-8">
+                        <p className="text-h2 mb-2">Size Guide</p>
+                        <p className="text-lg">The measurements below are Body Measurements</p>
+                    </div>
+                    <div className="px-12">
+                        <div>{upperProducts()}</div>
+                        <div>{lowerProducts()}</div>
+                        <div>{skirtProducts()}</div>
+                        <div>{beltProducts()}</div>
+                    </div>
+                    <div className="text-center text-[#777] mb-5">Measurement Guide</div>
+                    <div className="relative h-60 aspect-square">
+                        <Image
+                            src={"/assets/images/Measurement.png"}
+                            layout={`fill`}
+                            objectFit={`cover`}
+                            alt={"measurement guide"}
+                            // objectPosition={"72% 32px"}
+                        />
+                    </div>
+                    <div className="text-[#777] p-10">
+                        *The waist measurement in the table is that of your natural waist. All are pants fit on the Wearing waist. As shown in the figure.
+                        Please
+                        <Link href="/salt/contact-us">
+                            <a className="cursor-pointer text-[#333]"> Contact Us </a>
+                        </Link>
+                        if you have any questions about your fit.
+                    </div>
+                </div>
+            </div>
+        )
+    }
     const browserView = () => {
         return (
             <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center" onClick={closeModal}>
@@ -289,7 +325,7 @@ function SizeGuide({ closeModal, isMobile }) {
         )
     }
 
-    return (isMobile) ? mobileView : browserView()
+    return (isMobile) ? mobileView() : browserView()
 }
 
 export default SizeGuide;

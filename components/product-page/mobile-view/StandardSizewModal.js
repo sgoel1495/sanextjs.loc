@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import AppWideContext from '../../../store/AppWideContext';
 
-function StandardSizeModal({ closeModal, standardSizes }) {
+function StandardSizeModal({ closeModal, standardSizes, setSizeModal }) {
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     return (
       <div className={['bg-black/60 h-screen fixed inset-0 z-50 grid place-items-center py-[8%] px-[10%]']} onClick={closeModal}>
@@ -40,7 +40,7 @@ function StandardSizeModal({ closeModal, standardSizes }) {
                 </li>
               </ul>);
               })}
-              <span className='uppercase tracking-widest text-xs pl-24 '>whats my size ?</span>
+              <span onClick={()=>{setSizeModal(true)}} className='uppercase tracking-widest text-xs pl-24 '>whats my size ?</span>
               <div
                 className={'border-4 border-white bg-[#faede3] shadow-xl text-center mx-24 mt-4 px-6 py-2.5 leading-none rounded-[5vw] w-max'}
                 onClick={() => {
