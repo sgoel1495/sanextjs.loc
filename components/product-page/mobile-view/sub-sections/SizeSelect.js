@@ -7,7 +7,7 @@ import MeasurementModal1 from "../../../user/MeasurementModal1";
 import MeasurementModal2 from "../../../user/MeasurementModal2";
 import MeasurementModal3 from "../../../user/MeasurementModal3";
 
-const SizeSelect = (props) => {
+const SizeSelect = ({data}) => {
     const [showStandardSize, setShowStandardSize] = useState(false);
     const [showModal0, setShowModal0] = useState(false);
     const [selectedSize, setSelectedSize] = useState(null);
@@ -59,7 +59,6 @@ const SizeSelect = (props) => {
     const updateValues = (key, value) => {
         currentMeasurement[key] = value;
         setCurrentMeasurement(currentMeasurement);
-        setRefresh(!refresh);
     };
     const addNewModal = (m) => {
         setCurrentProduct(data);
