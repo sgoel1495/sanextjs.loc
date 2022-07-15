@@ -127,13 +127,15 @@ const SizeSelect = ({data}) => {
                 >
                     <p className={'uppercase font-900 text-xs'}>Tailored</p>
                     <p className={'uppercase font-400 text-xs'}>size</p>
-                </div>
+                </div>       
             </div>
-            {sizeModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeModal(false)} isMobile={dataStore.isMobile}/>, document.getElementById('measurementmodal'))}
+            <p onClick={()=>{setSizeModal(true)}} className={'mb-4 uppercase'}>size guide</p>
+            {sizeModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeModal(false)} isMobile={true}/>, document.getElementById('measurementmodal'))}
             {showStandardSize &&
             ReactDom.createPortal(
                 <StandardSizeModal
                     closeModal={closeModal.bind(this)}
+                    setSizeModal={setSizeModal}
                     standardSizes={[
                         {size: 'XS', bust: '32', hips: '35'},
                         {size: 'S', bust: '34', hips: '37'},

@@ -118,7 +118,6 @@ const ProductDetails = ({data, hpid}) => {
                     {/*}*/}
                     <p className={'text-sm font-800 tracking-widest uppercase mb-4'}>select a size</p>
                     <SizeSelect data={data}/>
-                    <p className={'mb-4 uppercase'}>size guide</p>
                     <button className={'bg-[#4eb16d] mb-5 uppercase text-white font-900 text-xs text-center rounded-2xl py-4 px-10 tracking-widest shadow-lg'}>add to bag</button>
                 </div>
                 <p className={'text-xs mb-5 mt-5 uppercase text-center'}>return policy</p>
