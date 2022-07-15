@@ -1,30 +1,73 @@
-import { Fragment } from "react";
+import {Fragment} from "react";
 
-function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mobile }) {
+function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mobile}) {
     //<MeasurementBlock measurement={dataStore.userMeasurements[key]} index={index} mobile={dataStore.mobile} />
-    const mobileView = null;
-    const browserView = <Fragment>
-        <div>
-            <div>{index + 1}. Measurement Profile</div>
-            <div>Measurement ID: {measurement.measure_id}</div>
-            <div>Bust: {measurement.bust}</div>
-            <div>Waist: {measurement.waist}</div>
-            <div>Hips: {measurement.hips}</div>
-            <div>Height: {measurement.height_f}ft {measurement.height_i}inch(es)</div>
-            <div>Biceps: {measurement.biceps}</div>
-            <div>Wearing Waist: {measurement.wearing_waist}</div>
-            <div>Shoulder: {measurement.shoulder}</div>
-            <div>Others: {measurement.others}</div>
+    const mobileView = (
+        <div className="mt-6 pl-6">
+            <div>
+                <div className="font-bold mb-2">{index + 1}. Measurement Profile</div>
+                <div className="mb-2">Measurement ID: {measurement.measure_id}</div>
+                <div className="mb-2">Bust: {measurement.bust}</div>
+                <div className="mb-2">Waist: {measurement.waist}</div>
+                <div className="mb-2">Hips: {measurement.hips}</div>
+                <div className="mb-2">
+                    Height: {measurement.height_f}ft {measurement.height_i}inch(es)
+                </div>
+                <div className="mb-2">Biceps: {measurement.biceps}</div>
+                <div className="mb-2">Wearing Waist: {measurement.wearing_waist}</div>
+                <div className="mb-2">Shoulder: {measurement.shoulder}</div>
+                <div className="mb-2">Others: {measurement.others}</div>
+            </div>
+            <div className="flex justify-evenly">
+                <button
+                    className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
+                    onClick={() => showModal(measurement)}
+                >
+                    Edit
+                </button>
+                <button
+                    className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
+                    onClick={() => deleteMeasurement(measurement.measure_id)}
+                >
+                    Delete
+                </button>
+            </div>
         </div>
-        <div onClick={showModal(measurement)}>
-            EDIT
-        </div>
-        <div onClick={deleteMeasurement(measurement.measure_id)}>
-            DELETE
-        </div>
-    </Fragment>
+    );
+    const browserView = (
+        <Fragment>
+            <div>
+                <div>{index + 1}. Measurement Profile</div>
+                <div>Measurement ID: {measurement.measure_id}</div>
+                <div>Bust: {measurement.bust}</div>
+                <div>Waist: {measurement.waist}</div>
+                <div>Hips: {measurement.hips}</div>
+                <div>
+                    Height: {measurement.height_f}ft {measurement.height_i}inch(es)
+                </div>
+                <div>Biceps: {measurement.biceps}</div>
+                <div>Wearing Waist: {measurement.wearing_waist}</div>
+                <div>Shoulder: {measurement.shoulder}</div>
+                <div>Others: {measurement.others}</div>
+            </div>
+            <div
+                onClick={() => {
+                    showModal(measurement);
+                }}
+            >
+                EDIT
+            </div>
+            <div
+                onClick={() => {
+                    deleteMeasurement(measurement.measure_id);
+                }}
+            >
+                DELETE
+            </div>
+        </Fragment>
+    );
 
-    return (mobile) ? mobileView : browserView;
+    return mobile ? mobileView : browserView;
 }
 
 export default MeasurementBlock;

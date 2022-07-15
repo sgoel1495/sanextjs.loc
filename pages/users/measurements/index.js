@@ -19,9 +19,8 @@ function UsersMeasurementsPage() {
     const router = useRouter();
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     useEffect(() => {
-        if (dataStore.userData.contact == null)
-            router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
+        if (dataStore.userData.contact == null) router.replace("/"); //illegal direct access
+    }, [dataStore.userData.contact, router]);
 
     const [mobile, setMobile] = useState(false);
     const [showModal1, setShowModal1] = useState(false);
@@ -33,28 +32,30 @@ function UsersMeasurementsPage() {
         currentMeasurement[key] = value;
         setCurrentMeasurement(currentMeasurement);
         setRefresh(!refresh);
-    }
+    };
     useEffect(() => {
-        setMobile(isMobile)
-    }, [])
+        setMobile(isMobile);
+    }, []);
     const measurementKeys = Object.keys(dataStore.userMeasurements);
 
     const measurementBlocks = () => {
         let returnValue = null;
         measurementKeys.forEach((key, index) => {
-            returnValue = <Fragment>
-                {returnValue}
-                <MeasurementBlock
-                    measurement={dataStore.userMeasurements[key]}
-                    showModal={showModal.bind(this)}
-                    deleteMeasurement={deleteMeasurement.bind(this)}
-                    index={index}
-                    mobile={dataStore.mobile}
-                />
-            </Fragment>
+            returnValue = (
+                <Fragment>
+                    {returnValue}
+                    <MeasurementBlock
+                        measurement={dataStore.userMeasurements[key]}
+                        showModal={showModal.bind(this)}
+                        deleteMeasurement={deleteMeasurement.bind(this)}
+                        index={index}
+                        mobile={mobile}
+                    />
+                </Fragment>
+            );
         });
-        return returnValue
-    }
+        return returnValue;
+    };
 
     const nextModal = () => {
         if (showModal1) {
@@ -66,7 +67,7 @@ function UsersMeasurementsPage() {
             setShowModal2(false);
             setShowModal3(true);
         }
-    }
+    };
 
     const lastModal = () => {
         if (showModal2) {
@@ -78,7 +79,7 @@ function UsersMeasurementsPage() {
             setShowModal2(true);
             setShowModal3(false);
         }
-    }
+    };
 
     const getNewKey = () => {
         const baseKey = dataStore.userServe.temp_user_id || Date.now();
@@ -86,56 +87,54 @@ function UsersMeasurementsPage() {
         let newKey = "";
         for (let x = 1; x < 100; x++) {
             newKey = baseKey + "_" + x.toString();
-            if (!measurementKeys.includes(newKey))
-                break;
+            if (!measurementKeys.includes(newKey)) break;
         }
         return newKey;
-    }
+    };
 
     const showModal = (m) => {
         setCurrentMeasurement(m);
 
         setShowModal1(true);
-    }
+    };
 
     const closeModal = () => {
         setShowModal1(false);
         setShowModal2(false);
         setShowModal3(false);
         setCurrentMeasurement(null);
-    }
+    };
 
     const saveModal = async () => {
-
         if (currentMeasurement.measure_id == "") {
             // add new
             currentMeasurement.measure_id = getNewKey();
         } else {
             //case update - we simply remove and add
-            await delMeasurement(currentMeasurement)
+            await delMeasurement(currentMeasurement);
         }
 
         if (dataStore.userData.contact) {
             // we have a valid user
             await apiCall("addMeasurements", dataStore.apiToken, {
-                "user": getUserO(dataStore),
-                "measurments": currentMeasurement
-            })
+                user: getUserO(dataStore),
+                measurments: currentMeasurement
+            });
 
             // update DataStore
-            await refreshDataStore()
+            await refreshDataStore();
         } else {
             //non logged in case
-            dataStore.userMeasurements[currentMeasurement.measure_id] = currentMeasurement
-            updateDataStore("userMeasurements", dataStore.userMeasurements)
+            dataStore.userMeasurements[currentMeasurement.measure_id] = currentMeasurement;
+            updateDataStore("userMeasurements", dataStore.userMeasurements);
         }
 
-        closeModal()
-    }
+        closeModal();
+    };
 
     const delMeasurement = async (m) => {
         //only delete. no refresh
-        delete dataStore.userMeasurements[m.measure_id]
+        delete dataStore.userMeasurements[m.measure_id];
         if (dataStore.userData.contact) {
             //logged in user
             await apiCall("removeMeasurements", dataStore.apiToken, {
@@ -145,52 +144,57 @@ function UsersMeasurementsPage() {
                 }
             });
         }
-    }
+    };
 
     const deleteMeasurement = async (m) => {
-        await delMeasurement(m)
-        if (dataStore.userData.contact)
-            await refreshDataStore()
-        else
-            updateDataStore("userMeasurements", dataStore.userMeasurements)
-    }
+        await delMeasurement(m);
+        if (dataStore.userData.contact) await refreshDataStore();
+        else updateDataStore("userMeasurements", dataStore.userMeasurements);
+    };
 
     const refreshDataStore = async () => {
         const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user": getUserO(dataStore)
+            user: getUserO(dataStore)
         });
 
         let userMeasurements = {};
         if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
-            userMeasurements = measurementCall.response
-        updateDataStore("userMeasurements", dataStore.userMeasurements)
-    }
+            userMeasurements = measurementCall.response;
+        updateDataStore("userMeasurements", dataStore.userMeasurements);
+    };
 
-    const mobileView = <UserPageTemplate mobile={true}>
-        <p className="text-[28px]">Measurement Summary</p>
-        <div className="flex gap-8 w-full">
-            <div className="flex-1 bg-[#f1f2f3] px-6 py-8 font-600 text-[#555]">
-                <p>User Id: {dataStore.userData.contact}</p>
-                <p>Total Measurement(s): {measurementKeys.length}</p>
-            </div>
-            <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
-                <button
-                    className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"
-                    onClick={() => showModal(emptyMeasurement)}>ADD NEW
-                </button>
-            </div>
-        </div>
-        <div>
-            <p className="text-[28px] mt-4">Measurements</p>
-            {(measurementKeys.length > 0)
-                ? <div>{measurementBlocks()}</div>
-                : <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
-                    <p>No measurement found!</p>
-                    <p>Please add measurement.</p>
+    const mobileView = () => {
+        return (
+            <UserPageTemplate mobile={true}>
+                <p className="text-[28px]">Measurement Summary</p>
+                <div className="flex flex-col gap-8 w-full">
+                    <div className="flex-1 px-6 py-8 font-600 text-[#555]">
+                        <p>User Id: {dataStore.userData.contact}</p>
+                        <p>Total Measurement(s): {measurementKeys.length}</p>
+                    </div>
+                    <div className="flex-1 grid place-items-center">
+                        <button
+                            className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
+                            onClick={() => showModal(emptyMeasurement)}
+                        >
+                            ADD NEW
+                        </button>
+                    </div>
                 </div>
-            }
-        </div>
-    </UserPageTemplate>
+                <div>
+                    <p className="text-[28px] mt-4">Measurements</p>
+                    {measurementKeys.length > 0 ? (
+                        <div>{measurementBlocks()}</div>
+                    ) : (
+                        <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
+                            <p>No measurement found!</p>
+                            <p>Please add measurement.</p>
+                        </div>
+                    )}
+                </div>
+            </UserPageTemplate>
+        );
+    };
 
     const browserView = () => {
         return (
@@ -204,70 +208,73 @@ function UsersMeasurementsPage() {
                     <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
                         <button
                             className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"
-                            onClick={() => showModal(emptyMeasurement)}>ADD NEW
+                            onClick={() => showModal(emptyMeasurement)}
+                        >
+                            ADD NEW
                         </button>
                     </div>
                 </div>
                 <div>
                     <p className="text-[28px] mt-4">Measurements</p>
-                    {(measurementKeys.length > 0)
-                        ? <div>{measurementBlocks()}</div>
-                        : <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
+                    {measurementKeys.length > 0 ? (
+                        <div>{measurementBlocks()}</div>
+                    ) : (
+                        <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
                             <p>No measurement found!</p>
                             <p>Please add measurement.</p>
                         </div>
-                    }
+                    )}
                 </div>
             </UserPageTemplate>
-        )
-    }
+        );
+    };
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView()}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            {mobile ? mobileView() : browserView()}
+            <Footer isMobile={dataStore.mobile} />
             {showModal1 &&
-            ReactDom.createPortal(
-                <MeasurementModal1
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    measurement={currentMeasurement}
-                    lastModal={null}
-                    nextModal={nextModal.bind(this)}
-                    updateValues={updateValues.bind(this)}
-                    product={null}
-                />,
-                document.getElementById("measurementmodal"))
-            }
+                ReactDom.createPortal(
+                    <MeasurementModal1
+                        closeModal={closeModal.bind(this)}
+                        isMobile={mobile}
+                        measurement={currentMeasurement}
+                        lastModal={null}
+                        nextModal={nextModal.bind(this)}
+                        updateValues={updateValues.bind(this)}
+                        product={null}
+                    />,
+                    document.getElementById("measurementmodal")
+                )}
             {showModal2 &&
-            ReactDom.createPortal(
-                <MeasurementModal2
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    measurement={currentMeasurement}
-                    nextModal={nextModal.bind(this)}
-                    lastModal={lastModal.bind(this)}
-                    updateValues={updateValues.bind(this)}
-                    product={null}
-                />,
-                document.getElementById("measurementmodal"))
-            }
+                ReactDom.createPortal(
+                    <MeasurementModal2
+                        closeModal={closeModal.bind(this)}
+                        isMobile={mobile}
+                        measurement={currentMeasurement}
+                        nextModal={nextModal.bind(this)}
+                        lastModal={lastModal.bind(this)}
+                        updateValues={updateValues.bind(this)}
+                        product={null}
+                    />,
+                    document.getElementById("measurementmodal")
+                )}
             {showModal3 &&
-            ReactDom.createPortal(
-                <MeasurementModal3
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    measurement={currentMeasurement}
-                    lastModal={lastModal.bind(this)}
-                    saveModal={saveModal.bind(this)}
-                    product={null}
-                />,
-                document.getElementById("measurementmodal"))
-            }
+                ReactDom.createPortal(
+                    <MeasurementModal3
+                        closeModal={closeModal.bind(this)}
+                        isMobile={mobile}
+                        measurement={currentMeasurement}
+                        lastModal={lastModal.bind(this)}
+                        saveModal={saveModal.bind(this)}
+                        product={null}
+                    />,
+                    document.getElementById("measurementmodal")
+                )}
         </Fragment>
-    )
+    );
 }
 
 export default UsersMeasurementsPage;
