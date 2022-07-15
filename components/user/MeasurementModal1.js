@@ -138,8 +138,8 @@ function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, ne
   const inputField = 'w-[105px] border border-black bg-[#f1f2f3] placeholder:font-600 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black';
 
   const mobileView = (
-    <div className='bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[8%] px-[10%]' onClick={closeModal}>
-      <div className='bg-white border-2 border-black relative h-full flex flex-col' onClick={(e) => e.stopPropagation()}>
+    <div className={['h-screen fixed inset-0 z-modal grid place-items-center p-[2.5%] py-[5%]']} onClick={closeModal}>
+      <div className='bg-white border-[1.2vw] border-[#b3aeab] text-[#997756] rounded-[10vw] h-full w-full relative flex flex-col overflow-hidden' onClick={(e) => e.stopPropagation()}>
         <div className='overflow-auto flex-1'>
           <button className='absolute top-0 right-8 text-2xl z-50' onClick={closeModal}>
             X

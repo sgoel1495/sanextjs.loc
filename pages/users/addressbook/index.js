@@ -27,6 +27,7 @@ function UsersAddressBookPage() {
         <p className="text-[28px] mt-4 ml-3">Additional Addresses</p>
         <DisplayAdditionalAddresses mobile={true}/>
     </UserPageTemplate>
+
     const browserView = () => {
         return (
             <UserPageTemplate>

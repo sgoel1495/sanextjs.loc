@@ -4,7 +4,7 @@ import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
 import getUserO from "../../helpers/getUserO";
 
-function ProductCartView({mockData}) {
+function ProductCartView({mockData, isMobile}) {
     console.log("mockData", mockData)
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
@@ -153,7 +153,7 @@ function ProductCartView({mockData}) {
     const mobileProductCartView = () => {
         let returnValues = null;
         dataStore.userCart.forEach((p, index) => {
-            if (p.is_tailor == "false")
+            if (p.is_tailor === "false")
                 returnValues = (
                     <>
                         {returnValues}
@@ -255,7 +255,7 @@ function ProductCartView({mockData}) {
         {productCartView()}
     </Fragment>
 
-    return (dataStore.mobile) ? mobileView : browserView
+    return isMobile ? mobileView : browserView
 }
 
 export default ProductCartView

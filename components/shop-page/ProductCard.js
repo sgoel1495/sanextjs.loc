@@ -31,6 +31,8 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const inr = currencyData["inr"].curr_symbol;
+    const usd = currencyData["usd"].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
@@ -153,10 +155,22 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
-                        <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
+                        {prod.sale_price ? "" : <p className={`text-[10px] font-500`}>{prod.tag_line}</p>}
                         <p className={`text-xs`}>
-                            {currencySymbol}
-                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                            <span>
+                                {
+                                    (currCurrency === "inr" || !prod.usd_price) ?
+                                        <>
+                                            {inr}
+                                            <span className={prod.sale_price ? "line-through" : ""}>{prod.price}</span>
+                                            {
+                                                prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
+                                            }
+                                        </>
+                                        :
+                                        <>{usd} {prod.usd_price}</>
+                                }
+                            </span>
                         </p>
                     </div>
                 </a>
@@ -183,7 +197,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -195,7 +209,6 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
 
     return (
         <>
-
             <div className={`block bg-white text-center relative z-0`} id={prod.asset_id}>
                 <div
                     onMouseEnter={() => {

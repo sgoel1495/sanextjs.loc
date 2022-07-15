@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../components/swipers/HomePageHeaderSwiper";
@@ -7,25 +7,15 @@ import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import MobileProductCard from "../../components/shop-page/ProductCard";
 import Image from "next/image";
-import AppWideContext from "../../store/AppWideContext";
 
 function EndOfSeasonSale(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [mobile, setMobile] = useState(false)
     const [carousal] = useState(props.carousal);
-    const [data, setData] = useState([]);
-    const {dataStore} = useContext(AppWideContext);
-    const [isLoading, setIsLoading] = useState(false)
+    const [data] = useState(props.data);
+
     useEffect(() => {
         setMobile(isMobile)
-
-        apiCall("getProducts", dataStore.apiToken,
-            {category: "sale", limit: 10000, skip: 0}
-        ).then(resp => {
-            if (resp.status === 200) {
-                setData(resp.response.data.filter(item => item.is_visible));
-            }
-        })
     }, [])
 
     const checkBox_and_label_style = "flex-inline m-1 gap-1"
@@ -37,6 +27,7 @@ function EndOfSeasonSale(props) {
                    alt={"loader"}/>
         </span>
     </span>
+
     const mobileView = <section className={"bg-[#faf4f0] pb-10"}>
         <span className={"block relative w-full aspect-square"}>
             <Image src={"https://saltattire.com/assets/images/mob/sale_v15.jpg"} layout={`fill`} objectFit={`cover`}
@@ -51,23 +42,23 @@ function EndOfSeasonSale(props) {
                 </div>
                 <div className={"flex-inline gap-1"}>
                     <input type="checkbox"/>
-                    <label className={"mx-1"}>XS</label>
+                    <label className={"mx-1"}>S</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
                     <input type="checkbox"/>
-                    <label className={"mx-1"}>XS</label>
+                    <label className={"mx-1"}>M</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
                     <input type="checkbox"/>
-                    <label className={"mx-1"}>XS</label>
+                    <label className={"mx-1"}>L</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
                     <input type="checkbox"/>
-                    <label className={"mx-1"}>XS</label>
+                    <label className={"mx-1"}>XL</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
                     <input type="checkbox"/>
-                    <label className={"mx-1"}>XS</label>
+                    <label className={"mx-1"}>XXL</label>
                 </div>
             </span>
             <span className={"text-[#ff0000] text-xs font-700 opacity-75"}>NOT VALID FOR RETURN / EXCHANGE</span>
@@ -78,17 +69,6 @@ function EndOfSeasonSale(props) {
         <div className={"grid grid-cols-2 gap-5 container py-5 px-5 "}>
             {data.map((item, index) => <MobileProductCard prod={item} key={index} isMobile={true}/>)}
         </div>
-        {
-            isLoading
-                ? loader
-                : <div className="flex justify-center">
-                <span
-                    className={"flex flex-col border-4 p-1 px-5 border-white drop-shadow-[35px_35px_35px_rgba(0,0,0,0.25)] bg-[#faede3] mt-[12%] rounded-2xl text-[#595756] text-xs text-center"}>
-                    <span className="font-800">TAP HERE</span>
-                <span>TO LOAD MORE</span>
-                </span>
-                </div>
-        }
     </section>
 
     const browserView = (
@@ -105,3 +85,21 @@ function EndOfSeasonSale(props) {
 
 export default EndOfSeasonSale;
 
+export async function getStaticProps() {
+    const fetchData = async () => {
+        let gotData = false;
+        const callObject = await apiCall("getProducts", process.env.API_TOKEN, {category: "sale", limit: 10000, skip: 0})
+        if (callObject.status === 200) {
+            gotData = true
+        }
+
+        return (gotData) ? callObject.response.data.filter(item => item.is_visible) : []
+    }
+
+    return {
+        props: {
+            data: await fetchData()
+        },
+        revalidate: 3600
+    }
+}

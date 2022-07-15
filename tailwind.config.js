@@ -53,7 +53,8 @@ module.exports = {
             },
             zIndex: {
                 '100': '100',
-                'toast': 91
+                'toast': 91,
+                'modal': '999'
             },
             colors: {
                 theme: {

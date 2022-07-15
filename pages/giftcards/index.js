@@ -13,6 +13,8 @@ import WishListButton from "../../components/common/WishListButton";
 import BlockHeader from "../../components/common/blockHeader";
 import GiftReceiverModal from "../../components/giftcards/GiftReceiverModal";
 import {isMobile} from "react-device-detect";
+import {apiCall} from "../../helpers/apiCall";
+import Toast from "../../components/common/Toast";
 
 const ImageBlock = (props) => (
     <span className={`block relative w-full aspect-square`}>
@@ -28,12 +30,14 @@ function GiftcardsPage() {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [showGiftReceiverModal, setShowGiftReceiverModal] = useState(false)
     const [giftReceiverModalData, setGiftReceiverModalData] = useState({})
-    const [code, setCode] = useReducer((state,e)=>{
-        return e.target.value
-    },"");
     const [mobile, setMobile] = useState(false);
     const [data, setData] = useState(null);
+    const [show, setShow] = useState(false)
+    const [giftAmount, setGiftAmount] = useState(null);
     const resp = useApiCall("giftcards", dataStore.apiToken);
+    const [code, setCode] = useReducer((state, e) => {
+        return e.target.value
+    }, "");
 
     useEffect(() => {
         setMobile(isMobile)
@@ -47,6 +51,21 @@ function GiftcardsPage() {
         )
             setData(resp.giftcards);
     }, [resp]);
+
+    const verifyCode = async () => {
+        if (!code) {
+            setShow(true)
+            return;
+        }
+        const resp = await apiCall("checkGiftAmount", dataStore.apiToken, {"gift": {"gift_code": code}});
+        if (resp.msg === "Success") {
+            setGiftAmount(resp.response.giftcard_amount);
+        } else if (resp.msg === "is_redeemed") {
+            setGiftAmount(-1);
+        } else {
+            setGiftAmount(-2);
+        }
+    }
 
     const showGiftCards = (view) => {
         let sgc = null;
@@ -74,8 +93,10 @@ function GiftcardsPage() {
                                             <div
                                                 className="grid place-items-center content-center bg-black text-white"
                                                 onClick={() => {
+                                                    console.log(card)
                                                     setShowGiftReceiverModal(true)
                                                     setGiftReceiverModalData({
+                                                        gc_asset_id: card.asset_id,
                                                         gc_title: card.display_name,
                                                         gc_price: card.price
                                                     })
@@ -125,14 +146,15 @@ function GiftcardsPage() {
                     <p className={`text-base`}>Check your balance</p>
                 </div>
                 <input
-                    className={`pb-0 w-64 bg-transparent text-center border-0 border-b-[1px] border-black text-xs h-5 !focus:outline-none !focus:outline-0`}
+                    className={`pb-0 mb-10 w-64 bg-transparent text-center border-0 border-b-[1px] border-black text-xs h-5 !focus:outline-none !focus:outline-0`}
                     type="text" maxLength="50" placeholder="Enter gift card code" onChange={setCode} value={code}
                 />
-                {/*<div>*/}
-                {/*    <p>Your Balance - <span id="gift_amount"/></p>*/}
-                {/*    <p>This code is already redeemed</p>*/}
-                {/*</div>*/}
-                <button type="button" className={`mt-10 bg-black text-white py-3 pb-2 px-10 text-sm`}>CHECK BALANCE</button>
+                <div>
+                    {giftAmount !== null && giftAmount > -1 ? <p className={"text-xl font-600"}>Your Balance - <span>{giftAmount}</span></p> : ""}
+                    {giftAmount === -1 && <p className={"text-xl font-600"}>This code is already redeemed</p>}
+                    {giftAmount === -2 && <p className={"text-lg font-800 text-red-500"}>Invalid code</p>}
+                </div>
+                <button type="button" className={` bg-black text-white py-3 pb-2 px-10 text-sm`} onClick={verifyCode}>CHECK BALANCE</button>
             </form>
         </section>
         <NewArrivalsBlock isMobile={true} currencySymbol={currencySymbol} currCurrency={currCurrency}
@@ -195,6 +217,9 @@ function GiftcardsPage() {
                 : null}
             {(mobile) ? mobileView : browserView}
             <Footer isMobile={mobile}/>
+            <Toast isMobile={mobile} show={show} hideToast={() => {
+                setShow(false)
+            }}>Please Enter Gift Card Code</Toast>
         </Fragment>
     );
 
