@@ -10,7 +10,7 @@ import SidebarMenuHamburger from "../sidebar/SidebarMenuHamburger";
 import CurrencySwitcher from "./CurrencySwitcher";
 import SearchMenu from "../search/SearchMenu";
 import Menu from "./Menu";
-import SidebarMenuCart from "../sidebar/SidebarMenuCart";
+import SidebarMenuCart from "../sidebar/cart/SidebarMenuCart";
 import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 
 function Navbar(props) {

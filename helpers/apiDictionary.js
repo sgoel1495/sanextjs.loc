@@ -103,7 +103,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        case "datedNewArrivals":
+        case "datedNewArrivals": // not used
             url += "/get_new_items_by_date";
             body = {
                 ...queryObject,
@@ -594,6 +594,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+
+        case  "addGiftToCart":
+            url += "/giftcards/add_giftcard_to_cart"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
         default:
             url = null;
             break;
