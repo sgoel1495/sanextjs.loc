@@ -4,7 +4,7 @@ import AppWideContext from '../../../store/AppWideContext';
 function StandardSizeModal({ closeModal, standardSizes, setSizeModal }) {
   const { dataStore, updateDataStore } = useContext(AppWideContext);
   return (
-    <div className={['bg-black/60 h-screen fixed inset-0 z-modal grid place-items-center p-[2.5%]']} onClick={closeModal}>
+    <div className={['h-screen fixed inset-0 z-modal grid place-items-center p-[2.5%] py-[5%]']} onClick={closeModal}>
       <div className='bg-white border-[1.2vw] border-[#b3aeab] text-[#997756] rounded-[10vw] h-full w-full relative flex flex-col' onClick={(e) => e.stopPropagation()}>
         <button className='absolute top-2 right-5 text-2xl z-50' onClick={closeModal}>
           X
