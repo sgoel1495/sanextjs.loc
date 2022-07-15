@@ -48,7 +48,7 @@ function MeasurementModal0({ closeModal, isMobile, addNew, pastOrders, measurePr
                     </div>
                   </div>
                 ) : (
-                  <div onClick={pastOrders}>CHOOSE MEASUREMENTS FROM PAST ORDERS</div>
+                  <div className={buttonClass + ' mt-10 mx-2'} onClick={pastOrders}>CHOOSE MEASUREMENTS FROM PAST ORDERS</div>
                 )
               ) : (
                 <div className={buttonClass + ' mt-10 mx-2'} onClick={() => updateDataStore('showSidebarMenuUser', true)}>
