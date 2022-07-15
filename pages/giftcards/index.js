@@ -58,7 +58,6 @@ function GiftcardsPage() {
             return;
         }
         const resp = await apiCall("checkGiftAmount", dataStore.apiToken, {"gift": {"gift_code": code}});
-        console.log(resp)
         if (resp.msg === "Success") {
             setGiftAmount(resp.response.giftcard_amount);
         } else if (resp.msg === "is_redeemed") {
@@ -94,8 +93,10 @@ function GiftcardsPage() {
                                             <div
                                                 className="grid place-items-center content-center bg-black text-white"
                                                 onClick={() => {
+                                                    console.log(card)
                                                     setShowGiftReceiverModal(true)
                                                     setGiftReceiverModalData({
+                                                        gc_asset_id: card.asset_id,
                                                         gc_title: card.display_name,
                                                         gc_price: card.price
                                                     })

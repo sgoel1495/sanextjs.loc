@@ -5,16 +5,6 @@ import Image from "next/image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import Link from 'next/link';
 
-const homeBanners = [
-    "https://saltattire.com/assets/images/homebanner_new/salt_v10.jpg",
-    "https://saltattire.com/assets/images/homebanner_new/kapaas_v5.jpg",
-    "https://saltattire.com/assets/images/homebanner_new/kapaas_v4.jpg",
-    "https://saltattire.com/assets/images/homebanner_new/jewellery_v2.jpg",
-    "https://saltattire.com/assets/images/homebanner_new/moyo_v17.jpg",
-    "https://saltattire.com/assets/images/homebanner_new/moyo_v16.jpg",
-    "https://saltattire.com/assets/images/homebanner_new/noor_v3.jpg"
-]
-
 const ImageBlock = props => (
     <div className={'relative border-2 border-white overflow-hidden shadow-[4px_4px_14px_0.8px_#00000008] ' + props.style}>
         <Image

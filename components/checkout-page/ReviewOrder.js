@@ -31,7 +31,7 @@ function ReviewOrder(props) {
                 }
                 bodyStyle={`px-8 grid grid-cols-1 gap-10 border-solid`}
             >
-                <ProductCartView mockData={dataStore.userCart} />
+                <ProductCartView mockData={dataStore.userCart} isMobile={dataStore.mobile} />
             </Accordion>
             <div className='px-5'>
                 <p className='font-bold text-l mt-4'>Deliver To</p>
