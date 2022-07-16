@@ -1,8 +1,11 @@
-import React, {useReducer, useState} from 'react';
+import React, {useContext, useReducer, useState} from 'react';
 import Toast from "../common/Toast";
 import isValidEmail from "../../helpers/isValidEmail";
+import {apiCall} from "../../helpers/apiCall";
+import AppWideContext from "../../store/AppWideContext";
 
 const GiftReceiverModal = (props) => {
+    const {dataStore} = useContext(AppWideContext);
     const [error, setError] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
     const [copy, setCopy] = useState(false)
@@ -37,6 +40,11 @@ const GiftReceiverModal = (props) => {
             setErrorMsg("Please Fill Sender Phone")
             return false;
         }
+        if (isNaN(payload['sender_telephone']) || payload['sender_telephone'].length !== 10) {
+            setError("sender_telephone")
+            setErrorMsg("Please Fill 10 Digit Sender Phone Without Special Character")
+            return false;
+        }
         return true;
     }
 
@@ -59,6 +67,11 @@ const GiftReceiverModal = (props) => {
         if (!payload['recipient_telephone']) {
             setError("recipient_telephone")
             setErrorMsg("Please Fill Recipient Phone")
+            return false;
+        }
+        if (isNaN(payload['recipient_telephone']) || payload['recipient_telephone'].length !== 10) {
+            setError("recipient_telephone")
+            setErrorMsg("Please Fill 10 Digit Recipient Phone Without Special Character")
             return false;
         }
         return true
@@ -115,8 +128,24 @@ const GiftReceiverModal = (props) => {
         if (!checkSender() || !checkRecipient()) {
             return;
         }
-        //    add to cart code
+        let payload = {
+            "user": {
+                "email": "shailaja.s@algowire.com",
+                "is_guest": false,
+                "temp_user_id": "1605770692381"
+            },
+            "giftcard_details": {
+                "product_id": props.gc_asset_id,
+                ...payload
+            },
+        }
+        apiCall("addGiftToCart", dataStore.apiToken, payload).then((response) => {
+            console.log(response)
+        })
     }
+
+    const focusStyle = "focus:ring-offset-0 focus:ring-0 focus:outline-0"
+    const inputStyle = `bg-[#f1f2f3] w-full p-[3%] border-0 text-sm ${focusStyle} `
 
     return (
         <div className={"fixed top-0 left-0 bg-black/50 w-[100vw] h-[100vh] z-[90] px-5 py-10 "}>
@@ -140,7 +169,7 @@ const GiftReceiverModal = (props) => {
                                placeholder="Sender Name"
                                name="sender_name"
                                maxLength="255"
-                               className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "sender_name" && "border-rose-500"]}
+                               className={inputStyle + [error === "sender_name" && "border-rose-500 border-[1px]"]}
                                value={payload["sender_name"]}
                                onChange={setPayload}
                         />
@@ -149,7 +178,7 @@ const GiftReceiverModal = (props) => {
                                name="sender_email"
                                maxLength="255"
                                value={payload["sender_email"]}
-                               className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "sender_email" && "border-rose-500"]}
+                               className={inputStyle + [error === "sender_email" && "border-rose-500 border-[1px]"]}
                                onChange={setPayload}
                         />
                         <input type="mobile"
@@ -157,7 +186,7 @@ const GiftReceiverModal = (props) => {
                                name="sender_telephone"
                                maxLength="255"
                                value={payload["sender_telephone"]}
-                               className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "sender_telephone" && "border-rose-500"]}
+                               className={inputStyle + [error === "sender_telephone" && "border-rose-500 border-[1px]"]}
                                onChange={setPayload}
                         />
                     </div>
@@ -171,7 +200,7 @@ const GiftReceiverModal = (props) => {
                         <input type="checkbox"
                                name="same_as_sender"
                                maxLength="255"
-                               className={"bg-[#f1f2f3]"}
+                               className={`bg-[#f1f2f3] ${focusStyle}`}
                                onChange={copySender}
                                checked={copy}
                         />
@@ -182,7 +211,7 @@ const GiftReceiverModal = (props) => {
                                name="recipient_name"
                                maxLength="255"
                                value={payload["recipient_name"]}
-                               className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "recipient_name" && "border-rose-500"]}
+                               className={inputStyle + [error === "recipient_name" && "border-rose-500 border-[1px]"]}
                                onChange={setPayload}
                         />
                         <input type="email"
@@ -190,7 +219,7 @@ const GiftReceiverModal = (props) => {
                                name="recipient_email"
                                maxLength="255"
                                value={payload["recipient_email"]}
-                               className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "recipient_email" && "border-rose-500"]}
+                               className={inputStyle + [error === "recipient_email" && "border-rose-500 border-[1px]"]}
                                onChange={setPayload}
                         />
                         <input type="mobile"
@@ -198,7 +227,7 @@ const GiftReceiverModal = (props) => {
                                name="recipient_telephone"
                                maxLength="255"
                                value={payload["recipient_telephone"]}
-                               className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white " + [error === "recipient_telephone" && "border-rose-500"]}
+                               className={inputStyle + [error === "recipient_telephone" && "border-rose-500 border-[1px]"]}
                                onChange={setPayload}
                         />
                     </div>
@@ -213,13 +242,13 @@ const GiftReceiverModal = (props) => {
                            name="message"
                            maxLength="255"
                            value={payload["message"]}
-                           className={"bg-[#f1f2f3] w-full h-full p-[3%] border-white"}
+                           className={inputStyle}
                            onChange={setPayload}
                     />
                 </div>
                 <div className={"text-center mb-4"}>
                     <button className={"text-white bg-black border-[#b9b0b0] border-2 p-4 p-[3%] w-[75%]"} onClick={save}>
-                        Continue
+                        Save
                     </button>
                 </div>
             </div>

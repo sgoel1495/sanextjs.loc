@@ -1,7 +1,5 @@
-
-function GroupPage(){
-
-    return <>Group Page</>
+const GroupPage = ()=>{
+    return <h1>GROUP</h1>
 }
 
-export default GroupPage;
+export default GroupPage

@@ -1,5 +1,5 @@
 import React, {Fragment, useContext} from 'react';
-import {CartModal} from "../../../components/sidebar/SidebarMenuCart";
+import CartModal from "../../../components/sidebar/cart/CartModal";
 
 function HomepageCartPage() {
     return <Fragment>
