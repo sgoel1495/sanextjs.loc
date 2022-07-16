@@ -67,6 +67,17 @@ function GiftcardsPage() {
         }
     }
 
+    const handlerAddToCart = (card)=>{
+        console.log("GIFT Add To Cart Pressed")
+        console.log(card.asset_id)
+        setShowGiftReceiverModal(true)
+        setGiftReceiverModalData({
+            gc_asset_id: card.asset_id,
+            gc_title: card.display_name,
+            gc_price: card.price
+        })
+    }
+
     const showGiftCards = (view) => {
         let sgc = null;
         if (data)
@@ -87,25 +98,18 @@ function GiftcardsPage() {
                                 {
                                     view === "mobile"
                                         ? <div
-                                            className="flex flex-col items-center justify-center h-16 relative text-sm">
+                                            className="flex flex-col items-center justify-center h-16 relative text-sm cursor-pointer"
+                                            onClick={()=>handlerAddToCart(card)}
+                                        >
                                             <p className={`text-m font-800`}>{card.display_name}</p>
                                             <p className={`text-sm font-200`}>{currencySymbol}{(currCurrency === "inr") ? card.price : card.usd_price}</p>
-                                            <div
-                                                className="grid place-items-center content-center bg-black text-white"
-                                                onClick={() => {
-                                                    console.log(card.asset_id)
-                                                    setShowGiftReceiverModal(true)
-                                                    setGiftReceiverModalData({
-                                                        gc_asset_id: card.asset_id,
-                                                        gc_title: card.display_name,
-                                                        gc_price: card.price
-                                                    })
-                                                }}
-                                            >
+                                            <div className="grid place-items-center content-center bg-black text-white" >
                                                 <p className={`font-600 text-white text-sm mx-2`}>Add To Bag</p>
                                             </div>
                                         </div>
-                                        : <div className="flex items-center justify-center h-16 relative">
+                                        : <div className="flex items-center justify-center h-16 relative cursor-pointer"
+                                               onClick={()=>handlerAddToCart(card)}
+                                        >
                                             <p className={`font-cursive text-2xl`}>{card.display_name}</p>
                                             <div
                                                 className="hidden group-hover:grid place-items-center content-center absolute inset-0 bg-black text-white">
