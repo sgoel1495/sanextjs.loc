@@ -320,7 +320,7 @@ function GetAppointmentPage() {
         <Fragment>
             <PageHead url="/salt/get-appointment" id="getappointment" isMobile={mobile}/>
             <Header type={"shopMenu"} isMobile={mobile}/>
-            {!!(mobile)}
+            {(mobile)?mobile:null}
             <section className={"select-none" + [mobile ? " px-4 pb-20 pt-5 bg-[#f3e9e3]" : " mx-auto w-3/5 my-20"]}>
                 {(mobile) ? mobileView : browserView}
             </section>
