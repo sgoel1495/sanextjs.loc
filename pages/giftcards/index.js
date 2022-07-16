@@ -93,7 +93,7 @@ function GiftcardsPage() {
                                             <div
                                                 className="grid place-items-center content-center bg-black text-white"
                                                 onClick={() => {
-                                                    console.log(card)
+                                                    console.log(card.asset_id)
                                                     setShowGiftReceiverModal(true)
                                                     setGiftReceiverModalData({
                                                         gc_asset_id: card.asset_id,
@@ -202,7 +202,6 @@ function GiftcardsPage() {
                         apiToken={dataStore.apiToken}/>
     </>
 
-
     return (
         <Fragment>
             <PageHead url="/" id="home" isMobile={mobile}/>
@@ -211,6 +210,7 @@ function GiftcardsPage() {
                 ? ReactDom.createPortal(<GiftReceiverModal
                     showModal={showGiftReceiverModal}
                     setShowModal={setShowGiftReceiverModal}
+                    gc_asset_id={giftReceiverModalData.gc_asset_id}
                     gc_price={giftReceiverModalData.gc_price}
                     gc_title={giftReceiverModalData.gc_title}
                 />, document.getElementById("measurementmodal"))

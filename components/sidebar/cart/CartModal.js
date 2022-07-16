@@ -9,6 +9,7 @@ import ReturnAndFaq from "./ReturnAndFAQ";
 import MediaBuzz from "./MediaBuzz";
 import Testimonials from "./Testimonials";
 import 'swiper/css';
+import {useRouter} from "next/router";
 
 const BareHeading = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -20,7 +21,7 @@ const BareHeading = () => {
             <Link href={"/"}>
                 <div className={"bg-[#ffffffe6]"}>
                     <span className="relative w-16 h-8 inline-block">
-                        <Image src={WEBASSETS +'/assets/images/SALT_logo.png'} layout="fill" objectFit="contain"/>
+                        <Image src={WEBASSETS + '/assets/images/SALT_logo.png'} layout="fill" objectFit="contain"/>
                     </span>
                 </div>
             </Link>
@@ -29,6 +30,7 @@ const BareHeading = () => {
 }
 
 function CartModal(props) {
+    const router = useRouter();
     const {dataStore, updateDataStore} = React.useContext(AppWideContext);
     const {closeModal} = props;
     const [tailoredProduct, setTailoredProduct] = React.useState(null)
@@ -118,30 +120,30 @@ function CartModal(props) {
     const mobileView = () => {
         let returnValue =
             <div className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden m-1 p-2">
-                <div className={`text-center font-600 tracking-wider px-1 border-2 border-solid`}>
+                <div className={`text-center font-600 tracking-wider px-1 border-2 border-solid relative`}>
                     {
                         dataStore.userCart.length > 0
                             ? <>
                                     <span className={"flex justify-between items-center"}>
                                         <span className={" pt-1"}> YOUR CART: </span>
                                         <span className={" pt-1"}>{dataStore.currSymbol} 1000</span>
-                                            <Link href={"/"}>
-                                                <span className={`w-5 h-5 relative`}>
-                                                    <Image src={WEBASSETS + "/assets/images/cancel.png"} layout="fill" objectFit="contain"/>
-                                                </span>
-                                            </Link>
+                                        <span className={`w-5 h-5 relative`} onClick={() => router.back()}>
+                                            <Image src={WEBASSETS + "/assets/images/cancel.png"} layout="fill" objectFit="contain"/>
+                                        </span>
                                     </span>
                                 <div className={"my-1 border-solid border-b-2 border-neutral-300"}/>
-                                <ProductCartView mockData={dataStore.userCart} isMobile={props.isMobile}/>
+                                <ProductCartView isMobile={props.isMobile}/>
 
                             </>
                             : <>
-                                <a className={`w-7 h-7 absolute right-[4%] p-1.5`} href={"/"}>
-                                    <img
+                                <span className={`w-4 h-4 block absolute right-1 top-1`} onClick={() => router.back()}>
+                                    <Image
                                         src={WEBASSETS + "/assets/images/cancel.png"}
                                         alt="cancel"
+                                        layout="fill"
+                                        objectFit="contain"
                                     />
-                                </a>
+                                </span>
                                 <p className={`px-1 text-sm mt-3 mb-6 text-center`}>YOUR CART {qtyInCart(dataStore)}</p>
 
                                 <span className={`block relative w-16 h-16 mx-auto mb-4`}>
@@ -157,11 +159,8 @@ function CartModal(props) {
                                 <p className={`text-sm mb-4 px-1`}>There is nothing in your cart. Let&apos;s add some
                                     items.</p>
                                 <Link href="/new-arrivals/all">
-                                    <a
-                                        className="flex justify-center underline uppercase text-sm mt-8"
-                                        onClick={updateDataStore("userCart", mockProduct)} //  TODO to be removed during integrations
-                                    >
-                                        Continue Shoppings
+                                    <a className="flex justify-center underline uppercase text-sm mt-8">
+                                        Continue Shopping
                                     </a>
                                 </Link>
                             </>

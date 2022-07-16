@@ -603,6 +603,8 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
+            break;
+
         default:
             url = null;
             break;

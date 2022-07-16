@@ -28,7 +28,7 @@ function NewArrivalsBlock(props) {
 
     const [data, setData] = useState(null);
     const resp = useApiCall("getProducts", props.apiToken, {category: "new-arrivals", limit: 10, skip: 0});
-    console.log(resp)
+
     useEffect(() => {
         if (resp
             && resp.status === 200

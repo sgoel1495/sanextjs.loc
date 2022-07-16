@@ -4,8 +4,7 @@ import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
 import getUserO from "../../helpers/getUserO";
 
-function ProductCartView({mockData, isMobile}) {
-    console.log("mockData", mockData)
+function ProductCartView({isMobile}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
 
