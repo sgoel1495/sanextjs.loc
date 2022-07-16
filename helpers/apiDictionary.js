@@ -103,8 +103,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        case "datedNewArrivals": // not used
+        case "datedNewArrivals":
             url += "/get_new_items_by_date";
+            body = {
+                ...queryObject,
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getSaleItems":
+            url += "/sale/get_sale_items";
             body = {
                 ...queryObject,
                 token: apiToken
