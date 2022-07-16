@@ -26,6 +26,7 @@ function GetVirtualAppointmentPage() {
         date: "", time: "", lastname: "", phonenumber: "", message: "",
         firstname: "", shoppedbefore: "", somethingspecific: "", email: ""
     })
+    const [refresh,setRefresh]=useState(false)
 
     useEffect(() => {
         setMobile(isMobile)
@@ -59,6 +60,7 @@ function GetVirtualAppointmentPage() {
     const updateData = (key, value) => {
         formData[key] = value;
         setFormData(formData)
+        setRefresh(!refresh)
     }
 
     const bookAppointment = async () => {
