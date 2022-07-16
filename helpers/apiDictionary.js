@@ -462,7 +462,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "removeCart":
-            url += "/update_cart";
+            url += "/remove_from_cart";
             body = {
                 token: apiToken,
                 ...queryObject
