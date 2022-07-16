@@ -26,6 +26,7 @@ function GetAppointmentPage() {
         date: "", time: "", lastname: "", phonenumber: "", message: "", storelocation: "dlfmegamall",
         firstname: "", shoppedbefore: "", somethingspecific: "", email: ""
     })
+    const [refresh, setRefresh]=useState(false)
 
     useEffect(() => {
         setMobile(isMobile)
@@ -59,6 +60,7 @@ function GetAppointmentPage() {
     const updateData = (key, value) => {
         formData[key] = value;
         setFormData(formData)
+        setRefresh(!refresh)
     }
 
     const bookAppointment = async () => {
@@ -247,6 +249,8 @@ function GetAppointmentPage() {
                         <label className={labelStyle} htmlFor="storelocation">Select Store Location</label>
                         <select className={inputStyle} id="storelocation" onChange={e => updateData("storelocation", e.target.value)}>
                             <option value="dlfmegamall">DLF MEGA MALL</option>
+                            <option value="phoenixpalladium">PHOENIX PALLADIUM</option>
+                            <option value="infinitimalad">INFINITI MALAD</option>
                         </select>
                     </div>
                 </div>
