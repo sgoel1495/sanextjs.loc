@@ -109,6 +109,29 @@ function GetVirtualAppointmentPage() {
 
     const browserView = (
         <>
+            <div>
+                DLF MEGA MALL
+                LG-51, DLF MEGA MALL, GOLF COURSE ROAD, GURUGRAM, HARYANA 122002
+                CONTACT: +91 124 4116917
+                STORE TIMINGS:
+                11:00 AM - 08:00 PM, OPEN ALL 7 DAYS
+
+                PHOENIX PALLADIUM
+                5A, THIRD FLOOR, EAST ZONE, PHOENIX PALLADIUMSENAPATI BAPAT ROAD, MUMBAI, MAHARASHTRA
+                CONTACT: +91 8976892272
+
+                STORE TIMINGS:
+                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
+
+                INFINITI MALAD
+                123, FIRST FLOOR, INFINITI MALAD, MUMBAI, MAHARASHTRA
+                CONTACT: +91 8976892273
+
+                STORE TIMINGS:
+                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
+
+                OUR STORE IS OPEN!
+            </div>
             <div className={`text-2xl font-600 text-center mb-12`}>Book An Online Styling Session</div>
             <form className={`grid grid-cols-2 gap-x-20 gap-y-5`}>
                 <div className={`grid grid-cols-2 gap-x-10 gap-y-8`}>
