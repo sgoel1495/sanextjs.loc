@@ -303,7 +303,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         case "removeFromFav":
             url += "/remove_from_fav";
             body = {
-                token: apiToken,
                 ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
