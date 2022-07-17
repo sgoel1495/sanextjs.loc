@@ -38,7 +38,7 @@ function UsersFavouritesPage() {
                 return {
                     product_id: pid,
                     title: p.name,
-                    img: "/assets/" + p.name + "/thumb.jpg",
+                    img: "/assets/" + pid + "/thumb.jpg",
                     label: p.tag_line,
                     price: formatTwoDecimal(p.price),
                     sizes: ["XS", "S", "M", "L", "XL", "XXL"]
