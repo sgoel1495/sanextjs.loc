@@ -13,33 +13,51 @@ function StandardSizeModal({ closeModal, standardSizes, setSizeModal }) {
           <h6 className='text-base font-semibold pt-16 pb-5'>PLEASE SELECT A SIZE</h6>
           <div className='sizes-details pt-[5%] pb-[20%] text-center'>
             <span className='text-sm pb-2'>Measurements in inches</span>
-            <ul className={'flex flex-row justify-evenly pt-2'}>
-              <li className='sub-major-li odd sub-major-li-size'>
-                <span>SIZE</span>
-                <span className='pl-3'>|</span>
-              </li>
-              <li className=''>
-                <span>BUST</span>
-                <span className='pl-3'>|</span>
-              </li>{' '}
-              <li className=''>
-                <span>HIPS</span>
-              </li>
-            </ul>
-            {standardSizes.map((item, index) => {
-              return (<ul key={index} className={'flex flex-row justify-evenly pt-2'}>
-                <li className=''>
-                  <span>{item.size}</span>
-                  <span className='pl-3'>|</span>
-                </li>
-                <li className=''>
-                  <span>{item.bust}</span>
-                </li>{' '}
-                <li className=''>
-                  <span>{item.hips}</span>
-                </li>
-              </ul>);
-            })}
+            <table className="size_guide_table">
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>BUST</th>
+                                <th>HIPS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>XS</th>
+                                <td>32&quot;</td>
+                                <td>35&quot;</td>
+                            </tr>
+                            <tr>
+                                <th>S</th>
+                                <td>34&quot;</td>
+                                <td>37&quot;</td>
+                            </tr>
+                            <tr>
+                                <th>M</th>
+                                <td>36&quot;</td>
+                                <td>39&quot;</td>
+                            </tr>
+                            <tr>
+                                <th>L</th>
+                                <td>38&quot;</td>
+                                <td>41&quot;</td>
+                            </tr>
+                            <tr>
+                                <th>L</th>
+                                <td>40&quot;</td>
+                                <td>43&quot;</td>
+                            </tr>
+                            <tr>
+                                <th>XXL</th>
+                                <td>42&quot;</td>
+                                <td>45&quot;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            {/* {standardSizes.map((item, index) => {
+              return (             
+              );
+            })} */}
             <span onClick={() => { setSizeModal(true) }} className='uppercase tracking-widest text-xs'>whats my size ?</span>
           </div>
           <button
