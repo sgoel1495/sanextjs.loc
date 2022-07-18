@@ -31,6 +31,7 @@ import Reviews from "../components/review-section/Index"
 function RootPage() {
     const {dataStore} = useContext(AppWideContext);
 
+    console.log("----Index Page-----,\n ", dataStore)
     const mobileView = <Fragment>
         <CategorySection/>
         <NewArrivalsSection/>
