@@ -1,7 +1,7 @@
 import {apiCall} from "./apiCall";
 
-export default async function addToCartLoggedIn(apiToken, userO, cart, updateDataStore) {
-    const resp = await apiCall("addToCart", apiToken, {user: userO, cart: cart})
+export default async function addToCartLoggedIn(apiToken, userO, cart, updateDataStore, apiName = "addToCart") {
+    const resp = await apiCall(apiName, apiToken, {user: userO, ...cart})
     if (resp.response && resp.response === "success") {
         // refresh the cart
         const respCart = await apiCall("getCart", apiToken, {user: userO})

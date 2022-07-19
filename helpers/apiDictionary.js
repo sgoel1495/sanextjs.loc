@@ -103,8 +103,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-        case "datedNewArrivals": // not used
+        case "datedNewArrivals":
             url += "/get_new_items_by_date";
+            body = {
+                ...queryObject,
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "getSaleItems":
+            url += "/sale/get_sale_items";
             body = {
                 ...queryObject,
                 token: apiToken
@@ -293,7 +303,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         case "removeFromFav":
             url += "/remove_from_fav";
             body = {
-                token: apiToken,
                 ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
@@ -462,7 +471,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "removeCart":
-            url += "/update_cart";
+            url += "/remove_from_cart";
             body = {
                 token: apiToken,
                 ...queryObject
@@ -603,6 +612,18 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             };
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
+            break;
+
+        case  "redeemVoucher":
+            url += "/users/redeem_voucher"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         default:
             url = null;
             break;

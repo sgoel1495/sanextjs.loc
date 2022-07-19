@@ -5,8 +5,8 @@ import HomePageHeaderSwiper from "../../components/swipers/HomePageHeaderSwiper"
 import Footer from "../../components/footer/Footer";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
-import MobileProductCard from "../../components/shop-page/ProductCard";
 import Image from "next/image";
+import ProductCard from "./ProductCard";
 
 function EndOfSeasonSale(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -17,6 +17,8 @@ function EndOfSeasonSale(props) {
     useEffect(() => {
         setMobile(isMobile)
     }, [])
+
+    console.log(data)
 
     const checkBox_and_label_style = "flex-inline m-1 gap-1"
 
@@ -67,7 +69,7 @@ function EndOfSeasonSale(props) {
         </div>
 
         <div className={"grid grid-cols-2 gap-5 container py-5 px-5 "}>
-            {data.map((item, index) => <MobileProductCard prod={item} key={index} isMobile={true}/>)}
+            {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={true}/>)}
         </div>
     </section>
 
@@ -88,18 +90,18 @@ export default EndOfSeasonSale;
 export async function getStaticProps() {
     const fetchData = async () => {
         let gotData = false;
-        const callObject = await apiCall("getProducts", process.env.API_TOKEN, {category: "sale", limit: 10000, skip: 0})
-        if (callObject.status === 200) {
+        const callObject = await apiCall("getSaleItems", process.env.API_TOKEN, {"sale_name": "end of season sale"})
+        if (callObject.msg === "Successfully Get") {
             gotData = true
         }
 
-        return (gotData) ? callObject.response.data.filter(item => item.is_visible) : []
+        return (gotData) ? callObject.new_items.filter(item => item.is_visible) : []
     }
 
     return {
         props: {
             data: await fetchData()
         },
-        revalidate: 3600
+        revalidate: 5
     }
 }

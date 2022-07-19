@@ -1,11 +1,13 @@
 import React, {useContext, useReducer, useState} from 'react';
 import Toast from "../common/Toast";
 import isValidEmail from "../../helpers/isValidEmail";
-import {apiCall} from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
+import {useRouter} from "next/router";
+import {addToCart} from "../../helpers/addTocart";
 
 const GiftReceiverModal = (props) => {
-    const {dataStore} = useContext(AppWideContext);
+    const router = useRouter();
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [error, setError] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
     const [copy, setCopy] = useState(false)
@@ -78,70 +80,42 @@ const GiftReceiverModal = (props) => {
     }
 
     const copySender = (e) => {
-        if (e.target.checked) {
-            if (!checkSender()) {
-                return
-            }
-            setPayload({
-                target: {
-                    value: payload['sender_name'],
-                    name: "recipient_name"
-                }
-            })
-            setPayload({
-                target: {
-                    value: payload['sender_email'],
-                    name: "recipient_email"
-                }
-            })
-            setPayload({
-                target: {
-                    value: payload['sender_telephone'],
-                    name: "recipient_telephone"
-                }
-            })
-        } else {
-            setPayload({
-                target: {
-                    value: "",
-                    name: "recipient_name"
-                }
-            })
-            setPayload({
-                target: {
-                    value: "",
-                    name: "recipient_email"
-                }
-            })
-            setPayload({
-                target: {
-                    value: "",
-                    name: "recipient_telephone"
-                }
-            })
+        if (e.target.checked && !checkSender()) {
+            return
         }
+        setPayload({
+            target: {
+                value: e.target.checked ? payload['sender_name'] : "",
+                name: "recipient_name"
+            }
+        })
+        setPayload({
+            target: {
+                value: e.target.checked ? payload['sender_email'] : "",
+                name: "recipient_email"
+            }
+        })
+        setPayload({
+            target: {
+                value: e.target.checked ? payload['sender_telephone'] : "",
+                name: "recipient_telephone"
+            }
+        })
+
         setCopy(e.target.checked)
     }
 
     const save = () => {
-
         if (!checkSender() || !checkRecipient()) {
             return;
         }
-        let payload = {
-            "user": {
-                "email": "shailaja.s@algowire.com",
-                "is_guest": false,
-                "temp_user_id": "1605770692381"
-            },
-            "giftcard_details": {
-                "product_id": props.gc_asset_id,
-                ...payload
-            },
+        const displayCart = {
+            "product_id": props.gc_asset_id,
+            ...payload
         }
-        apiCall("addGiftToCart", dataStore.apiToken, payload).then((response) => {
-            console.log(response)
+        addToCart(dataStore, updateDataStore, {giftcard_details: displayCart}, "addGiftToCart").then(r => {
         })
+        router.push("/homepage/cart")
     }
 
     const focusStyle = "focus:ring-offset-0 focus:ring-0 focus:outline-0"

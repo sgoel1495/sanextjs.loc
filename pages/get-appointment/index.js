@@ -26,6 +26,7 @@ function GetAppointmentPage() {
         date: "", time: "", lastname: "", phonenumber: "", message: "", storelocation: "dlfmegamall",
         firstname: "", shoppedbefore: "", somethingspecific: "", email: ""
     })
+    const [refresh, setRefresh]=useState(false)
 
     useEffect(() => {
         setMobile(isMobile)
@@ -59,6 +60,7 @@ function GetAppointmentPage() {
     const updateData = (key, value) => {
         formData[key] = value;
         setFormData(formData)
+        setRefresh(!refresh)
     }
 
     const bookAppointment = async () => {
@@ -209,14 +211,43 @@ function GetAppointmentPage() {
     </div>;
     const browserView = (
         <>
+            <section className={`relative`}>
+                <span className={`block relative w-full h-[70vh]`}>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v1.jpg"} alt={category} layout={`fill`} objectFit={`cover`}/>
+                </span>
+                DLF MEGA MALL
+                LG-51, DLF MEGA MALL, GOLF COURSE ROAD, GURUGRAM, HARYANA 122002
+                CONTACT: +91 124 4116917
+                STORE TIMINGS:
+                11:00 AM - 08:00 PM, OPEN ALL 7 DAYS
+            </section>
+            <section className={`relative`}>
+                <span className={`block relative w-full h-[70vh]`}>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v3.jpg"} alt={category} layout={`fill`} objectFit={`cover`}/>
+                </span>
+                PHOENIX PALLADIUM
+                5A, THIRD FLOOR, EAST ZONE, PHOENIX PALLADIUMSENAPATI BAPAT ROAD, MUMBAI, MAHARASHTRA
+                CONTACT: +91 8976892272
+
+                STORE TIMINGS:
+                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
+            </section>
+            <section className={`relative`}>
+                <span className={`block relative w-full h-[70vh]`}>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v2.jpg"} alt={category} layout={`fill`} objectFit={`cover`}/>
+                </span>
+                INFINITI MALAD
+                123, FIRST FLOOR, INFINITI MALAD, MUMBAI, MAHARASHTRA
+                CONTACT: +91 8976892273
+
+                STORE TIMINGS:
+                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
+
+                OUR STORE IS OPEN!
+
+            </section>
             <div className={`border-b border-black/30 col-span-2 text-center pb-8 mb-16`}>
                 <div className={`text-2xl font-600 mb-8`}>Book An Appointment In Store</div>
-                <div className={`mb-8 font-500`}>
-                    <p>SALT Experience Store, DLF Mega Mall</p>
-                    <p>(Shop No LG-51, Golf Course Road, Gurgaon)</p>
-                    <p>Open all 7 days</p>
-                </div>
-                <div className={`text-sm font-500`}>Store Timings: 11:00 am - 08:30 pm</div>
             </div>
             <form className={`grid grid-cols-2 gap-x-20 gap-y-5`}>
                 <div className={`grid grid-cols-2 gap-x-10 gap-y-8`}>
@@ -247,6 +278,8 @@ function GetAppointmentPage() {
                         <label className={labelStyle} htmlFor="storelocation">Select Store Location</label>
                         <select className={inputStyle} id="storelocation" onChange={e => updateData("storelocation", e.target.value)}>
                             <option value="dlfmegamall">DLF MEGA MALL</option>
+                            <option value="phoenixpalladium">PHOENIX PALLADIUM</option>
+                            <option value="infinitimalad">INFINITI MALAD</option>
                         </select>
                     </div>
                 </div>
@@ -287,7 +320,7 @@ function GetAppointmentPage() {
         <Fragment>
             <PageHead url="/salt/get-appointment" id="getappointment" isMobile={mobile}/>
             <Header type={"shopMenu"} isMobile={mobile}/>
-            {mobile || <CategoryHeaderImage category={category}/>}
+            {(mobile)?mobile:null}
             <section className={"select-none" + [mobile ? " px-4 pb-20 pt-5 bg-[#f3e9e3]" : " mx-auto w-3/5 my-20"]}>
                 {(mobile) ? mobileView : browserView}
             </section>

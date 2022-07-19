@@ -17,7 +17,7 @@ function SidebarMenuUser(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(dataStore.showSidebarMenuUser);
-    console.log(dataStore.userServe)
+
     useEffect(() => {
         if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");

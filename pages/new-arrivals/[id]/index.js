@@ -20,30 +20,11 @@ function NewArrivalsIdPage(props) {
     const [carousal, setCarousal] = useState(props.carousal);
     const [mobile, setMobile] = useState(false);
     const router = useRouter()
+
     React.useEffect(() => {
         setMobile(isMobile)
     }, [])
-    /*
-        {
-            ""ProductId"": ""Outerwear-Gallant-Suit-Set-FullSuitSet"",
-            ""CategoryId"": ""c_06"",
-            ""Name"": ""Gallant Suit Set"",
-            ""TagLine"": ""Full Suit Set"",
-            ""Discount"": ""0"",
-            ""Price"": ""6250"",
-            ""USDPrice"": ""45"",
-            ""isStock"": ""true"",
-            ""asset_id"": ""Outerwear-Gallant-Suit-Set-FullSuitSet"",
-            ""is_sale"": false,
-            ""is_international"": ""international"",
-            ""hide_sizes"": [
-                """"
-            ],
-            ""look_thumb"": ""/assets/Outerwear-Gallant-Suit-Set-FullSuitSet/new.jpg"",
-            ""look_mo_thumb"": ""/assets/Outerwear-Gallant-Suit-Set-FullSuitSet/mo.new.jpg""
-        }
-*/
-    console.log("DATA", data)
+
     useEffect(() => {
         const fetchData = async () => {
             let gotData = false;

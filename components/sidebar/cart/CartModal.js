@@ -9,6 +9,7 @@ import ReturnAndFaq from "./ReturnAndFAQ";
 import MediaBuzz from "./MediaBuzz";
 import Testimonials from "./Testimonials";
 import 'swiper/css';
+import {useRouter} from "next/router";
 
 const BareHeading = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -20,7 +21,7 @@ const BareHeading = () => {
             <Link href={"/"}>
                 <div className={"bg-[#ffffffe6]"}>
                     <span className="relative w-16 h-8 inline-block">
-                        <Image src={WEBASSETS +'/assets/images/SALT_logo.png'} layout="fill" objectFit="contain"/>
+                        <Image src={WEBASSETS + '/assets/images/SALT_logo.png'} layout="fill" objectFit="contain"/>
                     </span>
                 </div>
             </Link>
@@ -29,65 +30,14 @@ const BareHeading = () => {
 }
 
 function CartModal(props) {
+    const router = useRouter();
     const {dataStore, updateDataStore} = React.useContext(AppWideContext);
     const {closeModal} = props;
     const [tailoredProduct, setTailoredProduct] = React.useState(null)
     const [showEditTailored, setShowEditTailored] = React.useState(false)
     const [showViewTailored, setShowViewTailored] = React.useState(false)
 
-    dataStore.userCart ? console.log(dataStore.userCart) : console.log("Cart empty") // TODO to be removed during integrations
-
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
-
-    let mockProduct = [
-        {
-            asset_id: "/assets/Dresses-Bobby-FauxWrapPolkaDress/thumb.jpg",
-            cart_id: "Dresses-Bobby-FauxWrapPolkaDress+X",
-            color: {name: "MULTICOLOR"},
-            is_tailor: false,
-            multi_color: false,
-            name: "Bobbyl",
-            order: {
-                dress_length: "",
-                is_sale: false,
-                is_tailor: false,
-                product_id: "Dresses-Bobby-FauxWrapPolkaDress",
-                qty: "1",
-                size: "XS",
-                sleeve_length: ""
-            },
-            price: 2950,
-            product_id: "Dresses-Bobby-FauxWrapPolkaDress",
-            qty: "1",
-            size: "XS",
-            tag_line: "Faux Wrap Polka Dress",
-            usd_price: 52,
-        },
-        {
-            asset_id: "/assets/Dresses-Bobby-FauxWrapPolkaDress/thumb.jpg",
-            cart_id: "Dresses-Bobby-FauxWrapPolkaDress+XS",
-            color: {name: "MULTICOLOR"},
-            is_tailor: false,
-            multi_color: false,
-            name: "Bobby",
-            order: {
-                dress_length: "",
-                is_sale: false,
-                is_tailor: false,
-                product_id: "Dresses-Bobby-FauxWrapPolkaDress",
-                qty: "1",
-                size: "XS",
-                sleeve_length: ""
-            },
-            price: 2950,
-            product_id: "Dresses-Bobby-FauxWrapPolkaDress",
-            qty: "1",
-            size: "XS",
-            tag_line: "Faux Wrap Polka Dress",
-            usd_price: 52,
-        },
-    ] //TODO to be removed during integrations
 
     const quickEditTailored = (p) => {
         setTailoredProduct(p)
@@ -114,34 +64,38 @@ function CartModal(props) {
         closeTailored()
     }
 
-
+    console.log(dataStore.userCart)
+    let total = 0;
+    dataStore.userCart.forEach((item) => {
+        total += item.qty * (dataStore.currCurrency === "inr" ? item.price : item.usd_price)
+    })
     const mobileView = () => {
         let returnValue =
             <div className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden m-1 p-2">
-                <div className={`text-center font-600 tracking-wider px-1 border-2 border-solid`}>
+                <div className={`text-center font-600 tracking-wider px-1 border-2 border-solid relative`}>
                     {
                         dataStore.userCart.length > 0
                             ? <>
                                     <span className={"flex justify-between items-center"}>
                                         <span className={" pt-1"}> YOUR CART: </span>
-                                        <span className={" pt-1"}>{dataStore.currSymbol} 1000</span>
-                                            <Link href={"/"}>
-                                                <span className={`w-5 h-5 relative`}>
-                                                    <Image src={WEBASSETS + "/assets/images/cancel.png"} layout="fill" objectFit="contain"/>
-                                                </span>
-                                            </Link>
+                                        <span className={" pt-1"}>{dataStore.currSymbol} {total}</span>
+                                        <span className={`w-5 h-5 relative`} onClick={() => router.back()}>
+                                            <Image src={WEBASSETS + "/assets/images/cancel.png"} layout="fill" objectFit="contain"/>
+                                        </span>
                                     </span>
                                 <div className={"my-1 border-solid border-b-2 border-neutral-300"}/>
-                                <ProductCartView mockData={dataStore.userCart} isMobile={props.isMobile}/>
+                                <ProductCartView isMobile={props.isMobile}/>
 
                             </>
                             : <>
-                                <a className={`w-7 h-7 absolute right-[4%] p-1.5`} href={"/"}>
-                                    <img
+                                <span className={`w-4 h-4 block absolute right-1 top-1`} onClick={() => router.back()}>
+                                    <Image
                                         src={WEBASSETS + "/assets/images/cancel.png"}
                                         alt="cancel"
+                                        layout="fill"
+                                        objectFit="contain"
                                     />
-                                </a>
+                                </span>
                                 <p className={`px-1 text-sm mt-3 mb-6 text-center`}>YOUR CART {qtyInCart(dataStore)}</p>
 
                                 <span className={`block relative w-16 h-16 mx-auto mb-4`}>
@@ -157,11 +111,8 @@ function CartModal(props) {
                                 <p className={`text-sm mb-4 px-1`}>There is nothing in your cart. Let&apos;s add some
                                     items.</p>
                                 <Link href="/new-arrivals/all">
-                                    <a
-                                        className="flex justify-center underline uppercase text-sm mt-8"
-                                        onClick={updateDataStore("userCart", mockProduct)} //  TODO to be removed during integrations
-                                    >
-                                        Continue Shoppings
+                                    <a className="flex justify-center underline uppercase text-sm mt-8">
+                                        Continue Shopping
                                     </a>
                                 </Link>
                             </>
@@ -170,18 +121,14 @@ function CartModal(props) {
                 </div>
                 {dataStore.userCart.length > 0 ?
                     <div className={"inline-flex w-full text-center m-auto my-6"}>
-                        <Link href="/users/checkoutpage">
-                            <a
-                                className="flex-1 w-full px-1 py-1 text-xs"
-                            >
+                        <Link href="/new-arrivals/all">
+                            <a className="flex-1 w-full px-1 py-1 text-xs">
                                 Continue<br/>
                                 Shopping
                             </a>
                         </Link>
                         <Link href="/users/checkoutpage">
-                            <a
-                                className="flex-1 text-white bg-black w-full px-1 py-1 text-xs"
-                            >
+                            <a className="flex-1 text-white bg-black w-full px-1 py-1 text-xs">
                                 PROCEED&nbsp;TO<br/>
                                 CHECKOUT
                             </a>
@@ -300,16 +247,6 @@ function CartModal(props) {
                     className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden ml-auto p-4"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {/*<button className={`w-8 h-8 float-right`} onClick={closeModal}>*/}
-                    {/*    <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} viewBox="0 0 24 24">*/}
-                    {/*        <path*/}
-                    {/*            d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>*/}
-                    {/*    </svg>*/}
-                    {/*</button>
-
-                     TODO to be removed as Website doesn't have this comp.
-
-                    */}
 
                     <div className={`text-center font-600 tracking-wider mb-10`}>
                         <p className={`text-sm mb-6`}>YOUR CART {qtyInCart(dataStore)}</p>

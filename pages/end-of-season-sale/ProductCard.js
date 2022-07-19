@@ -1,24 +1,29 @@
-import React, {useContext, useState} from 'react';
-import WishListButton from "../common/WishListButton";
+import React, {Fragment, useContext, useState} from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
-import Toast from "../common/Toast";
 import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 import returnSizes from "../../helpers/returnSizes";
-import {Fragment} from "react";
 import ReactDom from "react-dom";
-import NotifyMeModal from "../common/NotifyMeModal";
 import getUserO from "../../helpers/getUserO";
+import WishListButton from "../../components/common/WishListButton";
+import NotifyMeModal from "../../components/common/NotifyMeModal";
+import Toast from "../../components/common/Toast";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
         <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
+        {
+            props.outOfStock && <span className={"absolute bg-white text-xs text-[#C69565] left-[50%] top-[50%] px-2 translate-y-[-50%] translate-x-[-50%]"}>
+                    SOLD OUT
+            </span>
+        }
     </span>
 )
 
-const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
+const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
+
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
@@ -26,6 +31,8 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings("currency_data");
     const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const inr = currencyData["inr"].curr_symbol;
+    const usd = currencyData["usd"].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
@@ -61,7 +68,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                 dress_length: ""
             }
             const displayCart = {
-                asset_id: "/assets/" + prod.asset_id + "/new.jpg",
+                asset_id: prod.single_view_img,
                 product_id: prod.asset_id,
                 cart_id: prod.product_id + "+" + currSize,
                 name: prod.name,
@@ -112,46 +119,34 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     }
 
     if (isMobile) {
-        if (wide) {
-            return <div className={"relative rounded-3xl bg-white overflow-hidden mx-10 my-6 shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]"}>
-                {prod.is_prod_new && <span
-                    className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
-                <Link href={"/" + prod.asset_id}>
-                    <a className={`block z-0`} id={prod.asset_id}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.name}/>
-                        <div className={`flex px-5 items-center leading-none py-3`}>
-                            <div className='flex-1'>
-                                <p className={`font-600 font-cursive italic`}>{prod.name}</p>
-                                <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
-                            </div>
-                            <div className='inline-flex flex-col items-center'>
-                                <p className={`text-xs`}>
-                                    {currencySymbol}
-                                    {(currCurrency === "inr") ? prod.price : prod.usd_price}
-                                </p>
-                                <WishListButton pid={prod.asset_id}/>
-                            </div>
-                        </div>
-                    </a>
-                </Link>
-            </div>
-        }
         return <div className={"relative"}>
-            <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id}/>
-            {prod.is_prod_new && <span
-                className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 -left-2 font-bold"}>NEW</span>}
+            <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true}/>
             <Link href={"/" + prod.asset_id}>
                 <a className={`block text-center z-0`} id={prod.asset_id}>
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.name} portrait={true}/>
+                        <ShopDataBlockImage src={WEBASSETS + prod.look_thumb} alt={prod.name} portrait={true} outOfStock={prod.in_stock !== "true"}/>
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
-                        <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
                         <p className={`text-xs`}>
-                            {currencySymbol}
-                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                            <span>
+                                {
+                                    (currCurrency === "inr" || !prod.usd_price) ?
+                                        <>
+                                            {inr}
+                                            <span className={prod.sale_price ? "line-through" : ""}>{prod.price}</span>
+                                            {
+                                                prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
+                                            }
+                                        </>
+                                        :
+                                        <>{usd} {prod.usd_price}</>
+                                }
+                            </span>
+                        </p>
+                        <p className={"text-xs"}>
+                            {prod.inv_class}
                         </p>
                     </div>
                 </a>
@@ -178,7 +173,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -188,10 +183,8 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
         </div>
     }
 
-
     return (
         <>
-
             <div className={`block bg-white text-center relative z-0`} id={prod.asset_id}>
                 <div
                     onMouseEnter={() => {
@@ -203,11 +196,11 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                     }}
                     className={`group relative`}
                 >
-                    <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id}/>
+                    <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id} isMobile={false}/>
                     <Link href={"/" + prod.asset_id}>
                         <a>
                             <ShopDataBlockImage
-                                src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.new.jpg" : "/new.jpg")}
+                                src={WEBASSETS + (expandShop ? prod.look_mo_thumb : prod.look_thumb)}
                                 alt={prod.name} portrait={portrait}/>
                         </a>
                     </Link>
@@ -216,26 +209,30 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                         : null
                     }
                     <div className="grid grid-cols-2 items-center h-16">
-                        {expandShop
-                            ? (prod.in_stock === "true")
-                                ? <Fragment>
-                                    <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
-                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                         onClick={() => addToCart("", true)}>
-                                        <span className={`uppercase`}>Add to bag</span>
-                                        <p className={`text-xs`}>
-                                            {currencySymbol}
-                                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
-                                        </p>
-                                    </div>
-                                </Fragment>
-                                : <Fragment>
-                                    <button className={`font-800`}>SOLD OUT</button>
-                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                         onClick={() => setShowNotifyMe(true)}>
-                                        <span className={`uppercase`}>NOTIFY ME</span>
-                                    </div>
-                                </Fragment>
+                        {(expandShop)
+                            ? <Fragment>
+                                {(prod.in_stock === "true")
+                                    ? <Fragment>
+                                        <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
+                                        <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
+                                             onClick={() => addToCart("", true)}>
+                                            <span className={`uppercase`}>Add to bag</span>
+                                            <p className={`text-xs`}>
+                                                {currencySymbol}
+                                                {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                            </p>
+                                        </div>
+                                    </Fragment>
+                                    : <Fragment>
+                                        <button className={`font-800`}>SOLD OUT</button>
+                                        <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
+                                             onClick={() => setShowNotifyMe(true)}>
+                                            <span className={`uppercase`}>NOTIFY ME</span>
+                                        </div>
+                                    </Fragment>
+                                }
+                            </Fragment>
+
                             : <div className={`col-span-2`}>
                                 <p className={`text-h5 font-500`}>{prod.name}</p>
                                 <p className={`text-sm font-500`}>{prod.tag_line}</p>
@@ -264,4 +261,4 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     );
 };
 
-export default MimotoProductCard;
+export default ProductCard;

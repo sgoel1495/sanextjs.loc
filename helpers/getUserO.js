@@ -13,7 +13,7 @@ const getUserO = (dataStore,alternate=false, contact=false) => {
             is_guest: true,
             temp_user_id: tempId
         }
-    console.log("Starting Out ",userO)
+    // console.log("Starting Out ",userO)
     if (dataStore) {
         if(contact)
             userO = {
@@ -27,7 +27,7 @@ const getUserO = (dataStore,alternate=false, contact=false) => {
                 is_guest: !(dataStore.userData.contact),
                 temp_user_id: (dataStore.userServe.temp_user_id)? dataStore.userServe.temp_user_id : tempId
             }
-        console.log("Have DataStore ",userO)
+        // console.log("Have DataStore ",userO)
         if(alternate && !dataStore.userData.contact){
             userO.is_guest = true
             if(dataStore.userServe.email!==""){
@@ -46,10 +46,10 @@ const getUserO = (dataStore,alternate=false, contact=false) => {
                 else
                     userO.email=dataStore.currentOrderInCart.address.email
             }
-            console.log("Have Alternate ",userO)
+            // console.log("Have Alternate ",userO)
         }
     }
-    console.log("USER OBJECT",userO)
+    // console.log("USER OBJECT",userO)
     return userO
 }
 export default getUserO

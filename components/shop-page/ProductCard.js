@@ -96,7 +96,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
             } else {
                 if (dataStore.userData.contact) {
                     // logged in user
-                    await addToCartLoggedIn(dataStore.apiToken, userO, cart, updateDataStore)
+                    await addToCartLoggedIn(dataStore.apiToken, userO, {cart: cart}, updateDataStore)
                 } else {
                     //not logged in
                     dataStore.userCart.push(displayCart)

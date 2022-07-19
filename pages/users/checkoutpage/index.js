@@ -19,22 +19,22 @@ import compareDecimalNumbers from "../../../helpers/compareDecimalNumbers";
 import Image from "next/image";
 import AdditionalSizeDetail from "../../../components/checkout-page/mobile-view/AdditionalSizeDetails";
 import OrderDetails from "../../../components/checkout-page/mobile-view/OrderDetails";
+import {useRouter} from "next/router";
 
 function UsersCheckoutPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
-
-    useEffect(() => {
-        if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === "")) updateDataStore("currentOrderId", Date.now().toString());
-    }, [dataStore, updateDataStore]);
-
+    const router = useRouter();
     const [addressComplete, setAddressComplete] = useState(false);
     const [giftPaymentComplete, setGiftPaymentComplete] = useState(false);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
     const [showOTPModal, setShowOTPModal] = useState(false);
-
     const [active, setActive] = useState(1);
+
+    useEffect(() => {
+        if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === "")) updateDataStore("currentOrderId", Date.now().toString());
+    }, [dataStore, updateDataStore]);
 
     const updateAddressForOrder = async () => {
         const userO = getUserO(dataStore, true, true);
@@ -151,8 +151,10 @@ function UsersCheckoutPage() {
     const mobileView = (
         <div>
             <div className='flex flex-row justify-between pt-5 px-3'>
-                <div>
-                    <Link href='/homepage/cart'>Back </Link>
+                <div className='flex items-center'>
+                    <span className={"px-2 font-600 border-2"} onClick={router.goBack}>
+                        {"<"}
+                    </span>
                 </div>
                 <div className=''>
                     <Link href='/'>

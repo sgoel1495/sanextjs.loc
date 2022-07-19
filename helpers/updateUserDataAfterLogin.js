@@ -72,13 +72,13 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     //==================== user Cart
     // we may have products that we need to add to user
     // first we add any measurements that may be there.
-    console.log("CURRENT CART",currentCart)
+    // console.log("CURRENT CART",currentCart)
     for(let x=0;x<currentCart.length;x++){
         const newCart = currentCart[x].order
         newCart.qty = currentCart[x].qty
-        console.log("INSERTING product to cart",newCart)
+        // console.log("INSERTING product to cart",newCart)
         const callResult = await apiCall("addToCart", apiToken, { user: userO, cart: newCart })
-        console.log("CALL RESULT",callResult)
+        // console.log("CALL RESULT",callResult)
     }
 
     let userCart = [];
@@ -109,19 +109,19 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
         "user":{contact:username,token:apiToken}
     });
-    console.log("ORDER HISTORY CALL",orderHistoryCall)
+    // console.log("ORDER HISTORY CALL",orderHistoryCall)
     let userOrderHistory = {};
     if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && orderHistoryCall.response!="user not found"
         && Object.keys(orderHistoryCall.response).length>0)
         userOrderHistory = {...orderHistoryCall.response}
 
-    console.log("userData",userData);
-    console.log("userWallet",userWallet);
-    console.log("userServe",userServe);
-    console.log("userAddresses",userAddresses);
-    console.log("userCart",userCart);
-    console.log("userMeasurements",userMeasurements);
-    console.log("userOrderHistory",userOrderHistory);
+    // console.log("userData",userData);
+    // console.log("userWallet",userWallet);
+    // console.log("userServe",userServe);
+    // console.log("userAddresses",userAddresses);
+    // console.log("userCart",userCart);
+    // console.log("userMeasurements",userMeasurements);
+    // console.log("userOrderHistory",userOrderHistory);
 
     return {
         "userData":userData,
