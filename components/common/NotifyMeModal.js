@@ -82,8 +82,8 @@ function NotifyMeModal({closeModal, isMobile, userO, product, setError}) {
                 }
             </div>
         </div>
-
     </div>
+
     const browserView = () => {
         return (
             <div className="bg-transparent h-screen w-screen fixed inset-0 z-50 grid items-start justify-center" onClick={() => closeModal(false)}>
