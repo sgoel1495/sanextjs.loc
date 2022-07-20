@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../components/swipers/HomePageHeaderSwiper";
@@ -12,13 +12,29 @@ function EndOfSeasonSale(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [mobile, setMobile] = useState(false)
     const [carousal] = useState(props.carousal);
-    const [data] = useState(props.data);
+    const [data,setData] = useState(props.data);
+    const [selected, setSelected] = useReducer((state, e) => {
+        if (e.target.checked) {
+            return Array.from(new Set([...state, e.target.name]))
+        } else {
+            return state.filter(item => item !== e.target.name);
+        }
+    }, [])
 
     useEffect(() => {
         setMobile(isMobile)
     }, [])
 
-    console.log(data)
+    useEffect(() => {
+        if(selected.length){
+            setData(props.data.filter(item => item.inv_sizes.some(s => selected.includes(s))))
+        }
+        else{
+            setData(props.data)
+        }
+    },[selected])
+
+    // console.log(data)
 
     const checkBox_and_label_style = "flex-inline m-1 gap-1"
 
@@ -39,27 +55,27 @@ function EndOfSeasonSale(props) {
             <h4 className={"text-m font-600"}>Filter By Size: </h4>
             <span className={"flex gap-3"}>
                 <div className={"flex-inline gap-1"}>
-                    <input type="checkbox"/>
+                    <input type="checkbox" name={"XS"} onChange={setSelected}/>
                     <label className={"mx-1"}>XS</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
-                    <input type="checkbox"/>
+                    <input type="checkbox" name={"S"} onChange={setSelected}/>
                     <label className={"mx-1"}>S</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
-                    <input type="checkbox"/>
+                    <input type="checkbox" name={"M"} onChange={setSelected}/>
                     <label className={"mx-1"}>M</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
-                    <input type="checkbox"/>
+                    <input type="checkbox" name={"L"} onChange={setSelected}/>
                     <label className={"mx-1"}>L</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
-                    <input type="checkbox"/>
+                    <input type="checkbox" name={"XL"} onChange={setSelected}/>
                     <label className={"mx-1"}>XL</label>
                 </div>
                 <div className={"flex-inline gap-1"}>
-                    <input type="checkbox"/>
+                    <input type="checkbox" name={"XXL"} onChange={setSelected}/>
                     <label className={"mx-1"}>XXL</label>
                 </div>
             </span>
@@ -102,6 +118,6 @@ export async function getStaticProps() {
         props: {
             data: await fetchData()
         },
-        revalidate: 5
+        revalidate: 50
     }
 }
