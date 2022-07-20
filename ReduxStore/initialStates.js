@@ -1,281 +1,22 @@
-import {useContext} from "react";
-import AppWideContext from "../store/AppWideContext";
-
-
 export const userState = {
     basicDetails: {
-        user_name: '',
-        email: '',
-        phone_number: '',
-        birthday: '',
-        anniversary: '',
-        defaultAddress: {},
-        otherAddresses: [
-            {
-                "name": "Dhiraj",
-                "lastname": "Pandey",
-                "email": "shubham@webologics.com",
-                "phone": "07751023687",
-                "address": "603, Raviraj greeneria",
-                "landmark": "sddsf",
-                "country": "India",
-                "zip_code": "411013",
-                "state": "Maharashtra",
-                "city": "Pune"
-            },                                  //address at zero index is defaultAddress
-            {
-                "name": "Rahul",
-                "lastname": "Bhatt",
-                "email": "shubham@webologics.com",
-                "phone": "123456789",
-                "address": "Plot 161, Second Floor, Nitikhand-1, Indirapuram",
-                "landmark": "test2",
-                "country": "India",
-                "zip_code": "201014",
-                "state": "Uttar Pradesh",
-                "city": "Ghaziabad"
-            }
-        ],
+        "email": "",
+        "phone_number": "",
+        "user_name": "",
+        "favorites": [],
+        "cart": {},
+        "ref_id": null,
+        "temp_user_id": null,
     },
-    interactiveDetails: {
-        wallet: {
-            "WalletAmount": 0,
-            "TotalCr": 0,
-            "TotalDr": 0,
-            "Wallet": []
-        },
-        favorites: [
-            "Outerwear-Witty-Lavender-Cleanfrontblazer",
-            "Tops-Gloaming-PleatedV-NeckTop",
-            "Dresses-Felicity-PanelledSheathDress",
-            "Dresses-Crescent-ColourBlockDress"
-        ],
-        measurements: {
-            "1657794644681_1": {
-                "measure_id": "1657794644681_1",
-                "bust": "",
-                "waist": "",
-                "hips": "",
-                "height_f": "",
-                "height_i": "",
-                "biceps": "",
-                "wearing_waist": "",
-                "length": "",
-                "abdomen": "",
-                "size": "",
-                "jeans_pant": "",
-                "brand_top": "",
-                "brand_top_other": "",
-                "brand_top_size": "",
-                "brand_top_size_other": "",
-                "brand_pant": "",
-                "brand_pant_other": "",
-                "brand_pant_size_other": "",
-                "brand_pant_size": "",
-                "brand_dress": "",
-                "brand_dress_other": "",
-                "brand_dress_size": "",
-                "brand_dress_size_other": "",
-                "shoulder": "",
-                "fitting": "",
-                "selected_sleeve": "",
-                "selected_length": "",
-                "biceps_fit": ""
-            },
-            "1657810786991_1": {
-                "measure_id": "1657810786991_1",
-                "bust": "",
-                "waist": "",
-                "hips": "",
-                "height_f": "",
-                "height_i": "",
-                "biceps": "",
-                "wearing_waist": "",
-                "length": "",
-                "abdomen": "",
-                "size": "",
-                "jeans_pant": "",
-                "brand_top": "",
-                "brand_top_other": "",
-                "brand_top_size": "",
-                "brand_top_size_other": "",
-                "brand_pant": "",
-                "brand_pant_other": "",
-                "brand_pant_size_other": "",
-                "brand_pant_size": "",
-                "brand_dress": "",
-                "brand_dress_other": "",
-                "brand_dress_size": "",
-                "brand_dress_size_other": "",
-                "shoulder": "",
-                "fitting": "",
-                "selected_sleeve": "",
-                "selected_length": "",
-                "biceps_fit": ""
-            },
-            "1657860972120_1": {
-                "measure_id": "1657860972120_1",
-                "bust": "",
-                "waist": "",
-                "hips": "",
-                "height_f": "",
-                "height_i": "",
-                "biceps": "",
-                "wearing_waist": "",
-                "length": "",
-                "abdomen": "",
-                "size": "",
-                "jeans_pant": "",
-                "brand_top": "",
-                "brand_top_other": "",
-                "brand_top_size": "",
-                "brand_top_size_other": "",
-                "brand_pant": "",
-                "brand_pant_other": "",
-                "brand_pant_size_other": "",
-                "brand_pant_size": "",
-                "brand_dress": "",
-                "brand_dress_other": "",
-                "brand_dress_size": "",
-                "brand_dress_size_other": "",
-                "shoulder": "",
-                "fitting": "",
-                "selected_sleeve": "",
-                "selected_length": "",
-                "biceps_fit": ""
-            },
-            "1657861134978_1": {
-                "measure_id": "1657861134978_1",
-                "bust": "",
-                "waist": "",
-                "hips": "",
-                "height_f": "",
-                "height_i": "",
-                "biceps": "",
-                "wearing_waist": "",
-                "length": "",
-                "abdomen": "",
-                "size": "",
-                "jeans_pant": "",
-                "brand_top": "",
-                "brand_top_other": "",
-                "brand_top_size": "",
-                "brand_top_size_other": "",
-                "brand_pant": "",
-                "brand_pant_other": "",
-                "brand_pant_size_other": "",
-                "brand_pant_size": "",
-                "brand_dress": "",
-                "brand_dress_other": "",
-                "brand_dress_size": "",
-                "brand_dress_size_other": "",
-                "shoulder": "",
-                "fitting": "",
-                "selected_sleeve": "",
-                "selected_length": "",
-                "biceps_fit": ""
-            },
-            "1657733391010_1": {
-                "measure_id": "1657733391010_1",
-                "bust": "",
-                "waist": "",
-                "hips": "",
-                "height_f": "",
-                "height_i": "",
-                "biceps": "",
-                "wearing_waist": "",
-                "length": "",
-                "abdomen": "",
-                "size": "",
-                "jeans_pant": "",
-                "brand_top": "",
-                "brand_top_other": "",
-                "brand_top_size": "",
-                "brand_top_size_other": "",
-                "brand_pant": "",
-                "brand_pant_other": "",
-                "brand_pant_size_other": "",
-                "brand_pant_size": "",
-                "brand_dress": "",
-                "brand_dress_other": "",
-                "brand_dress_size": "",
-                "brand_dress_size_other": "",
-                "shoulder": "",
-                "fitting": "",
-                "selected_sleeve": "",
-                "selected_length": "",
-                "biceps_fit": ""
-            },
-            "1657871844062_1": {
-                "measure_id": "1657871844062_1",
-                "bust": "",
-                "waist": "",
-                "hips": "",
-                "height_f": "",
-                "height_i": "",
-                "biceps": "",
-                "wearing_waist": "",
-                "length": "",
-                "abdomen": "",
-                "size": "",
-                "jeans_pant": "",
-                "brand_top": "",
-                "brand_top_other": "",
-                "brand_top_size": "",
-                "brand_top_size_other": "",
-                "brand_pant": "",
-                "brand_pant_other": "",
-                "brand_pant_size_other": "",
-                "brand_pant_size": "",
-                "brand_dress": "",
-                "brand_dress_other": "",
-                "brand_dress_size": "",
-                "brand_dress_size_other": "",
-                "shoulder": "",
-                "fitting": "",
-                "selected_sleeve": "",
-                "selected_length": "",
-                "biceps_fit": ""
-            },
-            "1657782241018_1": {
-                "measure_id": "1657782241018_1",
-                "bust": "11",
-                "waist": "11",
-                "hips": "11",
-                "height_f": "4",
-                "height_i": "1",
-                "biceps": "13",
-                "wearing_waist": "11",
-                "length": "",
-                "abdomen": "",
-                "size": "",
-                "jeans_pant": "32",
-                "brand_top": "Zara",
-                "brand_top_other": "",
-                "brand_top_size": "EU 36",
-                "brand_top_size_other": "",
-                "brand_pant": "Marks & Sprencer's",
-                "brand_pant_other": "",
-                "brand_pant_size_other": "",
-                "brand_pant_size": "EU 44",
-                "brand_dress": "Van Heusen",
-                "brand_dress_other": "",
-                "brand_dress_size": "EU 38",
-                "brand_dress_size_other": "",
-                "shoulder": "14.5",
-                "fitting": "",
-                "selected_sleeve": "",
-                "selected_length": "",
-                "biceps_fit": ""
-            }
-        }
-    }
+    defaultAddress: {},
+    otherAddresses: [],
+    wallet: {},
+    measurements: {}
 }
 
-// userPreferences type  and basicDetails
 
-
-export const configState = {
+export const appConfigState = {
+    "token":'',
     "currCurrency": '',
     "currSymbol": "₹",
     "mobile": false,
@@ -356,37 +97,12 @@ export const configState = {
 }
 
 
-export const userCartState = {
-    "cart": [
-        {
-            "product_id": "Giftcards-2000-Voucher",
-            "size": "F",
-            "qty": 2,
-            "cart_id": "Giftcards-2000-Voucher+F",
-            "asset_id": "/assets/Giftcards-2000-Voucher/thumb.jpg",
-            "tag_line": "",
-            "color": {
-                "name": "White",
-                "code": "#fff"
-            },
-            "name": "Gift 2000",
-            "price": 2000,
-            "usd_price": 28
-        }
-    ]
+export const shoppingCartState = {
+    cart: []
 }
 
 export const ordersState = {
-    "currentOrder": {
-        "address": {},
-        "measurement": {},
-        "account": {},
-        "order": {},
-        "payment": {},
-        "shipping_fee": 0,
-        "otp_verified": false
-    },
-    "pastOrders": {},
+    orderHistory: {}
 }
 
 

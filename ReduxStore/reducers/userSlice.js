@@ -10,16 +10,23 @@ const userSlice = createSlice({
         //         state.token = action.payload;
         //     }
         // },
-        setBasicDetails: (state, action) => {
-            state.basicDetails = action.payload;
+        setUsername: (state, action) => {
+            state.basicDetails = action.payload
         },
-        addOtherAddress: (state, action) => {
-            state.otherAddresses.push(action.payload)
+        setUserWallet: (state, action) => {
+            state.wallet = {...action.payload}
+        },
+        setBasicDetails: (state, action) => {
+            state.basicDetails = {...action.payload};
+        },
+        setOtherAddress: (state, action) => {
+            state.basicDetails.otherAddresses = [...action.payload]
         },
         setDefaultAddress: (state, action) => {
-            state.defaultAddress = {}
-            state.defaultAddress = {...action.payload}
+            state.basicDetails.defaultAddress = {...action.payload}
+        },
+        setMeasurements: (state, action) => {
+            state.measurements = {...action.payload}
         }
-
     }
 })
