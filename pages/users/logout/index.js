@@ -1,9 +1,9 @@
 import AppWideContext from "../../../store/AppWideContext";
-import { useRouter } from "next/router";
-import { Fragment, useContext, useEffect } from "react";
+import {useRouter} from "next/router";
+import {Fragment, useContext, useEffect} from "react";
 
 function UsersLogoutPage() {
-    const { updateDataStore } = useContext(AppWideContext);
+    const {updateDataStore} = useContext(AppWideContext);
     const router = useRouter();
     useEffect(() => {
         const userData = {
@@ -13,7 +13,7 @@ function UsersLogoutPage() {
             "WalletAmount": 0,
             "TotalCr": 0,
             "TotalDr": 0,
-            "Wallet":[]
+            "Wallet": []
         };
         const userServe = {
             "email": "",
@@ -41,6 +41,7 @@ function UsersLogoutPage() {
         updateDataStore("userMeasurements", userMeasurements);
         router.replace("/");
     }, [router, updateDataStore])
+
     return <Fragment>Logging out ...</Fragment>;
 }
 
