@@ -54,7 +54,7 @@ const ProductDetails = ({data, hpid}) => {
             return;
         }
         const cart = {
-            "product_id": data.gc_asset_id,
+            "product_id": data.product_id,
             "size": size,
             "qty": 1,
             "is_sale": data.is_sale,
@@ -62,7 +62,7 @@ const ProductDetails = ({data, hpid}) => {
             "sleeve_length": customization['sleeve'],
             "dress_length": customization['dress']
         }
-        addToCart(dataStore, updateDataStore, {card: cart}).then(r => {
+        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
         })
         router.push("/homepage/cart")
     }
