@@ -189,7 +189,7 @@ const navigationDataInit = [
             },
             {
                 title: `CONTACT US`,
-                link: `/salt/about-us/contact-us`
+                link: `/salt/contact-us`
             }
         ]
     },
@@ -434,7 +434,7 @@ const mobileNavigationDataInit = [
             },
             {
                 title: `CONTACT US`,
-                link: `/salt/about-us/contact-us`
+                link: `/salt/contact-us`
             }
         ]
     },
