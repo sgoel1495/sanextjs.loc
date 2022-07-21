@@ -121,7 +121,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
     if (isMobile) {
         return <div className={"relative"}>
             <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true}/>
-            <Link href={"/" + prod.asset_id}>
+            <Link href={"/" + (prod.is_sale ? prod.product_id : prod.asset_id)}>
                 <a className={`block text-center z-0`} id={prod.asset_id}>
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
@@ -135,9 +135,9 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                     (currCurrency === "inr" || !prod.usd_price) ?
                                         <>
                                             {inr}
-                                            <span className={prod.sale_price ? "line-through" : ""}>{prod.price}</span>
+                                            <span className={prod.is_sale ? "line-through" : ""}>{prod.price}</span>
                                             {
-                                                prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
+                                                prod.is_sale && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
                                             }
                                         </>
                                         :

@@ -28,31 +28,39 @@ export async function getUserObject(dataStore, updateDataStore) {
 }
 
 export async function checkItemInCart(userCart, product, isGC) {
+    console.log(product)
     let similarItems = userCart.filter(item => item.product_id === product.product_id)
-    if (isGC) {
-        return similarItems.find((item) => {
+    return similarItems.find((item) => {
+        let flag = true
+        if (isGC) {
             // let keys = ["sender_name", "sender_email", "sender_telephone", "recipient_name", "recipient_email", "recipient_telephone", "message"]
-            let flag = true
+
             // keys.forEach((key) => {
             //     if (item[key] !== product[key] && flag) {
             //         flag = false
             //     }
             // })
-            return flag
-        })
-    } else {
-
-    }
-
+        } else {
+            if (item.is_tailor) {
+                let keys = ["size", "sleeve_length", "dress_length"]
+                keys.forEach((key) => {
+                    if (item[key] !== product[key] && flag) {
+                        flag = false
+                    }
+                })
+            }
+        }
+        return flag
+    })
 }
 
 export async function addToCart(dataStore, updateDataStore, cart, apiName = "addToCart") {
-
+    console.log(cart)
     let user = await getUserObject(dataStore, updateDataStore)
 
     //update payload and apiname if item already in cart
     let isGC = apiName === "addGiftToCart";
-    let item = await checkItemInCart(dataStore.userCart, cart[isGC ? "giftcard_details" : "cart"], apiName === "addGiftToCart")
+    let item = await checkItemInCart(dataStore.userCart, cart[isGC ? "giftcard_details" : "cart"], isGC)
     if (item) {
         cart = {
             "product": {

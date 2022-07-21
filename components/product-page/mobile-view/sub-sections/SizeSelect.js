@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import ReactDom from "react-dom";
 import SizeGuide from "../../SizeGuide";
 import StandardSizeModal from "../StandardSizewModal";
@@ -7,10 +7,9 @@ import MeasurementModal1 from "../../../user/MeasurementModal1";
 import MeasurementModal2 from "../../../user/MeasurementModal2";
 import MeasurementModal3 from "../../../user/MeasurementModal3";
 
-const SizeSelect = ({ data }) => {
+const SizeSelect = ({data, sizeAvail, size, setSize}) => {
     const [showStandardSize, setShowStandardSize] = useState(false);
     const [showModal0, setShowModal0] = useState(false);
-    const [selectedSize, setSelectedSize] = useState(null);
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
@@ -108,19 +107,37 @@ const SizeSelect = ({ data }) => {
 
     return (
         <>
-            <div className={'inline-flex items-center gap-6 mb-5'}>
-                <div
-                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-none rounded-[5vw]'}
-                    onClick={() => {
-                        setShowStandardSize(!showStandardSize);
-                    }}
-                >
-                    <p className={'uppercase font-900 text-xs'}>standard</p>
-                    <p className={' uppercase font-400 text-xs'}>size</p>
+            <div className={'inline-flex items-center gap-6 mb-5 text-[#5a5958] tracking-widest'}>
+                <div>
+                    <span className={"uppercase text-xs font-900 block text-center mb-1 text-[#4eb16d]"}>
+                        {
+                            size && "selected"
+                        }
+                    </span>
+                    <div
+                        className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [size ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"]}
+                        onClick={() => {
+                            setShowStandardSize(!showStandardSize);
+                        }}
+                    >
+                        {
+                            size ? <>
+                                    <p className={'uppercase font-900 text-xs'}>standard</p>
+                                    <p className={'uppercase font-900 text-sm'}>{size}</p>
+                                    <p className={' uppercase font-400 text-[10px]'}>edit</p>
+                                </>
+                                :
+                                <>
+                                    <p className={'uppercase font-900 text-xs'}>standard</p>
+                                    <p className={' uppercase font-400 text-xs'}>size</p>
+                                </>
+                        }
+
+                    </div>
                 </div>
                 <p className={''}>OR</p>
                 <div
-                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-none rounded-[5vw]'}
+                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-4 rounded-[5vw]'}
                     onClick={() => {
                         setShowModal0(true);
                     }}
@@ -129,65 +146,66 @@ const SizeSelect = ({ data }) => {
                     <p className={'uppercase font-400 text-xs'}>size</p>
                 </div>
             </div>
-            <p onClick={() => { setSizeModal(true) }} className={'mb-4 uppercase'}>size guide</p>
-            {sizeModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeModal(false)} isMobile={true} />, document.getElementById('measurementmodal'))}
+            <p onClick={() => {
+                setSizeModal(true)
+            }} className={'mb-4 uppercase'}>size guide</p>
+            {sizeModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeModal(false)} isMobile={true}/>, document.getElementById('measurementmodal'))}
             {showStandardSize &&
-                ReactDom.createPortal(
-                    <StandardSizeModal
-                        closeModal={closeModal.bind(this)}
-                        setSizeModal={setSizeModal}
-                        standardSizes={[
-                            { size: 'XS', bust: '32', hips: '35' },
-                            { size: 'S', bust: '34', hips: '37' },
-                        ]}
-                    />,
-                    document.getElementById('measurementmodal'),
-                )}
+            ReactDom.createPortal(
+                <StandardSizeModal
+                    closeModal={closeModal.bind(this)}
+                    setSizeModal={setSizeModal}
+                    standardSizes={sizeAvail}
+                    selected={size}
+                    setSelected={setSize}
+                />,
+                document.getElementById('measurementmodal'),
+            )}
             {showModal0 &&
-                ReactDom.createPortal(
-                    <MeasurementModal0 closeModal={closeModal.bind(this)} isMobile={true} addNew={addNewModal.bind(this)} pastOrders={pastOrdersModal.bind(this)}
-                        measureProduct={currentMeasureProduct} />,
-                    document.getElementById('measurementmodal'),
-                )}
+            ReactDom.createPortal(
+                <MeasurementModal0 closeModal={closeModal.bind(this)} isMobile={true} addNew={addNewModal.bind(this)} pastOrders={pastOrdersModal.bind(this)}
+                                   measureProduct={currentMeasureProduct}/>,
+                document.getElementById('measurementmodal'),
+            )}
             {showModal1 &&
-                ReactDom.createPortal(
-                    <MeasurementModal1
-                        closeModal={closeModal.bind(this)}
-                        isMobile={true}
-                        measurement={currentMeasurement}
-                        lastModal={lastModal.bind(this)}
-                        nextModal={nextModal.bind(this)}
-                        updateValues={updateValues.bind(this)}
-                        product={currentProduct}
-                    />,
-                    document.getElementById('measurementmodal'),
-                )}
+            ReactDom.createPortal(
+                <MeasurementModal1
+                    closeModal={closeModal.bind(this)}
+                    isMobile={true}
+                    measurement={currentMeasurement}
+                    lastModal={lastModal.bind(this)}
+                    nextModal={nextModal.bind(this)}
+                    updateValues={updateValues.bind(this)}
+                    product={currentProduct}
+                />,
+                document.getElementById('measurementmodal'),
+            )}
             {showModal2 &&
-                ReactDom.createPortal(
-                    <MeasurementModal2
-                        closeModal={closeModal.bind(this)}
-                        isMobile={true}
-                        measurement={currentMeasurement}
-                        nextModal={nextModal.bind(this)}
-                        lastModal={lastModal.bind(this)}
-                        updateValues={updateValues.bind(this)}
-                        product={currentProduct}
-                    />,
-                    document.getElementById('measurementmodal'),
-                )}
+            ReactDom.createPortal(
+                <MeasurementModal2
+                    closeModal={closeModal.bind(this)}
+                    isMobile={true}
+                    measurement={currentMeasurement}
+                    nextModal={nextModal.bind(this)}
+                    lastModal={lastModal.bind(this)}
+                    updateValues={updateValues.bind(this)}
+                    product={currentProduct}
+                />,
+                document.getElementById('measurementmodal'),
+            )}
             {showModal3 &&
-                ReactDom.createPortal(
-                    <MeasurementModal3
-                        closeModal={closeModal.bind(this)}
-                        isMobile={true}
-                        measurement={currentMeasurement}
-                        lastModal={lastModal.bind(this)}
-                        saveModal={saveModal.bind(this)}
-                        addTailorToCart={addTailorToCart.bind(this)}
-                        product={currentProduct}
-                    />,
-                    document.getElementById('measurementmodal'),
-                )}
+            ReactDom.createPortal(
+                <MeasurementModal3
+                    closeModal={closeModal.bind(this)}
+                    isMobile={true}
+                    measurement={currentMeasurement}
+                    lastModal={lastModal.bind(this)}
+                    saveModal={saveModal.bind(this)}
+                    addTailorToCart={addTailorToCart.bind(this)}
+                    product={currentProduct}
+                />,
+                document.getElementById('measurementmodal'),
+            )}
         </>
     );
 };
