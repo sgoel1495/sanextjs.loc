@@ -51,6 +51,15 @@ body.scroll-overflow .navigator {
     width: 100%;
 }
 
+.measurementBlock1__sizes__mob{
+    background-image: url('https://saltattire.com/assets/images/illustration.jpg');
+    background-repeat: no-repeat;
+    background-size: 200%;
+    background-position: center;
+    height: 90%;
+    width: 100%;
+}
+
 .size_guide_table{
     @apply w-full table-fixed;
 
