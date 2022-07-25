@@ -188,6 +188,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "updateUserDetails":
+            url += "/users/update_user_details"
+            body = {
+                token: apiToken,
+                ...queryObject
+            }
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "giftcards":
             url += "/giftcards/get_giftcards";
             finalFetcher = {...getFetcher}
@@ -500,6 +510,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "measurmentForReview":
+            url += "/checkout/add_measurment_for_review";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
 
 
         //====================== INSTAGRAM
@@ -546,17 +566,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== COD Payment
-        /* INCORRECT
-    case "codcheckout":
-        url += "/checkout";
-        body = {
-            token: apiToken,
-            ...queryObject
-        };
-        postFetcher.body = JSON.stringify(body);
-        finalFetcher = {...postFetcher}
-        break;
-    */
+        case "codCheckout":
+            url += "/checkout";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
 
         case "codOtp":
             url += "/checkout/send_otp_for_cod";

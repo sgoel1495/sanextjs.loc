@@ -1,4 +1,4 @@
-import React, {useContext, useReducer, useState} from 'react';
+import React, {useContext, useEffect, useReducer, useState} from 'react';
 import WishListButton from '../../../common/WishListButton';
 import AppWideContext from '../../../../store/AppWideContext';
 import appSettings from '../../../../store/appSettings';
@@ -22,6 +22,7 @@ const ProductDetails = ({data, hpid}) => {
     const [deliveryAvailable, setDeliveryAvailable] = useState(null)
     const [size, setSize] = useState(null)
     const [error, setError] = useState(false)
+    const [isTailored, setIsTailored] = useState(false)
     const [customization, setCustomization] = useReducer((state, action) => {
         return {...state, ...action}
     }, {
@@ -58,7 +59,7 @@ const ProductDetails = ({data, hpid}) => {
             "size": size,
             "qty": 1,
             "is_sale": data.is_sale,
-            "is_tailor": false,
+            "is_tailor": isTailored,
             "sleeve_length": customization['sleeve'],
             "dress_length": customization['dress']
         }
@@ -84,7 +85,9 @@ const ProductDetails = ({data, hpid}) => {
         return false;
     }
 
-    console.log(size)
+    useEffect(() => {
+        setIsTailored(customization['sleeve'] !== data.sleeve_length || customization['dress'] !== data.dress_length)
+    }, [customization])
 
     return (
         <div>

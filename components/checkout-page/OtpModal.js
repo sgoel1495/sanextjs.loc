@@ -1,85 +1,80 @@
-import {Fragment, useCallback, useContext, useEffect, useState} from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useReducer, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
-import { apiCall } from "../../helpers/apiCall";
-import getUserO from "../../helpers/getUserO";
+import {apiCall} from "../../helpers/apiCall";
 import Toast from "../common/Toast";
-import { updateUserDataAfterLogin } from "../../helpers/updateUserDataAfterLogin";
 import Loader from "../common/Loader";
+import {getUserObject} from "../../helpers/addTocart";
+import {useRouter} from "next/router";
+import {updateUserDataAfterLogin} from "../../helpers/updateUserDataAfterLogin";
 
 function OtpModal(props) {
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+    const router = useRouter()
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [otp, setOtp] = useState("")
-    const [otpValidity, setOtpValidity] = useState(null)
-    const [canRequestOTPAgain, setCanRequestOTPAgain] = useState(false)
-    const [requestedAgain,setRequestedAgain] = useState(false)
-    const [orderPlaced,setOrderPlaced] = useState(false)
+    const [startCounter, setStartCounter] = useState(false)
     const [placing, setPlacing] = useState(false)
-    const [counter, setCounter] = useState(0)
+    const [counter, setCounter] = useState(30)
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        const current = Date.now()
-        if (otpValidity) {
-            const seconds = Math.floor((otpValidity - current) / 1000) - 1
-            if (otpValidity > current && seconds >= 0) {
-                setTimeout(() => {
-                    setCounter(seconds)
-                }, 1000)
-            } else if (otpValidity <= current || seconds < 0) {
-                setCanRequestOTPAgain(true)
+        let i = 30;
+        let intv;
+        if (startCounter) {
+            setCounter(i);
+            intv = setInterval(() => {
+                if (i > 0) {
+                    setCounter(--i);
+                } else {
+                    clearInterval(intv)
+                    setStartCounter(false)
+                }
+            }, 1000)
+        }
+        return () => {
+            if (intv) {
+                clearInterval(intv)
             }
         }
-    }, [counter, otpValidity])
+    }, [startCounter])
 
     const requestOTP = useCallback(async () => {
+        setCounter(30)
         const otpCall = await apiCall("codOtp", dataStore.apiToken, {
-            user: getUserO(dataStore, true, true),
-            order: { order_id: dataStore.currentOrderId }
+            user: await getUserObject(dataStore, updateDataStore),
+            order: {order_id: dataStore.currentOrderId}
         })
-        if (otpCall.hasOwnProperty("otp_valid_till")) {
-            const validDate = new Date(otpCall.otp_valid_till)
-            //console.log("VALID DATE", validDate)
-            setOtpValidity(validDate.getTime())
-            setCanRequestOTPAgain(false)
-            setCounter(0)
-            return true
-        } else
-            return false
+        if (otpCall.hasOwnProperty("status") && otpCall.status === 200) {
+            setStartCounter(true)
+        }
 
-    },[dataStore])
+    }, [dataStore])
 
     useEffect(() => {
-        if(!otpValidity)
-            requestOTP()
-                .then(resp=>console.log("OTP REQUEST SENT"))
-    },[requestOTP,otpValidity])
-
-    const resendOTP = async () => {
-        await requestOTP()
-        if(!requestedAgain)
-            setRequestedAgain(true)
-    }
+        requestOTP()
+            .then(resp => console.log("OTP REQUEST SENT"))
+    }, [])
 
     const verifyOtp = async () => {
-        if (orderPlaced)
-            return
 
         setPlacing(true)
         const queryObject = {
-            "user" : getUserO(dataStore,true,true),
-            "order" : {
+            "user": await getUserObject(dataStore, updateDataStore),
+            "order": {
                 "order_id": dataStore.currentOrderId,
                 "otp": otp
             }
         }
         const verifyCall = await apiCall("verifyOtp", dataStore.apiToken, queryObject)
-        console.log("verifyCall",verifyCall)
         if (verifyCall.message
-            && verifyCall.message==="OTP Verification Successful for COD Order and Order placed successfully") {
-            setOrderPlaced(true)
-            setMessage("Order Placed. Thank you")
+            && verifyCall.message === "OTP Verification Successful for COD Order and Order placed successfully") {
             setShow(true)
+            setMessage("OTP Verified")
+            let updateData = await updateUserDataAfterLogin(dataStore.userServe.email, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
+            Object.keys(updateData).forEach((key) => {
+                updateDataStore(key, updateData[key]);
+            })
+            await router.push("/salt/Thankyou?id=" + verifyCall.thank_you_order.order_id)
 
         } else {
             setMessage("Please try again")
@@ -88,72 +83,39 @@ function OtpModal(props) {
         setPlacing(false)
     }
 
-    const resetDataStoreKeys = async ()=>{
-        await updateUserDataAfterLogin(dataStore.userData.contact, dataStore.apiToken, {}, [])
-        const toReset = {
-            "orderPromo": {},
-            "currentOrderId": "",
-            "currentOrderInCart": {
-                "address": {},
-                "measurement": {},
-                "account": {},
-                "order": {},
-                "payment": {},
-                "shipping_fee": 0,
-                "otp_verified": false
-            },
-            "useWallet": false
-        }
-        Object.keys(toReset).forEach(key => {
-            updateDataStore(key, toReset[key])
-        })
-    }
-
-    const browserView = (
+    return (
         <Fragment>
-            <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 flex justify-center items-start py-[5%] px-[10%]" onClick={props.closeModal}>
-                <div className="bg-white relative flex flex-col items-center text-center py-10 px-16" onClick={e => e.stopPropagation()}>
+            <div className={"bg-black/60 h-screen w-screen fixed inset-0 z-50 flex justify-center items-start" + [props.isMobile ? "" : " py-[5%] px-[10%]"]}
+                 onClick={props.closeModal}>
+                <div className={"bg-white relative flex flex-col items-center text-center " + [props.isMobile ? " h-full py-10 px-12" : " py-10 px-16"]}
+                     onClick={e => e.stopPropagation()}>
                     <button className="absolute top-2 right-5 text-2xl z-50" onClick={props.closeModal}>X</button>
                     <p className="text-2xl mb-4">OTP Verification For COD</p>
                     <p className="text-[#777] mb-8">We have sent an OTP for COD verification on your below<br/>mentioned details:</p>
-                    <div className="inline-flex gap-2 items-center text-[#777]">
+                    <div className="inline-flex gap-2 items-center self-start text-[#777]">
                         <span>Email:</span>
-                        <span>{dataStore.selectedAddress.email}</span>
+                        <span>{dataStore.orderSummary.address.email}</span>
                     </div>
-                    <div className="inline-flex gap-2 items-center text-[#777]">
+                    <div className="inline-flex gap-2 items-center self-start text-[#777]">
                         <span>Phone:</span>
-                        <span>{dataStore.selectedAddress.phone}</span>
+                        <span>{dataStore.orderSummary.address.phone}</span>
                     </div>
-                    {(placing)
-                        ? null
-                        : <input
-                            className="focus:ring-transparent focus:border-black border-black text-center text-sm mb-5 mt-8"
-                            type="text" id="otp" name="otp" placeholder="OTP" value={otp} onChange={e => {
-                            setOtp(e.target.value)
-                        }}/>
-                    }
-                    {(orderPlaced || placing)
-                        ? null
-                        : <button className="bg-black px-5 py-2 text-white shadow-lg" onClick={verifyOtp}>
-                            VERIFY & PLACE ORDER
-                        </button>
-                    }
-                    {(!orderPlaced && otpValidity && !canRequestOTPAgain && !placing)
-                        ? <p className="text-[#777]">Resend OTP in {counter}s</p>
-                        : null}
-                    {(!orderPlaced && canRequestOTPAgain && !placing)
-                        ? <button className="text-[#777]" onClick={resendOTP}>Resend OTP</button>
-                        : null}
-                    {(placing)
-                        ? <button className="bg-black px-5 py-2 text-white shadow-lg">
-                            PLACING ORDER
-                            <Loader />
-                        </button>
-                        : (orderPlaced)
-                            ?<button className="bg-black px-5 py-2 text-white shadow-lg">
-                                ORDER PLACED SUCCESSFULLY
-                            </button>
-                            :null
+                    {
+                        placing ?
+                            <div className="py-2 flex text-xl text-[#777] justify-center items-center">
+                                <Loader className={"mr-4"}/>PLACING ORDER
+                            </div>
+                            :
+                            <>
+                                <input
+                                    className="focus:ring-transparent focus:border-black border-black text-center text-sm mb-5 mt-8"
+                                    type="text" id="otp" name="otp" placeholder="OTP" value={otp} onChange={e => setOtp(e.target.value)}/>
+                                <button className="bg-black px-5 py-2 text-white shadow-lg mb-4" onClick={verifyOtp}>
+                                    VERIFY & PLACE ORDER
+                                </button>
+                                {counter ? <p className="text-[#777]">Resend OTP in {counter}s</p> :
+                                    <button className="bg-black px-5 py-2 text-xs text-white shadow-lg" onClick={requestOTP}>Resend OTP</button>}
+                            </>
                     }
                 </div>
             </div>
@@ -162,22 +124,6 @@ function OtpModal(props) {
             </Toast>
         </Fragment>
     )
-
-    return browserView
 }
 
 export default OtpModal
-
-/*
-{
-  "user" : { "contact" : "shailaja.s@algowire.com",
-      "is_guest" : true,
-      "temp_user_id" : "1602236718"
-  },
-  "order" : {
-    "order_id": "1111111111135"
-  },
-  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
-}
-
- */

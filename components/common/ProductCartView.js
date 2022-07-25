@@ -59,7 +59,7 @@ function ProductCartView({isMobile}) {
                                 </div>
                             </div>
                             <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(p)}>X
+                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(dataStore, updateDataStore, p)}>X
                                 </button>
                                 <div>
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
@@ -98,7 +98,7 @@ function ProductCartView({isMobile}) {
                                 </div>
                             </div>
                             <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(p)}>X
+                                <button className="absolute top-0 right-0" onClick={() => removeFromCart(dataStore, updateDataStore, p)}>X
                                 </button>
                                 <div>
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
@@ -170,7 +170,7 @@ function ProductCartView({isMobile}) {
                             <div className={"flex items-center"}>
                                 <img className={"h-4 w-4"} src={WEBASSETS + "/assets/images/cart_delete.png"}
                                      alt="cancel"
-                                     onClick={() => removeFromCart(p)}
+                                     onClick={() => removeFromCart(dataStore, updateDataStore, p)}
                                 />
                             </div>
                         </div>
@@ -218,7 +218,7 @@ function ProductCartView({isMobile}) {
                             <div className={"flex items-center"}>
                                 <img className={"h-4 w-4"} src={WEBASSETS + "/assets/images/cart_delete.png"}
                                      alt="cancel"
-                                     onClick={() => removeFromCart(p)}
+                                     onClick={() => removeFromCart(dataStore, updateDataStore, p)}
                                 />
                             </div>
                         </div>

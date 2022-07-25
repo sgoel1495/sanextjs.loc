@@ -5,7 +5,7 @@ import '../styles/globals.scss';
 import '../styles/variables.css';
 import '../styles/zoomInSwiper.scss';
 import AppWideContext from "../store/AppWideContext";
-import React, {useEffect, useState, useCallback, Fragment} from 'react';
+import React, {Fragment, useCallback, useEffect, useState} from 'react';
 //import {apiDictionary} from "../helpers/apiDictionary";
 //import App from "next/app";
 import {isMobile} from "react-device-detect";
@@ -15,7 +15,7 @@ import {updateUserDataAfterLogin} from "../helpers/updateUserDataAfterLogin";
 
 function MyApp({Component, pageProps}) {
     const dataStoreDefault = require('../store/defaultDataStore.json');
-    const userServe = {
+    dataStoreDefault.userServe = {
         "email": "",
         "phone_number": "",
         "user_name": "",
@@ -24,7 +24,6 @@ function MyApp({Component, pageProps}) {
         "ref_id": null,
         "temp_user_id": Date.now().toString()
     }
-    dataStoreDefault.userServe = userServe
     dataStoreDefault.mobile = isMobile
 
     //dataStoreDefault.apiToken = pageProps.apiToken;
