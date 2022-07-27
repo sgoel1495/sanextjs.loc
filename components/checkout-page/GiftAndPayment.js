@@ -190,8 +190,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            // checked={!!(payMode === "DC")}
-                            // onChange={() => updatePayMode("DC")}
+                        // checked={!!(payMode === "DC")}
+                        // onChange={() => updatePayMode("DC")}
                         />
                         <span className='text-[#777] font-600'>Netbanking</span>
                     </label>
@@ -200,8 +200,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            // checked={!!(payMode === "DC")}
-                            // onChange={() => updatePayMode("DC")}
+                        // checked={!!(payMode === "DC")}
+                        // onChange={() => updatePayMode("DC")}
                         />
                         <span className='text-[#777] font-600'>UPI</span>
                     </label>
@@ -210,8 +210,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            // checked={!!(payMode === "DC")}
-                            // onChange={() => updatePayMode("DC")}
+                        // checked={!!(payMode === "DC")}
+                        // onChange={() => updatePayMode("DC")}
                         />
                         <span className='text-[#777] font-600'>Paytm</span>
                     </label>
@@ -303,11 +303,12 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
             {dataStore.userWallet.WalletAmount > 0 ? (
                 <label className='bg-[#f1f2f3] py-5 px-8 grid grid-cols-1'>
                     <input type='checkbox' checked={useWallet} onChange={() => updateUserWallet()} />
-                    Use Wallet ({" "}
+                    Use Wallet
+                    {/* ({" "}
                     {dataStore.currCurrency === "inr"
                         ? currencyFormatter("INR").format(dataStore.userWallet.WalletAmount)
                         : currencyFormatter("USD").format(dataStore.userWallet.WalletAmount)}{" "}
-                    )
+                    ) */}
                 </label>
             ) : null}
             <div className='bg-[#f1f2f3] py-5 px-8 grid grid-cols-3'>

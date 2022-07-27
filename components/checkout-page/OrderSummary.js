@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 import currencyFormatter from "../../helpers/currencyFormatter";
@@ -16,6 +16,7 @@ function OrderSummary() {
     secondDate.setDate(secondDate.getDate() + 12);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
+    const [showWallet, setShowWallet] = useState(true);
 
     const curr = dataStore.currCurrency.toUpperCase();
     const rawOrdTotal = rawOrderTotal(dataStore);
@@ -24,6 +25,15 @@ function OrderSummary() {
     const rawTotal = currencyFormatter(curr).format(rawOrdTotal);
     const walletPay = currencyFormatter(curr).format(toPay);
     const total = currencyFormatter(curr).format(finalPayable);
+
+    useEffect(() => {
+        if (dataStore.userServe.email === '') {
+            setShowWallet(false)
+        }
+        else {
+            setShowWallet(true);
+        }
+    }, [dataStore])
 
     const mobileView = (
         <div className=' p-4 border border-solid border-gray-200 mx-3 mt-2'>
@@ -116,20 +126,23 @@ function OrderSummary() {
                         <td>FREE</td>
                     </tr>
                     {
-                        <tr>
-                            <td>Wallet</td>
-                            <td>
-                                {dataStore.useWallet && dataStore.userWallet.WalletAmount > 0 ? (
-                                    compareDecimalNumbers(finalPayable, 0) === "=" ? (
-                                        walletPay
+                        showWallet ?
+                            <tr>
+                                <td>Wallet</td>
+                                <td>
+                                    <span>₹{dataStore.userWallet.WalletAmount}.00</span>
+                                    {/* {dataStore.useWallet && dataStore.userWallet.WalletAmount > 0 ? (
+                                        compareDecimalNumbers(finalPayable, 0) === "=" ? (
+                                            walletPay
+                                        ) : (
+                                            currencyFormatter(curr).format(dataStore.userWallet.WalletAmount)
+                                        )
                                     ) : (
-                                        currencyFormatter(curr).format(dataStore.userWallet.WalletAmount)
-                                    )
-                                ) : (
-                                    <span>₹0.00</span>
-                                )}
-                            </td>
-                        </tr>
+                                        <span>₹{dataStore.userWallet.WalletAmount}.00</span>
+                                    )} */}
+                                </td>
+                            </tr>
+                            : <></>
                     }
                 </tbody>
             </table>

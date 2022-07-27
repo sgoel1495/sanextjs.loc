@@ -1,10 +1,11 @@
-import React, {useContext, useRef, useState} from 'react';
-import {validateUsername} from "../../../helpers/loginSignUpHelpers";
-import {apiDictionary} from "../../../helpers/apiDictionary";
+import React, { useContext, useRef, useState } from 'react';
+import { validateUsername } from "../../../helpers/loginSignUpHelpers";
+import { apiDictionary } from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
-import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+import { updateUserDataAfterLogin } from "../../../helpers/updateUserDataAfterLogin";
+import CartModal from '../../sidebar/cart/CartModal';
 
 
 const LoginForm = (props) => {
@@ -13,8 +14,10 @@ const LoginForm = (props) => {
     const username = useRef(null);
     const password = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [otploading, setOtploading] = useState(false);
+    const [signInloading, setSignInloading] = useState(false);
     const [otpSent, setOTPSent] = useState(false)
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
 
     React.useEffect(() => {
         loadFbLoginApi()
@@ -68,7 +71,14 @@ const LoginForm = (props) => {
                 password: pwd,
                 otp_login: otp_login
             }
-            setLoading(true)
+            // setLoading(true)
+            console.log(action);
+            if (action == 'sendOTP') {
+                setOtploading(true)
+            }
+            if (action == 'verifyOTP' || action == 'signIn') {
+                setSignInloading(true)
+            }
             let api = apiDictionary("userLogin", dataStore.apiToken, payload)
             fetch(api.url, api.fetcher).then((response) => {
                 if (response.status === 200) {
@@ -77,25 +87,32 @@ const LoginForm = (props) => {
                             if (otp_login) {
                                 setOTPSent(true)
                                 props.showToast("We've sent an OTP to your Email or Phone!")
-                            } else {
+                            }
+                            else {
+                                props.setShowSidebarMenuUser(false)
+                                props.showToast("Welcome");
+                                // <CartModal isMobile={true} />
                                 saveUserDataAfterSuccessfulLogin(uname)
                                     .then(() => {
                                     })
                                     .catch(e => console.log(e.message))
                             }
-                        } else {
+                        }
+                        else {
                             props.showToast(data['response']['body'].toUpperCase());
                         }
                     })
                 }
             }).finally(() => {
-                setLoading(false)
+                // setLoading(false)
+                setOtploading(false)
+                setSignInloading(false)
             })
         };
 
         const loginOtp = (uname, otp) => {
             setLoading(true)
-            let api = apiDictionary("userOTPLogin", dataStore.apiToken, {username: uname, otp: parseInt(otp)})
+            let api = apiDictionary("userOTPLogin", dataStore.apiToken, { username: uname, otp: parseInt(otp) })
             fetch(api.url, api.fetcher).then((response) => {
                 if (response.status === 200) {
                     response.json().then(data => {
@@ -113,7 +130,7 @@ const LoginForm = (props) => {
 
         const statusChangeCallback = (response) => {
             if (response.status === 'connected') {
-                window.FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender'}, function (response) {
+                window.FB.api('/me', { locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender' }, function (response) {
                     saveUserDataAfterSuccessfulLogin(response.email)
                     //console.log('FB ID:' + response.id + 'Name:' + response.first_name + ',' + response.last_name + 'Email:' + response.email + 'Gender:' + response.gender)
                 })
@@ -131,7 +148,7 @@ const LoginForm = (props) => {
         const handleFBLogin = () => {
             window.FB.login((resp) => {
                 checkLoginState()
-            }, {scope: 'public_profile,email'});
+            }, { scope: 'public_profile,email' });
         }
 
         switch (action) {
@@ -176,11 +193,11 @@ const LoginForm = (props) => {
                     type="button"
                     onClick={() => signInAction(otpSent ? "verifyOTP" : "signIn")}
                     className={`${buttonStyle}`}
-                    disabled={loading}
+                    disabled={signInloading}
                 >
                     {
-                        loading ?
-                            <Loader className="text-grey"/>
+                        signInloading ?
+                            <Loader className="text-grey" />
                             :
                             otpSent ? <>Verify OTP</> : <>Sign In</>
                     }
@@ -190,11 +207,11 @@ const LoginForm = (props) => {
                     type="button"
                     onClick={() => signInAction("sendOTP")}
                     className={`${buttonStyle}`}
-                    disabled={loading}
+                    disabled={otploading}
                 >
                     {
-                        loading ?
-                            <Loader className="text-grey"/>
+                        otploading ?
+                            <Loader className="text-grey" />
                             :
                             otpSent ? <>Resend OTP</> : <>Login Using OTP</>
                     }
@@ -207,10 +224,10 @@ const LoginForm = (props) => {
                 >
                     {
                         loading ?
-                            <Loader className="text-grey"/>
+                            <Loader className="text-grey" />
                             :
                             otpSent ? <>Back</> : <>
-                                <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain"/>
+                                <Image src={WEBASSETS + "/assets/images/fb-icon.png"} alt="fb-icon" width={20} height={20} objectFit="contain" />
                                 <span>LOGIN</span>
                             </>
 

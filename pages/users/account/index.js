@@ -1,11 +1,11 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../../store/AppWideContext";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
-import {isMobile} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 
 const basicFields = [
     {
@@ -90,7 +90,7 @@ const passwordFields = [
 
 function UsersAccountPage() {
     const [mobile, setMobile] = useState(false);
-    const {dataStore} = useContext(AppWideContext);
+    const { dataStore } = useContext(AppWideContext);
     const [changePasswordCheckbox, setChangePasswordCheckbox] = useState(false)
     const router = useRouter();
     useEffect(() => {
@@ -114,24 +114,24 @@ function UsersAccountPage() {
                     {basicFields?.map((item, index) => {
                         return (
                             <div className={`col-span-${item[!mobile ? "columnSpace" : "mobColumnSpace"]}`}
-                                 key={index}>
+                                key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
-                                <input className={inputClass} type={item.inputType}/>
+                                <input className={inputClass} type={item.inputType} />
                             </div>
                         )
                     })}
                     <label className={labelClass + " flex gap-2 items-center"}>
                         <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""
-                               onChange={(e) => {
-                                   setChangePasswordCheckbox(e.target.checked)
-                               }}/>
+                            onChange={(e) => {
+                                setChangePasswordCheckbox(e.target.checked)
+                            }} />
                         <span>Change&nbsp;Password</span>
                     </label>
                     {changePasswordCheckbox ? passwordFields?.map((item, index) => {
                         return (
                             <div className={`col-span-${item.columnSpace}`} key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
-                                <input className={inputClass} type={item.inputType}/>
+                                <input className={inputClass} type={item.inputType} />
                             </div>
                         )
                     }) : ''}
@@ -150,19 +150,23 @@ function UsersAccountPage() {
                         return (
                             <div className={`col-span-${item.columnSpace}`} key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
-                                <input className={inputClass} type={item.inputType}/>
+                                <input className={inputClass} type={item.inputType} />
                             </div>
                         )
                     })}
                     <label htmlFor="" className={labelClass + " flex gap-2 items-center"}>
-                        <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""/>
-                        <span>Change Password</span>
+                        <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""
+                            onChange={(e) => {
+                                setChangePasswordCheckbox(e.target.checked)
+                            }}
+                        />
+                        <span>Change Password </span>
                     </label>
-                    {passwordFields?.map((item, index) => {
+                    {changePasswordCheckbox && passwordFields?.map((item, index) => {
                         return (
                             <div className={`col-span-${item.columnSpace}`} key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
-                                <input className={inputClass} type={item.inputType}/>
+                                <input className={inputClass} type={item.inputType} />
                             </div>
                         )
                     })}
@@ -173,10 +177,10 @@ function UsersAccountPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/account"} id={"profile"} isMobile={mobile}/>
-            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
+            <PageHead url={"/users/account"} id={"profile"} isMobile={mobile} />
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile} />
             {(mobile) ? mobileView : browserView}
-            <Footer isMobile={mobile}/>
+            <Footer isMobile={mobile} />
         </Fragment>
     )
 }
