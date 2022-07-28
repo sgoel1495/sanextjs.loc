@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, {Fragment} from "react";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import ForgotPassword from "./ForgotPassword";
@@ -11,7 +11,7 @@ function UserLogin(props) {
     *@todo default alerts to be replaces by react alerts
     *@todo Facebook Login API needed
     */
-    const { closeModal } = props;
+    const {closeModal} = props;
     const [active, setActive] = React.useState(0)
     const [show, setShow] = React.useState(false)
     const [feedback, setFeedback] = React.useState('')
@@ -27,10 +27,10 @@ function UserLogin(props) {
             ActiveForm = <LoginForm showToast={showToast} setShowSidebarMenuUser={props.setShowSidebarMenuUser} />
             break;
         case 1:
-            ActiveForm = <SignUpForm showToast={showToast} />
+            ActiveForm = <SignUpForm showToast={showToast}/>
             break;
         case 2:
-            ActiveForm = <ForgotPassword closeModal={closeModal} showToast={showToast} />
+            ActiveForm = <ForgotPassword closeModal={closeModal} showToast={showToast}/>
             break;
     }
     const browserView = (
@@ -43,7 +43,7 @@ function UserLogin(props) {
                     <button className={`w-8 h-8 absolute right-10 top-10`} onClick={closeModal}>
                         <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} viewBox="0 0 24 24">
                             <path
-                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" />
+                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
                         </svg>
                     </button>
                     <div className={`flex items-center gap-x-4 text-sm uppercase text-black/60`}>
@@ -119,7 +119,7 @@ function UserLogin(props) {
                     <button className={`w-8 h-8 absolute right-10 top-10`} onClick={closeModal}>
                         <svg xmlns="http://www.w3.org/2000/svg" className={`w-8 h-8`} viewBox="0 0 24 24">
                             <path
-                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" />
+                                d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
                         </svg>
                     </button>
                     <div className={`flex items-center gap-x-4 text-sm uppercase text-black/60`}>

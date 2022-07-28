@@ -31,7 +31,7 @@ function OrderSummary() {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
 
     useEffect(() => {
-        if (dataStore.userServe.email === '') {
+        if (dataStore.userWallet.WalletAmount === 0) {
             setShowWallet(false)
         }
         else {

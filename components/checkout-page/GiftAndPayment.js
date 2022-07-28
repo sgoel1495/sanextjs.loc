@@ -190,8 +190,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                        // checked={!!(payMode === "DC")}
-                        // onChange={() => updatePayMode("DC")}
+                            // checked={!!(payMode === "DC")}
+                            // onChange={() => updatePayMode("DC")}
                         />
                         <span className='text-[#777] font-600'>Netbanking</span>
                     </label>
@@ -200,8 +200,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                        // checked={!!(payMode === "DC")}
-                        // onChange={() => updatePayMode("DC")}
+                            // checked={!!(payMode === "DC")}
+                            // onChange={() => updatePayMode("DC")}
                         />
                         <span className='text-[#777] font-600'>UPI</span>
                     </label>
@@ -210,8 +210,8 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                        // checked={!!(payMode === "DC")}
-                        // onChange={() => updatePayMode("DC")}
+                            // checked={!!(payMode === "DC")}
+                            // onChange={() => updatePayMode("DC")}
                         />
                         <span className='text-[#777] font-600'>Paytm</span>
                     </label>

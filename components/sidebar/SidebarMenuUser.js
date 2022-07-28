@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import ReactDom from "react-dom";
 import UserLogin from "../user/login/UserLogin";
 import AppWideContext from "../../store/AppWideContext";
@@ -15,7 +15,7 @@ import AccountMenu from "../user/AccountMenu";
 
 function SidebarMenuUser(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(dataStore.showSidebarMenuUser);
 
     useEffect(() => {
@@ -24,12 +24,12 @@ function SidebarMenuUser(props) {
     }, [showSidebarMenuUser])
 
     const closeModal = () => {
-        updateDataStore("showSidebarMenuUser", false);
+        updateDataStore("showSidebarMenuUser",false);
         setShowSidebarMenuUser(false);
     }
 
-    const openModal = () => {
-        updateDataStore("showSidebarMenuUser", false);
+    const openModal = ()=>{
+        updateDataStore("showSidebarMenuUser",false);
         setShowSidebarMenuUser(true);
     }
 
