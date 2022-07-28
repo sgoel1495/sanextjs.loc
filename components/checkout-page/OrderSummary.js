@@ -6,6 +6,7 @@ import orderTotal from "../../helpers/orderTotal";
 import promoDiscountValue from "../../helpers/promoDiscountValue";
 import rawOrderTotal from "../../helpers/rawOrderTotal";
 import compareDecimalNumbers from "../../helpers/compareDecimalNumbers";
+import appSettings from "../../store/appSettings";
 
 function OrderSummary() {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -25,6 +26,9 @@ function OrderSummary() {
     const rawTotal = currencyFormatter(curr).format(rawOrdTotal);
     const walletPay = currencyFormatter(curr).format(toPay);
     const total = currencyFormatter(curr).format(finalPayable);
+    const currencyData = appSettings("currency_data");
+    const currCurrency = dataStore.currCurrency;
+    const currencySymbol = currencyData[currCurrency].curr_symbol;
 
     useEffect(() => {
         if (dataStore.userServe.email === '') {
@@ -130,16 +134,8 @@ function OrderSummary() {
                             <tr>
                                 <td>Wallet</td>
                                 <td>
-                                    <span>₹{dataStore.userWallet.WalletAmount}.00</span>
-                                    {/* {dataStore.useWallet && dataStore.userWallet.WalletAmount > 0 ? (
-                                        compareDecimalNumbers(finalPayable, 0) === "=" ? (
-                                            walletPay
-                                        ) : (
-                                            currencyFormatter(curr).format(dataStore.userWallet.WalletAmount)
-                                        )
-                                    ) : (
-                                        <span>₹{dataStore.userWallet.WalletAmount}.00</span>
-                                    )} */}
+                                    <span>{currencySymbol}{dataStore.userWallet.WalletAmount}.00</span>
+
                                 </td>
                             </tr>
                             : <></>

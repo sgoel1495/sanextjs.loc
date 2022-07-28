@@ -304,11 +304,6 @@ function GiftAndPayment({ giftPaymentComplete, updateCompleteness, setActive }) 
                 <label className='bg-[#f1f2f3] py-5 px-8 grid grid-cols-1'>
                     <input type='checkbox' checked={useWallet} onChange={() => updateUserWallet()} />
                     Use Wallet
-                    {/* ({" "}
-                    {dataStore.currCurrency === "inr"
-                        ? currencyFormatter("INR").format(dataStore.userWallet.WalletAmount)
-                        : currencyFormatter("USD").format(dataStore.userWallet.WalletAmount)}{" "}
-                    ) */}
                 </label>
             ) : null}
             <div className='bg-[#f1f2f3] py-5 px-8 grid grid-cols-3'>
