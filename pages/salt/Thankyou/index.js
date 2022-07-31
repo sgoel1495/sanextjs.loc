@@ -20,6 +20,9 @@ const Thankyou = (props) => {
         if (dataStore.userOrderHistory[orderID]) {
             setOrder(dataStore.userOrderHistory[orderID])
         }
+        else{
+
+        }
     }, [dataStore.userOrderHistory])
     const address = order.delivery_address || {}
     const cart = order.item || []
@@ -72,7 +75,7 @@ const Thankyou = (props) => {
                         <span className={"uppercase text-[15px] text-[#333]"}>order summary</span>
                         <span className={"text-[15px] text-[#333]"}><span className={"text-[13px]"}>Payment:</span>&nbsp;{order.payment_mode}</span>
                     </div>
-                    <table className="mt-4">
+                    <table className="mt-4 w-full">
                         <thead className={"bg-[#f9f9f9] text-[#222] text-[15px]"}>
                         <tr>
                             <th className={"p-1"} colSpan="4"/>

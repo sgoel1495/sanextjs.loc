@@ -70,10 +70,12 @@ function OtpModal(props) {
             && verifyCall.message === "OTP Verification Successful for COD Order and Order placed successfully") {
             setShow(true)
             setMessage("OTP Verified")
-            let updateData = await updateUserDataAfterLogin(dataStore.userServe.email, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
-            Object.keys(updateData).forEach((key) => {
-                updateDataStore(key, updateData[key]);
-            })
+            if (dataStore.userServe.email) {
+                let updateData = await updateUserDataAfterLogin(dataStore.userServe.email, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
+                Object.keys(updateData).forEach((key) => {
+                    updateDataStore(key, updateData[key]);
+                })
+            }
             await router.push("/salt/Thankyou?id=" + verifyCall.thank_you_order.order_id)
 
         } else {

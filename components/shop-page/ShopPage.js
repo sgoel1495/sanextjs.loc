@@ -44,7 +44,7 @@ function ShopPage(props) {
                 }
             })
         } else {
-            newData = [...data.data.filter(item => item.size_avail !== "")]
+            newData = data?[...data.data.filter(item => item.size_avail !== "")]:[]
         }
 
         console.log("NEW DATA", newData)

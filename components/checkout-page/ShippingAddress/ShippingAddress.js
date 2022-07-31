@@ -1,14 +1,32 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useReducer, useState} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import DisplayAddress from "./DisplayAddress";
 import AddressForm from "./AddressForm";
 import Toast from "../../common/Toast";
+import ReactDom from "react-dom";
+import AccountMenu from "../../user/AccountMenu";
+import UserLogin from "../../user/login/UserLogin";
 
 function ShippingAddress({setActive}) {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
-    const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
+    const [selectedAddressIndex, setSelectedAddressIndex] = useReducer((state, payload) => {
+        if (dataStore.userServe.email || (dataStore.userAddresses && dataStore.userAddresses.length)) {
+            return payload
+        } else {
+            return -1
+        }
+    }, null);
     const [show, setShow] = useState(false);
     const [review, setReview] = useState(false)
+    const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(dataStore.showSidebarMenuUser);
+    const openModal = () => {
+        updateDataStore("showSidebarMenuUser", false);
+        setShowSidebarMenuUser(true);
+    }
+    const closeModal = () => {
+        updateDataStore("showSidebarMenuUser", false);
+        setShowSidebarMenuUser(false);
+    }
 
     const nextModal = () => {
         let index = parseInt(dataStore.orderSummary.address_index)
@@ -20,11 +38,49 @@ function ShippingAddress({setActive}) {
             setReview(true)
         }
     }
+    const back = () => {
+        if (review) {
+            setReview(false)
+        } else {
+            setActive(1)
+        }
+    }
+    useEffect(() => {
+        if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
+        return () => document.body.classList.remove("scroll-overflow");
+    }, [showSidebarMenuUser])
+
+    useEffect(() => {
+        if (dataStore.userServe.email) {
+            if (dataStore.userAddresses && dataStore.userAddresses.length) {
+                setSelectedAddressIndex(null)
+            } else {
+                setSelectedAddressIndex(-1)
+            }
+        } else {
+            if (dataStore.userAddresses && dataStore.userAddresses.length) {
+                if (dataStore.mobile)
+                    setSelectedAddressIndex(0)
+                else
+                    setSelectedAddressIndex(null)
+            } else {
+                setSelectedAddressIndex(-1)
+            }
+
+        }
+    }, [dataStore.userServe.email, dataStore.userServe.temp_user_id, dataStore.mobile])
 
     const mobileView = (
         <Fragment>
+            {dataStore.userData.contact ? null : (
+                <div className="grid place-items-center mt-10">
+                    <button className='mb-2 underline font-500' onClick={openModal}>
+                        Already have an account?
+                    </button>
+                </div>
+            )}
             <p className='text-l font-bold mb-2 pt-2 text-center'>{review && "Review"} Shipping Address</p>
-            {selectedAddressIndex == null ? (
+            {selectedAddressIndex == null || review ? (
                 <div className='grid grid-cols-1 mx-6'>
                     {
                         review ?
@@ -49,7 +105,7 @@ function ShippingAddress({setActive}) {
 
                     <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
                         <div
-                            onClick={() => review ? setReview(false) : setActive(1)}
+                            onClick={back}
                             className='cursor-pointer font-600 text-black py-2'
                         >
                             <button className='font-600'>&lt; BACK</button>
@@ -64,11 +120,17 @@ function ShippingAddress({setActive}) {
                         </div>
                     </div>
                 </div>
-            ) : <AddressForm isMobile={true} selectedAddressIndex={selectedAddressIndex} setSelectedAddressIndex={setSelectedAddressIndex}/>
+            ) : <AddressForm isMobile={true} selectedAddressIndex={selectedAddressIndex} setSelectedAddressIndex={setSelectedAddressIndex} setReview={setReview}
+                             setActive={setActive}/>
             }
         </Fragment>
     );
     const browserView = <Fragment>
+        {dataStore.userData.contact ? null : (
+            <button className='mb-2 underline font-500' onClick={openModal}>
+                Already have an account?
+            </button>
+        )}
         <p className='text-xl mb-2'>Shipping Address</p>
         {selectedAddressIndex == null ? (
                 <div className='grid grid-cols-3 gap-6 mb-10'>
@@ -76,19 +138,19 @@ function ShippingAddress({setActive}) {
                 </div>
             ) :
             <>
-                {dataStore.userData.contact ? null : (
-                    <button className='mb-2 underline font-500' onClick={() => updateDataStore("showSidebarMenuUser", true)}>
-                        Already have an account?
-                    </button>
-                )}
+
                 <AddressForm isMobile={false} selectedAddressIndex={selectedAddressIndex} setSelectedAddressIndex={setSelectedAddressIndex}/>
             </>
         }
+
     </Fragment>
 
 
     return <>
         {dataStore.mobile ? mobileView : browserView}
+        {showSidebarMenuUser && ReactDom.createPortal(
+            <UserLogin closeModal={closeModal.bind(this)} isMobile={true}/>,
+            document.getElementById("userband"))}
         <Toast show={show} hideToast={() => setShow(false)} bottom={'50px'}>
             <span>Please Select an Address</span>
         </Toast>

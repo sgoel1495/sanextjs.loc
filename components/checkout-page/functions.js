@@ -1,16 +1,16 @@
 import {getUserObject} from "../../helpers/addTocart";
 import {apiCall} from "../../helpers/apiCall";
 
-export const updateAddressForOrder = async (index, dataStore, updateDataStore) => {
+export const updateAddressForOrder = async (index, dataStore, updateDataStore, account = {}) => {
     const user = await getUserObject(dataStore, updateDataStore);
     user["address_index"] = index;
     if (!dataStore.userData.contact) {
         user["address"] = {0: dataStore.userAddresses[index]};
-        user["account"] = dataStore.currentOrderInCart.account;
+        user["account"] = account;
     }
     updateDataStore("orderSummary", {...dataStore.orderSummary, "address": dataStore.userAddresses[index], "address_index": index})
     const queryObject = {user: user, order: {order_id: dataStore.currentOrderId}};
-    await apiCall("deliveryAddress", dataStore.apiToken, queryObject);
+    return await apiCall("deliveryAddress", dataStore.apiToken, queryObject);
 };
 
 export const savePayment = async (isGift, giftData, payMode, useWallet, dataStore, updateDataStore) => {

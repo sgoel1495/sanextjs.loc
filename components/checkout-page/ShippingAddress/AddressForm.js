@@ -9,10 +9,21 @@ import AppWideContext from "../../../store/AppWideContext";
 import Toast from "../../common/Toast";
 import MeasurementForm from "./MeasurementForm";
 import {getUserObject} from "../../../helpers/addTocart";
+import {updateAddressForOrder} from "../functions";
+import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
 
-const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex}) => {
+const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, setReview, setActive}) => {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
-    const [createAccount, setCreateAccount] = useState(false);
+    const [createAccount, setCreateAccount] = useReducer((state, e) => {
+        if (e.target.name === "create") {
+            return {...state, create: !state.create};
+        }
+        return {...state, [e.target.name]: e.target.value}
+    }, {
+        create: false,
+        password: "",
+        confirmPassword: ""
+    });
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
     const [error, setError] = useState(false)
@@ -60,10 +71,11 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex}) 
                 zipCall.response_data.hasOwnProperty("state") &&
                 zipCall.response_data.hasOwnProperty("zipcode")
             ) {
-                address.state = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.state);
-                address.city = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.city);
-                address.zip_code = zipCall.response_data.zipcode;
-                setAddress(address);
+                let temp = {...address}
+                temp.state = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.state);
+                temp.city = capitalizeTheFirstLetterOfEachWord(zipCall.response_data.city);
+                temp.zip_code = zipCall.response_data.zipcode;
+                setAddress(temp);
             }
         } else updateAddressValue(e);
     };
@@ -126,7 +138,18 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex}) 
         })
     }
 
+    const saveUserDataAfterSuccessfulLogin = async (username) => {
+        const updateData = await updateUserDataAfterLogin(username, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
+        Object.keys(updateData).forEach((key) => {
+            updateDataStore(key, updateData[key]);
+        })
+        localStorage.setItem("userData", JSON.stringify(updateData["userData"]));
+    }
+
     const checkAndSave = async () => {
+        if (createAccount.create && !checkPassword()) {
+            return
+        }
         if (addressCompleteness()) {
             if (dataStore.userServe && dataStore.userServe.email) {
                 await updateAddressBook(selectedAddressIndex === -1)
@@ -136,10 +159,35 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex}) 
                     }
                     await updateMeasurements()
                 }
+            } else {
+                if (selectedAddressIndex === -1) {
+                    updateDataStore("userAddresses", [...dataStore.userAddresses, address])
+                } else {
+                    let userAddresses = [...dataStore.userAddresses]
+                    userAddresses[selectedAddressIndex] = address
+                    updateDataStore("userAddresses", userAddresses)
+                }
+                let resp = await updateAddressForOrder(0, dataStore, updateDataStore, {"create_account": createAccount.create, "password": createAccount.password})
+                if (createAccount.create && !resp.user.is_guest) {
+                    await saveUserDataAfterSuccessfulLogin(resp.user.contact)
+                }
             }
-            setSelectedAddressIndex(null);
+            if (isMobile && !dataStore.userServe.email) {
+                setReview(true);
+                setSelectedAddressIndex(0);
+            } else {
+                setSelectedAddressIndex(null);
+            }
         }
     };
+
+    const checkPassword = () => {
+        if (!createAccount.password || !createAccount.confirmPassword || createAccount.password.length < 6 || createAccount.password !== createAccount.confirmPassword) {
+            setError(true);
+            return false
+        }
+        return true
+    }
 
     const addressCompleteness = () => {
         let completeness = true;
@@ -349,23 +397,34 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex}) 
                     </select>
                     {error && !address['city'] && <div className={"text-red-500 mb-2"}>This is a required field.</div>}
                 </div>
-                {dataStore.userData.contact ? null : (
+                {dataStore.userData.contact || selectedAddressIndex !== -1 ? null : (
                     <div className='col-span-full'>
-                        <CreateMyAccount createAccount={createAccount} updateCreateAccount={setCreateAccount.bind(this)}/>
+                        <CreateMyAccount createAccount={createAccount} updateCreateAccount={setCreateAccount.bind(this)} error={error} isMobile={isMobile}/>
                     </div>
                 )}
                 {
                     isMobile || <div className='col-span-full flex justify-center gap-10 text-sm'>
-                        <button className='border border-black px-4 py-1.5' onClick={() => setSelectedAddressIndex(null)}>Cancel</button>
+                        <button className='border border-black px-4 py-1.5' onClick={() => {
+                            if (dataStore.userAddresses && dataStore.userAddresses.length)
+                                setSelectedAddressIndex(null)
+                        }}>Cancel
+                        </button>
                         <button className='bg-black px-4 py-1.5 text-white tracking-widest font-500' onClick={checkAndSave}>
-                            SAVE
+                            {selectedAddressIndex === -1 ? "Add" : "Update"}
                         </button>
                     </div>
                 }
             </div>
             {
                 isMobile && <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
-                    <div onClick={() => setSelectedAddressIndex(null)} className='bg-black py-2 cursor-pointer text-gray-300 mr-0.5'>
+                    <div onClick={() => {
+                        if (dataStore.userAddresses && dataStore.userAddresses.length) {
+                            if (dataStore.userServe.email)
+                                setSelectedAddressIndex(null)
+                            else
+                                setActive(1)
+                        }
+                    }} className='bg-black py-2 cursor-pointer text-gray-300 mr-0.5'>
                         <button className='font-600 uppercase'>Cancel</button>
                     </div>
                     <div onClick={checkAndSave} className='bg-black py-2 cursor-pointer text-white'>

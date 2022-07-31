@@ -1,7 +1,5 @@
 import React, {useContext} from "react";
 import AppWideContext from "../../../store/AppWideContext";
-import {apiCall} from "../../../helpers/apiCall";
-import {getUserObject} from "../../../helpers/addTocart";
 import {updateAddressForOrder} from "../functions";
 
 /**
@@ -65,7 +63,7 @@ function DisplayAddress({setSelectedAddressIndex, isMobile}) {
             </div>
         </div>
     });
-    if (returnValue.length !== 3) {
+    if (returnValue.length !== 3 && dataStore.userServe.email) {
         returnValue.push(<span className={"text-[#777777] font-600 cursor-pointer" + [isMobile ? "" : " col-span-2"]} onClick={() => setSelectedAddressIndex(-1)}>Add New</span>)
     }
     return returnValue;

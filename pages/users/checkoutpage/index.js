@@ -27,18 +27,19 @@ function UsersCheckoutPage() {
     }, [dataStore.currentOrderId]);
 
     useEffect(async () => {
-        let user = await getUserObject(dataStore, updateDataStore)
-        const gotOrderSummaryCall = await apiCall("getOrderSummary", dataStore.apiToken, {user: user});
-       if(gotOrderSummaryCall.status ===200) {
-           updateDataStore("orderSummary", {
-               ...gotOrderSummaryCall,
-           });
-       }
-       else{
-           router.push("/new-arrivals/all")
-       }
-        await refreshCart(dataStore, updateDataStore)
-    }, [dataStore.userServe.email])
+        if(dataStore.userServe.email || dataStore.userServe.temp_user_id) {
+            let user = await getUserObject(dataStore, updateDataStore)
+            const gotOrderSummaryCall = await apiCall("getOrderSummary", dataStore.apiToken, {user: user});
+            if (gotOrderSummaryCall.status === 200) {
+                updateDataStore("orderSummary", {
+                    ...gotOrderSummaryCall,
+                });
+            } else {
+                router.push("/new-arrivals/all")
+            }
+            await refreshCart(dataStore, updateDataStore)
+        }
+    }, [dataStore.userServe.email,dataStore.userServe.temp_user_id])
 
 
     const goBack = () => {

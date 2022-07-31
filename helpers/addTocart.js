@@ -13,7 +13,7 @@ export async function refreshCart(dataStore, updateDataStore) {
 
 export async function getUserObject(dataStore, updateDataStore) {
     let tempId;
-    if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id === "") {
+    if (dataStore.userServe && (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id === "")) {
         tempId = Date.now()
         dataStore.userServe.temp_user_id = tempId
         updateDataStore("userServe", dataStore.userServe)
@@ -44,8 +44,7 @@ export async function checkItemInCart(userCart, product, isGC) {
         } else {
             if (item.is_tailor) {
 
-            }
-            else{
+            } else {
                 let keys = ["size", "sleeve_length", "dress_length"]
                 keys.forEach((key) => {
                     if (item[key] !== product[key] && flag) {

@@ -4,7 +4,7 @@
  * @returns {null}
  */
 export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
-    const apiServer = "http://103.90.241.54:2023/api/v1";
+    const apiServer = "http://216.48.180.99:8443/api/v1";
     let url = apiServer;
 
     const headers = {

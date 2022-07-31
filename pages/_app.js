@@ -22,7 +22,7 @@ function MyApp({Component, pageProps}) {
         "favorites": [],
         "cart": {},
         "ref_id": null,
-        "temp_user_id": Date.now().toString()
+        "temp_user_id": null
     }
     dataStoreDefault.mobile = isMobile
 
@@ -35,15 +35,29 @@ function MyApp({Component, pageProps}) {
         setDataStore({...dataStore});
         setRefresh(!refresh);
     }, [dataStore, refresh])
-
     useEffect(() => {
         let userData = localStorage.getItem("userData")
+        let flag = true;
         if (userData) {
             userData = JSON.parse(userData)
             if (userData.contact) {
                 updateUserDataAfterLogin(userData.contact, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart).then(updateData => {
                     setDataStore({...dataStore, ...updateData});
                 })
+                flag = false
+            }
+        }
+        if (flag) {
+            let userServe = localStorage.getItem("userServe")
+            if (userServe) {
+                userServe = JSON.parse(userServe)
+                if (userServe.temp_user_id) {
+                    setDataStore({...dataStore, "userServe": userServe});
+                } else {
+                    userServe = {...dataStore.userServe, temp_user_id: Date.now().toString()}
+                    setDataStore({...dataStore, "userServe": userServe});
+                    localStorage.setItem("userServe", JSON.stringify(userServe));
+                }
             }
         }
     }, [])
