@@ -24,7 +24,7 @@ function DisplayAddress({setSelectedAddressIndex, isMobile}) {
 
 
     let returnValue = dataStore.userAddresses.slice(0, 3).map((address, index) => {
-        return <div className={isMobile ? 'p-4 border border-solid border-[#f1f2f3] mb-4' : "bg-[#f1f2f3] p-5"}>
+        return <div className={isMobile ? 'p-4 border border-solid border-[#f1f2f3] mb-4' : "bg-[#f1f2f3] p-5"} key={index}>
             <div className='flex flex-col gap-y-1 mb-5 text-[#777]'>
                 <p className='font-500'>
                     {address.name} {address.lastname}

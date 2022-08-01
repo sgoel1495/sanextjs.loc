@@ -79,7 +79,7 @@ function GroupDesignPage() {
     const browserView = data
         ? <Fragment>
             <GroupDesignHeader category={design}  />
-            {data.map((item, index) => <main className={`grid grid-cols-3 gap-5 container pb-20`}>
+            {data.map((item, index) => <main className={`grid grid-cols-3 gap-5 container pb-20`} key={index}>
                 {visibleData && visibleData.map((prod, index) => {
                     return <ProductCard prod={prod} key={index}
                                         isAccessory={false} isMobile={false} wide={true} />

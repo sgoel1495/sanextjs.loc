@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import AppWideContext from "../../store/AppWideContext";
@@ -100,8 +100,8 @@ function ReviewsPage() {
                                 </div>
                                 <div className={"flex overflow-y-scroll"}>
                                     {
-                                        review.post_products.map((product) => {
-                                            return <ProductCard product={product}/>
+                                        review.post_products.map((product,index) => {
+                                            return <ProductCard product={product} key={index}/>
                                         })
                                     }
                                 </div>

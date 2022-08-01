@@ -170,7 +170,7 @@ const ProductDetails = ({data, hpid}) => {
                 <div className='flex justify-start flex-wrap w-full'>
                     {tags.map((item, index) => {
                         return (
-                            <Link href={"/group/" + item.value}>
+                            <Link href={"/group/" + item.value} key={index}>
                                 <p className={"rounded-full bg-[#ffefe5] py-2 px-3 text-black font-500 mr-3 mb-3 capitalize border-2 border-white text-xs"}
                                    key={index}>{item.display}</p>
                             </Link>

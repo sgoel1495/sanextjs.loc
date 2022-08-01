@@ -113,7 +113,7 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize}) => {
             </div>
             <div className='flex items-center flex-wrap justify-start'>
                 {tags.map((item, index) => {
-                    return <Link href={"/group/" + item.value}>
+                    return <Link href={"/group/" + item.value} key={index}>
                         <p className={"rounded-full bg-[#d3d3d35c] py-2 px-5 text-black font-500 mr-4 mb-4 capitalize"} key={index}>{item.display}</p>
                     </Link>
                 })}

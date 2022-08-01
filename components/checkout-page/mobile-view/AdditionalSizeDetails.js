@@ -37,7 +37,7 @@ function AdditionalSizeDetail(props) {
 
     return <section className="px-4">
         <div className="font-600 text-center text-2xl my-4">
-            Let's understand your size better!
+            Let&apos;s understand your size better!
         </div>
         <div className="px-12">
             <MeasurementForm extraMeasure={extraMeasure} setExtraMeasure={setExtraMeasure} isMobile={true}/>
