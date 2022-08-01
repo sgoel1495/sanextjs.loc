@@ -90,7 +90,7 @@ function UsersFavouritesPage() {
             {
                 favProduct.map((item, index) => {
                     return (
-                        <div className={"m-3 flex gap-3"}>
+                        <div className={"m-3 flex gap-3"} key={index}>
                             <div>
                                 <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88"/>
                             </div>
@@ -100,7 +100,7 @@ function UsersFavouritesPage() {
                                 <span> {item.price} </span>
                                 <ul className={"flex justify-between my-1"}>
                                     {
-                                        item.sizes.map(s => <li>{s}</li>)
+                                        item.sizes.map((s,index) => <li key={index}>{s}</li>)
                                     }
                                 </ul>
                                 <span className={"text-m my-1 font-500"}> ADD TO BAG</span>
@@ -129,7 +129,7 @@ function UsersFavouritesPage() {
                                 <span> {item.price} </span>
                                 <ul className={"flex justify-between my-1"}>
                                     {
-                                        item.sizes.map(s => <li>{s}</li>)
+                                        item.sizes.map((s,index) => <li key={index}>{s}</li>)
                                     }
                                 </ul>
                                 <span className={"text-m my-1 font-500"}> ADD TO BAG</span>
