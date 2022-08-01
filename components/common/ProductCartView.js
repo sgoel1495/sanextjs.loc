@@ -1,38 +1,15 @@
 import Image from "next/image";
 import React, {useContext, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
-import {apiCall} from "../../helpers/apiCall";
-import getUserO from "../../helpers/getUserO";
-import {refreshCart, removeFromCart, updateCart} from "../../helpers/addTocart";
+import {removeFromCart, updateCart} from "../../helpers/addTocart";
 import Toast from "./Toast";
 
 function ProductCartView({isMobile}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [toastMsg, setToastMsg] = useState(null)
-    const userO = getUserO(dataStore)
-
-    const changeQty = async (i, n) => {
-        if (n == 1) {
-            // increase
-            dataStore.userCart[i].qty = (parseInt(dataStore.userCart[i].qty) + 1).toString();
-        } else if (n == -1) {
-            const cv = parseInt(dataStore.userCart[i].qty)
-            if (cv > 1)
-                dataStore.userCart[i].qty = (cv - 1).toString();
-        }
-        //update
-        if (dataStore.userData.contact) {
-            const updateProduct = {
-                product_cart_id: dataStore.userCart[i].cart_id,
-                qty: dataStore.userCart[i].qty
-            }
-            await apiCall("updateCart", dataStore.apiToken, {"user": userO, product: updateProduct});
-        }
-        await refreshCart(dataStore, updateDataStore)
-    }
-
-    const changeQty2 = async (product, updatedQty) => {
+    
+    const changeQty = async (product, updatedQty) => {
         if (updatedQty === 0) {
             setToastMsg("Minimum Quantity Selected")
             return
@@ -71,9 +48,9 @@ function ProductCartView({isMobile}) {
                                 </div>
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty
-                                    <div className="text-[#555]" onClick={() => changeQty(index, -1)}>-</div>
+                                    <div className="text-[#555]" onClick={() => changeQty(p, p.qty - 1)}>-</div>
                                     <div>{p.qty}</div>
-                                    <div className="text-[#555]" onClick={() => changeQty(index, 1)}>+</div>
+                                    <div className="text-[#555]" onClick={() => changeQty(p, p.qty + 1)}>+</div>
                                 </div>
                                 <p className="text-right text-[#777] text-xs">
                                     {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
@@ -115,9 +92,9 @@ function ProductCartView({isMobile}) {
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty:
                                     <div className="text-[#555] cursor-pointer"
-                                         onClick={() => changeQty(index, -1)}>-</div>
+                                         onClick={() => changeQty(p, p.qty - 1)}>-</div>
                                     <div>{p.qty}</div>
-                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(index, 1)}>+
+                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(p, p.qty + 1)}>+
                                     </div>
                                 </div>
                                 <p className="text-right text-[#777] text-xs">
@@ -161,9 +138,9 @@ function ProductCartView({isMobile}) {
                                 </div>
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty
-                                    <div className="text-[#555]" onClick={() => changeQty2(p, p.qty - 1)}>-</div>
+                                    <div className="text-[#555]" onClick={() => changeQty(p, p.qty - 1)}>-</div>
                                     <div>{p.qty}</div>
-                                    <div className="text-[#555]" onClick={() => changeQty2(p, p.qty + 1)}>+</div>
+                                    <div className="text-[#555]" onClick={() => changeQty(p, p.qty + 1)}>+</div>
                                 </div>
 
                             </div>
@@ -208,9 +185,9 @@ function ProductCartView({isMobile}) {
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty:
                                     <div className="text-[#555] cursor-pointer"
-                                         onClick={() => changeQty2(p, p.qty - 1)}>-</div>
+                                         onClick={() => changeQty(p, p.qty - 1)}>-</div>
                                     <div>{p.qty}</div>
-                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty2(p, p.qty + 1)}>+
+                                    <div className="text-[#555] cursor-pointer" onClick={() => changeQty(p, p.qty + 1)}>+
                                     </div>
                                 </div>
 

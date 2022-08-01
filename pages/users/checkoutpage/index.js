@@ -28,7 +28,7 @@ function UsersCheckoutPage() {
 
     useEffect(async () => {
         if(dataStore.userServe.email || dataStore.userServe.temp_user_id) {
-            let user = await getUserObject(dataStore, updateDataStore)
+            let user = getUserObject(dataStore, updateDataStore)
             const gotOrderSummaryCall = await apiCall("getOrderSummary", dataStore.apiToken, {user: user});
             if (gotOrderSummaryCall.status === 200) {
                 updateDataStore("orderSummary", {

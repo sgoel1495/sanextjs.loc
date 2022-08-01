@@ -57,6 +57,7 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
         state: "",
         city: "",
     };
+    console.log(dataStore)
     const [address, setAddress] = useState(selectedAddressIndex >= 0 ? dataStore.userAddresses[selectedAddressIndex] : emptyAddress);
     const updateAddressValue = (e) => {
         setAddress({...address, [e.target.name]: e.target.value});
@@ -418,13 +419,14 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
             {
                 isMobile && <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
                     <div onClick={() => {
-                        if (dataStore.userAddresses && dataStore.userAddresses.length) {
-                            if (dataStore.userServe.email)
+                        console.log(dataStore)
+                        if (dataStore.userServe.email) {
+                            if (dataStore.userAddresses && dataStore.userAddresses.length)
                                 setSelectedAddressIndex(null)
-                            else
-                                setActive(1)
-                        }
-                    }} className='bg-black py-2 cursor-pointer text-gray-300 mr-0.5'>
+                        } else
+                            setActive(1)
+                    }
+                    } className='bg-black py-2 cursor-pointer text-gray-300 mr-0.5'>
                         <button className='font-600 uppercase'>Cancel</button>
                     </div>
                     <div onClick={checkAndSave} className='bg-black py-2 cursor-pointer text-white'>

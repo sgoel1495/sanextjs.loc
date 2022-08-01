@@ -148,7 +148,7 @@ function ShippingAddress({setActive}) {
 
     return <>
         {dataStore.mobile ? mobileView : browserView}
-        {showSidebarMenuUser && ReactDom.createPortal(
+        {!dataStore.userServe.email && showSidebarMenuUser && ReactDom.createPortal(
             <UserLogin closeModal={closeModal.bind(this)} isMobile={true}/>,
             document.getElementById("userband"))}
         <Toast show={show} hideToast={() => setShow(false)} bottom={'50px'}>

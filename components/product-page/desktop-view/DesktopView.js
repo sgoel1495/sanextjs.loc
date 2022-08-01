@@ -10,6 +10,7 @@ import ExploreSections from "./sub-sections/ExploreSections";
 
 const DesktopView = ({ hpid, data }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const [selectedSize, setSelectedSize] = useState(null)
 
     const [theme, setTheme] = useState("black")
     const videoRef = useRef(null);
@@ -40,7 +41,7 @@ const DesktopView = ({ hpid, data }) => {
                     {data.name}
                 </div>
                 <div className={"absolute top-[15%] right-[12.5%] w-60"}>
-                    <DetailsCard data={data} hpid={hpid} />
+                    <DetailsCard data={data} hpid={hpid} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
                 </div>
             </div>
             <span className={"block relative aspect-[320/159] w-full"}>
@@ -53,7 +54,7 @@ const DesktopView = ({ hpid, data }) => {
                 <div className={"flex-[7]"}>
                     <ImageSwitcher images={data.images} />
                 </div>
-                <DetailsSection theme={theme} data={data} />
+                <DetailsSection theme={theme} data={data} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
             </div>
             <div className={"grid grid-cols-2"}>
                 <div className='py-10'>

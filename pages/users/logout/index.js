@@ -39,6 +39,8 @@ function UsersLogoutPage() {
         updateDataStore("userCart", userCart);
         updateDataStore("userOrderHistory", userOrderHistory);
         updateDataStore("userMeasurements", userMeasurements);
+        localStorage.setItem("userData",JSON.stringify(userData))
+        localStorage.setItem("userServe",JSON.stringify(userServe))
         router.replace("/");
     }, [router, updateDataStore])
     return <Fragment>Logging out ...</Fragment>;

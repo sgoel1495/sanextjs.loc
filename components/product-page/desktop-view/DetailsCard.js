@@ -11,29 +11,33 @@ import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
-import addToCartLoggedIn from "../../../helpers/addToCartLoggedIn";
-import getUserO from "../../../helpers/getUserO";
 import returnSizes from "../../../helpers/returnSizes";
 import {Fragment} from "react";
 import MoreColours from "../../common/MoreColours";
+import {addToCart, getUserObject} from "../../../helpers/addTocart";
+import Image from "next/image";
+import {FaFacebookF, FaTwitter} from 'react-icons/fa';
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
  * @param data
  * @param hpid
+ * @param selectedSize
+ * @param setSelectedSize
  * @returns {JSX.Element}
  * @constructor
  */
 
-const DetailsCard = ({data, hpid}) => {
+const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
     const {dataStore, updateDataStore} = useContext(AppWideContext)
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const currCurrency = dataStore.currCurrency
     const currencyData = appSettings("currency_data")
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [deliveryAvailable, setDeliveryAvailable] = useState(null)
     const [pincode, setPinCode] = useState(null)
     const [sizeModal, setSizeModal] = useState(false)
-    const [selectedSize, setSelectedSize] = useState(null)
+    const [showShare, setShowShare] = useState(false)
     const [refresh, setRefresh] = useState(false)
     //for toast
     const [toastMsg, setToastMsg] = useState(null)
@@ -122,7 +126,7 @@ const DetailsCard = ({data, hpid}) => {
     }
     const refreshDataStore = async () => {
         const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user": getUserO(dataStore)
+            "user": getUserObject(dataStore, updateDataStore)
         });
 
         let userMeasurements = {};
@@ -137,7 +141,7 @@ const DetailsCard = ({data, hpid}) => {
         if (dataStore.userData.contact) {
             //logged in user
             await apiCall("removeMeasurements", dataStore.apiToken, {
-                user: getUserO(dataStore),
+                user: getUserObject(dataStore, updateDataStore),
                 measurments: {
                     measure_id: m.measure_id
                 }
@@ -158,7 +162,7 @@ const DetailsCard = ({data, hpid}) => {
         if (dataStore.userData.contact) {
             // we have a valid user
             await apiCall("addMeasurements", dataStore.apiToken, {
-                "user": getUserO(dataStore),
+                "user": getUserObject(dataStore, updateDataStore),
                 "measurments": currentMeasurement
             })
 
@@ -191,28 +195,12 @@ const DetailsCard = ({data, hpid}) => {
         setDeliveryAvailable((resp.response_data && resp.response_data.city) ? true : false)
     }
 
-    const addToCart = async () => {
-        //check if there is a size
-        if (selectedSize == null || selectedSize == "") {
+    const saveToCart = async () => {
+        if (selectedSize == null || selectedSize === "") {
             setToastMsg("Please select a size first")
             setShowToast(true)
             return
         }
-
-        let tempId = null;
-        if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id == "") {
-            tempId = Date.now()
-            dataStore.userServe.temp_user_id = tempId
-            updateDataStore("userServe", dataStore.userServe)
-        } else
-            tempId = dataStore.userServe.temp_user_id
-
-        const userO = {
-            email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-            is_guest: !(dataStore.userData.contact),
-            temp_user_id: tempId
-        }
-
         const cart = {
             product_id: hpid,
             size: selectedSize,
@@ -222,59 +210,18 @@ const DetailsCard = ({data, hpid}) => {
             sleeve_length: "",
             dress_length: ""
         }
-        console.log("DATA PRODUCT", data)
-        const displayCart = {
-            asset_id: "/assets/" + data.asset_id + "/thumb.jpg",
-            product_id: hpid,
-            cart_id: data.product_id + "+" + selectedSize,
-            name: data.name,
-            tag_line: data.tag_line,
-            color: (data.hasOwnProperty("color")) ? data.color : {name: "MULTICOLOR"},
-            multi_color: (data.hasOwnProperty("multi_color")) ? data.multi_color : false,
-            qty: "1",
-            size: selectedSize,
-            is_tailor: false,
-            price: data.price,
-            usd_price: data.usd_price,
-            order: cart
-        }
-
-        //check if the product already in cart
-        let isPresentInCart = false
-        if (dataStore.userCart.length > 0) {
-            dataStore.userCart.forEach(item => {
-                if (item.product_id == hpid && item.size === selectedSize)
-                    isPresentInCart = true
-            })
-        }
-
-        if (isPresentInCart) {
-            setToastMsg("Already in cart")
-        } else {
-            if (dataStore.userData.contact) {
-                // logged in user
-                await addToCartLoggedIn(dataStore.apiToken, userO, {cart: cart}, updateDataStore)
-            } else {
-                //not logged in
-                dataStore.userCart.push(displayCart)
-                updateDataStore("userCart", dataStore.userCart)
-            }
+        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
             setToastMsg("Added to Cart")
             setShowToast(true)
-        }
+        })
     }
 
-    console.log("Data of product", data)
     const whatSizes = () => {
-        const sizeData = returnSizes(data.category);
+        const sizeData = returnSizes(data);
         let returnValue = null
         sizeData.forEach((size, index) => {
             returnValue = <Fragment>
                 {returnValue}
-                {(index !== 0)
-                    ? <span className={""} key={"divide" + index}>|</span>
-                    : null
-                }
                 <span key={"sdsda" + index}
                       className={(selectedSize == size) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"}
                       onClick={() => setSelectedSize(size)}>
@@ -287,14 +234,38 @@ const DetailsCard = ({data, hpid}) => {
         </div>
     }
 
+    const shareOnTwitter = () => {
+        let url = 'https://twitter.com/intent/tweet?url=' + `https://saltattire.com/${data.asset_id}&text=${data.asset_id}`;
+        window.open(url, 'TwitterWindow', "width = 1200, height = 600");
+        return false;
+    }
+    const shareOnFB = () => {
+        let url = 'https://www.facebook.com/dialog/share?app_id=253839508451663&display=popup&href=' + `https://saltattire.com/${data.asset_id}`;
+        window.open(url, 'FacebookWindow', "width = 1200, height = 600");
+        return false;
+    }
+
     return (
         <div>
             <div className={"bg-white p-4 shadow-xl"}>
                 <div className={"flex items-center justify-between text-black/60 text-sm font-500 mb-4"}>
                     <span>{currencySymbol} {currCurrency === "inr" ? data.price : data.usd_price}</span>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 relative'>
                         <WishlistButton pid={hpid}/>
-                        <span>Icon</span>
+                        <button className={"relative block h-4 w-4"} onClick={() => setShowShare(!showShare)}>
+                            <Image src={WEBASSETS + "/assets/images/share-1.svg"} layout={`fill`} objectFit={`cover`}/>
+                        </button>
+                        {
+                            showShare &&
+                            <div className="absolute top-8 right-0 flex flex-col">
+                                <button title="share on facebook"  onClick={shareOnFB}>
+                                    <FaFacebookF/>
+                                </button>
+                                <button title="share on twitter" className={"mt-2"} onClick={shareOnTwitter}>
+                                    <FaTwitter/>
+                                </button>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className={"text-center mb-4"}>
@@ -314,15 +285,21 @@ const DetailsCard = ({data, hpid}) => {
                     <span className={"uppercase underline cursor-pointer"}>customise</span>
                 </div>
                 <div className="flex items-center justify-center mb-5">
-                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={addToCart}>
+                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={saveToCart}>
                         i&lsquo;ll take it
                     </button>
                 </div>
                 <div className={"flex items-center"}>
-                    <span className='leading-none'>+</span>
+                    <span className='relative h-4 w-4'>
+                        <Image
+                            src={WEBASSETS + "/assets/images/plus.png"}
+                            layout={`fill`}
+                            objectFit={`cover`}
+                        />
+                    </span>
+                    &nbsp;
                     <a href='#product_details' className={"uppercase text-sm"}>product details</a>
                 </div>
-                <div className="flex items-center justify-center mb-5">5.0 ★ ★ ★ ★ ★</div>
                 <MoreColours hpid={hpid}/>
             </div>
             <div className={"bg-white mt-2 flex justify-evenly text-xs border-4 border-black/10 py-2"}>

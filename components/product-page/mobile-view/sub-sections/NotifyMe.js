@@ -1,15 +1,15 @@
 import React, {useContext, useState} from 'react';
 import ReactDom from "react-dom";
 import NotifyMeModal from "../../../common/NotifyMeModal";
-import getUserO from "../../../../helpers/getUserO";
 import AppWideContext from "../../../../store/AppWideContext";
 import Toast from "../../../common/Toast";
+import {getUserObject} from "../../../../helpers/addTocart";
 
 const NotifyMe = (props) => {
     const [showNotify, setShowNotify] = useState(false)
     const [error, setError] = useState(null)
 
-    const {dataStore} = useContext(AppWideContext);
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     return (
         <>
             <button className={"bg-white py-2 px-8 mt-4 rounded-full font-500"} onClick={() => setShowNotify(true)}>
@@ -24,7 +24,7 @@ const NotifyMe = (props) => {
                     setError={setError}
                     closeModal={setShowNotify}
                     isMobile={true}
-                    userO={getUserO(dataStore)}
+                    userO={getUserObject(dataStore, updateDataStore)}
                     product={props.prod}
                 />,
                 document.getElementById("measurementmodal"))

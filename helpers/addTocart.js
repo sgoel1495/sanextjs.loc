@@ -1,7 +1,7 @@
 import {apiCall} from "./apiCall";
 
 export async function refreshCart(dataStore, updateDataStore) {
-    let user = await getUserObject(dataStore, updateDataStore)
+    let user = getUserObject(dataStore, updateDataStore)
     const respCart = await apiCall("getCart", dataStore.apiToken, {user: user})
     if (respCart.response && Array.isArray(respCart.response)) {
         const actualCart = respCart.response.filter(item => {
@@ -11,7 +11,7 @@ export async function refreshCart(dataStore, updateDataStore) {
     }
 }
 
-export async function getUserObject(dataStore, updateDataStore) {
+export function getUserObject(dataStore, updateDataStore) {
     let tempId;
     if (dataStore.userServe && (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id === "")) {
         tempId = Date.now()
@@ -59,7 +59,7 @@ export async function checkItemInCart(userCart, product, isGC) {
 
 export async function addToCart(dataStore, updateDataStore, cart, apiName = "addToCart") {
     console.log(cart)
-    let user = await getUserObject(dataStore, updateDataStore)
+    let user = getUserObject(dataStore, updateDataStore)
 
     //update payload and apiname if item already in cart
     let isGC = apiName === "addGiftToCart";
@@ -83,7 +83,7 @@ export async function addToCart(dataStore, updateDataStore, cart, apiName = "add
 }
 
 export async function updateCart(dataStore, updateDataStore, product) {
-    let user = await getUserObject(dataStore, updateDataStore)
+    let user = getUserObject(dataStore, updateDataStore)
 
     product = {
         "product": {
@@ -100,7 +100,7 @@ export async function updateCart(dataStore, updateDataStore, product) {
 }
 
 export async function removeFromCart(dataStore, updateDataStore, product) {
-    let user = await getUserObject(dataStore, updateDataStore)
+    let user = getUserObject(dataStore, updateDataStore)
     product = {
         "product": {
             "product_cart_id": product.cart_id

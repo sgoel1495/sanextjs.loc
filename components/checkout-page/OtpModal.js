@@ -41,7 +41,7 @@ function OtpModal(props) {
     const requestOTP = useCallback(async () => {
         setCounter(30)
         const otpCall = await apiCall("codOtp", dataStore.apiToken, {
-            user: await getUserObject(dataStore, updateDataStore),
+            user: getUserObject(dataStore, updateDataStore),
             order: {order_id: dataStore.currentOrderId}
         })
         if (otpCall.hasOwnProperty("status") && otpCall.status === 200) {
@@ -59,7 +59,7 @@ function OtpModal(props) {
 
         setPlacing(true)
         const queryObject = {
-            "user": await getUserObject(dataStore, updateDataStore),
+            "user": getUserObject(dataStore, updateDataStore),
             "order": {
                 "order_id": dataStore.currentOrderId,
                 "otp": otp

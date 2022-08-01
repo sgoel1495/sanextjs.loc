@@ -1,7 +1,6 @@
 import React, {Fragment, useContext, useState} from "react";
 import Toast from "../common/Toast";
 import AppWideContext from "../../store/AppWideContext";
-import getUserO from "../../helpers/getUserO";
 import {apiCall} from "../../helpers/apiCall";
 import Accordion from "../common/accordion";
 import {getUserObject} from "../../helpers/addTocart";
@@ -18,7 +17,7 @@ function PromoCode() {
             setShow(true);
         } else {
             const query = {
-                user: await getUserObject(dataStore, updateDataStore),
+                user: getUserObject(dataStore, updateDataStore),
                 order: {
                     order_id: dataStore.currentOrderId,
                     coupon_code: promoCode,

@@ -11,6 +11,7 @@ import Customize from "./Customize";
 import {addToCart} from "../../../../helpers/addTocart";
 import {useRouter} from "next/router";
 import Toast from "../../../common/Toast";
+import NotifyMe from "./NotifyMe";
 
 const ProductDetails = ({data, hpid}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -47,7 +48,6 @@ const ProductDetails = ({data, hpid}) => {
             }
         }
     }).filter((key) => key)
-    console.log(data)
 
     const save = () => {
         if (!size) {
@@ -60,8 +60,8 @@ const ProductDetails = ({data, hpid}) => {
             "qty": 1,
             "is_sale": data.is_sale,
             "is_tailor": isTailored,
-            "sleeve_length": customization['sleeve'],
-            "dress_length": customization['dress']
+            "sleeve_length": "",
+            "dress_length": ""
         }
         addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
         })
@@ -148,19 +148,18 @@ const ProductDetails = ({data, hpid}) => {
                         })}
                 </div>
                 <div className={'flex flex-col items-center relative'}>
-                    {/*todo uncomment when in_stock field is there*/}
-                    {/*{*/}
-                    {/*    data.in_stock !== "true" &&*/}
-                    {/*    <div className={"absolute h-full w-full"}>*/}
-                    {/*        <div className={"h-full w-full bg-white/75 rounded-[8vw] grid place-items-center px-4 text-xs"}>*/}
-                    {/*            <div className={"w-full bg-[#f6f1ef] text-[#997756] py-4 flex flex-col items-center rounded-[8vw]"}>*/}
-                    {/*                <span>We&apos;re sorry, this item is temporarily SOLD OUT!</span>*/}
-                    {/*                <span>We can notify you when back in stock.</span>*/}
-                    {/*                <NotifyMe prod={data}/>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*}*/}
+                    {
+                        data.in_stock !== "true" &&
+                        <div className={"absolute h-full w-full"}>
+                            <div className={"h-full w-full bg-white/75 rounded-[8vw] grid place-items-center px-4 text-xs"}>
+                                <div className={"w-full bg-[#f6f1ef] text-[#997756] py-4 flex flex-col items-center rounded-[8vw]"}>
+                                    <span>We&apos;re sorry, this item is temporarily SOLD OUT!</span>
+                                    <span>We can notify you when back in stock.</span>
+                                    <NotifyMe prod={data}/>
+                                </div>
+                            </div>
+                        </div>
+                    }
                     <p className={'text-sm font-800 tracking-widest uppercase mb-4'}>select a size</p>
                     <SizeSelect data={data} sizeAvail={sizeAvail} size={size} setSize={setSize}/>
                     <button className={'bg-[#4eb16d] mb-5 uppercase text-white font-900 text-xs text-center rounded-2xl py-4 px-10 tracking-widest shadow-lg'} onClick={save}>add to

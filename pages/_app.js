@@ -35,6 +35,7 @@ function MyApp({Component, pageProps}) {
         setDataStore({...dataStore});
         setRefresh(!refresh);
     }, [dataStore, refresh])
+    console.log(dataStore)
     useEffect(() => {
         let userData = localStorage.getItem("userData")
         let flag = true;
@@ -58,6 +59,10 @@ function MyApp({Component, pageProps}) {
                     setDataStore({...dataStore, "userServe": userServe});
                     localStorage.setItem("userServe", JSON.stringify(userServe));
                 }
+            } else {
+                userServe = {...dataStore.userServe, temp_user_id: Date.now().toString()}
+                setDataStore({...dataStore, "userServe": userServe});
+                localStorage.setItem("userServe", JSON.stringify(userServe));
             }
         }
     }, [])
