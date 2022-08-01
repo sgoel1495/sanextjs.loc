@@ -6,7 +6,7 @@ import Footer from "../../components/footer/Footer";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import Image from "next/image";
-import ProductCard from "./ProductCard";
+import ProductCard from "../../components/sale/ProductCard";
 
 function EndOfSeasonSale(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
