@@ -67,9 +67,6 @@ function UsersFavouritesPage() {
         }
     },[dataStore.userData.contact, dataStore.userServe, dataStore.userServe.favorites, dataStore.userServe.favorites.length])
 
-    console.log("-------------- DATASTORE",dataStore
-    )
-
     const removeFromFav = async (i)=>{
         const queryO = {
             product: favProductData[i].product_id,

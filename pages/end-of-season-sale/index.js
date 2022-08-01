@@ -34,7 +34,6 @@ function EndOfSeasonSale(props) {
         }
     },[selected])
 
-    // console.log(data)
 
     const checkBox_and_label_style = "flex-inline m-1 gap-1"
 

@@ -65,7 +65,6 @@ function CategoryHeaderVideo(props) {
             titleStyle = " text-left float-left pl-28"
     }
 
-    console.log("================= CATEGORY", category)
 
     //@TODO We do not have any carousel data.
     return (

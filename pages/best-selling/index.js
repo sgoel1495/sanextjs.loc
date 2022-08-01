@@ -12,7 +12,6 @@ function BestSellingPage(props) {
     const [mobile, setMobile] = useState(false)
     const [carousal] = useState(props.carousal);
     const [data] = useState(props.data);
-    console.log(carousal)
     useEffect(() => {
         setMobile(isMobile)
     }, [])
