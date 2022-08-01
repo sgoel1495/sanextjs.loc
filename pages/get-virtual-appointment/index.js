@@ -8,7 +8,7 @@ import Header from "../../components/navbar/Header";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../../components/common/Toast";
 import {isMobile} from "react-device-detect";
-import Image from "next/Image";
+import Image from "next/image";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
