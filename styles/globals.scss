@@ -51,6 +51,15 @@ body.scroll-overflow .navigator {
     width: 100%;
 }
 
+.measurementBlock1__sizes__mob{
+    background-image: url('https://saltattire.com/assets/images/illustration.jpg');
+    background-repeat: no-repeat;
+    background-size: 200%;
+    background-position: center;
+    height: 90%;
+    width: 100%;
+}
+
 .size_guide_table{
     @apply w-full table-fixed;
 
@@ -94,6 +103,28 @@ body.scroll-overflow .navigator {
         }
     }
 }
+
+
+.order_summary_table_mobile{
+    *{
+        @apply block;
+    }
+
+    @apply block w-full border-t border-b border-[#808080] py-5;
+
+    tr {
+        @apply flex;
+
+        td{
+            @apply py-1 font-600 text-[#777];
+        }
+
+        td:first-child{
+            @apply flex-1
+            }
+    }
+}
+
 
 .fade-up{
     animation: fadeup .4s ease;

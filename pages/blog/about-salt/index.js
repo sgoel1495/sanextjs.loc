@@ -6,15 +6,19 @@ import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Link from "next/link";
 import Image from "next/image";
-
+import {isMobile} from "react-device-detect";
 
 function BlogAboutSaltPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
-
+    const [mobile, setMobile] = useState(false);
     const category = "About Salt";
 
     const data = require("../../../store/blogData.json");
+
+    useEffect(() => {
+        setMobile(isMobile);
+    }, []);
     const showBlogPosts = () => {
         let sbp = null;
         data.forEach(blog => {
@@ -38,7 +42,16 @@ function BlogAboutSaltPage() {
         return sbp;
     };
 
-    const mobileView = null;
+    const mobileView = (
+           <section className=" mx-auto mb-10">
+    <div className="mb-20 mt-7 pl-12">
+        <p className={`text-2xl font-700 font-cursive`}>About Salt</p>
+        <p className='font-semibold'>Our Values</p>
+    </div>
+    <main className="grid grid-cols-1 gap-10">
+        {showBlogPosts()}
+    </main>
+</section>);
     const browserView = (
         <section className="w-9/12 mx-auto mb-10">
             <div className="text-center mt-5 mb-20">
@@ -54,12 +67,12 @@ function BlogAboutSaltPage() {
     return (
         <Fragment>
             <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : ""} isMobile={dataStore.mobile} />
-            <div className="h-[436px] overflow-hidden">
+            <Header type={mobile ? "minimal" : ""} isMobile={dataStore.mobile} />
+            <div className=" overflow-hidden">
             <CategoryHeaderImage category={category} />
             </div>
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile} />
+            {(mobile) ? mobileView : browserView}
+            <Footer isMobile={mobile} />
         </Fragment>);
 
 }

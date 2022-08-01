@@ -8,8 +8,9 @@ import CategoryHeaderMobile from "../../../components/shop-page/CategoryHeaderMo
 import useApiCall from "../../../hooks/useApiCall";
 import {apiCall} from "../../../helpers/apiCall";
 import ProductCard from "../../../components/shop-page/ProductCard";
-import Image from "next/image";
 import {isMobile} from "react-device-detect";
+import GroupDesignHeader from "../../../components/group/GroupDesignHeader";
+import Loader from "../../../components/common/Loader";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
@@ -23,7 +24,9 @@ function GroupDesignPage() {
     const {dataStore} = useContext(AppWideContext);
     const router = useRouter();
     const resp = useApiCall("getPreferencesData", dataStore.apiToken);
-    const [data, setData] = useState([]);
+    const [callData,setCallData] = useState(null)
+    const [data, setData] = useState(null);
+    const [visibleData, setVisibleData] = useState([]);
     const [mobile, setMobile] = useState(false)
 
     React.useEffect(() => {
@@ -35,16 +38,23 @@ function GroupDesignPage() {
     let img = ""
 
     useEffect(() => {
-        if (design) {
+        if (design && data==null) {
             apiCall("getProducts", dataStore.apiToken,
                 {category: query.groupdesign, limit: 10000, skip: 0}
-            ).then(resp => {
-                if (resp.status === 200) {
-                    setData(resp.response.data.filter(item => item.is_visible));
-                }
+            ).then(response => {
+                if (response.status === 200) {
+                    setCallData(response)
+                    const vData = response.response.data.filter(item => item.is_visible)
+                    setData(vData)
+                    setVisibleData(vData)
+                } else
+                    setData([])
             })
         }
     }, [design])
+
+    console.log("Call data",callData)
+    console.log("DATA OF GROUP",data)
 
     if (resp) {
         let group = resp.response.find(item => item.home_url.includes(design))
@@ -54,22 +64,35 @@ function GroupDesignPage() {
         }
     }
 
-    const mobileView = <Fragment>
-        {img &&
+    const mobileView = data
+        ? <Fragment>
+            {img &&
             <img
                 src={WEBASSETS + img}
                 alt={design}
             />}
-        <CategoryHeaderMobile group={true} category={design} groups={resp ? resp.response : []}/>
-        {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={true} wide={true}/>)}
-    </Fragment>;
-    const browserView = <Fragment>
-        {design}
-    </Fragment>;
+            <CategoryHeaderMobile group={true} category={design} groups={resp ? resp.response : []}/>
+            {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={true} wide={true}/>)}
+        </Fragment>
+        : null
+
+    const browserView = data
+        ? <Fragment>
+            <GroupDesignHeader category={design}  />
+            {data.map((item, index) => <main className={`grid grid-cols-3 gap-5 container pb-20`}>
+                {visibleData && visibleData.map((prod, index) => {
+                    return <ProductCard prod={prod} key={index}
+                                        isAccessory={false} isMobile={false} wide={true} />
+                })}
+            </main>)}
+        </Fragment>
+        : null
 
 
-    return (
-        <Fragment>
+
+    return data==null
+        ? <Loader />
+        : <Fragment>
             <PageHead url="/salt/group" id="group" isMobile={mobile}/>
             <Header type={"shopMenu"} isMobile={mobile}/>
             <section className="container select-none bg-[#faf4f0]">
@@ -77,7 +100,6 @@ function GroupDesignPage() {
             </section>
             <Footer isMobile={mobile}/>
         </Fragment>
-    )
 
 
 }

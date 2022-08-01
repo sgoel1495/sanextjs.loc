@@ -7,10 +7,9 @@ import MeasurementModal1 from "../../../user/MeasurementModal1";
 import MeasurementModal2 from "../../../user/MeasurementModal2";
 import MeasurementModal3 from "../../../user/MeasurementModal3";
 
-const SizeSelect = (props) => {
+const SizeSelect = ({data, sizeAvail, size, setSize}) => {
     const [showStandardSize, setShowStandardSize] = useState(false);
     const [showModal0, setShowModal0] = useState(false);
-    const [selectedSize, setSelectedSize] = useState(null);
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
@@ -59,7 +58,6 @@ const SizeSelect = (props) => {
     const updateValues = (key, value) => {
         currentMeasurement[key] = value;
         setCurrentMeasurement(currentMeasurement);
-        setRefresh(!refresh);
     };
     const addNewModal = (m) => {
         setCurrentProduct(data);
@@ -109,19 +107,37 @@ const SizeSelect = (props) => {
 
     return (
         <>
-            <div className={'inline-flex items-center gap-6 mb-5'}>
-                <div
-                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-none rounded-[5vw]'}
-                    onClick={() => {
-                        setShowStandardSize(!showStandardSize);
-                    }}
-                >
-                    <p className={'uppercase font-900 text-xs'}>standard</p>
-                    <p className={' uppercase font-400 text-xs'}>size</p>
+            <div className={'inline-flex items-center gap-6 mb-5 text-[#5a5958] tracking-widest'}>
+                <div>
+                    <span className={"uppercase text-xs font-900 block text-center mb-1 text-[#4eb16d]"}>
+                        {
+                            size && "selected"
+                        }
+                    </span>
+                    <div
+                        className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [size ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"]}
+                        onClick={() => {
+                            setShowStandardSize(!showStandardSize);
+                        }}
+                    >
+                        {
+                            size ? <>
+                                    <p className={'uppercase font-900 text-xs'}>standard</p>
+                                    <p className={'uppercase font-900 text-sm'}>{size}</p>
+                                    <p className={' uppercase font-400 text-[10px]'}>edit</p>
+                                </>
+                                :
+                                <>
+                                    <p className={'uppercase font-900 text-xs'}>standard</p>
+                                    <p className={' uppercase font-400 text-xs'}>size</p>
+                                </>
+                        }
+
+                    </div>
                 </div>
                 <p className={''}>OR</p>
                 <div
-                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-none rounded-[5vw]'}
+                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-4 rounded-[5vw]'}
                     onClick={() => {
                         setShowModal0(true);
                     }}
@@ -130,15 +146,18 @@ const SizeSelect = (props) => {
                     <p className={'uppercase font-400 text-xs'}>size</p>
                 </div>
             </div>
-            {sizeModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeModal(false)} isMobile={dataStore.isMobile}/>, document.getElementById('measurementmodal'))}
+            <p onClick={() => {
+                setSizeModal(true)
+            }} className={'mb-4 uppercase'}>size guide</p>
+            {sizeModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeModal(false)} isMobile={true}/>, document.getElementById('measurementmodal'))}
             {showStandardSize &&
             ReactDom.createPortal(
                 <StandardSizeModal
                     closeModal={closeModal.bind(this)}
-                    standardSizes={[
-                        {size: 'XS', bust: '32', hips: '35'},
-                        {size: 'S', bust: '34', hips: '37'},
-                    ]}
+                    setSizeModal={setSizeModal}
+                    standardSizes={sizeAvail}
+                    selected={size}
+                    setSelected={setSize}
                 />,
                 document.getElementById('measurementmodal'),
             )}

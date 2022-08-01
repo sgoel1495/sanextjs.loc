@@ -1,25 +1,26 @@
 import {apiCall} from "./apiCall";
+import {addToCart, checkItemInCart} from "./addTocart";
 
-export async function updateUserDataAfterLogin(username, apiToken, currentMeasurements, currentCart){
+export async function updateUserDataAfterLogin(username, apiToken, currentMeasurements, currentCart) {
     //==================== user Data
     let userData = {
         contact: username
     }
 
     //==================== user Wallet
-    const walletCall = await apiCall("userWallet", apiToken, { contact: username });
+    const walletCall = await apiCall("userWallet", apiToken, {contact: username});
 
     let userWallet = {
         "WalletAmount": 0,
         "TotalCr": 0,
         "TotalDr": 0,
-        "Wallet":[]
+        "Wallet": []
     };
     if (walletCall.user)
         userWallet = {...walletCall.user};
 
     //==================== user Serve
-    const serveCall = await apiCall("userServe", apiToken, { contact: username });
+    const serveCall = await apiCall("userServe", apiToken, {contact: username});
 
     let userServe = {
         "email": "",
@@ -32,8 +33,8 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     };
     if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email) {
         userServe = {...serveCall.response};
-        if(!userServe.temp_user_id || userServe.temp_user_id===""){
-            userServe.temp_user_id=Date.now()
+        if (!userServe.temp_user_id || userServe.temp_user_id === "") {
+            userServe.temp_user_id = Date.now()
         }
     }
 
@@ -48,21 +49,21 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
 
     //==================== user Address
     const addressCall = await apiCall("userAddresses", apiToken, {
-        "user":{
+        "user": {
             email: username
         }
     });
     let userAddresses = [];
-    if (addressCall.hasOwnProperty("response") && addressCall.response && Array.isArray(addressCall.response) )
+    if (addressCall.hasOwnProperty("response") && addressCall.response && Array.isArray(addressCall.response))
         userAddresses = [...addressCall.response];
 
     const defaultAddressCall = await apiCall("getDefaultAddress", apiToken, {
-        "user":{
+        "user": {
             email: username
         }
     });
     let defaultAddress = null
-    if(
+    if (
         defaultAddressCall.hasOwnProperty("response")
         && defaultAddressCall.response.hasOwnProperty("email")
     )
@@ -72,24 +73,42 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     //==================== user Cart
     // we may have products that we need to add to user
     // first we add any measurements that may be there.
-    console.log("CURRENT CART",currentCart)
-    for(let x=0;x<currentCart.length;x++){
-        const newCart = currentCart[x].order
-        newCart.qty = currentCart[x].qty
-        console.log("INSERTING product to cart",newCart)
-        const callResult = await apiCall("addToCart", apiToken, { user: userO, cart: newCart })
-        console.log("CALL RESULT",callResult)
+    // console.log("CURRENT CART",currentCart)
+    let userCart = [];
+    let cartCall = await apiCall("getCart", apiToken, {"user": userO});
+    if (cartCall.response && Array.isArray(cartCall.response))
+        userCart = cartCall.response.filter(item => {
+            return item.qty != null
+        })
+
+    for (let x = 0; x < currentCart.length; x++) {
+        let apiName = "addToCart"
+        let newCart = currentCart[x]
+        let item = await checkItemInCart(userCart, currentCart, false)
+        if (item) {
+            newCart = {
+                "product": {
+                    "product_cart_id": item.cart_id,
+                    "qty": item.qty + 1
+                }
+            }
+            apiName = "updateCart"
+        }
+
+        const callResult = await apiCall(apiName, apiToken, {user: userO, cart: newCart})
+        // console.log("CALL RESULT",callResult)
     }
 
-    let userCart = [];
-    const cartCall = await apiCall("getCart", apiToken, {"user":userO});
-    if (cartCall.response && Array.isArray(cartCall.response) )
-        userCart = cartCall.response.filter(item=>{return item.qty!=null})
+    cartCall = await apiCall("getCart", apiToken, {"user": userO});
+    if (cartCall.response && Array.isArray(cartCall.response))
+        userCart = cartCall.response.filter(item => {
+            return item.qty != null
+        })
 
     //==================== user Measurement
     // first we add any measurements that may be there.
     const countMeasurements = Object.keys(currentMeasurements)
-    for(let x=0;x<countMeasurements;x++){
+    for (let x = 0; x < countMeasurements; x++) {
         await apiCall("addMeasurements", dataStore.apiToken, {
             "user": userO,
             "measurments": currentMeasurements[x]
@@ -98,40 +117,40 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
 
     // then we call the measurements
     const measurementCall = await apiCall("userMeasurements", apiToken, {
-        "user":userO
+        "user": userO
     });
 
     let userMeasurements = {};
-    if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length>0)
+    if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
         userMeasurements = {...measurementCall.response}
 
     //==================== user Measurement
     const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
-        "user":{contact:username,token:apiToken}
+        "user": {contact: username, token: apiToken}
     });
-    console.log("ORDER HISTORY CALL",orderHistoryCall)
+    // console.log("ORDER HISTORY CALL",orderHistoryCall)
     let userOrderHistory = {};
-    if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && orderHistoryCall.response!="user not found"
-        && Object.keys(orderHistoryCall.response).length>0)
+    if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && orderHistoryCall.response != "user not found"
+        && Object.keys(orderHistoryCall.response).length > 0)
         userOrderHistory = {...orderHistoryCall.response}
 
-    console.log("userData",userData);
-    console.log("userWallet",userWallet);
-    console.log("userServe",userServe);
-    console.log("userAddresses",userAddresses);
-    console.log("userCart",userCart);
-    console.log("userMeasurements",userMeasurements);
-    console.log("userOrderHistory",userOrderHistory);
+    // console.log("userData",userData);
+    // console.log("userWallet",userWallet);
+    // console.log("userServe",userServe);
+    // console.log("userAddresses",userAddresses);
+    // console.log("userCart",userCart);
+    // console.log("userMeasurements",userMeasurements);
+    // console.log("userOrderHistory",userOrderHistory);
 
     return {
-        "userData":userData,
-        "userWallet":userWallet,
-        "userServe":userServe,
-        "userAddresses":userAddresses,
-        "defaultAddress":defaultAddress,
-        "userCart":userCart,
-        "userMeasurements":userMeasurements,
-        "userOrderHistory":userOrderHistory,
+        "userData": userData,
+        "userWallet": userWallet,
+        "userServe": userServe,
+        "userAddresses": userAddresses,
+        "defaultAddress": defaultAddress,
+        "userCart": userCart,
+        "userMeasurements": userMeasurements,
+        "userOrderHistory": userOrderHistory,
         "orderPromo": {},
         "currentOrderId": "",
         "currentOrderInCart": {

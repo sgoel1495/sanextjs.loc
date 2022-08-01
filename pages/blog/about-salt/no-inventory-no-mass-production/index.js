@@ -15,7 +15,21 @@ function BlogNoInventoryNoMassProductionPage(){
     const {dataStore} = useContext(AppWideContext);
 
 
-    const mobileView = null;
+    const mobileView =  (
+        <section className={`container`}>
+              <Link  href="/blog/about-salt" passHref>
+                   <p className=' uppercase font-bold underline mt-28'> Back</p>
+                </Link>
+            <div className="col-span-3">
+                <NoInventoryNoMassProduction isMobile={true} main={true}/>
+                <WhyCustomTailoredClothing isMobile={true} main={false}/>
+                <StylingServices isMobile={true} main={false}/>
+                <FreeAlterations isMobile={true} main={false}/>
+                <PremiumFabricQuality isMobile={true} main={false}/>
+                <EthicalFairTreatment isMobile={true} main={false}/>
+            </div>
+        </section>
+    );
     const browserView = (
         <section className={`container grid grid-cols-5`}>
             <div className={`col-span-1 flex flex-col justify-center h-screen sticky top-0 font-cursive`}>

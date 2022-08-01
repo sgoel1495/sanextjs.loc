@@ -116,7 +116,7 @@ const SignUpForm = (props) => {
     return (
         <>
             <span className={"text-xs font-700"}>{stage === 0 ? "Step 1 of 2 | Personal Information" : "Step 2 of 2 | Login Credentials"}</span>
-            <form className={`grid grid-cols-4 gap-x-8`} onSubmit={onSubmit}>
+            <form className={dataStore.mobile?" grid grid-cols-1 gap-y-4":`grid grid-cols-4 gap-x-8`} onSubmit={onSubmit}>
                 {
                     stage === 0 ?
                         <>

@@ -4,7 +4,7 @@
  * @returns {null}
  */
 export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
-    const apiServer = "http://103.90.241.54:2023/api/v1";
+    const apiServer = "http://216.48.180.99:8443/api/v1";
     let url = apiServer;
 
     const headers = {
@@ -113,6 +113,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "getSaleItems":
+            url += "/sale/get_sale_items";
+            body = {
+                ...queryObject,
+                token: apiToken
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
 
         //------------------------USER
         case "userLogin":
@@ -174,6 +184,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
                 token: apiToken,
                 ...queryObject
             };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "updateUserDetails":
+            url += "/users/update_user_details"
+            body = {
+                token: apiToken,
+                ...queryObject
+            }
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
@@ -268,7 +288,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-            //===================== WALLET
+        //===================== WALLET
         case "userWallet":
             url += "/get_user_wallet";
             body = {
@@ -293,7 +313,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         case "removeFromFav":
             url += "/remove_from_fav";
             body = {
-                token: apiToken,
                 ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
@@ -408,8 +427,8 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             body = {
                 mimoto: {
                     token: apiToken,
-                    skip:0,
-                    limit:100
+                    skip: 0,
+                    limit: 100
                 }
 
             };
@@ -430,7 +449,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== CART
-            //same link for adding tailored and non tailored
+        //same link for adding tailored and non tailored
         case "addToCart":
             url += "/add_to_cart";
             body = {
@@ -462,7 +481,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         case "removeCart":
-            url += "/update_cart";
+            url += "/remove_from_cart";
             body = {
                 token: apiToken,
                 ...queryObject
@@ -471,7 +490,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-            //====================== ORDERS
+        //====================== ORDERS
         case "userOrderHistory":
             url += "/get_user_orderhistory";
             body = {
@@ -491,9 +510,19 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "measurmentForReview":
+            url += "/checkout/add_measurment_for_review";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
 
 
-            //====================== INSTAGRAM
+
+        //====================== INSTAGRAM
         case "instagramToken":
             url += "/get_instagram_token";
             body = {
@@ -537,8 +566,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== COD Payment
-            /* INCORRECT
-        case "codcheckout":
+        case "codCheckout":
             url += "/checkout";
             body = {
                 token: apiToken,
@@ -547,7 +575,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
-        */
 
         case "codOtp":
             url += "/checkout/send_otp_for_cod";
@@ -569,7 +596,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-            //========================== NOTIFY
+        //========================== NOTIFY
 
         case "notifyMe":
             url += "/notify_user";
@@ -577,12 +604,42 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...formDataFetcher}
             break;
 
-            //========================== NOTIFY
+        //========================== NOTIFY
 
         case "search":
             url += "/get_search_view";
             formDataFetcher.body = queryObject;
             finalFetcher = {...formDataFetcher}
+            break;
+
+        case "checkGiftAmount":
+            url += "/check_gift_amount"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case  "addGiftToCart":
+            url += "/giftcards/add_giftcard_to_cart"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case  "redeemVoucher":
+            url += "/users/redeem_voucher"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
             break;
 
         default:

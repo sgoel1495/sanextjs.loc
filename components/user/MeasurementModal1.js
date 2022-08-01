@@ -135,41 +135,25 @@ function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, ne
   const blockClass = 'flex flex-col items-center max-w-max';
   const labelClass = 'text-xs font-700';
   const inputSelect = 'font-600 text-xs focus:ring-transparent focus:border-black';
+  const inputSelectMobile = 'font-600 text-xs h-[35px] py-1 border-[#a8a8a8] focus:ring-transparent focus:border-[#a8a8a8]';
   const inputField = 'w-[105px] border border-black bg-[#f1f2f3] placeholder:font-600 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black';
 
   const mobileView = (
-    <div className='bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[8%] px-[10%]' onClick={closeModal}>
-      <div className='bg-white border-2 border-black relative h-full flex flex-col' onClick={(e) => e.stopPropagation()}>
+    <div className={['h-screen fixed inset-0 z-modal grid place-items-center p-[2.5%] py-[5%]']} onClick={closeModal}>
+      <div className='bg-white border-[1.2vw] border-[#b3aeab] text-[#997756] rounded-[10vw] h-full w-full relative flex flex-col overflow-hidden' onClick={(e) => e.stopPropagation()}>
         <div className='overflow-auto flex-1'>
           <button className='absolute top-0 right-8 text-2xl z-50' onClick={closeModal}>
             X
           </button>
           <div className='text-center my-5'>
             <p className='font-cursive italic text-3xl mb-2'>Step 1/3</p>
-            <p className='text-lg font-500 text-[#777]'>MEASUREMENT AS PER YOUR SELECTION</p>
+            <p className='text-md font-800 tracking-wider leading-tight'>MEASUREMENT AS PER YOUR SELECTION</p>
           </div>
-          <div className='measurementBlock1__sizes relative'>
-            <div className={'absolute top-[1%] left-5'}>
-              <p className={labelClass + ' text-sm mb-4'}>HEIGHT:</p>
-              <select className={inputSelect + ' mr-2'} name='height_f' value={measurement.height_f} onChange={(e) => updateValues('height_f', e.target.value)}>
-                {heightFOptions()}
-              </select>
-              {measurement.height_f == 'custom' || (measurement.height_f != '' && !heightF.includes(measurement.height_f)) ? (
-                <input
-                  className={inputField}
-                  name='height_f_o'
-                  type='text'
-                  value={measurement.height_f == 'custom' ? '' : measurement.height_f}
-                  onChange={(e) => updateValues('height_f', e.target.value)}
-                />
-              ) : null}
-              <select className={inputSelect} name='height_i' value={measurement.height_i} onChange={(e) => updateValues('height_i', e.target.value)}>
-                {heightIOptions()}
-              </select>
-            </div>
-            <div className={blockClass + ' absolute top-[18%] left-1/2 -translate-x-1/2'}>
+          <div className='measurementBlock1__sizes__mob relative'>
+            <p className='text-center font-500'>inches / cm</p>
+            <div className={blockClass + ' absolute top-[10%] left-1/2 -translate-x-1/2'}>
               <p className={labelClass}>SHOULDER</p>
-              <select className={inputSelect} name='shoulder' value={measurement.shoulder} onChange={(e) => updateValues('shoulder', e.target.value)}>
+              <select className={inputSelectMobile} name='shoulder' value={measurement.shoulder} onChange={(e) => updateValues('shoulder', e.target.value)}>
                 {shoulderOptions()}
               </select>
               {measurement.shoulder == 'custom' || (measurement.shoulder != '' && !shoulder.includes(measurement.shoulder)) ? (
@@ -199,7 +183,7 @@ function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, ne
             </div>
             <div className={blockClass + ' absolute top-[33%] left-[77%] -translate-x-1/2'}>
               <p className={labelClass}>BICEPS</p>
-              <select className={inputSelect} name='biceps' value={measurement.biceps} onChange={(e) => updateValues('biceps', e.target.value)}>
+              <select className={inputSelectMobile} name='biceps' value={measurement.biceps} onChange={(e) => updateValues('biceps', e.target.value)}>
                 {bicepsOptions()}
               </select>
               {measurement.biceps == 'custom' || (measurement.biceps != '' && !biceps.includes(measurement.biceps)) ? (
@@ -251,8 +235,26 @@ function MeasurementModal1({ closeModal, isMobile, measurement, updateValues, ne
                 onBlur={() => setHips(labelMessage.hips.offFocus)}
               />
             </div>
-          </div>
 
+          </div>
+          <div className={''}>
+            <p className={labelClass + ' text-sm mb-4'}>HEIGHT:</p>
+            <select className={inputSelect + ' mr-2'} name='height_f' value={measurement.height_f} onChange={(e) => updateValues('height_f', e.target.value)}>
+              {heightFOptions()}
+            </select>
+            {measurement.height_f == 'custom' || (measurement.height_f != '' && !heightF.includes(measurement.height_f)) ? (
+              <input
+                className={inputField}
+                name='height_f_o'
+                type='text'
+                value={measurement.height_f == 'custom' ? '' : measurement.height_f}
+                onChange={(e) => updateValues('height_f', e.target.value)}
+              />
+            ) : null}
+            <select className={inputSelect} name='height_i' value={measurement.height_i} onChange={(e) => updateValues('height_i', e.target.value)}>
+              {heightIOptions()}
+            </select>
+          </div>
           <div className='my-10 flex flex-col items-center'>
             <p className='font-700 text-[#555]'>ANY PARTICULAR BODY PART YOU BOTHER ABOUT?</p>
           </div>

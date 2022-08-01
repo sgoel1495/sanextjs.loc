@@ -18,7 +18,11 @@ const Toast = (props) => {
     const {dataStore} = useContext(AppWideContext);
 
     // Tailwind CSS
-    const toastClasses = dataStore.mobile ? ['bg-black', 'p-4', 'w-full', 'text-white', 'text-sm', 'mt-1'] : ['bg-black', 'fade-up', 'fixed', 'top-20', 'right-20', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1'];
+    const toastClasses = dataStore.mobile ? ['bg-black', 'p-4', 'w-full', 'text-white', 'text-sm', 'mt-1', 'z-[100]'] : ['bg-black', 'fade-up', 'fixed', 'top-20', 'right-20', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1', 'z-[100]'];
+    let style = {}
+    if (props.bottom) {
+        style["marginBottom"] = props.bottom
+    }
 
     useEffect(() => {
         if (props.show) {
@@ -27,7 +31,7 @@ const Toast = (props) => {
             }
             ref.current = setTimeout(() => {
                 if (props.hideToast)
-                    props.hideToast();
+                props.hideToast();
             }, props.duration || 5000);
         } else {
             if (ref.current) {
@@ -36,7 +40,7 @@ const Toast = (props) => {
         }
     }, [props])
 
-    const returnElement = (props.show) ? <div className={toastClasses.join(" ")}>{props.children}</div> : null;
+    const returnElement = (props.show) ? <div className={toastClasses.join(" ")} style={style}>{props.children}</div> : null;
     if (returnElement)
         return ReactDOM.createPortal(returnElement, document.getElementById(dataStore.mobile ? "toastMobContainer" : "toastContainer"));
     else
