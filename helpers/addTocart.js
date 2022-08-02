@@ -1,7 +1,7 @@
 import {apiCall} from "./apiCall";
 
 export async function refreshCart(dataStore, updateDataStore) {
-    let user = await getUserObject(dataStore, updateDataStore)
+    let user = getUserObject(dataStore, updateDataStore)
     const respCart = await apiCall("getCart", dataStore.apiToken, {user: user})
     if (respCart.response && Array.isArray(respCart.response)) {
         const actualCart = respCart.response.filter(item => {
@@ -11,9 +11,9 @@ export async function refreshCart(dataStore, updateDataStore) {
     }
 }
 
-export async function getUserObject(dataStore, updateDataStore) {
+export function getUserObject(dataStore, updateDataStore) {
     let tempId;
-    if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id === "") {
+    if (dataStore.userServe && (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id === "")) {
         tempId = Date.now()
         dataStore.userServe.temp_user_id = tempId
         updateDataStore("userServe", dataStore.userServe)
@@ -22,37 +22,49 @@ export async function getUserObject(dataStore, updateDataStore) {
 
     return {
         email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
+        contact: (dataStore.userData.contact) ? dataStore.userData.contact : "",
         is_guest: !(dataStore.userData.contact),
         temp_user_id: tempId
     }
 }
 
 export async function checkItemInCart(userCart, product, isGC) {
+    console.log(product)
     let similarItems = userCart.filter(item => item.product_id === product.product_id)
-    if (isGC) {
-        return similarItems.find((item) => {
+    return similarItems.find((item) => {
+        let flag = true
+        if (isGC) {
             // let keys = ["sender_name", "sender_email", "sender_telephone", "recipient_name", "recipient_email", "recipient_telephone", "message"]
-            let flag = true
+
             // keys.forEach((key) => {
             //     if (item[key] !== product[key] && flag) {
             //         flag = false
             //     }
             // })
-            return flag
-        })
-    } else {
+        } else {
+            if (item.is_tailor) {
 
-    }
-
+            } else {
+                let keys = ["size", "sleeve_length", "dress_length"]
+                keys.forEach((key) => {
+                    if (item[key] !== product[key] && flag) {
+                        flag = false
+                    }
+                })
+            }
+        }
+        return flag
+    })
 }
 
 export async function addToCart(dataStore, updateDataStore, cart, apiName = "addToCart") {
-
-    let user = await getUserObject(dataStore, updateDataStore)
+    console.log(cart)
+    let user = getUserObject(dataStore, updateDataStore)
 
     //update payload and apiname if item already in cart
     let isGC = apiName === "addGiftToCart";
-    let item = await checkItemInCart(dataStore.userCart, cart[isGC ? "giftcard_details" : "cart"], apiName === "addGiftToCart")
+    let item = await checkItemInCart(dataStore.userCart, cart[isGC ? "giftcard_details" : "cart"], isGC)
+    console.log(item)
     if (item) {
         cart = {
             "product": {
@@ -71,7 +83,7 @@ export async function addToCart(dataStore, updateDataStore, cart, apiName = "add
 }
 
 export async function updateCart(dataStore, updateDataStore, product) {
-    let user = await getUserObject(dataStore, updateDataStore)
+    let user = getUserObject(dataStore, updateDataStore)
 
     product = {
         "product": {
@@ -88,7 +100,7 @@ export async function updateCart(dataStore, updateDataStore, product) {
 }
 
 export async function removeFromCart(dataStore, updateDataStore, product) {
-    let user = await getUserObject(dataStore, updateDataStore)
+    let user = getUserObject(dataStore, updateDataStore)
     product = {
         "product": {
             "product_cart_id": product.cart_id

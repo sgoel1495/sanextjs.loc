@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import {validateUsername} from "../../../helpers/loginSignUpHelpers";
 import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
@@ -23,13 +23,18 @@ const LoginForm = (props) => {
         loadFbLoginApi()
     }, [])
 
+
     const saveUserDataAfterSuccessfulLogin = async (username) => {
         const updateData = await updateUserDataAfterLogin(username, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
-        Object.keys(updateData).forEach((key) => {
-            updateDataStore(key, updateData[key]);
+        console.log(updateData)
+        Object.keys(updateData).forEach((key, index) => {
+            setTimeout(() => {
+                updateDataStore(key, updateData[key]);
+            }, index * 100)
         })
         localStorage.setItem("userData", JSON.stringify(updateData["userData"]));
     }
+
 
     const loadFbLoginApi = () => {
 
@@ -171,7 +176,7 @@ const LoginForm = (props) => {
     const inputStyle = "placeholder:text-black/30 border-black focus:ring-0 focus:border-black focus:shadow-none border py-2 px-4 text-sm leading-none";
     const buttonStyle = "uppercase border py-3 px-6 text-sm text-black/60 font-600 tracking-wider border-black/30 hover:border-black duration-100";
     return (
-        <form className={`grid grid-cols-4 gap-x-8`}>
+        <form className={`grid ` + [dataStore.mobile ? "grid-cols-1 gap-y-4" : "grid-cols-4 gap-x-8 "]}>
             <input
                 type="text"
                 name='username'
@@ -187,7 +192,7 @@ const LoginForm = (props) => {
                 className={`${inputStyle}`}
                 placeholder={otpSent ? "Enter your OTP" : "Enter your password"}
             />
-            <div className={`col-span-2 flex items-center gap-x-8 justify-start`}>
+            <div className={` items-center gap-x-8 justify-start` + [dataStore.mobile ? " grid grid-cols-1 gap-y-4 place-items-center" : " flex col-span-2 "]}>
                 <button
                     type="button"
                     onClick={() => signInAction(otpSent ? "verifyOTP" : "signIn")}

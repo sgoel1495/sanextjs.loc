@@ -113,7 +113,7 @@ function UserLogin(props) {
         <>
             <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-40`}>
                 <div
-                    className="h-fit w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
+                    className="h-full w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button className={`w-8 h-8 absolute right-10 top-10`} onClick={closeModal}>
@@ -122,7 +122,7 @@ function UserLogin(props) {
                                 d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
                         </svg>
                     </button>
-                    <div className={`flex items-center gap-x-4 text-sm uppercase text-black/60`}>
+                    <div className={`flex flex-wrap gap-x-4 text-sm uppercase text-black/60`}>
                         {(active == 0)
                             ? <Fragment>
                                 <div

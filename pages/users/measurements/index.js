@@ -11,9 +11,9 @@ import MeasurementModal1 from "../../../components/user/MeasurementModal1";
 import MeasurementModal2 from "../../../components/user/MeasurementModal2";
 import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 import {apiCall} from "../../../helpers/apiCall";
-import getUserO from "../../../helpers/getUserO";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
+import {getUserObject} from "../../../helpers/addTocart";
 
 function UsersMeasurementsPage() {
     const router = useRouter();
@@ -117,7 +117,7 @@ function UsersMeasurementsPage() {
         if (dataStore.userData.contact) {
             // we have a valid user
             await apiCall("addMeasurements", dataStore.apiToken, {
-                user: getUserO(dataStore),
+                user: getUserObject(dataStore,updateDataStore),
                 measurments: currentMeasurement
             });
 
@@ -138,7 +138,7 @@ function UsersMeasurementsPage() {
         if (dataStore.userData.contact) {
             //logged in user
             await apiCall("removeMeasurements", dataStore.apiToken, {
-                user: getUserO(dataStore),
+                user: getUserObject(dataStore,updateDataStore),
                 measurments: {
                     measure_id: m.measure_id
                 }
@@ -154,7 +154,7 @@ function UsersMeasurementsPage() {
 
     const refreshDataStore = async () => {
         const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            user: getUserO(dataStore)
+            user: getUserObject(dataStore,updateDataStore)
         });
 
         let userMeasurements = {};

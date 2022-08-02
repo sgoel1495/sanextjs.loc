@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import MediaBuzz from "./MediaBuzz";
 import Testimonials from "./Testimonials";
 import 'swiper/css';
 import {useRouter} from "next/router";
+import {refreshCart} from "../../../helpers/addTocart";
 
 const BareHeading = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -36,6 +37,10 @@ function CartModal(props) {
     const [tailoredProduct, setTailoredProduct] = React.useState(null)
     const [showEditTailored, setShowEditTailored] = React.useState(false)
     const [showViewTailored, setShowViewTailored] = React.useState(false)
+
+    useEffect(() => {
+        refreshCart(dataStore, updateDataStore);
+    }, [dataStore.userServe])
 
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
@@ -64,7 +69,6 @@ function CartModal(props) {
         closeTailored()
     }
 
-    console.log(dataStore.userCart)
     let total = 0;
     dataStore.userCart.forEach((item) => {
         total += item.qty * (dataStore.currCurrency === "inr" ? item.price : item.usd_price)
@@ -252,7 +256,7 @@ function CartModal(props) {
                         <p className={`text-sm mb-6`}>YOUR CART {qtyInCart(dataStore)}</p>
                         {(dataStore.userCart.length > 0)
                             ? <>
-                                <Link href="/users/checkoutpage">
+                                <Link href={dataStore.userServe.email?"/users/checkoutpage":"/order/guestcheckout"}>
                                     <a className="inline-flex mb-5 text-white bg-black px-5 py-3">CHECKOUT</a>
                                 </Link>
                                 <ProductCartView/>
@@ -270,7 +274,7 @@ function CartModal(props) {
                                 <h5 className={`text-h5 mb-2`}>Hey, it feels so light!</h5>
                                 <p className={`text-sm mb-4`}>There is nothing in your cart. Let&apos;s add some
                                     items.</p>
-                                <Link href="/new-arrivals/all">
+                                <Link href={"/new-arrivals/all"}>
                                     <a className="flex justify-center underline uppercase text-sm mt-8">Continue
                                         Shopping</a>
                                 </Link>
@@ -278,7 +282,7 @@ function CartModal(props) {
                         }
 
                         {(dataStore.userCart.length > 0)
-                            ? <Link href="/users/checkoutpage">
+                            ? <Link href={dataStore.userServe.email?"/users/checkoutpage":"/order/guestcheckout"}>
                                 <a className="inline-flex my-5 text-white bg-black px-5 py-3">CHECKOUT</a>
                             </Link>
                             : null

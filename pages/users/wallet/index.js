@@ -8,10 +8,10 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
 import {isMobile} from "react-device-detect";
 import Toast from "../../../components/common/Toast";
-import getUserO from "../../../helpers/getUserO";
 import {apiCall} from "../../../helpers/apiCall";
 import UsersMenu from "../../../components/user/UsersMenu";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+import {getUserObject} from "../../../helpers/addTocart";
 
 function UsersWalletPage() {
     const [mobile, setMobile] = useState(false);
@@ -50,7 +50,7 @@ function UsersWalletPage() {
             return
         }
 
-        const userO = getUserO(dataStore, false, true)
+        const userO = getUserObject(dataStore,updateDataStore)
         const queryO = {
             user: userO,
             voucher: {

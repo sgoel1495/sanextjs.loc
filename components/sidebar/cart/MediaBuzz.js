@@ -30,7 +30,7 @@ const MediaBuzz = () => {
                     {resp.response.data.sort((a, b) => a.serial_no - b.serial_no).map((item, index) => {
                         return (
                             <SwiperSlide key={index}>
-                                <a href={item.media_link} target="_blank">
+                                <a href={item.media_link} target="_blank" rel="noreferrer">
                                     <div className={`p-1.5 bg-yellow-600 border border-theme-200`}>
                                         <div className="bg-white p-5">
                                         <span className={`block relative w-36 h-36 mx-auto`}>

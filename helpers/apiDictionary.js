@@ -4,7 +4,7 @@
  * @returns {null}
  */
 export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
-    const apiServer = "http://103.90.241.54:2023/api/v1";
+    const apiServer = "http://216.48.180.99:8443/api/v1";
     let url = apiServer;
 
     const headers = {
@@ -184,6 +184,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
                 token: apiToken,
                 ...queryObject
             };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "updateUserDetails":
+            url += "/users/update_user_details"
+            body = {
+                token: apiToken,
+                ...queryObject
+            }
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
@@ -500,6 +510,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "measurmentForReview":
+            url += "/checkout/add_measurment_for_review";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
 
 
         //====================== INSTAGRAM
@@ -546,17 +566,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== COD Payment
-        /* INCORRECT
-    case "codcheckout":
-        url += "/checkout";
-        body = {
-            token: apiToken,
-            ...queryObject
-        };
-        postFetcher.body = JSON.stringify(body);
-        finalFetcher = {...postFetcher}
-        break;
-    */
+        case "codCheckout":
+            url += "/checkout";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
 
         case "codOtp":
             url += "/checkout/send_otp_for_cod";
