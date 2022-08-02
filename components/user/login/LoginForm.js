@@ -5,6 +5,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+import CartModal from '../../sidebar/cart/CartModal';
 
 
 const LoginForm = (props) => {
@@ -13,6 +14,8 @@ const LoginForm = (props) => {
     const username = useRef(null);
     const password = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [otploading, setOtploading] = useState(false);
+    const [signInloading, setSignInloading] = useState(false);
     const [otpSent, setOTPSent] = useState(false)
     const {dataStore, updateDataStore} = useContext(AppWideContext);
 
@@ -73,7 +76,13 @@ const LoginForm = (props) => {
                 password: pwd,
                 otp_login: otp_login
             }
-            setLoading(true)
+            // setLoading(true)
+            if (action == 'sendOTP') {
+                setOtploading(true)
+            }
+            if (action == 'verifyOTP' || action == 'signIn') {
+                setSignInloading(true)
+            }
             let api = apiDictionary("userLogin", dataStore.apiToken, payload)
             fetch(api.url, api.fetcher).then((response) => {
                 if (response.status === 200) {
@@ -82,19 +91,26 @@ const LoginForm = (props) => {
                             if (otp_login) {
                                 setOTPSent(true)
                                 props.showToast("We've sent an OTP to your Email or Phone!")
-                            } else {
+                            }
+                            else {
+                                props.setShowSidebarMenuUser(false)
+                                props.showToast("Welcome");
+                                // <CartModal isMobile={true} />
                                 saveUserDataAfterSuccessfulLogin(uname)
                                     .then(() => {
                                     })
                                     .catch(e => console.log(e.message))
                             }
-                        } else {
+                        }
+                        else {
                             props.showToast(data['response']['body'].toUpperCase());
                         }
                     })
                 }
             }).finally(() => {
-                setLoading(false)
+                // setLoading(false)
+                setOtploading(false)
+                setSignInloading(false)
             })
         };
 
@@ -181,11 +197,11 @@ const LoginForm = (props) => {
                     type="button"
                     onClick={() => signInAction(otpSent ? "verifyOTP" : "signIn")}
                     className={`${buttonStyle}`}
-                    disabled={loading}
+                    disabled={signInloading}
                 >
                     {
-                        loading ?
-                            <Loader className="text-grey"/>
+                        signInloading ?
+                            <Loader className="text-grey" />
                             :
                             otpSent ? <>Verify OTP</> : <>Sign In</>
                     }
@@ -195,10 +211,10 @@ const LoginForm = (props) => {
                     type="button"
                     onClick={() => signInAction("sendOTP")}
                     className={`${buttonStyle}`}
-                    disabled={loading}
+                    disabled={otploading}
                 >
                     {
-                        loading ?
+                        otploading ?
                             <Loader className="text-grey"/>
                             :
                             otpSent ? <>Resend OTP</> : <>Login Using OTP</>

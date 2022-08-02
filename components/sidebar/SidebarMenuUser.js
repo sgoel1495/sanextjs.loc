@@ -41,34 +41,33 @@ function SidebarMenuUser(props) {
         default:
             iconHeight = "h-6"
     }
-    
     const mobileView = null;
     const browserView = (
         <>
-        <span onClick={openModal} className={`block relative w-6 ${iconHeight}`}>
-            {
-                props.type === "shopMenu" ?
-                    <div className={"float-right text-right"}>
-                        <span className={"block text-sm tracking-wide"}>Account</span>
-                        <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userServe.user_name||"Login/Signup"}</span>
-                    </div>
-                    :
-                    (dataStore.userServe.user_name!=="") ?
-                        <div className="rounded-full bg-slate-400 text-center cursor-pointer">
-                            <span className="text-sm text-white font-600 text-center">{dataStore.userServe.user_name[0].toUpperCase()}</span>
+            <span onClick={openModal} className={`block relative w-6 ${iconHeight}`}>
+                {
+                    props.type === "shopMenu" ?
+                        <div className={"float-right text-right"}>
+                            <span className={"block text-sm tracking-wide"}>Account</span>
+                            <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userServe.user_name || "Login/Signup"}</span>
                         </div>
                         :
-                        <Image
-                            src={WEBASSETS + "/assets/images/usericon.png"}
-                            className={"cursor-pointer"}
-                            alt="usericon"
-                            layout={`fill`}
-                            objectFit={`contain`}
-                        />
-            }
+                        (dataStore.userServe.user_name !== "") ?
+                            <div className="rounded-full bg-slate-400 text-center cursor-pointer">
+                                <span className="text-sm text-white font-600 text-center">{dataStore.userServe.user_name[0].toUpperCase()}</span>
+                            </div>
+                            :
+                            <Image
+                                src={WEBASSETS + "/assets/images/usericon.png"}
+                                className={"cursor-pointer"}
+                                alt="usericon"
+                                layout={`fill`}
+                                objectFit={`contain`}
+                            />
+                }
             </span>
             {showSidebarMenuUser && ReactDom.createPortal(
-                dataStore.userData.contact ? <AccountMenu closeModal={closeModal.bind(this)} /> : <UserLogin closeModal={closeModal.bind(this)}/>,
+                dataStore.userData.contact ? <AccountMenu closeModal={closeModal.bind(this)} /> : <UserLogin setShowSidebarMenuUser={setShowSidebarMenuUser} closeModal={closeModal.bind(this)} />,
                 document.getElementById("userband"))}
         </>
     );

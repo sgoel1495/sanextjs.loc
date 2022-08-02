@@ -64,7 +64,7 @@ function UsersCheckoutPage() {
         case 4:
             ActiveForm = (
                 <GiftAndPayment giftPaymentComplete={giftPaymentComplete}
-                                updateCompleteness={setGiftPaymentComplete.bind(this)} setActive={setActive}/>
+                    updateCompleteness={setGiftPaymentComplete.bind(this)} setActive={setActive}/>
             );
             break;
         case 5:
@@ -105,7 +105,6 @@ function UsersCheckoutPage() {
                     <div id={"paymentButton"}/>
                 </div>
             </div>
-
         </Fragment>
     );
 
