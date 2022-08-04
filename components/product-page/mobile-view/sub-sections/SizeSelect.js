@@ -6,78 +6,38 @@ import MeasurementModal0 from "../../../user/MeasurementModal0";
 import MeasurementModal1 from "../../../user/MeasurementModal1";
 import MeasurementModal2 from "../../../user/MeasurementModal2";
 import MeasurementModal3 from "../../../user/MeasurementModal3";
+import NotifyMe from "./NotifyMe";
+import {isTailored} from "../../../../helpers/returnSizes";
 
 const SizeSelect = ({data, sizeAvail, size, setSize}) => {
     const [showStandardSize, setShowStandardSize] = useState(false);
-    const [showModal0, setShowModal0] = useState(false);
-    const [showModal1, setShowModal1] = useState(false);
-    const [showModal2, setShowModal2] = useState(false);
-    const [showModal3, setShowModal3] = useState(false);
-    const [showModalPastOrders, setShowModalPastOrders] = useState(false);
-    const [currentProduct, setCurrentProduct] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [active, setActive] = useState(0)
     const [currentMeasurement, setCurrentMeasurement] = useState(null);
-    const [sizeModal, setSizeModal] = useState(false);
+    const [sizeGuideModal, setSizeGuideModal] = useState(false);
     const [currentMeasureProduct, setCurrentMeasurementProduct] = useState(null);
 
+
     const nextModal = () => {
-        if (showModal0) {
-            setShowModal0(false);
-            setShowModal1(true);
-            setShowModal2(false);
-            setShowModal3(false);
-        } else if (showModal1) {
-            setShowModal0(false);
-            setShowModal1(false);
-            setShowModal2(true);
-            setShowModal3(false);
-        } else if (showModal2) {
-            setShowModal0(false);
-            setShowModal1(false);
-            setShowModal2(false);
-            setShowModal3(true);
-        }
+        setActive(active + 1);
     };
     const lastModal = () => {
-        if (showModal1) {
-            setShowModal0(true);
-            setShowModal1(false);
-            setShowModal2(false);
-            setShowModal3(false);
-        } else if (showModal2) {
-            setShowModal0(false);
-            setShowModal1(true);
-            setShowModal2(false);
-            setShowModal3(false);
-        } else if (showModal3) {
-            setShowModal1(false);
-            setShowModal1(false);
-            setShowModal2(true);
-            setShowModal3(false);
-        }
+        setActive(active - 1);
     };
     const updateValues = (key, value) => {
         currentMeasurement[key] = value;
         setCurrentMeasurement(currentMeasurement);
     };
     const addNewModal = (m) => {
-        setCurrentProduct(data);
         setCurrentMeasurement(m);
         nextModal();
     };
     const pastOrdersModal = () => {
-        setShowModal0(false);
-        setShowModal1(false);
-        setShowModal2(false);
-        setShowModal3(false);
-        setShowModalPastOrders(true);
+
     };
     const closeModal = () => {
-        setShowStandardSize(false);
-        setShowModal0(false);
-        setShowModal1(false);
-        setShowModal2(false);
-        setShowModal3(false);
-        setShowModalPastOrders(false);
+        setShowModal(false);
+        setActive(0)
     };
     const addTailorToCart = async () => {
     };
@@ -104,6 +64,26 @@ const SizeSelect = ({data, sizeAvail, size, setSize}) => {
         // }
         // closeModal()
     };
+
+    let activeModalScreen
+    switch (active) {
+        case 0:
+            activeModalScreen = <MeasurementModal0 closeModal={closeModal} isMobile={true} addNew={addNewModal} pastOrders={pastOrdersModal}
+                                                   measureProduct={currentMeasureProduct}/>;
+            break;
+        case 1:
+            activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={true} measurement={currentMeasurement} lastModal={lastModal}
+                                                   nextModal={nextModal} updateValues={updateValues} product={data}/>;
+            break;
+        case 2:
+            activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={true} measurement={currentMeasurement} nextModal={nextModal}
+                                                   lastModal={lastModal} updateValues={updateValues} product={data}/>;
+            break;
+        case 3:
+            activeModalScreen = <MeasurementModal3 closeModal={closeModal} isMobile={true} measurement={currentMeasurement} lastModal={lastModal}
+                                                   saveModal={saveModal} addTailorToCart={addTailorToCart} product={data}/>;
+            break;
+    }
 
     return (
         <>
@@ -132,24 +112,21 @@ const SizeSelect = ({data, sizeAvail, size, setSize}) => {
                                     <p className={' uppercase font-400 text-xs'}>size</p>
                                 </>
                         }
-
                     </div>
                 </div>
                 <p className={''}>OR</p>
                 <div
-                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-4 rounded-[5vw]'}
+                    className={'border-4 border-white bg-[#faede3] shadow-xl text-center px-4 py-2.5 leading-4 rounded-[5vw]' + [isTailored(data) ? "" : " pointer-events-none opacity-25"]}
                     onClick={() => {
-                        setShowModal0(true);
+                        setShowModal(true);
                     }}
                 >
                     <p className={'uppercase font-900 text-xs'}>Tailored</p>
                     <p className={'uppercase font-400 text-xs'}>size</p>
                 </div>
             </div>
-            <p onClick={() => {
-                setSizeModal(true)
-            }} className={'mb-4 uppercase'}>size guide</p>
-            {sizeModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeModal(false)} isMobile={true}/>, document.getElementById('measurementmodal'))}
+            <p onClick={() => setSizeGuideModal(true)} className={'mb-4 uppercase'}>size guide</p>
+            {sizeGuideModal && ReactDom.createPortal(<SizeGuide closeModal={() => setSizeGuideModal(false)} isMobile={true}/>, document.getElementById('measurementmodal'))}
             {showStandardSize &&
             ReactDom.createPortal(
                 <StandardSizeModal
@@ -161,49 +138,8 @@ const SizeSelect = ({data, sizeAvail, size, setSize}) => {
                 />,
                 document.getElementById('measurementmodal'),
             )}
-            {showModal0 &&
-            ReactDom.createPortal(
-                <MeasurementModal0 closeModal={closeModal.bind(this)} isMobile={true} addNew={addNewModal.bind(this)} pastOrders={pastOrdersModal.bind(this)}
-                                   measureProduct={currentMeasureProduct}/>,
-                document.getElementById('measurementmodal'),
-            )}
-            {showModal1 &&
-            ReactDom.createPortal(
-                <MeasurementModal1
-                    closeModal={closeModal.bind(this)}
-                    isMobile={true}
-                    measurement={currentMeasurement}
-                    lastModal={lastModal.bind(this)}
-                    nextModal={nextModal.bind(this)}
-                    updateValues={updateValues.bind(this)}
-                    product={currentProduct}
-                />,
-                document.getElementById('measurementmodal'),
-            )}
-            {showModal2 &&
-            ReactDom.createPortal(
-                <MeasurementModal2
-                    closeModal={closeModal.bind(this)}
-                    isMobile={true}
-                    measurement={currentMeasurement}
-                    nextModal={nextModal.bind(this)}
-                    lastModal={lastModal.bind(this)}
-                    updateValues={updateValues.bind(this)}
-                    product={currentProduct}
-                />,
-                document.getElementById('measurementmodal'),
-            )}
-            {showModal3 &&
-            ReactDom.createPortal(
-                <MeasurementModal3
-                    closeModal={closeModal.bind(this)}
-                    isMobile={true}
-                    measurement={currentMeasurement}
-                    lastModal={lastModal.bind(this)}
-                    saveModal={saveModal.bind(this)}
-                    addTailorToCart={addTailorToCart.bind(this)}
-                    product={currentProduct}
-                />,
+            {showModal &&
+            ReactDom.createPortal(<>{activeModalScreen}</>,
                 document.getElementById('measurementmodal'),
             )}
         </>

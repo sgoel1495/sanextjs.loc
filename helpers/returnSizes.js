@@ -8,3 +8,7 @@ export default function returnSizes(prod) {
         return sizeSymbols;
     }
 }
+
+export function isTailored(prod){
+    return !["sweaters", "scarves", "belts", "masks", "jewellery"].includes(prod.category)
+}
