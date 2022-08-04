@@ -122,9 +122,9 @@ function UsersAccountPage() {
                     })}
                     <label className={labelClass + " flex gap-2 items-center"}>
                         <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""
-                               onChange={(e) => {
-                                   setChangePasswordCheckbox(e.target.checked)
-                               }}/>
+                                onChange={(e) => {
+                                    setChangePasswordCheckbox(e.target.checked)
+                                }} />
                         <span>Change&nbsp;Password</span>
                     </label>
                     {changePasswordCheckbox ? passwordFields?.map((item, index) => {
@@ -155,10 +155,14 @@ function UsersAccountPage() {
                         )
                     })}
                     <label htmlFor="" className={labelClass + " flex gap-2 items-center"}>
-                        <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""/>
-                        <span>Change Password</span>
+                        <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""
+                            onChange={(e) => {
+                                setChangePasswordCheckbox(e.target.checked)
+                            }}
+                        />
+                        <span>Change Password </span>
                     </label>
-                    {passwordFields?.map((item, index) => {
+                    {changePasswordCheckbox && passwordFields?.map((item, index) => {
                         return (
                             <div className={`col-span-${item.columnSpace}`} key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
@@ -176,7 +180,7 @@ function UsersAccountPage() {
             <PageHead url={"/users/account"} id={"profile"} isMobile={mobile}/>
             <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
             {(mobile) ? mobileView : browserView}
-            <Footer isMobile={mobile}/>
+            <Footer isMobile={mobile} />
         </Fragment>
     )
 }

@@ -1,8 +1,8 @@
+
 import React, {useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 import currencyFormatter from "../../helpers/currencyFormatter";
-
 
 function OrderSummary() {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -15,6 +15,7 @@ function OrderSummary() {
     const secondDate = new Date();
     secondDate.setDate(secondDate.getDate() + 12);
     const curr = dataStore.currCurrency.toUpperCase();
+
 
     useEffect(() => {
         let tempGross = 0;
