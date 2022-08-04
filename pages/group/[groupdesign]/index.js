@@ -53,8 +53,6 @@ function GroupDesignPage() {
         }
     }, [design])
 
-    console.log("Call data",callData)
-    console.log("DATA OF GROUP",data)
 
     if (resp) {
         let group = resp.response.find(item => item.home_url.includes(design))

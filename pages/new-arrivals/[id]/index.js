@@ -38,12 +38,10 @@ function NewArrivalsIdPage(props) {
         if (router.query.id) {
             fetchData()
                 .then(resp => {
-                    console.log("Carousal loaded")
                 })
 
             apiCall("datedNewArrivals", dataStore.apiToken, {home: {date: router.query.id}})
                 .then(resp => {
-                    console.log("QUERY ", router.query.id, " ", resp)
                     if (resp.msg && resp.msg === "Successfully Get" && resp.new_items)
                         setData(resp.new_items)
                 })

@@ -47,7 +47,6 @@ function MimotoPage(props) {
     }, [dataStore.refreshFilter])
 
 
-    console.log("DATA MIMOTO MAIN PAGE", data)
     const navControl = useNavControl(-20)
 
     const [activeLayout, setActiveLayout] = useState("2");

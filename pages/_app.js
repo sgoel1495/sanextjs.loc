@@ -35,7 +35,6 @@ function MyApp({Component, pageProps}) {
         setDataStore({...dataStore});
         setRefresh(!refresh);
     }, [dataStore, refresh])
-    console.log(dataStore)
     useEffect(() => {
         let userData = localStorage.getItem("userData")
         let flag = true;

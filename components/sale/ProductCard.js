@@ -5,9 +5,9 @@ import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import returnSizes from "../../helpers/returnSizes";
 import ReactDom from "react-dom";
-import WishListButton from "../../components/common/WishListButton";
-import NotifyMeModal from "../../components/common/NotifyMeModal";
-import Toast from "../../components/common/Toast";
+import WishListButton from "../common/WishListButton";
+import NotifyMeModal from "../common/NotifyMeModal";
+import Toast from "../common/Toast";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
 

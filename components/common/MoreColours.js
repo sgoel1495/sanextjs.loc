@@ -22,7 +22,6 @@ function MoreColours ({hpid}) {
                     }
                     apiCall("getProducts",dataStore.apiToken,queryObject)
                         .then(cData=>{
-                            console.log("============ getProducts DETAIL",cData)
                             if(cData.response && cData.response.data)
                                 setData(cData.response.data)
                         })

@@ -28,7 +28,6 @@ const ExploreSection = (props) => {
 
 /*
                     if (props.title === "Same Color") {
-                        console.log("yoyo", json.response)
                     }
 */
                 }

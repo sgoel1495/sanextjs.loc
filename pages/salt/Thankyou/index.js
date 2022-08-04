@@ -15,7 +15,6 @@ const Thankyou = (props) => {
     const curr = dataStore.currCurrency.toUpperCase();
     const [mobile, setMobile] = useState(false)
     const [order, setOrder] = useState({})
-    console.log(dataStore.userOrderHistory)
     useEffect(() => {
         if (dataStore.userOrderHistory[orderID]) {
             setOrder(dataStore.userOrderHistory[orderID])
