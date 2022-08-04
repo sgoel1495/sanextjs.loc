@@ -57,7 +57,6 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
         state: "",
         city: "",
     };
-    console.log(dataStore)
     const [address, setAddress] = useState(selectedAddressIndex >= 0 ? dataStore.userAddresses[selectedAddressIndex] : emptyAddress);
     const updateAddressValue = (e) => {
         setAddress({...address, [e.target.name]: e.target.value});
@@ -419,7 +418,6 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
             {
                 isMobile && <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
                     <div onClick={() => {
-                        console.log(dataStore)
                         if (dataStore.userServe.email) {
                             if (dataStore.userAddresses && dataStore.userAddresses.length)
                                 setSelectedAddressIndex(null)

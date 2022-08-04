@@ -26,7 +26,6 @@ const LoginForm = (props) => {
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
         const updateData = await updateUserDataAfterLogin(username, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
-        console.log(updateData)
         Object.keys(updateData).forEach((key, index) => {
             setTimeout(() => {
                 updateDataStore(key, updateData[key]);
@@ -136,7 +135,6 @@ const LoginForm = (props) => {
             if (response.status === 'connected') {
                 window.FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender'}, function (response) {
                     saveUserDataAfterSuccessfulLogin(response.email)
-                    //console.log('FB ID:' + response.id + 'Name:' + response.first_name + ',' + response.last_name + 'Email:' + response.email + 'Gender:' + response.gender)
                 })
             } else {
                 props.showToast("Facebook Login Failed");

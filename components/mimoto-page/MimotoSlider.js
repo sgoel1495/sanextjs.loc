@@ -22,12 +22,10 @@ function MimotoSlider({ data, ...props }) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const { dataStore } = useContext(AppWideContext);
     const [collectionArray, setCollectionArray] = useState([])
-    console.log("DATA MIMOTO SLIDER", data)
 
     useEffect(() => {
         const fetchMimotoCollection = async () => {
             const resp = await apiCall("getMimotoCollection", dataStore.apiToken)
-            console.log("collection data", resp)
             if (resp.hasOwnProperty("response") && resp.response.hasOwnProperty("mimoto"))
                 setCollectionArray([...resp.response.mimoto])
 

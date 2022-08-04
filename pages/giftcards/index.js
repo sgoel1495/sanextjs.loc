@@ -68,8 +68,6 @@ function GiftcardsPage() {
     }
 
     const handlerAddToCart = (card)=>{
-        console.log("GIFT Add To Cart Pressed")
-        console.log(card.asset_id)
         setShowGiftReceiverModal(true)
         setGiftReceiverModalData({
             gc_asset_id: card.asset_id,

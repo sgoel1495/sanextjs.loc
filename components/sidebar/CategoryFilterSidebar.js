@@ -119,7 +119,6 @@ function CategoryFilterModal(props) {
     useEffect(() => {
         const keys = Object.keys(checkedBoxes)
         const newFilter = {}
-        console.log("Keys", keys, keys.length)
 
         // case before init
         if (keys.length === 0)
@@ -135,7 +134,6 @@ function CategoryFilterModal(props) {
         }
 
         for (let x = 0; x < keys.length; x++) {
-            console.log("======== I HAVE DATA ==========", checkedBoxes[keys[x]])
             if (checkedBoxes[keys[x]].length > 0) {
                 haveData = true
                 queryObject.filter_by[keys[x]] = checkedBoxes[keys[x]]
@@ -149,10 +147,8 @@ function CategoryFilterModal(props) {
         }
         let isChanged = false
         if (haveData) {
-            console.log("======== COMPLETED QUERY ==========", queryObject)
             apiCall("getProducts", dataStore.apiToken, queryObject)
                 .then(resp => {
-                    //console.log("RESPONSE",resp)
                     const limitProducts = []
                     if (resp.response && resp.response.data) {
                         resp.response.data.forEach(p => {
@@ -312,7 +308,6 @@ function CategoryFilterSidebar(props) {
     const [filterData, setFilterData] = useState([])
     const [showSort, setShowSort] = useState(false)
 
-    // console.log("Props FilterData", props.filterData)
 
     const updateCheckboxData = (key, value) => {
         checkboxData[key] = value;
@@ -349,7 +344,6 @@ function CategoryFilterSidebar(props) {
             setFilterData(initData)
         }
     }, [props.filterData]);
-    // console.log("INIT FILTER DATA", checkboxData);
 
     useEffect(() => {
         if (showSidebarMenu) document.body.classList.add("scroll-overflow");

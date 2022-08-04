@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import {isMobile} from "react-device-detect";
-import ProductCard from "./ProductCard";
+import ProductCard from "../../components/reviews-page/ProductCard";
 
 
 function ReviewsPage() {

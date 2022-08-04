@@ -213,7 +213,7 @@ function GetAppointmentPage() {
         <>
             <section className={`relative`}>
                 <span className={`block relative w-full h-[70vh]`}>
-                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v1.jpg"} alt={category} layout={`fill`} objectFit={`cover`}/>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v1.jpg"} alt={"DLF MEGA MALL"} layout={`fill`} objectFit={`cover`}/>
                 </span>
                 DLF MEGA MALL
                 LG-51, DLF MEGA MALL, GOLF COURSE ROAD, GURUGRAM, HARYANA 122002
@@ -223,7 +223,7 @@ function GetAppointmentPage() {
             </section>
             <section className={`relative`}>
                 <span className={`block relative w-full h-[70vh]`}>
-                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v3.jpg"} alt={category} layout={`fill`} objectFit={`cover`}/>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v3.jpg"} alt={"PHOENIX PALLADIUM"} layout={`fill`} objectFit={`cover`}/>
                 </span>
                 PHOENIX PALLADIUM
                 5A, THIRD FLOOR, EAST ZONE, PHOENIX PALLADIUMSENAPATI BAPAT ROAD, MUMBAI, MAHARASHTRA
@@ -234,7 +234,7 @@ function GetAppointmentPage() {
             </section>
             <section className={`relative`}>
                 <span className={`block relative w-full h-[70vh]`}>
-                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v2.jpg"} alt={category} layout={`fill`} objectFit={`cover`}/>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v2.jpg"} alt={"INFINITI MALAD"} layout={`fill`} objectFit={`cover`}/>
                 </span>
                 INFINITI MALAD
                 123, FIRST FLOOR, INFINITI MALAD, MUMBAI, MAHARASHTRA
@@ -314,8 +314,6 @@ function GetAppointmentPage() {
         </>
     );
 
-    const category = "Get Virtual Appointment"
-
     return (
         <Fragment>
             <PageHead url="/salt/get-appointment" id="getappointment" isMobile={mobile}/>
@@ -337,18 +335,3 @@ function GetAppointmentPage() {
 }
 
 export default GetAppointmentPage;
-
-/*
-{
-"token":"b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0",
-"appt_date":"2020-09-30",
-"time":"03:00",
-"f_name":"Test",
-"l_name":"Test",
-"email":"chandra.b@algowire.com",
-"phone":"07739526906",
-"apt_type":"physical",
-"is_custome":"yes/no",
-"is_fitting":""
-}
- */

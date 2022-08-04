@@ -14,7 +14,6 @@ function PageById(){
         if(!router || !query || !query.pageid)
             return <Loader />
         const idParts = query.pageid.split("-")
-        console.log("ID Parts", idParts)
         switch (idParts[0]){
             case "shop":
                 return <ShopPage category={idParts[1]} hpid={query.pageid}/>
