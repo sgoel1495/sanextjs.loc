@@ -131,7 +131,7 @@ const SizeSelect = ({data, sizeAvail, size, setSize}) => {
             ReactDom.createPortal(
                 <StandardSizeModal
                     closeModal={closeModal.bind(this)}
-                    setSizeModal={setSizeModal}
+                    setSizeModal={setSizeGuideModal}
                     standardSizes={sizeAvail}
                     selected={size}
                     setSelected={setSize}
