@@ -28,6 +28,7 @@ function UsersMeasurementsPage() {
     const [showModal3, setShowModal3] = useState(false);
     const [currentMeasurement, setCurrentMeasurement] = useState(null);
     const [refresh, setRefresh] = useState(true);
+    const [userMeasurements, setUserMeasurements] = useState({});
     const updateValues = (key, value) => {
         currentMeasurement[key] = value;
         setCurrentMeasurement(currentMeasurement);
@@ -36,16 +37,26 @@ function UsersMeasurementsPage() {
     useEffect(() => {
         setMobile(isMobile);
     }, []);
-    const measurementKeys = Object.keys(dataStore.userMeasurements);
+    useEffect(()=>{
+        apiCall("userMeasurements", dataStore.apiToken, {
+            user: getUserObject(dataStore,updateDataStore)
+        })
+        .then(pData=>{
+                if (pData.status === 200 && pData.response && Object.keys(pData.response).length > 0){
+                    setUserMeasurements(pData.response)
+                }
+         })
+        .catch(e=>console.log(e.message))
+    },[dataStore.userData.contact,dataStore.apiToken,dataStore.userServe.email,dataStore.userServe.temp_user_id]);
 
     const measurementBlocks = () => {
         let returnValue = null;
-        measurementKeys.forEach((key, index) => {
+        Object.keys(userMeasurements).forEach((key, index) => {
             returnValue = (
                 <Fragment>
                     {returnValue}
                     <MeasurementBlock
-                        measurement={dataStore.userMeasurements[key]}
+                        measurement={userMeasurements[key]}
                         showModal={showModal.bind(this)}
                         deleteMeasurement={deleteMeasurement.bind(this)}
                         index={index}
@@ -87,7 +98,7 @@ function UsersMeasurementsPage() {
         let newKey = "";
         for (let x = 1; x < 100; x++) {
             newKey = baseKey + "_" + x.toString();
-            if (!measurementKeys.includes(newKey)) break;
+            if (!Object.keys(userMeasurements).includes(newKey)) break;
         }
         return newKey;
     };
@@ -125,8 +136,8 @@ function UsersMeasurementsPage() {
             await refreshDataStore();
         } else {
             //non logged in case
-            dataStore.userMeasurements[currentMeasurement.measure_id] = currentMeasurement;
-            updateDataStore("userMeasurements", dataStore.userMeasurements);
+            userMeasurements[currentMeasurement.measure_id] = currentMeasurement;
+            updateDataStore("userMeasurements", userMeasurements);
         }
 
         closeModal();
@@ -134,13 +145,13 @@ function UsersMeasurementsPage() {
 
     const delMeasurement = async (m) => {
         //only delete. no refresh
-        delete dataStore.userMeasurements[m.measure_id];
+        delete userMeasurements[m.measure_id];
         if (dataStore.userData.contact) {
             //logged in user
             await apiCall("removeMeasurements", dataStore.apiToken, {
                 user: getUserObject(dataStore,updateDataStore),
                 measurments: {
-                    measure_id: m.measure_id
+                    measure_id: m
                 }
             });
         }
@@ -149,7 +160,7 @@ function UsersMeasurementsPage() {
     const deleteMeasurement = async (m) => {
         await delMeasurement(m);
         if (dataStore.userData.contact) await refreshDataStore();
-        else updateDataStore("userMeasurements", dataStore.userMeasurements);
+        else updateDataStore("userMeasurements", userMeasurements);
     };
 
     const refreshDataStore = async () => {
@@ -160,6 +171,7 @@ function UsersMeasurementsPage() {
         let userMeasurements = {};
         if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
             userMeasurements = measurementCall.response;
+        setUserMeasurements(userMeasurements);
         updateDataStore("userMeasurements", dataStore.userMeasurements);
     };
 
@@ -170,7 +182,7 @@ function UsersMeasurementsPage() {
                 <div className="flex flex-col gap-8 w-full">
                     <div className="flex-1 px-6 py-8 font-600 text-[#555]">
                         <p>User Id: {dataStore.userData.contact}</p>
-                        <p>Total Measurement(s): {measurementKeys.length}</p>
+                        <p>Total Measurement(s): {Object.keys(userMeasurements).length}</p>
                     </div>
                     <div className="flex-1 grid place-items-center">
                         <button
@@ -183,7 +195,7 @@ function UsersMeasurementsPage() {
                 </div>
                 <div>
                     <p className="text-[28px] mt-4">Measurements</p>
-                    {measurementKeys.length > 0 ? (
+                    {Object.keys(userMeasurements).length > 0 ? (
                         <div>{measurementBlocks()}</div>
                     ) : (
                         <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
@@ -203,7 +215,7 @@ function UsersMeasurementsPage() {
                 <div className="flex gap-8 w-full">
                     <div className="flex-1 bg-[#f1f2f3] px-6 py-8 font-600 text-[#555]">
                         <p>User Id: {dataStore.userData.contact}</p>
-                        <p>Total Measurement(s): {measurementKeys.length}</p>
+                        <p>Total Measurement(s): {Object.keys(userMeasurements).length}</p>
                     </div>
                     <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
                         <button
@@ -216,7 +228,7 @@ function UsersMeasurementsPage() {
                 </div>
                 <div>
                     <p className="text-[28px] mt-4">Measurements</p>
-                    {measurementKeys.length > 0 ? (
+                    {Object.keys(userMeasurements).length > 0 ? (
                         <div>{measurementBlocks()}</div>
                     ) : (
                         <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
