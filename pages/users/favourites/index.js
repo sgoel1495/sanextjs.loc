@@ -20,6 +20,7 @@ function UsersFavouritesPage() {
     const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [favProductData, setFavProductData] = useState([])
+    const [favorites,setFavorites] = useState([])
 
     useEffect(() => {
         if (dataStore.userData.contact == null)
@@ -29,6 +30,17 @@ function UsersFavouritesPage() {
     useEffect(() => {
         setMobile(isMobile)
     }, [])
+
+    useEffect(()=>{
+        apiCall("userServe", dataStore.apiToken,{contact:dataStore.userData.contact})
+            .then(pData=>{
+                if (pData.status === 200 && pData.response){
+                    setFavorites(pData.response.favorites)
+                }
+            })
+            .catch(e=>console.log(e.message))
+    },[dataStore.userData.contact,dataStore.apiToken]);
+    
 
     useEffect(()=>{
         const loadData = async (pid)=>{
@@ -48,24 +60,22 @@ function UsersFavouritesPage() {
         }
         const newData = async ()=>{
             let newDataArray = []
-            for(let x=0;x<dataStore.userServe.favorites.length;x++){
-                const d = await loadData(dataStore.userServe.favorites[x])
+            for(let x=0;x<favorites.length;x++){
+                const d = await loadData(favorites[x])
                 if(d)
                     newDataArray.push(d)
             }
             return newDataArray
         }
         if(dataStore.userData.contact
-            && dataStore.userServe
-            && dataStore.userServe.favorites
-            && dataStore.userServe.favorites.length >0
+            && favorites.length >0
             && favProductData.length===0
         ){
             newData()
                 .then(resp=>setFavProductData(resp))
                 .catch(e=>console.log(e.message))
         }
-    },[dataStore.userData.contact, dataStore.userServe, dataStore.userServe.favorites, dataStore.userServe.favorites.length])
+    },[dataStore.userData.contact, favorites,favorites.length])
 
     const removeFromFav = async (i)=>{
         const queryO = {
@@ -103,7 +113,7 @@ function UsersFavouritesPage() {
                                 <span className={"text-m my-1 font-500"}> ADD TO BAG</span>
                             </div>
                             <div className={"mr-1 mt-1"}>
-                                <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
+                                <Image onClick={()=>{removeFromFav(index)}} src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
                             </div>
                         </div>
                     )

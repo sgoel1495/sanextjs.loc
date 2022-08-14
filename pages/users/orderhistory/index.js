@@ -8,35 +8,14 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
 import Image from "next/image";
 import MyOrderProductCard from "../../../components/user/mobile/MyOrderProductCard";
-
-const mockData = [
-    {
-        title: "Aurora",
-        orderID: "1657789049726-0",
-        qty: 1,
-        size: 'S',
-        date: "14-07-2022, 14:27",
-        img: "/assets/Dresses-Candolim-LinenShirtDress/thumb.jpg",
-        label: "V-neck Top",
-        price: "3150",
-    }, {
-        title: "Aurora",
-        orderID: "1657789049726-0",
-        qty: 1,
-        size: 'S',
-        date: "14-07-2022, 14:27",
-        img: "/assets/Dresses-Candolim-LinenShirtDress/thumb.jpg",
-        label: "V-neck Top",
-        price: "3150",
-    },
-]
-
+import {apiCall} from "../../../helpers/apiCall";
 
 function UsersOrderHistoryPage() {
 
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
     const {dataStore} = useContext(AppWideContext);
+    const [productData, setProductData] = useState({});
 
     useEffect(() => {
         if (dataStore.userData.contact == null)
@@ -45,26 +24,36 @@ function UsersOrderHistoryPage() {
     useEffect(() => {
         setMobile(isMobile)
     }, [])
+    useEffect(()=>{
+        apiCall("userOrderHistory", dataStore.apiToken,{user:{token:dataStore.apiToken ,contact:dataStore.userData.contact}})
+            .then(pData=>{
+                if (pData.status === 200 && pData.response){
+                    console.log('eerreeeeee', pData.response);
+                    setProductData(pData.response);
+                }
+            })
+            .catch(e=>console.log(e.message))
+    },[dataStore.userData.contact, dataStore.apiToken])
 
-    const MyOrderProducts = (props) => {
-        const mobileView = <>
-            {
-                props.productData.map((product, productIndex) => {
-                    return <MyOrderProductCard key={productIndex} product={product}/>
-                })
-            }
-        </>
-
-        const browserView = <> </>
-
-        return mobile ? mobileView : browserView
-    }
-
+    const MyOrderProducts = () => {
+            let returnValue = null;
+            productData && Object.keys(productData).forEach((key, productIndex) => {
+                productData[key].item.forEach((item, itemIndex)=>{
+                    returnValue = (
+                        <Fragment>
+                            {returnValue}
+                            <MyOrderProductCard key={productIndex} product={productData[key]} itemIndex={itemIndex}/>
+                        </Fragment>
+                    );
+                }          
+            )});
+            return returnValue;
+        };
 
     const mobileView = (
         <UserPageTemplate mobile={true}>
             <p className="text-[28px] mb-2 mx-2">My Orders</p>
-            <MyOrderProducts productData={mockData}/>
+            <MyOrderProducts/>
         </UserPageTemplate>
     )
     const browserView = (

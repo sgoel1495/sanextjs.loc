@@ -9,11 +9,13 @@ import {useRouter} from "next/router";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
 import {isMobile} from "react-device-detect";
+import {apiCall} from "../../../helpers/apiCall"
 
 function UsersProfilePage() {
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
     const {dataStore} = useContext(AppWideContext);
+    const [walletAmount,setWalletAmount] = useState(null);
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
@@ -21,13 +23,24 @@ function UsersProfilePage() {
     useEffect(() => {
         setMobile(isMobile)
     }, [])
+
+    useEffect(()=>{
+        apiCall("userWallet", dataStore.apiToken,{contact:dataStore.userData.contact})
+            .then(pData=>{
+                if (pData.msg === 'Found' && pData.user){
+                    setWalletAmount(pData.user.WalletAmount)
+                }
+            })
+            .catch(e=>console.log(e.message))
+    },[dataStore.userData.contact,dataStore.apiToken]);
+
     const mobileView = () => {
         return (<UserPageTemplate mobile={true}>
             <ContactInformation mobile={true}/>
             {/*<MyWalletInformation/>*/}
             <div className={"p-4 bg-[#f1f2f3]"}>
                 <p className="text-xl font-500 mb-2 mt-1 w-full">My Wallet</p>
-                <p className="font-700 pb-10">{dataStore.currSymbol} {formatTwoDecimal(dataStore.userWallet.WalletAmount)}</p>
+                {walletAmount && <p className="font-700 pb-10">{dataStore.currSymbol} {formatTwoDecimal(walletAmount)}</p>}
             </div>
             <DefaultAddressBookInformation mobile={true} manage={true}/>
         </UserPageTemplate>)

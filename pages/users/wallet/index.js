@@ -18,6 +18,8 @@ function UsersWalletPage() {
     const router = useRouter();
     const [voucher, setVoucher] = useState('')
     const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const [walletAmount,setWalletAmount] = useState(null);
+
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
@@ -25,7 +27,18 @@ function UsersWalletPage() {
 
     useEffect(() => {
         setMobile(isMobile)
+        console.log('datastore',dataStore)
     }, [])
+    
+    useEffect(()=>{
+        apiCall("userWallet", dataStore.apiToken,{contact:dataStore.userData.contact})
+            .then(pData=>{
+                if (pData.msg === 'Found' && pData.user){
+                    setWalletAmount(pData.user.WalletAmount)
+                }
+            })
+            .catch(e=>console.log(e.message))
+    },[dataStore.userData.contact,dataStore.apiToken]);
 
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
@@ -80,10 +93,10 @@ function UsersWalletPage() {
         <p className="text-[28px] my-2">My Wallet</p>
         <div className="bg-[#f1f2f3] px-8 py-5 w-full">
             <p className="text-[20px] mb-2">SALT Store Credit</p>
-            <p className="text-[#777] font-500 mt-4">
+           { walletAmount && <p className="text-[#777] font-500 mt-4">
                 Available Balance: <span
-                className={"text-black font-700"}>{dataStore.currSymbol} {formatTwoDecimal(dataStore.userWallet.WalletAmount)}</span>
-            </p>
+                className={"text-black font-700"}>{dataStore.currSymbol} {formatTwoDecimal(walletAmount)}</span>
+            </p>}
         </div>
         <div className="flex justify-center bg-[#f1f2f3] px-8 py-5 w-full">
             <form action="" className="flex flex-col gap-x-5 flex-1">
@@ -104,9 +117,9 @@ function UsersWalletPage() {
                 <p className="text-[28px] mb-2">My Wallet</p>
                 <div className="bg-[#f1f2f3] px-8 py-5 w-full">
                     <p className="text-[28px] mb-2">SALT Store Credit</p>
-                    <p className="text-[#777] font-500 mt-4">
-                        Available Balance: {dataStore.currSymbol} {formatTwoDecimal(dataStore.userWallet.WalletAmount)}
-                    </p>
+                    {walletAmount && <p className="text-[#777] font-500 mt-4">
+                        Available Balance: {dataStore.currSymbol} {formatTwoDecimal(walletAmount)}
+                    </p>}
                 </div>
                 <div className="bg-[#f1f2f3] px-8 py-5 w-full">
                     <div className="flex gap-x-5">

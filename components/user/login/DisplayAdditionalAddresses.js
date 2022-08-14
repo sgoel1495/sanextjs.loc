@@ -1,14 +1,27 @@
 import Link from "next/link";
-import {Fragment, useContext, useState} from "react";
+import {useContext, useState, useEffect} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import Toast from "../../common/Toast";
+import {apiCall} from "../../../helpers/apiCall"
 
 function DisplayAdditionalAddresses(props) {
     const {dataStore} = useContext(AppWideContext);
     const [showToaster, setShowToaster] = useState(false)
+    const [userAddresses,setUserAddresses] =useState([])
+
+    useEffect(()=>{
+        apiCall("userAddresses", dataStore.apiToken,{user:{email:dataStore.userServe.email}})
+            .then(pData=>{
+                if (pData.status === 200 && pData.response){
+                    setUserAddresses(pData.response)
+                }
+            })
+            .catch(e=>console.log(e.message))
+    },[dataStore.userServe.emailt, dataStore.apiToken]);
+
     const browserAddressList = () => {
         let returnValue = null;
-        dataStore.userAddresses.forEach((address, index) => {
+        userAddresses.forEach((address, index) => {
             returnValue = (
                 <>
                     {returnValue}
@@ -42,7 +55,7 @@ function DisplayAdditionalAddresses(props) {
     const mobileAddressList = () => {
         let returnValue = null;
 
-        dataStore.userAddresses.forEach((address, index) => {
+        userAddresses.forEach((address, index) => {
             returnValue = (
                 <>
                     {returnValue}
