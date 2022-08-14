@@ -252,7 +252,7 @@ function SizeGuide({ closeModal, isMobile }) {
 
     const mobileView = ()=> {
         return (
-            <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center" onClick={closeModal}>
+            <div className="bg-black/60 h-screen w-screen fixed inset-0 z-modal2 grid place-items-center" onClick={closeModal}>
                 <div className="bg-white relative h-[90vh] flex flex-col overflow-y-auto" onClick={e => e.stopPropagation()}>
                     <button className="absolute top-0 right-4 text-2xl z-50" onClick={closeModal}>X</button>
                     <div className="text-center my-8">
@@ -266,14 +266,16 @@ function SizeGuide({ closeModal, isMobile }) {
                         <div>{beltProducts()}</div>
                     </div>
                     <div className="text-center text-[#777] mb-5">Measurement Guide</div>
-                    <div className="relative h-60 aspect-square">
-                        <Image
-                            src={"/assets/images/Measurement.png"}
-                            layout={`fill`}
-                            objectFit={`cover`}
-                            alt={"measurement guide"}
-                            // objectPosition={"72% 32px"}
-                        />
+                    <div className="px-10">
+                        <span className="relative block w-full aspect-square">
+                            <Image
+                                src={WEBASSETS+"/assets/images/Measurement.png"}
+                                layout={`fill`}
+                                objectFit={`contain`}
+                                alt={"measurement guide"}
+                                // objectPosition={"72% 32px"}
+                            />
+                        </span>
                     </div>
                     <div className="text-[#777] p-10">
                         *The waist measurement in the table is that of your natural waist. All are pants fit on the Wearing waist. As shown in the figure.
@@ -303,14 +305,16 @@ function SizeGuide({ closeModal, isMobile }) {
                         <div>{beltProducts()}</div>
                     </div>
                     <div className="text-center text-[#777] mb-5">Measurement Guide</div>
-                    <div className="relative h-60 aspect-square">
-                        <Image
-                            src={"/assets/images/Measurement.png"}
-                            layout={`fill`}
-                            objectFit={`cover`}
-                            alt={"measurement guide"}
-                            // objectPosition={"72% 32px"}
-                        />
+                    <div className="px-10">
+                        <span className="relative block w-full aspect-square">
+                            <Image
+                                src={WEBASSETS+"/assets/images/Measurement.png"}
+                                layout={`fill`}
+                                objectFit={`contain`}
+                                alt={"measurement guide"}
+                                // objectPosition={"72% 32px"}
+                            />
+                        </span>
                     </div>
                     <div className="text-[#777] p-10">
                         *The waist measurement in the table is that of your natural waist. All are pants fit on the Wearing waist. As shown in the figure.

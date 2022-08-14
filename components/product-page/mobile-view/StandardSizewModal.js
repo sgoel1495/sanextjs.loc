@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import AppWideContext from '../../../store/AppWideContext';
+import emptyMeasurement from "../../../store/emptyMeasurement.json";
 
-function StandardSizeModal({closeModal, standardSizes, setSizeModal, selected, setSelected}) {
+function StandardSizeModal({currentMeasurement, closeModal, standardSizes, setSizeModal, selected, setSelected, setCurrentMeasurement}) {
     return (
         <div className={['h-screen fixed inset-0 z-modal grid place-items-center p-[2.5%] py-[5%]']} onClick={closeModal}>
             <div className='bg-white border-[1.2vw] border-[#b3aeab] text-[#997756] rounded-[10vw] h-full w-full relative flex flex-col' onClick={(e) => e.stopPropagation()}>
@@ -29,6 +30,11 @@ function StandardSizeModal({closeModal, standardSizes, setSizeModal, selected, s
                                 standardSizes.slice(1).map((item, index) => {
                                     return <tr key={index} className={"bg-[#F3E9E3]"} onClick={() => {
                                         setSelected(item[Object.keys(item)[0]])
+                                        let temp = {}
+                                        Object.keys(item).forEach(key => {
+                                            temp[key.toLowerCase()] = item[key]
+                                        })
+                                        setCurrentMeasurement({...emptyMeasurement, ...temp, "selected_length": currentMeasurement.selected_length, "selected_sleeve": currentMeasurement.selected_sleeve})
                                     }}>
                                         {
                                             Object.keys(item).map((key, index) => {

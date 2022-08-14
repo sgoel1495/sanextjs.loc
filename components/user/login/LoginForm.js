@@ -6,11 +6,12 @@ import Loader from "../../common/Loader";
 import Image from "next/image";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
 import CartModal from '../../sidebar/cart/CartModal';
+import {useRouter} from "next/router";
 
 
 const LoginForm = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
+    const router = useRouter();
     const username = useRef(null);
     const password = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -90,9 +91,11 @@ const LoginForm = (props) => {
                             if (otp_login) {
                                 setOTPSent(true)
                                 props.showToast("We've sent an OTP to your Email or Phone!")
-                            }
-                            else {
-                                props.setShowSidebarMenuUser(false)
+                            } else {
+                                if (props.setShowSidebarMenuUser)
+                                    props.setShowSidebarMenuUser(false)
+                                else
+                                    router.push("/")
                                 props.showToast("Welcome");
                                 // <CartModal isMobile={true} />
                                 saveUserDataAfterSuccessfulLogin(uname)
@@ -100,8 +103,7 @@ const LoginForm = (props) => {
                                     })
                                     .catch(e => console.log(e.message))
                             }
-                        }
-                        else {
+                        } else {
                             props.showToast(data['response']['body'].toUpperCase());
                         }
                     })
@@ -199,7 +201,7 @@ const LoginForm = (props) => {
                 >
                     {
                         signInloading ?
-                            <Loader className="text-grey" />
+                            <Loader className="text-grey"/>
                             :
                             otpSent ? <>Verify OTP</> : <>Sign In</>
                     }

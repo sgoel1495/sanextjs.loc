@@ -5,10 +5,6 @@ import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import {apiCall} from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
-import MeasurementModal0 from "../../../components/user/MeasurementModal0"
-import MeasurementModal1 from "../../../components/user/MeasurementModal1";
-import MeasurementModal2 from "../../../components/user/MeasurementModal2";
-import MeasurementModal3 from "../../../components/user/MeasurementModal3";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
 import returnSizes from "../../../helpers/returnSizes";
@@ -17,6 +13,8 @@ import MoreColours from "../../common/MoreColours";
 import {addToCart, getUserObject} from "../../../helpers/addTocart";
 import Image from "next/image";
 import {FaFacebookF, FaTwitter} from 'react-icons/fa';
+import TailoredSize from "../TailoredSize";
+import emptyMeasurement from "../../../store/emptyMeasurement.json";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -38,179 +36,51 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
     const [pincode, setPinCode] = useState(null)
     const [sizeModal, setSizeModal] = useState(false)
     const [showShare, setShowShare] = useState(false)
-    const [refresh, setRefresh] = useState(false)
+    const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     //for toast
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
 
-    //for tailored model
-    const [showModal0, setShowModal0] = useState(false)
-    const [showModal1, setShowModal1] = useState(false)
-    const [showModal2, setShowModal2] = useState(false)
-    const [showModal3, setShowModal3] = useState(false)
-    const [showModalPastOrders, setShowModalPastOrders] = useState(false)
-    const [currentProduct, setCurrentProduct] = useState(null)
-    const [currentMeasureProduct, setCurrentMeasurementProduct] = useState(null)
-    const [currentMeasurement, setCurrentMeasurement] = useState(null)
-    const measurementKeys = Object.keys(dataStore.userMeasurements)
-    const nextModal = () => {
-        if (showModal0) {
-            setShowModal0(false)
-            setShowModal1(true)
-            setShowModal2(false)
-            setShowModal3(false)
-        } else if (showModal1) {
-            setShowModal0(false);
-            setShowModal1(false);
-            setShowModal2(true);
-            setShowModal3(false);
-        } else if (showModal2) {
-            setShowModal0(false);
-            setShowModal1(false);
-            setShowModal2(false);
-            setShowModal3(true);
-        }
-    }
-    const lastModal = () => {
-        if (showModal1) {
-            setShowModal0(true);
-            setShowModal1(false);
-            setShowModal2(false);
-            setShowModal3(false);
-        } else if (showModal2) {
-            setShowModal0(false);
-            setShowModal1(true);
-            setShowModal2(false);
-            setShowModal3(false);
-        } else if (showModal3) {
-            setShowModal1(false);
-            setShowModal1(false);
-            setShowModal2(true);
-            setShowModal3(false);
-        }
-    }
-    const getNewKey = () => {
-        const baseKey = dataStore.userServe.temp_user_id || Date.now();
-
-        let newKey = "";
-        for (let x = 1; x < 100; x++) {
-            newKey = baseKey + "_" + x.toString();
-            if (!measurementKeys.includes(newKey))
-                break;
-        }
-        return newKey;
-    }
-    const addNewModal = (m) => {
-        setCurrentProduct(data)
-        setCurrentMeasurement(m);
-        nextModal()
-    }
-    const pastOrdersModal = () => {
-        setShowModal0(false)
-        setShowModal1(false)
-        setShowModal2(false)
-        setShowModal3(false)
-        setShowModalPastOrders(true)
-    }
-    const closeModal = () => {
-        setShowModal0(false)
-        setShowModal1(false)
-        setShowModal2(false)
-        setShowModal3(false)
-        setShowModalPastOrders(false)
-    }
-    const updateValues = (key, value) => {
-        currentMeasurement[key] = value;
-        setCurrentMeasurement(currentMeasurement);
-        setRefresh(!refresh);
-    }
-    const refreshDataStore = async () => {
-        const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user": getUserObject(dataStore, updateDataStore)
-        });
-
-        let userMeasurements = {};
-        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
-            userMeasurements = measurementCall.response
-        updateDataStore("userMeasurements", dataStore.userMeasurements)
-    }
-
-    const delMeasurement = async (m) => {
-        //only delete. no refresh
-        delete dataStore.userMeasurements[m.measure_id]
-        if (dataStore.userData.contact) {
-            //logged in user
-            await apiCall("removeMeasurements", dataStore.apiToken, {
-                user: getUserObject(dataStore, updateDataStore),
-                measurments: {
-                    measure_id: m.measure_id
-                }
-            });
-        }
-    }
-
-    const saveModal = async () => {
-
-        if (currentMeasurement.measure_id == "") {
-            // add new
-            currentMeasurement.measure_id = getNewKey();
-        } else {
-            //case update - we simply remove and add
-            await delMeasurement(currentMeasurement)
-        }
-
-        if (dataStore.userData.contact) {
-            // we have a valid user
-            await apiCall("addMeasurements", dataStore.apiToken, {
-                "user": getUserObject(dataStore, updateDataStore),
-                "measurments": currentMeasurement
-            })
-
-            // update DataStore
-            await refreshDataStore()
-        } else {
-            //non logged in case
-            dataStore.userMeasurements[currentMeasurement.measure_id] = currentMeasurement
-            updateDataStore("userMeasurements", dataStore.userMeasurements)
-        }
-
-        closeModal()
-    }
-
-    const sizeByProduct = (p) => {
-        //p is the item
-        setCurrentMeasurementProduct(p)
-        closeModal()
-        addNewModal(p.measurement)
-    }
-
-    const addTailorToCart = async () => {
-
-    }
+    const sizeAvail = JSON.parse(data.size_avail.replace(/=>/g, ":"))
 
     const checkDelivery = async () => {
         if (pincode == null)
             return;
         const resp = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode: pincode});
-        setDeliveryAvailable((resp.response_data && resp.response_data.city) ? true : false)
+        setDeliveryAvailable(!!(resp.response_data && resp.response_data.city))
     }
 
-    const saveToCart = async () => {
-        if (selectedSize == null || selectedSize === "") {
+    const saveToCart = (currMeasurement = {...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length}) => {
+
+        if ((selectedSize == null || selectedSize === "") && !currMeasurement.measure_id) {
             setToastMsg("Please select a size first")
             setShowToast(true)
             return
         }
-        const cart = {
-            product_id: hpid,
-            size: selectedSize,
-            qty: "1",
-            is_sale: false,
-            is_tailor: false,
-            sleeve_length: "",
-            dress_length: ""
+        let cart = {
+            "product_id": data.product_id,
+            "size": selectedSize,
+            "qty": 1,
+            "is_sale": data.is_sale,
+            "is_tailor": !!currMeasurement.measure_id,
+            "sleeve_length": currMeasurement.selected_sleeve,
+            "dress_length": currMeasurement.selected_length
         }
-        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
+        let measurements = {}
+        if (currMeasurement.measure_id) {
+            if (!selectedSize) {
+                cart['size'] = sizeAvail[0][Object.keys(sizeAvail[0])[0]]
+            }
+            cart["measurment_id"] = currMeasurement.measure_id
+            measurements = {...currMeasurement}
+        } else if (currMeasurement.selected_length !== data.dress_length || currMeasurement.selected_sleeve !== data.sleeve_length) {
+            let measureID = (new Date()).getTime().toString() + "_m"
+            cart["measurment_id"] = measureID
+            cart["is_tailor"] = true
+            measurements = {...currMeasurement, "measure_id": measureID}
+        }
+        addToCart(dataStore, updateDataStore, {cart: cart, measurments: measurements}).then(r => {
+            setCurrentMeasurement({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length})
             setToastMsg("Added to Cart")
             setShowToast(true)
         })
@@ -258,7 +128,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
                         {
                             showShare &&
                             <div className="absolute top-8 right-0 flex flex-col">
-                                <button title="share on facebook"  onClick={shareOnFB}>
+                                <button title="share on facebook" onClick={shareOnFB}>
                                     <FaFacebookF/>
                                 </button>
                                 <button title="share on twitter" className={"mt-2"} onClick={shareOnTwitter}>
@@ -279,13 +149,10 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
                 >
                     size guide
                 </p>
-                <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={() => setShowModal0(true)}>
-                    <span className={"uppercase underline cursor-pointer"}>tailor it</span>
-                    <span className={""}>/</span>
-                    <span className={"uppercase underline cursor-pointer"}>customise</span>
-                </div>
+                <TailoredSize data={data} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={setSelectedSize} isMobile={false}
+                              saveToCart={saveToCart}/>
                 <div className="flex items-center justify-center mb-5">
-                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={saveToCart}>
+                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={()=>saveToCart()}>
                         i&lsquo;ll take it
                     </button>
                 </div>
@@ -339,66 +206,6 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
             {sizeModal &&
             ReactDom.createPortal(
                 <SizeGuide closeModal={() => setSizeModal(false)} isMobile={dataStore.isMobile}/>,
-                document.getElementById("measurementmodal"))
-            }
-            {showModal0 &&
-            ReactDom.createPortal(
-                <MeasurementModal0
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    addNew={addNewModal.bind(this)}
-                    pastOrders={pastOrdersModal.bind(this)}
-                    measureProduct={currentMeasureProduct}
-                />,
-                document.getElementById("measurementmodal"))
-            }
-            {showModal1 &&
-            ReactDom.createPortal(
-                <MeasurementModal1
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    measurement={currentMeasurement}
-                    lastModal={lastModal.bind(this)}
-                    nextModal={nextModal.bind(this)}
-                    updateValues={updateValues.bind(this)}
-                    product={currentProduct}
-                />,
-                document.getElementById("measurementmodal"))
-            }
-            {showModal2 &&
-            ReactDom.createPortal(
-                <MeasurementModal2
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    measurement={currentMeasurement}
-                    nextModal={nextModal.bind(this)}
-                    lastModal={lastModal.bind(this)}
-                    updateValues={updateValues.bind(this)}
-                    product={currentProduct}
-                />,
-                document.getElementById("measurementmodal"))
-            }
-            {showModal3 &&
-            ReactDom.createPortal(
-                <MeasurementModal3
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    measurement={currentMeasurement}
-                    lastModal={lastModal.bind(this)}
-                    saveModal={saveModal.bind(this)}
-                    addTailorToCart={addTailorToCart.bind(this)}
-                    product={currentProduct}
-                />,
-                document.getElementById("measurementmodal"))
-            }
-
-            {showModalPastOrders &&
-            ReactDom.createPortal(
-                <MeasurementModal3
-                    closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    sizeByProduct={sizeByProduct.bind(this)}
-                />,
                 document.getElementById("measurementmodal"))
             }
             <Toast show={showToast} hideToast={() => {

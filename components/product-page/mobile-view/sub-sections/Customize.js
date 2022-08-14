@@ -13,8 +13,8 @@ const CustomizeLength = ({closeModal, data, selected, setSelected, defaultValue}
                     {
                         data.map((item, index) => {
                             return <div className={"p-2"} key={index}>
-                                <div className={"w-full border-4 rounded-3xl overflow-hidden text-center pb-3 " + [selected === item ? "border-[#997756]" : "border-[#b3aeab]"]}
-                                     onClick={() => setSelected({"dress": item})}>
+                                <div className={"w-full border-4 rounded-3xl overflow-hidden text-center pb-3 " + [selected.selected_length === item ? "border-[#997756]" : "border-[#b3aeab]"]}
+                                     onClick={() => setSelected({...selected,"selected_length": item})}>
                                     <span className={"relative block w-full aspect-[123/160]"}>
                                         <Image src={WEBASSETS + `/assets/dresses-length/cap-${item.toLowerCase().replace(" ","_")}.jpg`} layout={`fill`} objectFit={`cover`}/>
                                         <span className={"absolute bottom-0 left-[50%] translate-x-[-50%] capitalize"}>{item}</span>
@@ -47,8 +47,8 @@ const CustomizeSleeve = ({closeModal, data, selected, setSelected, defaultValue}
                     {
                         data.map((item, index) => {
                             return <div className={"p-2"} key={index}>
-                                <div className={"w-full border-4 rounded-3xl overflow-hidden text-center pb-3 " + [selected === item ? "border-[#997756]" : "border-[#b3aeab]"]}
-                                     onClick={() => setSelected({"sleeve": item})}>
+                                <div className={"w-full border-4 rounded-3xl overflow-hidden text-center pb-3 " + [selected.selected_sleeve === item ? "border-[#997756]" : "border-[#b3aeab]"]}
+                                     onClick={() => setSelected({...selected,"selected_sleeve": item})}>
                                     <span className={"relative block w-full aspect-square mb-4"}>
                                         <Image src={WEBASSETS + `/assets/dresses-sleeve/${item.toLowerCase().replace(" ","_")}.jpg`} layout={`fill`} objectFit={`cover`}/>
                                     </span>
@@ -77,36 +77,36 @@ const Customize = ({data, selected, setSelected}) => {
     const [showSleeve, setShowSleeve] = React.useReducer((state, action) => {
         return !state
     }, false)
-
+    console.log(selected)
     if (data.is_customize)
         return <>
             <div className={"grid grid-cols-3 gap-3 place-items-center text-[#4eb16d] text-xs font-900 tracking-widest"}>
                 <span/>
                 <span>
                     {
-                        data.dress_length !== selected["dress"] && "SELECTED"
+                        data.dress_length !== selected["selected_length"] && "SELECTED"
                     }
                 </span>
                 <span>
                     {
-                        data.sleeve_length !== selected["sleeve"] && "SELECTED"
+                        data.sleeve_length !== selected["selected_sleeve"] && "SELECTED"
                     }
                 </span>
             </div>
             <div className={"grid grid-cols-3 gap-3 place-items-center text-[#997756] tracking-widest mb-6 " + [data.is_sale ? "pointer-events-none opacity-25" : ""]}>
                 <span className={"text-base"}>CUSTOMIZE</span>
                 <span
-                    className={"shadow-lg border-white w-full h-full text-center rounded-3xl " + [data.dress_length_opt.length > 1 ? "" : "pointer-events-none opacity-25 "] + [data.dress_length !== selected["dress"] ? "leading-4 bg-[#4eb16d] border-0 text-white py-2" : "py-2.5 border-4 "]}
+                    className={"shadow-lg border-white w-full h-full text-center rounded-3xl " + [data.dress_length_opt.length > 1 ? "" : "pointer-events-none opacity-25 "] + [data.dress_length !== selected["selected_length"] ? "leading-4 bg-[#4eb16d] border-0 text-white py-2" : "py-2.5 border-4 "]}
                     onClick={setShowLength}>
                     {
-                        data.dress_length === selected["dress"] ?
+                        data.dress_length === selected["selected_length"] ?
                             <>
                                 <span className={"text-[3.2vw] block"}>CHANGE</span>
                                 <span className={"text-[3vw] font-900 block"}>LENGTH</span>
                             </>
                             :
                             <>
-                                <span className={"text-[3.3vw] uppercase font-800 block"}>{selected["dress"]}</span>
+                                <span className={"text-[3.3vw] uppercase font-800 block"}>{selected["selected_length"]}</span>
                                 <span className={"text-[3vw] font-700 block"}>LENGTH</span>
                                 <span className={"text-[2.5vw] font-700 block"}>EDIT</span>
                             </>
@@ -114,17 +114,17 @@ const Customize = ({data, selected, setSelected}) => {
                 </span>
 
                 <span
-                    className={"shadow-lg border-white w-full h-full text-center rounded-3xl " + [data.sleeve_length_opt.length > 1 ? "" : "pointer-events-none opacity-25 "] + [data.sleeve_length !== selected["sleeve"] ? "leading-4 bg-[#4eb16d] border-0 text-white py-2" : "py-2.5 border-4 "]}
+                    className={"shadow-lg border-white w-full h-full text-center rounded-3xl " + [data.sleeve_length_opt.length > 1 ? "" : "pointer-events-none opacity-25 "] + [data.sleeve_length !== selected["selected_sleeve"] ? "leading-4 bg-[#4eb16d] border-0 text-white py-2" : "py-2.5 border-4 "]}
                     onClick={setShowSleeve}>
                     {
-                        data.sleeve_length === selected["sleeve"] ?
+                        data.sleeve_length === selected["selected_sleeve"] ?
                             <>
                                 <span className={"text-[3.2vw] block"}>CHANGE</span>
                                 <span className={"text-[3vw] font-900 block"}>SLEEVE</span>
                             </>
                             :
                             <>
-                                <span className={"text-[3.3vw] uppercase font-800 block"}>{selected["sleeve"]}</span>
+                                <span className={"text-[3.3vw] uppercase font-800 block"}>{selected["selected_sleeve"]}</span>
                                 <span className={"text-[3vw] font-700 block"}>SLEEVE</span>
                                 <span className={"text-[2.5vw] font-700 block"}>EDIT</span>
                             </>
@@ -136,7 +136,7 @@ const Customize = ({data, selected, setSelected}) => {
                             closeModal={setShowSleeve}
                             data={data.sleeve_length_opt}
                             defaultValue={data.sleeve_length}
-                            selected={selected["sleeve"]}
+                            selected={selected}
                             setSelected={setSelected}
                         />, document.getElementById("measurementmodal"))
                 }
@@ -146,7 +146,7 @@ const Customize = ({data, selected, setSelected}) => {
                             closeModal={setShowLength}
                             data={data.dress_length_opt}
                             defaultValue={data.dress_length}
-                            selected={selected["dress"]}
+                            selected={selected}
                             setSelected={setSelected}
                         />, document.getElementById("measurementmodal"))
                 }
