@@ -40,7 +40,7 @@ function UsersProfilePage() {
             {/*<MyWalletInformation/>*/}
             <div className={"p-4 bg-[#f1f2f3]"}>
                 <p className="text-xl font-500 mb-2 mt-1 w-full">My Wallet</p>
-                {walletAmount && <p className="font-700 pb-10">{dataStore.currSymbol} {formatTwoDecimal(walletAmount)}</p>}
+                {dataStore.currSymbol} {walletAmount && <p className="font-700 pb-10">{formatTwoDecimal(walletAmount)}</p>}
             </div>
             <DefaultAddressBookInformation mobile={true} manage={true}/>
         </UserPageTemplate>)
@@ -60,7 +60,7 @@ function UsersProfilePage() {
             <PageHead url={"/users/profile"} id={"profile"} isMobile={mobile}/>
             <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
             {(mobile) ? mobileView() : browserView()}
-            <Footer isMobile={mobile}/>
+            <Footer isMobile={mobile} minimal={true}/>
         </Fragment>
     )
 }

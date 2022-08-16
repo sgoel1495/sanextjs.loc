@@ -66,7 +66,7 @@ function UsersOrderHistoryPage() {
             <PageHead url={"/users/orderhistory"} id={"profile"} isMobile={mobile}/>
             <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
             {(mobile) ? mobileView : browserView}
-            <Footer isMobile={mobile}/>
+            <Footer isMobile={mobile} minimal={true}/>
         </Fragment>
     )
 }

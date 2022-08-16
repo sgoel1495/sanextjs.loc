@@ -1,6 +1,7 @@
-import React, {Fragment, useContext, useEffect} from 'react';
+import React, {Fragment, useContext, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import AppWideContext from "../../store/AppWideContext";
+import {isMobile} from "react-device-detect";
 
 /**
  *
@@ -15,15 +16,16 @@ import AppWideContext from "../../store/AppWideContext";
 
 const Toast = (props) => {
     const ref = React.useRef();
-    const {dataStore} = useContext(AppWideContext);
-
+    const [mobile, setMobile] = useState(false);
     // Tailwind CSS
-    const toastClasses = dataStore.mobile ? ['bg-black', 'p-4', 'w-full', 'text-white', 'text-sm', 'mt-1', 'z-[100]'] : ['bg-black', 'fade-up', 'fixed', 'top-20', 'right-20', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1', 'z-[100]'];
+    const toastClasses = mobile ? ['bg-black', 'p-4', 'w-full', 'text-white', 'text-sm', 'mt-1', 'z-[100]'] : ['bg-black', 'fade-up', 'fixed', 'top-20', 'right-20', 'p-4', 'max-w-[300px]', 'shadow-lg', 'text-white', 'text-sm', 'mt-1', 'z-[100]'];
     let style = {}
     if (props.bottom) {
         style["marginBottom"] = props.bottom
     }
-
+    useEffect(() => {
+        setMobile(isMobile)
+    }, [])
     useEffect(() => {
         if (props.show) {
             if (ref.current) {
@@ -31,7 +33,7 @@ const Toast = (props) => {
             }
             ref.current = setTimeout(() => {
                 if (props.hideToast)
-                props.hideToast();
+                    props.hideToast();
             }, props.duration || 5000);
         } else {
             if (ref.current) {
@@ -42,7 +44,7 @@ const Toast = (props) => {
 
     const returnElement = (props.show) ? <div className={toastClasses.join(" ")} style={style}>{props.children}</div> : null;
     if (returnElement)
-        return ReactDOM.createPortal(returnElement, document.getElementById(dataStore.mobile ? "toastMobContainer" : "toastContainer"));
+        return ReactDOM.createPortal(returnElement, document.getElementById(mobile ? "toastMobContainer" : "toastContainer"));
     else
         return null;
 };

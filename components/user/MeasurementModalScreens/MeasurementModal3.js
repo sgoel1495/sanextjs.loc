@@ -1,20 +1,24 @@
 import React from "react";
 import Image from "next/image";
 
-function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveModal, product}) {
+function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveModal, product, edit}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const mobileView = (
-        <div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[8%] px-[3%]"
+        <div className={"bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center" + [edit || " py-[8%] px-[3%]"]}
              onClick={closeModal}>
-            <div className="bg-white border-4 border-[#b3aeab] rounded-[10vw] overflow-hidden text-[#997756] relative h-full w-full flex flex-col"
+            <div className={"bg-white overflow-hidden relative h-full w-full flex flex-col " + [edit || " border-4 border-[#b3aeab] rounded-[10vw] text-[#997756]"]}
                  onClick={e => e.stopPropagation()}>
                 <div className="overflow-auto flex-1 px-4">
                     <button className="absolute top-0 right-8 text-2xl z-50" onClick={closeModal}>X</button>
+
                     <div className="text-center mt-5 mb-8">
                         <p className="font-cursive italic text-3xl mb-2">Review</p>
-                        <p className="text-lg font-900">YOUR TAILORED FIT</p>
+                        <p className={edit ? "text-[#606060]" : "text-lg font-900"}>YOUR TAILORED FIT</p>
                     </div>
-                    <p className="mb-10 uppercase text-center font-600">Summary</p>
+                    {
+                        edit || <p className="mb-10 uppercase text-center font-600">Summary</p>
+                    }
+
                     <div className={product.is_customize ? " grid grid-cols-2 gap-x-3" : ""}>
                         {
                             product.is_customize && <div className={"relative aspect-[200/349] w-full border border-[#997756]"}>
@@ -27,12 +31,14 @@ function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveMo
                         }
 
                         <div className={product.is_customize ? " " : ""}>
-                            <div className={"uppercase text-center text-[11px]"}>
-                                <p className={"font-900 text-sm"}>Size</p>
-                                <p>tailored</p>
-                            </div>
+                            {
+                                edit || <div className={"uppercase text-center text-[11px]"}>
+                                    <p className={"font-900 text-sm"}>Size</p>
+                                    <p>tailored</p>
+                                </div>
+                            }
                             <div className="flex flex-col items-center gap-y-2 text-[11px] font-400 mt-5">
-                                <p className="text-sm font-900 uppercase">Measurements</p>
+                                <p className={"text-sm font-900 uppercase " + [edit && "text-[#606060]"]}>Measurements</p>
                                 <p>BUST : {measurement.bust}</p>
                                 <p>WAIST : {measurement.waist}</p>
                                 <p>WEARING WAIST / STOMACH : {measurement.wearing_waist}</p>
@@ -59,28 +65,35 @@ function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveMo
                         </div>
                     </div>
                 </div>
-                <div className="bg-white text-center grid grid-cols-2 text-[#997756]">
+                <div className="bg-white text-center grid grid-cols-2">
                     <div
-                        className="bg-[#E5D5C5] py-2 cursor-pointer grid place-items-center align-content-center"
+                        className={"py-2 cursor-pointer grid place-items-center align-content-center "+[edit ?"bg-[#606060] text-white":"bg-[#E5D5C5]"]}
                         onClick={lastModal}>
                         <button className="font-600">&lt; BACK</button>
                         <p className="text-xs uppercase">
                             {
-                                product.dress_length_opt.length <= 1 ?
-                                    product.sleeve_length_opt.length <= 1 ? "size review"
-                                        : "customize sleeve"
-                                    : "customize length"
-
+                                product.is_customize ?
+                                    product.dress_length_opt.length <= 1 ?
+                                        product.sleeve_length_opt.length <= 1 ? "size review"
+                                            : "customize sleeve"
+                                        : "customize length"
+                                    : "size review"
                             }
 
                         </p>
                     </div>
                     <div
-                        className="cursor-pointer  py-2  font-600 grid place-items-center align-content-center"
+                        className="cursor-pointer py-2 font-600 grid place-items-center align-content-center"
                         onClick={saveModal}>
-                        <button className="font-600">NEXT &gt;</button>
-                        <p className="text-xs uppercase">BUY NOW</p>
-
+                        {
+                            edit ?
+                                <p className={"uppercase text-lg text-[#606060]"}>save</p>
+                                :
+                                <>
+                                    <button className="font-600">NEXT &gt;</button>
+                                    <p className="text-xs uppercase">BUY NOW</p>
+                                </>
+                        }
                     </div>
                 </div>
             </div>
@@ -147,11 +160,12 @@ function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveMo
                         <button className="font-600">&lt; BACK</button>
                         <p className="text-xs uppercase">
                             {
-                                product.dress_length_opt.length <= 1 ?
-                                    product.sleeve_length_opt.length <= 1 ? "size review"
-                                        : "customize sleeve"
-                                    : "customize length"
-
+                                product.is_customize ?
+                                    product.dress_length_opt.length <= 1 ?
+                                        product.sleeve_length_opt.length <= 1 ? "size review"
+                                            : "customize sleeve"
+                                        : "customize length"
+                                    : "size review"
                             }
                         </p>
                     </div>

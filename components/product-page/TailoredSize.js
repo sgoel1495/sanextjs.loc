@@ -15,7 +15,7 @@ import {useRouter} from "next/router";
 import {isTailored} from "../../helpers/returnSizes";
 import Toast from "../common/Toast";
 
-const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart}) => {
+const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit,saveMeasurement,addNew}) => {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const router = useRouter();
     const [showModal, setShowModal] = useState(false);
@@ -61,13 +61,15 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     };
 
     const saveModal = async () => {
-        if(isMobile){
+        if(edit){
+            saveMeasurement()
+        }
+        else if (isMobile) {
             if (!currentMeasurement.measure_id) {
                 setCurrentMeasurement({...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m"})
                 setSize(null)
             }
-        }
-        else {
+        } else {
             saveToCart({...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m"})
         }
         closeModal()
@@ -90,7 +92,23 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     }, [dataStore.userMeasurements])
 
     let activeModalScreen
-    if (data.is_customize) {
+    if(edit){
+        switch (active) {
+            case 0:
+                activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
+                                                       nextModal={nextModal} updateValues={updateValues} product={{}} edit={true}/>;
+                break;
+            case 1:
+                activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
+                                                       lastModal={lastModal} updateValues={updateValues} product={{}} edit={true}/>;
+                break;
+            case 2:
+                activeModalScreen = <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
+                                                       saveModal={saveModal} product={{}} edit={true}/>;
+                break;
+        }
+    }
+    else if (data.is_customize) {
         let customLastModal = lastModal
         switch (active) {
 
@@ -131,7 +149,8 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
                     }
                 }
                 activeModalScreen =
-                    <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={customLastModal} saveModal={saveModal} product={data}/>;
+                    <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={customLastModal} saveModal={saveModal}
+                                       product={data}/>;
                 break;
         }
     } else {
@@ -157,32 +176,49 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     return (
         <>
             {
-                isMobile ?
-                    <div
-                        className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [currentMeasurement.measure_id ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"] + [isTailored(data) ? "" : " pointer-events-none opacity-25"]}
-                        onClick={() => {
-                            setShowModal(true);
-                        }}
+                addNew?
+                    <button
+                        className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
+                        onClick={() => setShowModal(true)}
                     >
-                        {
-                            currentMeasurement.measure_id ? <>
-                                    <p className={'uppercase font-900 text-xs'}>Tailored</p>
-                                    <p className={'uppercase font-900 text-sm'}>T</p>
-                                    <p className={' uppercase font-400 text-[10px]'}>edit</p>
-                                </>
-                                :
-                                <>
-                                    <p className={'uppercase font-900 text-xs'}>Tailored</p>
-                                    <p className={' uppercase font-400 text-xs'}>size</p>
-                                </>
-                        }
-                    </div>
+                        ADD NEW
+                    </button>
                     :
-                    <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={() => setShowModal(true)}>
-                        <span className={"uppercase underline cursor-pointer"}>tailor it</span>
-                        <span className={""}>/</span>
-                        <span className={"uppercase underline cursor-pointer"}>customise</span>
-                    </div>
+                edit ?
+                    <button
+                        className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
+                        onClick={() => setShowModal(true)}
+                    >
+                        Edit
+                    </button>
+                    :
+
+                    isMobile ?
+                        <div
+                            className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [currentMeasurement.measure_id ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"] + [isTailored(data) ? "" : " pointer-events-none opacity-25"]}
+                            onClick={() => {
+                                setShowModal(true);
+                            }}
+                        >
+                            {
+                                currentMeasurement.measure_id ? <>
+                                        <p className={'uppercase font-900 text-xs'}>Tailored</p>
+                                        <p className={'uppercase font-900 text-sm'}>T</p>
+                                        <p className={' uppercase font-400 text-[10px]'}>edit</p>
+                                    </>
+                                    :
+                                    <>
+                                        <p className={'uppercase font-900 text-xs'}>Tailored</p>
+                                        <p className={' uppercase font-400 text-xs'}>size</p>
+                                    </>
+                            }
+                        </div>
+                        :
+                        <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={() => setShowModal(true)}>
+                            <span className={"uppercase underline cursor-pointer"}>tailor it</span>
+                            <span className={""}>/</span>
+                            <span className={"uppercase underline cursor-pointer"}>customise</span>
+                        </div>
 
             }
 

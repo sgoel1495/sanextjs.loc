@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {biceps, bicepsOptions, heightF, heightFOptions, heightIOptions, shoulder, shoulderOptions} from "./dropdownOptions";
 
-function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nextModal, lastModal, product}) {
+function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nextModal, lastModal, product, edit}) {
     const labelMessage = {
         bust: {offFocus: 'BUST', onFocus: <span className={"text-[8px] bg-white"}>(MEASURE AROUND THE FULLEST PART OF YOUR CHEST)</span>},
         waist: {
@@ -25,9 +25,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
     const inputSelect = 'font-600 text-xs focus:ring-transparent focus:border-black';
     const inputSelectMobile = 'font-600 text-xs h-[35px] py-1 border-[#a8a8a8] focus:ring-transparent focus:border-[#a8a8a8]';
     const inputField = 'w-[105px] border border-black bg-white placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black';
-    const inputFieldMobile = 'w-[100px] border-2 border-[#997756] bg-white placeholder:text-slate/400 focus:ring-transparent focus:border-[#997756] px-1 py-1 text-sm';
-    const textFieldMobile = 'w-full h-full border-2 border-[#997756] bg-white placeholder:text-slate/400 focus:ring-transparent focus:border-[#997756] px-1 py-1 text-sm';
+    const inputFieldMobile = edit ? inputField : 'w-[100px] border-2 border-[#997756] bg-white placeholder:text-slate/400 focus:ring-transparent focus:border-[#997756] px-1 py-1 text-sm';
     const textField = 'w-full h-full bg-white placeholder:text-slate/400 focus:ring-transparent focus:border-current px-1 py-1 text-sm';
+    const textFieldMobile = edit ? textField : 'w-full h-full border-2 border-[#997756] bg-white placeholder:text-slate/400 focus:ring-transparent focus:border-[#997756] px-1 py-1 text-sm';
 
     const setFocus = (flag) => {
         if (flag) {
@@ -37,8 +37,8 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
     }
 
     const mobileView = (
-        <div className={['bg-black/60 h-screen fixed inset-0 z-modal grid place-items-center py-[8%] px-[3%]']} onClick={closeModal}>
-            <div className='bg-white border-4 border-[#b3aeab] text-[#997756] rounded-[10vw] h-full w-full relative flex flex-col overflow-hidden'
+        <div className={'bg-black/60 h-screen fixed inset-0 z-modal grid place-items-center ' + [edit || "py-[8%] px-[3%]"]} onClick={closeModal}>
+            <div className={'bg-white h-full w-full relative flex flex-col overflow-hidden ' + [edit || " border-4 border-[#b3aeab] text-[#997756] rounded-[10vw]"]}
                  onClick={(e) => e.stopPropagation()}>
                 <div className='overflow-auto flex-1 px-5'>
                     <button className='absolute top-0 right-8 text-2xl z-50' onClick={closeModal}>
@@ -46,7 +46,7 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                     </button>
                     <div className='text-center my-5'>
                         <p className='font-cursive italic text-3xl mb-2'>Step 1/{product.is_customize ? 5 : 2}</p>
-                        <p className='text-lg font-900 tracking-wider leading-tight'>MEASUREMENT AS PER YOUR SELECTION</p>
+                        <p className={'tracking-wider leading-tight '+[edit?"text-sm text-[#606060]":"text-lg font-900 "]}>MEASUREMENT AS PER YOUR SELECTION</p>
                     </div>
                     <p className='text-center font-600 uppercase mb-5'>inches / cm</p>
                     <div className='measurementBlock1__sizes__mob relative !h-[465px]'>
@@ -174,7 +174,7 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                         ) : null}
                     </div>
                     <div className='my-10 flex flex-col items-center'>
-                        <p className='font-700 text-[#997756] text-center'>ANY PARTICULAR BODY PART YOU BOTHER ABOUT?</p>
+                        <p className='font-700 text-center'>ANY PARTICULAR BODY PART YOU BOTHER ABOUT?</p>
                         <div className={"relative w-[75%] mt-2"} onClick={() => setFocus(true)}>
                                  <textarea
                                      ref={textArea}
@@ -193,12 +193,14 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                         </div>
                     </div>
                 </div>
-                <div className='bg-white text-center grid grid-cols-2 text-[#997756]'>
-                    <div className='bg-[#E5D5C5] py-2 cursor-pointer' onClick={lastModal}>
-                        <button className='font-600'>&lt; BACK</button>
-                        <p className='text-xs uppercase'>SELECT MEASUREMENTS</p>
-                    </div>
-                    <div className='cursor-pointer font-600' onClick={nextModal}>
+                <div className='bg-white text-center grid grid-cols-2'>
+                    {
+                        edit || <div className='bg-[#E5D5C5] py-2 cursor-pointer' onClick={lastModal}>
+                            <button className='font-600'>&lt; BACK</button>
+                            <p className='text-xs uppercase'>SELECT MEASUREMENTS</p>
+                        </div>
+                    }
+                    <div className={'cursor-pointer font-600' + [edit && " col-span-2 border-t-2 py-2"]} onClick={nextModal}>
                         <button className='font-600'>NEXT &gt;</button>
                         <p className='text-xs uppercase'>{product.is_customize ? "FIT DETAILS" : "SIZE REVIEW"}</p>
                     </div>

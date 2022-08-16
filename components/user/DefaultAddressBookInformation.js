@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {useRouter} from 'next/router';
-import {useContext,useEffect,useState} from "react";
+import React, {useContext,useEffect,useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
 
@@ -19,15 +19,16 @@ function DefaultAddressBookInformation(props) {
             })
             .catch(e=>console.log(e.message))
     },[dataStore.userServe.emailt, dataStore.apiToken]);
+    console.log(defaultAddress)
 
-    const mobileView = <div className="mx-3 p-8 bg-[#f1f2f3] flex flex-col items-start">
+    const mobileView = <div className={"p-8 bg-[#f1f2f3] flex flex-col items-start "+[isProfilePage || "mx-3"]}>
         {isProfilePage && <p className="text-xl font-500 mb-2 mt-1">Address Book</p>}
         <p className="font-600 text-[#777]">{isProfilePage && "Default"} Shipping Address</p>
         {(defaultAddress)
             ? <div>
                 <div>{defaultAddress.name}</div>
                 <div>{defaultAddress.address}
-                    {(defaultAddress.landmark == "")
+                    {(defaultAddress.landmark === "")
                         ? null
                         : <span>, {defaultAddress.landmark}</span>
                     }
@@ -46,9 +47,7 @@ function DefaultAddressBookInformation(props) {
 
         {(props.showEdit)
             ? <div className="flex gap-2 items-center mt-4 text-[#555]">
-                <Link href={"/users/addressbook/edit/0"}>
-                    <a className="underline">Edit</a>
-                </Link>
+                    <button className="underline" onClick={()=>props.setEdit(0)}>Edit</button>
             </div>
             : null}
 
@@ -61,7 +60,7 @@ function DefaultAddressBookInformation(props) {
                 ? <div>
                     <div>{defaultAddress.name}</div>
                     <div>{defaultAddress.address}
-                        {(defaultAddress.landmark == "")
+                        {(defaultAddress.landmark === "")
                             ? null
                             : <span>, {defaultAddress.landmark}</span>
                         }

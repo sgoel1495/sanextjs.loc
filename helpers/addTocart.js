@@ -78,7 +78,9 @@ export async function addToCart(dataStore, updateDataStore, cart, apiName = "add
 
     if ((resp.response && resp.response === "success") || (resp.msg && resp.msg === "success")) {
         await refreshCart(dataStore, updateDataStore)
+        return true
     }
+    return false
 }
 
 export async function updateCart(dataStore, updateDataStore, product) {

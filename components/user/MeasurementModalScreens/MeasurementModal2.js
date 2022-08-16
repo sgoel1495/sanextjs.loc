@@ -1,15 +1,15 @@
 import React from "react";
 import {brandOptions, brands, braSizeOptions, braSizes, jeansPantSizeOptions, jeansPantSizes, sizeOptions, sizes} from "./dropdownOptions";
 
-function MeasurementModal2({closeModal, isMobile, measurement, updateValues, lastModal, nextModal, product}) {
+function MeasurementModal2({closeModal, isMobile, measurement, updateValues, lastModal, nextModal, product, edit}) {
     const questionLeadClass = "font-600 text-[#555] tracking-wider";
     const labelClass = "text-sm font-700 text-right mt-[12px]";
     const inputSelect = "w-[105px] font-600 text-xs focus:ring-transparent focus:border-black";
     const inputField = "w-[105px] border border-black bg-[#f1f2f3] placeholder:font-600 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black";
     const optionClass = "grid grid-cols-2 gap-x-5 justify-center"
 
-    const mobileView = (<div className="bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[8%] px-[3%]" onClick={closeModal}>
-        <div className="bg-white border-4 border-[#b3aeab] rounded-[10vw] overflow-hidden text-[#997756] relative h-full flex flex-col" onClick={e => e.stopPropagation()}>
+    const mobileView = (<div className={"bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center" + [edit ? "" : " py-[8%] px-[3%]"]} onClick={closeModal}>
+        <div className={"bg-white overflow-hidden relative h-full flex flex-col"+[edit?"":" border-4 border-[#b3aeab] rounded-[10vw] text-[#997756]"]} onClick={e => e.stopPropagation()}>
             <div className="overflow-auto flex-1 px-2">
                 <button className="absolute top-2 right-4 text-2xl z-50" onClick={closeModal}>X</button>
                 <div className="text-center my-5">
@@ -17,7 +17,7 @@ function MeasurementModal2({closeModal, isMobile, measurement, updateValues, las
                     <p className="text-lg font-900">SIZE REVIEW</p>
                 </div>
                 <div className={'flex flex-col items-center gap-y-2'}>
-                    <div className={questionLeadClass + " text-[#997756]"}>WHAT&apos;S YOUR TYPICAL SIZE?</div>
+                    <div className={questionLeadClass +[edit? "":" text-[#997756]"]}>WHAT&apos;S YOUR TYPICAL SIZE?</div>
                     <div className={optionClass}>
                         <label className={labelClass} htmlFor="bre_size">BRA SIZE:</label>
                         <div className="flex flex-col gap-y-2">
@@ -48,9 +48,9 @@ function MeasurementModal2({closeModal, isMobile, measurement, updateValues, las
                     </div>
                 </div>
                 <div className={'flex flex-col items-center gap-y-2 text-center mt-4 mb-8'}>
-                    <div className={questionLeadClass + " text-[#997756]"}>ANY STANDARD SIZES OR BRANDS THAT FIT YOU CLOSEST?</div>
+                    <div className={questionLeadClass +[edit? "":" text-[#997756]"]}>ANY STANDARD SIZES OR BRANDS THAT FIT YOU CLOSEST?</div>
                     <div className={'flex flex-col items-center gap-y-2'}>
-                        <div className={"font-900 text-lg"}>FOR TOPS</div>
+                        <div className={edit?"text-sm":"font-900 text-lg"}>FOR TOPS</div>
                         <div className={optionClass}>
                             <label className={labelClass} htmlFor="brand_top">BRAND NAME:</label>
                             <div className="flex flex-col gap-y-2">
@@ -81,7 +81,7 @@ function MeasurementModal2({closeModal, isMobile, measurement, updateValues, las
                         </div>
                     </div>
                     <div className={'flex flex-col items-center gap-y-2'}>
-                        <div className={"font-900 text-lg"}>FOR PANTS</div>
+                        <div className={edit?"text-sm":"font-900 text-lg"}>FOR PANTS</div>
                         <div className={optionClass}>
                             <label className={labelClass} htmlFor="brand_pant">BRAND NAME:</label>
                             <div className="flex flex-col gap-y-2">
@@ -112,7 +112,7 @@ function MeasurementModal2({closeModal, isMobile, measurement, updateValues, las
                         </div>
                     </div>
                     <div className={'flex flex-col items-center gap-y-2'}>
-                        <div className={"font-900 text-lg"}>FOR DRESSES</div>
+                        <div className={edit?"text-sm":"font-900 text-lg"}>FOR DRESSES</div>
                         <div className={optionClass}>
                             <label className={labelClass} htmlFor="brand_dress">BRAND NAME:</label>
                             <div className="flex flex-col gap-y-2">
@@ -145,11 +145,11 @@ function MeasurementModal2({closeModal, isMobile, measurement, updateValues, las
                 </div>
             </div>
             <div className="bg-white text-center grid grid-cols-2 text-[#997756]">
-                <div className="bg-[#E5D5C5] py-2 cursor-pointer" onClick={lastModal}>
+                <div className={"py-2 cursor-pointer "+[edit?"bg-[#606060] text-white":"bg-[#E5D5C5]"]} onClick={lastModal}>
                     <button className="font-600">&lt; BACK</button>
-                    <p className="text-xs uppercase">EDIT MEASUREMENTS</p>
+                    <p className="text-xs uppercase">{edit?"FIT DETAILS":"EDIT MEASUREMENTS"}</p>
                 </div>
-                <div className="cursor-pointer font-600" onClick={nextModal}>
+                <div className={"cursor-pointer font-600 "+[edit&&"text-[#606060]"]} onClick={nextModal}>
                     <button className="font-600">NEXT &gt;</button>
                     <p className="text-xs uppercase">
                         {
