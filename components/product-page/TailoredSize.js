@@ -178,7 +178,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
             {
                 addNew?
                     <button
-                        className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
+                        className={"bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"+[isMobile ? " rounded-full" : ""]}
                         onClick={() => setShowModal(true)}
                     >
                         ADD NEW
@@ -186,7 +186,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
                     :
                 edit ?
                     <button
-                        className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
+                        className={"bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 "+[isMobile ? " rounded-full" :""]}
                         onClick={() => setShowModal(true)}
                     >
                         Edit

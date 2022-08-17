@@ -1,12 +1,6 @@
-import Link from "next/link";
-import React, {useContext, useState, useEffect} from "react";
-import AppWideContext from "../../../store/AppWideContext";
-import Toast from "../../common/Toast";
-import {apiCall} from "../../../helpers/apiCall"
+import React, {useState} from "react";
 
-function DisplayAdditionalAddresses({userAddresses, setEdit, mobile}) {
-    const [showToaster, setShowToaster] = useState(false)
-
+function DisplayAdditionalAddresses({userAddresses, setEdit, mobile,deleteAddress}) {
 
     const browserAddressList = () => {
         let returnValue = null;
@@ -25,13 +19,16 @@ function DisplayAdditionalAddresses({userAddresses, setEdit, mobile}) {
                         <p className="text-[#777]">{address.city}, {address.state}, {address.zip_code} </p>
                         <p className="text-[#555]">T:{address.phone}</p>
                         <div className="flex gap-2 items-center mt-4 text-[#555]">
-                            <Link href={"/users/addressbook/edit/" + index.toString()}>
-                                <a className="underline">Edit</a>
-                            </Link>
+                            <button className="underline" onClick={() => setEdit(index)}>Edit</button>
                             <span>|</span>
-                            <Link href={"/users/addressbook/delete/" + index.toString()}>
-                                <a className="underline">Delete</a>
-                            </Link>
+                            <span
+                                className="underline"
+                                onClick={() => {
+                                    confirm("Are you sure you want to delete this address!") ? deleteAddress(index) : ''
+                                }}
+                            >
+                                Delete
+                            </span>
                         </div>
                     </div>
                 </>
@@ -66,15 +63,12 @@ function DisplayAdditionalAddresses({userAddresses, setEdit, mobile}) {
                                 key={index}
                                 className="underline"
                                 onClick={() => {
-                                    confirm("Are you sure you want to delete this address!") ? setShowToaster(true) : ''
+                                    confirm("Are you sure you want to delete this address!") ? deleteAddress(index) : ''
                                 }}
                             >
                                 Delete
                             </span>
                         </div>
-                        <Toast show={showToaster} hideToast={() => setShowToaster(false)}>
-                            <span>Successfully Deleted</span>
-                        </Toast>
                     </div>
                 </>
             );
@@ -92,36 +86,22 @@ function DisplayAdditionalAddresses({userAddresses, setEdit, mobile}) {
             ADD NEW ADDRESSES
         </button>
     </>
+
     const browserView = (
         <>
             <div className="grid grid-cols-2 gap-8 w-full">
                 {browserAddressList()}
             </div>
-            <Link href="/users/addressbook/add">
-                <a className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2">
-                    ADD NEW ADDRESSES
-                </a>
-            </Link>
+            <button className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => setEdit(-1)}>
+                ADD NEW ADDRESSES
+            </button>
         </>
     );
 
-    return (mobile) ? mobileView : browserView;
+    return <>
+        {(mobile) ? mobileView : browserView}
+
+    </>;
 }
 
 export default DisplayAdditionalAddresses;
-
-/*
-  "defaultAddress":    {
-    "name": "test",
-    "lastname": "test",
-    "email": "shailaja.s@algowire.com",
-    "phone": 1234567890,
-    "address": "abc block",
-    "landmark": "",
-    "country": "india",
-    "zip_code": 110096,
-    "state": "Delhi",
-    "city": "New Delhi"
-  }
-
- */

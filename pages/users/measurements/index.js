@@ -118,12 +118,8 @@ function UsersMeasurementsPage() {
                         <p>Total Measurement(s): {Object.keys(userMeasurements).length}</p>
                     </div>
                     <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
-                        <button
-                            className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"
-                            onClick={() => showModal(emptyMeasurement)}
-                        >
-                            ADD NEW
-                        </button>
+                        <TailoredSize isMobile={false} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
+                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true}/>
                     </div>
                 </div>
                 <div>

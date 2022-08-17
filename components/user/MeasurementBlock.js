@@ -66,17 +66,10 @@ function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mob
                 <div>Shoulder: {measurement.shoulder}</div>
                 <div>Others: {measurement.others}</div>
             </div>
+            <TailoredSize isMobile={false} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
+            }} edit={true} saveMeasurement={saveMeasurement}/>
             <div
-                onClick={() => {
-                    showModal(measurement);
-                }}
-            >
-                EDIT
-            </div>
-            <div
-                onClick={() => {
-                    deleteMeasurement(measurement.measure_id);
-                }}
+                onClick={() =>deleteMeasurement(measurement.measure_id)}
             >
                 DELETE
             </div>

@@ -257,16 +257,51 @@ function UsersFavouritesPage() {
                 <UsersMenu/>
             </div>
             <div className="pl-8 flex-[3] flex flex-col items-start gap-4">
-                {favProductData
+                <p className="text-[28px] mb-2">Favourites</p>
+                {favProductData.length
                     ? <>
-                        <p className="text-[28px] mb-2">Favourites</p>
-                        <p className="text-[28px] mb-2">
-                            <span>PRODUCTS</span>
-                            <span>PRICE</span>
-                            <span>SIZE</span>
-                            <span>BAG</span>
-                        </p>
-                        <FavProdCardBrowser favProduct={favProductData}/>
+                        <table className={"w-full"}>
+                            <tr>
+                                <th>PRODUCTS</th>
+                                <th>PRICE</th>
+                                <th>SIZE</th>
+                                <th>BAG</th>
+                            </tr>
+                            {
+                                favProductData.map((item, index) => {
+                                    return (
+                                        <tr className={"text-[#777]"} key={index}>
+                                            <td className={"flex"}>
+                                                <span>
+                                                    <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88"/>
+                                                </span>
+                                                <div className={"ml-2"}>
+                                                    <p> {item.title} </p>
+                                                    <p> {item.label} </p>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <span> {item.price} </span>
+                                            </td>
+                                            <td>
+                                                <ul className={"flex justify-between my-1"}>
+                                                    {
+                                                        item.sizes.map((s, index) => <li key={index}>{s}</li>)
+                                                    }
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <span className={"text-m my-1 font-500"}> ADD TO BAG</span>
+                                            </td>
+                                            <td className={"mr-1 mt-1"} onClick={() => removeFromFav(index)}>
+                                                <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </table>
                         <div className={"flex flex-col"}>
                             <button onClick={moveAllToCart} className={"bg-[#222] py-3 mx-5 text-white"}>
                                 MOVE ALL PRODUCTS TO BAG

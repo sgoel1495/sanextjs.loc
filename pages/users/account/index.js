@@ -95,6 +95,7 @@ function UsersAccountPage() {
     const {dataStore} = useContext(AppWideContext);
     const [show, setShow] = useState(false)
     const [changePasswordCheckbox, setChangePasswordCheckbox] = useState(false)
+    const [error, setError] = useState(-1)
     const [data, setData] = useReducer((state, e) => {
         if (e.target.id !== "contact") {
             return {...state, [e.target.id]: e.target.value}
@@ -125,6 +126,20 @@ function UsersAccountPage() {
 
     const save = (e) => {
         e.preventDefault();
+        if (changePasswordCheckbox) {
+            if (password.new.length < 6) {
+                setError(0)
+                return
+            }
+            if (password.confirm.length < 6) {
+                setError(1)
+                return
+            }
+            if (password.new !== password.confirm) {
+                setError(2)
+                return
+            }
+        }
         let payload = {
             ...data, account: {
                 change_password: changePasswordCheckbox,
@@ -169,7 +184,24 @@ function UsersAccountPage() {
                         return (
                             <div className={`col-span-${item.columnSpace}`} key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
-                                <input className={inputClass} type={item.inputType} id={item.fieldName} value={password[item.fieldName]} onChange={setPassword}/>
+                                <input className={inputClass + [error === index || error === 2 ? " border-rose-500" : ""]} type={item.inputType} id={item.fieldName}
+                                       value={password[item.fieldName]} onChange={setPassword}/>
+                                {
+                                    error === index ?
+                                        error === 0 ?
+                                            <div className={"text-[#E82515] text-xs"}>Password Should be 6 digit long.</div>
+                                            :
+                                            <div className={"text-[#E82515] text-xs"}>Confirm Password Should be 6 digit long.</div>
+                                        : ""
+                                }
+                                {
+                                    error === 2 ?
+                                        index === 0 ?
+                                            <div className={"text-[#E82515] text-xs"}>Password should be same as Confirm Password.</div>
+                                            :
+                                            <div className={"text-[#E82515] text-xs"}>Confirm Password should be same as Password.</div>
+                                        : ""
+                                }
                             </div>
                         )
                     }) : ''}
@@ -182,7 +214,7 @@ function UsersAccountPage() {
     const browserView = (
         <UserPageTemplate>
             <p className="text-[28px] mb-2">Account</p>
-            <form action="#">
+            <form onSubmit={save}>
                 <div className="grid grid-cols-4 gap-6 mb-5">
                     {basicFields?.map((item, index) => {
                         return (
@@ -192,19 +224,38 @@ function UsersAccountPage() {
                             </div>
                         )
                     })}
-                    <label htmlFor="" className={labelClass + " flex gap-2 items-center"}>
-                        <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""
-                               onChange={(e) => {
-                                   setChangePasswordCheckbox(e.target.checked)
-                               }}
-                        />
-                        <span>Change Password </span>
-                    </label>
+                    <div className={`col-span-4`}>
+                        <label htmlFor="" className={labelClass + " flex gap-2 items-center"}>
+                            <input type="checkbox" className={"text-[#777] focus:ring-transparent"} name="" id=""
+                                   onChange={(e) => {
+                                       setChangePasswordCheckbox(e.target.checked)
+                                   }}
+                            />
+                            <span>Change Password </span>
+                        </label>
+                    </div>
                     {changePasswordCheckbox && passwordFields.map((item, index) => {
                         return (
                             <div className={`col-span-${item.columnSpace}`} key={index}>
                                 <label className={labelClass} htmlFor={item.fieldName}>{item.label}</label>
-                                <input className={inputClass} type={item.inputType} id={item.fieldName} value={password[item.fieldName]} onChange={setPassword}/>
+                                <input className={inputClass + [error === index || error === 2 ? " border-rose-500" : ""]} type={item.inputType} id={item.fieldName}
+                                       value={password[item.fieldName]} onChange={setPassword}/>
+                                {
+                                    error === index ?
+                                        error === 0 ?
+                                            <div className={"text-[#E82515] text-xs"}>Password Should be 6 digit long.</div>
+                                            :
+                                            <div className={"text-[#E82515] text-xs"}>Confirm Password Should be 6 digit long.</div>
+                                        : ""
+                                }
+                                {
+                                    error === 2 ?
+                                        index === 0 ?
+                                            <div className={"text-[#E82515] text-xs"}>Password should be same as Confirm Password.</div>
+                                            :
+                                            <div className={"text-[#E82515] text-xs"}>Confirm Password should be same as Password.</div>
+                                        : ""
+                                }
                             </div>
                         )
                     })}

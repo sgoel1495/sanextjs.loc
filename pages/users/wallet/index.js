@@ -108,9 +108,13 @@ function UsersWalletPage() {
                 <p className="text-[28px] mb-2">My Wallet</p>
                 <div className="bg-[#f1f2f3] px-8 py-5 w-full">
                     <p className="text-[28px] mb-2">SALT Store Credit</p>
-                    {walletAmount && <p className="text-[#777] font-500 mt-4">
-                        Available Balance: {dataStore.currSymbol} {formatTwoDecimal(walletAmount)}
-                    </p>}
+                    {
+                        walletAmount >= 0 ? <p className="text-[#777] font-500 mt-4">
+                                Available Balance: <span className={"font-600 text-black"}>{dataStore.currSymbol} {walletAmount}</span>
+                            </p>
+                            :
+                            ""
+                    }
                 </div>
                 <div className="bg-[#f1f2f3] px-8 py-5 w-full">
                     <div className="flex gap-x-5">

@@ -62,7 +62,24 @@ function UsersMyReferralsPage() {
     const browserView = (
         <UserPageTemplate>
             <p className="text-[28px] mb-2">My Referral</p>
-            <p className="text-[#777] text-lg">No Record Found!</p>
+            {
+                mockFlag
+                    ? <div className={"p-4 bg-[#f1f2f3]"}>
+                        <p className="text-xl font-500 mb-2 mt-1 w-full">SALT Referral Code</p>
+                        <p className="font-700" id={"referralCodeIDValue"}>VARUN10</p>
+                        <Image
+                            src={WEBASSETS + "/assets/images/share_icon.svg"}
+                            height={"10px"}
+                            width={"10px"}
+                            onClick={() => {
+                                copyTextToClipboard().then(() => {
+                                    setShowToaster(true)
+                                })
+                            }}
+                        />
+                    </div>
+                    : <p className="text-[#777] text-lg">No Record Found!</p>
+            }
         </UserPageTemplate>
     )
     return (

@@ -6,7 +6,6 @@ import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
-import Image from "next/image";
 import MyOrderProductCard from "../../../components/user/mobile/MyOrderProductCard";
 import {apiCall} from "../../../helpers/apiCall";
 
@@ -42,7 +41,7 @@ function UsersOrderHistoryPage() {
                     returnValue = (
                         <Fragment>
                             {returnValue}
-                            <MyOrderProductCard key={productIndex} product={productData[key]} itemIndex={itemIndex}/>
+                            <MyOrderProductCard key={productIndex} product={productData[key]} itemIndex={itemIndex} isMobile={mobile}/>
                         </Fragment>
                     );
                 }          
@@ -59,6 +58,7 @@ function UsersOrderHistoryPage() {
     const browserView = (
         <UserPageTemplate>
             <p className="text-[28px] mb-2">My Orders</p>
+            <MyOrderProducts/>
         </UserPageTemplate>
     )
     return (

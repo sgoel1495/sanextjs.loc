@@ -10,6 +10,7 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
 import AddressForm from "../../../components/user/AddressForm";
 import {apiCall} from "../../../helpers/apiCall";
+import Toast from "../../../components/common/Toast";
 
 function UsersAddressBookPage() {
     const router = useRouter();
@@ -17,6 +18,7 @@ function UsersAddressBookPage() {
     const {dataStore} = useContext(AppWideContext);
     const [edit, setEdit] = useState(null)
     const [userAddresses, setUserAddresses] = useState([])
+    const [showToaster, setShowToaster] = useState(false)
 
     useEffect(() => {
         if (dataStore.userData.contact == null)
@@ -27,15 +29,27 @@ function UsersAddressBookPage() {
         apiCall("userAddresses", dataStore.apiToken, {user: {email: dataStore.userServe.email}})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
+
                     setUserAddresses(pData.response)
                 }
             })
             .catch(e => console.log(e.message))
     }, [dataStore.userServe.email, dataStore.apiToken]);
+
     useEffect(() => {
         setMobile(isMobile)
     }, [])
 
+    const deleteAddress = (i) => {
+        apiCall("removeAddressBook", dataStore.apiToken, {user: {email: dataStore.userServe.email}, address: {index: i}})
+            .then(pData => {
+                if (pData.status === 200 && pData.response) {
+                    setUserAddresses(userAddresses.filter((_, index) => index !== i))
+                    setShowToaster(true)
+                }
+            })
+            .catch(e => console.log(e.message))
+    }
 
     let address = edit >= 0 ? userAddresses[edit] : {
         "name": "",
@@ -49,7 +63,6 @@ function UsersAddressBookPage() {
         "state": "",
         "city": ""
     }
-    console.log(address)
 
     const mobileView = <UserPageTemplate mobile={true}>
         {
@@ -60,30 +73,36 @@ function UsersAddressBookPage() {
                     <p className="text-[28px] ml-3">Default Addresses</p>
                     <DefaultAddressBookInformation mobile={true} showEdit={true} setEdit={setEdit}/>
                     <p className="text-[28px] mt-4 ml-3">Additional Addresses</p>
-                    <DisplayAdditionalAddresses mobile={true} setEdit={setEdit} userAddresses={userAddresses}/>
+                    <DisplayAdditionalAddresses mobile={true} setEdit={setEdit} userAddresses={userAddresses} deleteAddress={deleteAddress}/>
                 </>
         }
 
     </UserPageTemplate>
 
-    const browserView = () => {
-        return (
-            <UserPageTemplate>
-                <p className="text-[28px]">Default Addresses</p>
-                <DefaultAddressBookInformation mobile={false} manage={false}/>
-                <p className="text-[28px] mt-4">Additional Addresses</p>
-                <DisplayAdditionalAddresses mobile={false} userAddresses={userAddresses}/>
-            </UserPageTemplate>
-        );
-    }
+    const browserView = <UserPageTemplate>
+        {
+            edit !== null ?
+                <AddressForm index={edit} address={address} setEdit={setEdit}/>
+                :
+                <>
+                    <p className="text-[28px]">Default Addresses</p>
+                    <DefaultAddressBookInformation mobile={false} showEdit={true} setEdit={setEdit}/>
+                    <p className="text-[28px] mt-4">Additional Addresses</p>
+                    <DisplayAdditionalAddresses mobile={false} setEdit={setEdit} userAddresses={userAddresses} deleteAddress={deleteAddress}/>
+                </>
+        }
+    </UserPageTemplate>
 
 
     return (
         <Fragment>
             <PageHead url={"/users/profile"} id={"profile"} isMobile={mobile}/>
             <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
-            {(mobile) ? mobileView : browserView()}
+            {(mobile) ? mobileView : browserView}
             <Footer isMobile={mobile} minimal={true}/>
+            <Toast show={showToaster} hideToast={() => setShowToaster(false)}>
+                <span>Successfully Deleted</span>
+            </Toast>
         </Fragment>
     )
 }
