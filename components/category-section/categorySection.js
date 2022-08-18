@@ -39,10 +39,9 @@ const CategorySection = () => {
             </div>
             <div className={"pb-8 px-[10vw] bg-[#f0eae6]"}>
 
-                {
-                    carousalResp && carousalResp.status === 200 &&
+                {carousalResp && carousalResp.status === 200 &&
                     <>
-                        <div className='overflow-hidden rounded-3xl border-4 border-white'>
+                        <div className='overflow-hidden rounded-3xl border-4 border-white category-section-swiper'>
                             <Swiper
                                 slidesPerView={1}
                                 autoplay={{
@@ -50,15 +49,17 @@ const CategorySection = () => {
                                     "disableOnInteraction": false
                                 }}
                                 navigation={false}
-                                pagination={false}
+                                pagination={{
+                                    clickable: true
+                                }}
                                 loop={true}
                                 onSlideChange={(swiper) => setActive(swiper.realIndex)}
                                 initialSlide={0}
                             >
-                                {carousalResp.response.data.mob.imgs.map((item, index) => {
+                                {carousalResp.response.data.mob.imgs?.slice(0,10).map((item, index) => {
                                     return <SwiperSlide key={index}>
                                         <Link href={carousalResp.response.data.mob.links[index] ? carousalResp.response.data.mob.links[index] : ""}>
-                                            <a className={'block relative h-[65vh] w-full'}>
+                                            <a className={'block relative h-[498px] w-full'}>
                                                 <Image
                                                     src={WEBASSETS + item}
                                                     alt=""
