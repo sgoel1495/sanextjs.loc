@@ -149,3 +149,21 @@ body.scroll-overflow .navigator {
 .scrollbar-none::-webkit-scrollbar {
     display: none;
 }
+
+.zoomInSwiper div {
+    .swiper-wrapper .swiper-slide{
+        @apply scale-[0.8] duration-300;
+    }
+
+    .swiper-wrapper .swiper-slide-active{
+        @apply scale-100 duration-300;
+    }
+
+    .swiper-button-next {
+        @apply mr-12 scale-[.6] opacity-50;
+    }
+
+    .swiper-button-prev {
+        @apply ml-12 scale-[.6] opacity-50;
+    }
+}
