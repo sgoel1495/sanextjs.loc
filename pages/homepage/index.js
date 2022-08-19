@@ -6,7 +6,6 @@ import Header from "../../components/navbar/Header";
 
 function HomePage() {
     const {dataStore} = useContext(AppWideContext);
-    const category = "Contact Us";
     const mobileView = (<> </>);
     const browserView = (<></>);
 

@@ -1,7 +1,7 @@
 import React, {Fragment, useContext, useReducer, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import Accordion from "../common/accordion";
-import ProductCartView from "../common/ProductCartView";
+import ProductCartView from "../common/ProductCartView/ProductCartView";
 import currencyFormatter from "../../helpers/currencyFormatter";
 import ReactDom from "react-dom";
 import OtpModal from "./OtpModal";

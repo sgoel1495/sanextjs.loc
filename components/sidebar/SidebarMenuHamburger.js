@@ -8,6 +8,7 @@ import AppWideContext from "../../store/AppWideContext";
 import {isMobile} from "react-device-detect";
 import SearchMenu from "../search/SearchMenu";
 import CurrencySwitcher from "../navbar/CurrencySwitcher";
+import UserLogin from "../user/login/UserLogin";
 
 /**
  * @todo account signin pending
@@ -534,11 +535,19 @@ const SelfLink = (props) => {
                 </span>
         {props.description && <span className="text-xs block leading-none">{props.description}</span>}
     </a>;
-    return (
-        <Link href={props.link}>
+    if (props.link)
+        return (
+            <Link href={props.link}>
+                {props.isMobile ? props.centered ? mobileCenteredView : mobileView : browserView}
+            </Link>
+        )
+    else
+        return <div onClick={(e) => {
+            e.stopPropagation();
+            props.onClick();
+        }}>
             {props.isMobile ? props.centered ? mobileCenteredView : mobileView : browserView}
-        </Link>
-    )
+        </div>
 }
 
 const ChildLink = props => {
@@ -647,6 +656,7 @@ function HamburgerModal(props) {
                             : <SelfLink
                                 key={index}
                                 link={item.link}
+                                onClick={item.onClick}
                                 title={item.title}
                                 description={item.description}
                                 new={item.new}
@@ -670,6 +680,7 @@ function SidebarMenuHamburger(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [navigationData, setNavigationData] = useState([]);
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
+    const [showLogin, setShowLogin] = useState(false)
     const [mobile, setMobile] = useState(false)
 
     useEffect(() => {
@@ -780,7 +791,7 @@ function SidebarMenuHamburger(props) {
                 {
                     title: `ACCOUNT`,
                     description: `Login/Signup`,
-                    link: `login`
+                    onClick: () => setShowLogin(true)
                 }, ...navigationDataInit]);
         }
     }, [dataStore.userData.contact, dataStore.userServe.user_name, mobile]);
@@ -814,6 +825,9 @@ function SidebarMenuHamburger(props) {
                     </div>
                 }
                 <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu} isMobile={mobile}/>
+                {showLogin && ReactDom.createPortal(
+                    <UserLogin closeModal={()=>setShowLogin(false)} setShowSidebarMenuUser={()=>setShowLogin(false)}/>,
+                    document.getElementById("userband"))}
             </span>
             : <Fragment/>}
     </Fragment>;

@@ -12,6 +12,7 @@ import {addToCart} from "../../../../helpers/addTocart";
 import {useRouter} from "next/router";
 import Toast from "../../../common/Toast";
 import NotifyMe from "./NotifyMe";
+import emptyMeasurement from "../../../../store/emptyMeasurement.json";
 
 const ProductDetails = ({data, hpid}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -22,14 +23,8 @@ const ProductDetails = ({data, hpid}) => {
     const [showShare, setShowShare] = useState(false)
     const [deliveryAvailable, setDeliveryAvailable] = useState(null)
     const [size, setSize] = useState(null)
+    const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     const [error, setError] = useState(false)
-    const [isTailored, setIsTailored] = useState(false)
-    const [customization, setCustomization] = useReducer((state, action) => {
-        return {...state, ...action}
-    }, {
-        sleeve: data.sleeve_length,
-        dress: data.dress_length
-    });
     const sizeAvail = JSON.parse(data.size_avail.replace(/=>/g, ":"))
     const currCurrency = dataStore.currCurrency;
     const currencyData = appSettings('currency_data');
@@ -50,20 +45,31 @@ const ProductDetails = ({data, hpid}) => {
     }).filter((key) => key)
 
     const save = () => {
-        if (!size) {
+        if (!size && !currentMeasurement.measure_id) {
             setError(true)
             return;
         }
-        const cart = {
+        let cart = {
             "product_id": data.product_id,
             "size": size,
             "qty": 1,
             "is_sale": data.is_sale,
-            "is_tailor": isTailored,
-            "sleeve_length": "",
-            "dress_length": ""
+            "is_tailor": !!currentMeasurement.measure_id,
+            "sleeve_length": currentMeasurement.selected_sleeve,
+            "dress_length": currentMeasurement.selected_length
         }
-        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
+        let measurements = {}
+        if (currentMeasurement.measure_id) {
+            if (!size) {
+                cart['size'] = sizeAvail[0][Object.keys(sizeAvail[0])[0]]
+            }
+            cart["measurment_id"] = currentMeasurement.measure_id
+            measurements = {...currentMeasurement}
+        } else if (currentMeasurement.selected_length !== data.dress_length || currentMeasurement.selected_sleeve !== data.sleeve_length) {
+            cart["measurment_id"] = (new Date()).getTime().toString() + "_m"
+            measurements = {...currentMeasurement}
+        }
+        addToCart(dataStore, updateDataStore, {cart: cart, measurments: measurements}).then(r => {
         })
         router.push("/homepage/cart")
     }
@@ -85,10 +91,6 @@ const ProductDetails = ({data, hpid}) => {
         return false;
     }
 
-    useEffect(() => {
-        setIsTailored(customization['sleeve'] !== data.sleeve_length || customization['dress'] !== data.dress_length)
-    }, [customization])
-
     return (
         <div>
             <div className='px-5 pt-5'>
@@ -98,7 +100,7 @@ const ProductDetails = ({data, hpid}) => {
                         <p className="text-[#f05c74] text-sm font-500">NOT VALID FOR RETURN / EXCHANGE</p>
                     </div>
                 }
-                <Customize data={data} selected={customization} setSelected={setCustomization}/>
+                <Customize data={data} selected={currentMeasurement} setSelected={setCurrentMeasurement}/>
                 <div className={'flex justify-between mb-10'}>
                     <div className='leading-none'>
                         <div className={"flex items-center"}>
@@ -161,7 +163,8 @@ const ProductDetails = ({data, hpid}) => {
                         </div>
                     }
                     <p className={'text-sm font-800 tracking-widest uppercase mb-4'}>select a size</p>
-                    <SizeSelect data={data} sizeAvail={sizeAvail} size={size} setSize={setSize}/>
+                    <SizeSelect data={data} sizeAvail={sizeAvail} size={size} setSize={setSize} currentMeasurement={currentMeasurement}
+                                setCurrentMeasurement={setCurrentMeasurement}/>
                     <button className={'bg-[#4eb16d] mb-5 uppercase text-white font-900 text-xs text-center rounded-2xl py-4 px-10 tracking-widest shadow-lg'} onClick={save}>add to
                         bag
                     </button>

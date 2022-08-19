@@ -18,6 +18,8 @@ function UsersWalletPage() {
     const router = useRouter();
     const [voucher, setVoucher] = useState('')
     const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const [walletAmount, setWalletAmount] = useState(null);
+
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
@@ -25,24 +27,24 @@ function UsersWalletPage() {
 
     useEffect(() => {
         setMobile(isMobile)
+        console.log('datastore', dataStore)
     }, [])
+
+    useEffect(() => {
+        apiCall("userWallet", dataStore.apiToken, {contact: dataStore.userData.contact})
+            .then(pData => {
+                if (pData.msg === 'Found' && pData.user) {
+                    setWalletAmount(pData.user.WalletAmount)
+                }
+            })
+            .catch(e => console.log(e.message))
+    }, [dataStore.userData.contact, dataStore.apiToken]);
 
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-    /*
-    {
-      "user" : { "contact" : "shailaja.s@algowire.com",
-      "is_guest" : false,
-      "temp_user_id" : "1605770692381"
-      },
-      "voucher" : { "email": "shailaja.s@algowire.com",
-      "voucher": "GIFT-1620016899"
-      },
-      "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
-     }
-     */
+
     const redeemVoucher = async () => {
-        if(voucher==="")
+        if (voucher === "")
             return
         if (!dataStore.userData.contact) {
             setMessage("You need to be logged in to redeem voucher")
@@ -50,7 +52,7 @@ function UsersWalletPage() {
             return
         }
 
-        const userO = getUserObject(dataStore,updateDataStore)
+        const userO = getUserObject(dataStore, updateDataStore)
         const queryO = {
             user: userO,
             voucher: {
@@ -63,7 +65,7 @@ function UsersWalletPage() {
 
         if (voucherCall.status = 200) {
             setMessage(voucherCall.msg)
-            if(voucherCall.msg && voucherCall.msg==="Gift Card Voucher redeem successfully!!") {
+            if (voucherCall.msg && voucherCall.msg === "Gift Card Voucher redeem successfully!!") {
                 // we update the whole storage
                 const updateData = await updateUserDataAfterLogin(dataStore.userData.contact, dataStore.apiToken, {}, [])
                 Object.keys(updateData).forEach((key) => {
@@ -80,10 +82,12 @@ function UsersWalletPage() {
         <p className="text-[28px] my-2">My Wallet</p>
         <div className="bg-[#f1f2f3] px-8 py-5 w-full">
             <p className="text-[20px] mb-2">SALT Store Credit</p>
-            <p className="text-[#777] font-500 mt-4">
-                Available Balance: <span
-                className={"text-black font-700"}>{dataStore.currSymbol} {formatTwoDecimal(dataStore.userWallet.WalletAmount)}</span>
-            </p>
+            {walletAmount >= 0 ? <p className="text-[#777] font-500 mt-4">
+                    Available Balance: <span
+                    className={"text-black font-700"}>{dataStore.currSymbol} {walletAmount}</span>
+                </p>
+                :
+                ""}
         </div>
         <div className="flex justify-center bg-[#f1f2f3] px-8 py-5 w-full">
             <form action="" className="flex flex-col gap-x-5 flex-1">
@@ -104,9 +108,13 @@ function UsersWalletPage() {
                 <p className="text-[28px] mb-2">My Wallet</p>
                 <div className="bg-[#f1f2f3] px-8 py-5 w-full">
                     <p className="text-[28px] mb-2">SALT Store Credit</p>
-                    <p className="text-[#777] font-500 mt-4">
-                        Available Balance: {dataStore.currSymbol} {formatTwoDecimal(dataStore.userWallet.WalletAmount)}
-                    </p>
+                    {
+                        walletAmount >= 0 ? <p className="text-[#777] font-500 mt-4">
+                                Available Balance: <span className={"font-600 text-black"}>{dataStore.currSymbol} {walletAmount}</span>
+                            </p>
+                            :
+                            ""
+                    }
                 </div>
                 <div className="bg-[#f1f2f3] px-8 py-5 w-full">
                     <div className="flex gap-x-5">
@@ -127,7 +135,7 @@ function UsersWalletPage() {
             <PageHead url={"/users/wallet"} id={"profile"} isMobile={mobile}/>
             <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
             {(mobile) ? mobileView : browserView}
-            <Footer isMobile={mobile}/>
+            <Footer isMobile={mobile} minimal={true}/>
             <Toast show={show} hideToast={() => setShow(false)}>
                 <span>{message}</span>
             </Toast>

@@ -42,7 +42,7 @@ function UsersLogoutPage() {
         localStorage.setItem("userData",JSON.stringify(userData))
         localStorage.setItem("userServe",JSON.stringify(userServe))
         router.replace("/");
-    }, [router, updateDataStore])
+    }, [])
     return <Fragment>Logging out ...</Fragment>;
 }
 

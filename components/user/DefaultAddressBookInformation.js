@@ -1,27 +1,39 @@
 import Link from "next/link";
 import {useRouter} from 'next/router';
-import {useContext} from "react";
+import React, {useContext,useEffect,useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
+import {apiCall} from "../../helpers/apiCall";
 
 function DefaultAddressBookInformation(props) {
     const router = useRouter();
     const isProfilePage = router.asPath == '/users/profile'
     const {dataStore} = useContext(AppWideContext);
+    const [defaultAddress,setDefaultAddress] =useState(null);
 
-    const mobileView = <div className="mx-3 p-8 bg-[#f1f2f3] flex flex-col items-start">
+    useEffect(()=>{
+        apiCall("getDefaultAddress", dataStore.apiToken,{user:{email:dataStore.userServe.email}})
+            .then(pData=>{
+                if (pData.status === 200 && pData.response){
+                    setDefaultAddress(pData.response)
+                }
+            })
+            .catch(e=>console.log(e.message))
+    },[dataStore.userServe.emailt, dataStore.apiToken]);
+
+    const mobileView = <div className={"p-8 bg-[#f1f2f3] flex flex-col items-start "+[isProfilePage || "mx-3"]}>
         {isProfilePage && <p className="text-xl font-500 mb-2 mt-1">Address Book</p>}
         <p className="font-600 text-[#777]">{isProfilePage && "Default"} Shipping Address</p>
-        {(dataStore.defaultAddress)
+        {(defaultAddress)
             ? <div>
-                <div>{dataStore.defaultAddress.name}</div>
-                <div>{dataStore.defaultAddress.address}
-                    {(dataStore.defaultAddress.landmark == "")
+                <div>{defaultAddress.name}</div>
+                <div>{defaultAddress.address}
+                    {(defaultAddress.landmark === "")
                         ? null
-                        : <span>, {dataStore.defaultAddress.landmark}</span>
+                        : <span>, {defaultAddress.landmark}</span>
                     }
                 </div>
-                <div>{dataStore.defaultAddress.city}, {dataStore.defaultAddress.state}, {dataStore.defaultAddress.zip_code} </div>
-                <div className={"mt-5"}>T:{dataStore.defaultAddress.phone}</div>
+                <div>{defaultAddress.city}, {defaultAddress.state}, {defaultAddress.zip_code} </div>
+                <div className={"mt-5"}>T:{defaultAddress.phone}</div>
             </div>
             : <p className="text-[#777] mb-8 font-500">You have not set a default shipping address.</p>
         }
@@ -34,9 +46,7 @@ function DefaultAddressBookInformation(props) {
 
         {(props.showEdit)
             ? <div className="flex gap-2 items-center mt-4 text-[#555]">
-                <Link href={"/users/addressbook/edit/0"}>
-                    <a className="underline">Edit</a>
-                </Link>
+                    <button className="underline" onClick={()=>props.setEdit(0)}>Edit</button>
             </div>
             : null}
 
@@ -45,17 +55,17 @@ function DefaultAddressBookInformation(props) {
         <div className="p-4 bg-[#f1f2f3] w-full flex flex-col items-start">
             {isProfilePage && <p className="text-xl font-500 mb-2 mt-1">Address Book</p>}
             <p className="font-600 text-[#777]">{isProfilePage && "Default"} Shipping Address</p>
-            {(dataStore.defaultAddress)
+            {(defaultAddress)
                 ? <div>
-                    <div>{dataStore.defaultAddress.name}</div>
-                    <div>{dataStore.defaultAddress.address}
-                        {(dataStore.defaultAddress.landmark == "")
+                    <div>{defaultAddress.name}</div>
+                    <div>{defaultAddress.address}
+                        {(defaultAddress.landmark === "")
                             ? null
-                            : <span>, {dataStore.defaultAddress.landmark}</span>
+                            : <span>, {defaultAddress.landmark}</span>
                         }
                     </div>
-                    <div>{dataStore.defaultAddress.city}, {dataStore.defaultAddress.state}, {dataStore.defaultAddress.zip_code} </div>
-                    <div>T:{dataStore.defaultAddress.phone}</div>
+                    <div>{defaultAddress.city}, {defaultAddress.state}, {defaultAddress.zip_code} </div>
+                    <div>T:{defaultAddress.phone}</div>
                 </div>
                 : <p className="text-[#777] mb-8 font-500">You have not set a default shipping address.</p>
             }
@@ -65,6 +75,11 @@ function DefaultAddressBookInformation(props) {
                         ADDRESSES</a>
                 </Link>
                 : null}
+            {(props.showEdit)
+                ? <div className="flex gap-2 items-center mt-4 text-[#555]">
+                    <button className="underline" onClick={()=>props.setEdit(0)}>Edit</button>
+                </div>
+                : null}
         </div>
     );
 
@@ -72,19 +87,3 @@ function DefaultAddressBookInformation(props) {
 }
 
 export default DefaultAddressBookInformation;
-
-/*
-  "defaultAddress":    {
-    "name": "test",
-    "lastname": "test",
-    "email": "shailaja.s@algowire.com",
-    "phone": 1234567890,
-    "address": "abc block",
-    "landmark": "",
-    "country": "india",
-    "zip_code": 110096,
-    "state": "Delhi",
-    "city": "New Delhi"
-  }
-
- */

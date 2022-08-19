@@ -16,10 +16,9 @@ import {isMobile} from "react-device-detect";
 
 
 function AddressForm(props) {
-    const router = useRouter();
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [address, setAddress] = useState(props.address);
-    const [company, setCompany] = useState(null);
+    const [company, setCompany] = useState("");
     const [isDefault, setIsDefault] = useState(false);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
@@ -28,18 +27,12 @@ function AddressForm(props) {
     useEffect(() => {
         setMobile(isMobile)
     }, [])
-    /*
-        useEffect(()=>{
-            setAddress(props.address)
-        },[props.address])
-    */
 
     const saveAndReturn = async () => {
-        //validations: all except landmark need to be filled. Email check
         let allFilled = true;
         Object.keys(address).forEach(key => {
-            if (key != "landmark")
-                if (address[key] == null || address[key] == "")
+            if (key !== "landmark")
+                if (address[key] == null || address[key] === "")
                     allFilled = false;
         })
         if (!allFilled) {
@@ -53,83 +46,35 @@ function AddressForm(props) {
             setShow(true);
             return;
         }
-
-        if (props.index == -1) {
-            /*case add
-            {
-                "user" : { "email" : "shailaja.s@algowire.com"
-            },
-                "address" : { "name" : "test",
-                "lastname" : "test",
-                "email" : "shailaja.s@algowire.com",
-                "phone" : 1111111111,
-                "address" : "Abc block",
-                "landmark" : "near landmark",
-                "zip_code" : 110096,
-                "city" : "New Delhi",
-                "state" : "Delhi",
-                "country" : "India"
-            }*/
-            const resp = await apiCall("addAddressBook", dataStore.apiToken, {
+        let resp;
+        if (props.index === -1) {
+            resp = await apiCall("addAddressBook", dataStore.apiToken, {
                 "user": {
                     email: dataStore.userData.contact
                 },
                 "address": address
             });
-            if (resp.status !== 200) {
-                setMessage("Something went wrong. Please try again or contact administrator");
-                setShow(true);
-            } else {
-                const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
-                    "user": {
-                        email: dataStore.userData.contact
-                    }
-                });
-                if (addressCall.hasOwnProperty("response") && addressCall.response) {
-                    updateDataStore("userAddresses", [...addressCall.response]);
-                    router.back();
-                }
-            }
+
         } else {
-            //case update
-            /*
-            {
-  "user" : { "email" : "shailaja.s@algowire.com"
-            },
-   "address" : { "name" : "test",
-   "lastname" : "test",
-   "email" : "shailaja.s@algowire.com",
-   "phone" : 1111111111,
-   "address" : "Abc block",
-   "landmark" : "near landmark",
-   "zip_code" : 110096,
-   "city" : "New Delhi",
-   "state" : "Delhi",
-   "country" : "India",
-   "index" : 0
-   },
-  "token" : "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
-}
-             */
-            const resp = await apiCall("updateAddressBook", dataStore.apiToken, {
+            resp = await apiCall("updateAddressBook", dataStore.apiToken, {
                 "user": {
                     email: dataStore.userData.contact
                 },
                 "address": {...address, "index": props.index}
             });
-            if (resp.status !== 200) {
-                setMessage("Something went wrong. Please try again or contact administrator");
-                setShow(true);
-            } else {
-                const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
-                    "user": {
-                        email: dataStore.userData.contact
-                    }
-                });
-                if (addressCall.hasOwnProperty("response") && addressCall.response) {
-                    updateDataStore("userAddresses", [...addressCall.response]);
-                    router.back();
+        }
+        if (resp.status !== 200) {
+            setMessage("Something went wrong. Please try again or contact administrator");
+            setShow(true);
+        } else {
+            const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
+                "user": {
+                    email: dataStore.userData.contact
                 }
+            });
+            if (addressCall.hasOwnProperty("response") && addressCall.response) {
+                updateDataStore("userAddresses", [...addressCall.response]);
+                props.setEdit(null)
             }
         }
 
@@ -226,6 +171,15 @@ function AddressForm(props) {
                         />
                     </div>
                 </div>
+                {
+                    props.index === -1 ?
+                        <div>
+                            <input type="checkbox" id={"defaultShip"}/>
+                            <label htmlFor={"defaultShip"} className={"text-xs text-[#606060] ml-2 font-500"}>Use as my default shipping address</label>
+                        </div>
+                        :
+                        ""
+                }
                 <button
                     className="bg-black px-4 py-1.5 mr-[35%] text-center text-white uppercase text-sm font-500 shadow mt-6"
                     onClick={saveAndReturn}>

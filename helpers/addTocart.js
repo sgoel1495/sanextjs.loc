@@ -29,7 +29,7 @@ export function getUserObject(dataStore, updateDataStore) {
 }
 
 export async function checkItemInCart(userCart, product, isGC) {
-    let similarItems = userCart.filter(item => item.product_id === product.product_id)
+    let similarItems = userCart.filter(item => item.product_id === product.product_id && item.is_tailor === product.is_tailor)
     return similarItems.find((item) => {
         let flag = true
         if (isGC) {
@@ -41,12 +41,14 @@ export async function checkItemInCart(userCart, product, isGC) {
             //     }
             // })
         } else {
-            if (item.is_tailor) {
-
+            if (product.is_tailor) {
+                if (item.measurment_id !== product.measurment_id) {
+                    flag = false
+                }
             } else {
                 let keys = ["size", "sleeve_length", "dress_length"]
                 keys.forEach((key) => {
-                    if (item[key] !== product[key] && flag) {
+                    if (flag && item[key] !== product[key]) {
                         flag = false
                     }
                 })
@@ -76,7 +78,9 @@ export async function addToCart(dataStore, updateDataStore, cart, apiName = "add
 
     if ((resp.response && resp.response === "success") || (resp.msg && resp.msg === "success")) {
         await refreshCart(dataStore, updateDataStore)
+        return true
     }
+    return false
 }
 
 export async function updateCart(dataStore, updateDataStore, product) {

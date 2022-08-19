@@ -118,12 +118,19 @@ function Navbar(props) {
             mobileView = (
                 <div className={"flex justify-between items-center bg-white/90 z-20 px-4"}>
                     <div className={"inline-flex items-center gap-x-5"}>
-                        <Link href={"/homepage/signin"}>
-                            <a className={"relative block w-6 h-6"}>
-                                <Image src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" layout={`fill`}
-                                       objectFit={`cover`}/>
-                            </a>
-                        </Link>
+                        {
+                            (dataStore.userServe.user_name !== "") ?
+                                <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"}>
+                                    {dataStore.userServe.user_name[0].toUpperCase()}
+                                </div>
+                                :
+                                <Link href={"/homepage/signin"}>
+                                    <a>
+                                        <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"}
+                                               alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
+                                    </a>
+                                </Link>
+                        }
                         <SearchMenu isMobile={true}/>
                     </div>
                     <div className={"flex-1 inline-flex justify-center"}>

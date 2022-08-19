@@ -30,7 +30,7 @@ body.scroll-overflow .navigator {
 .swiper-rtl .swiper-button-next:after,
 .swiper-button-next:after,
 .swiper-rtl .swiper-button-prev:after {
-    color  : black;
+    color: black;
     opacity: 0.35;
 }
 
@@ -42,7 +42,7 @@ body.scroll-overflow .navigator {
     background: black;
 }
 
-.measurementBlock1__sizes{
+.measurementBlock1__sizes {
     background-image: url('https://saltattire.com/assets/images/illustration.jpg');
     background-repeat: no-repeat;
     background-size: contain;
@@ -51,7 +51,7 @@ body.scroll-overflow .navigator {
     width: 100%;
 }
 
-.measurementBlock1__sizes__mob{
+.measurementBlock1__sizes__mob {
     background-image: url('https://saltattire.com/assets/images/illustration.jpg');
     background-repeat: no-repeat;
     background-size: 200%;
@@ -60,32 +60,33 @@ body.scroll-overflow .navigator {
     width: 100%;
 }
 
-.size_guide_table{
+.size_guide_table {
     @apply w-full table-fixed;
 
-    thead th{
+    thead th {
         @apply text-[#777]
     }
 
-    tr{
+    tr {
         @apply border-t border-b;
 
-        &:first-child{
+        &:first-child {
             @apply border-t-0;
         }
 
-        td,th{
+        td,
+        th {
             @apply py-3;
         }
 
-        td{
+        td {
             @apply text-[#777]
         }
     }
 }
 
-.order_summary_table{
-    *{
+.order_summary_table {
+    * {
         @apply block;
     }
 
@@ -94,19 +95,19 @@ body.scroll-overflow .navigator {
     tr {
         @apply flex;
 
-        td{
+        td {
             @apply py-3 font-600 text-[#777];
         }
 
-        td:first-child{
+        td:first-child {
             @apply flex-1
         }
     }
 }
 
 
-.order_summary_table_mobile{
-    *{
+.order_summary_table_mobile {
+    * {
         @apply block;
     }
 
@@ -115,27 +116,28 @@ body.scroll-overflow .navigator {
     tr {
         @apply flex;
 
-        td{
+        td {
             @apply py-1 font-600 text-[#777];
         }
 
-        td:first-child{
+        td:first-child {
             @apply flex-1
-            }
+        }
     }
 }
 
 
-.fade-up{
+.fade-up {
     animation: fadeup .4s ease;
 }
 
 @keyframes fadeup {
-    from{
+    from {
         transform: translateY(50%);
         opacity: 0;
     }
-    to{
+
+    to {
         transform: translateY(0);
         opacity: 1;
     }
@@ -143,3 +145,25 @@ body.scroll-overflow .navigator {
 
 /* For Mobiles */
 @media only screen and (max-width: 450px) {}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+
+.zoomInSwiper div {
+    .swiper-wrapper .swiper-slide{
+        @apply scale-[0.8] duration-300;
+    }
+
+    .swiper-wrapper .swiper-slide-active{
+        @apply scale-100 duration-300;
+    }
+
+    .swiper-button-next {
+        @apply mr-12 scale-[.6] opacity-50;
+    }
+
+    .swiper-button-prev {
+        @apply ml-12 scale-[.6] opacity-50;
+    }
+}

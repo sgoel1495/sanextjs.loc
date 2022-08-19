@@ -35,7 +35,7 @@ function UserLogin(props) {
     }
     const browserView = (
         <>
-            <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-40`}>
+            <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-100`}>
                 <div
                     className="h-fit w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
                     onClick={(e) => e.stopPropagation()}
@@ -111,7 +111,7 @@ function UserLogin(props) {
     );
     const mobileView = (
         <>
-            <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-40`}>
+            <div id="userlogindiv" className={props.inBody?"mt-20":`bg-theme-900/50 fixed inset-0 z-40`}>
                 <div
                     className="h-full w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
                     onClick={(e) => e.stopPropagation()}

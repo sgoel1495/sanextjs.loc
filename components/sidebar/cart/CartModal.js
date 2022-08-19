@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import Image from "next/image";
-import ProductCartView from "../../common/ProductCartView";
+import ProductCartView from "../../common/ProductCartView/ProductCartView";
 import qtyInCart from "../../../helpers/qtyInCart";
 import Footer from "../../footer/Footer";
 import ReturnAndFaq from "./ReturnAndFAQ";
