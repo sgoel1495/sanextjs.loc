@@ -115,13 +115,18 @@ const GiftReceiverModal = (props) => {
         }
         addToCart(dataStore, updateDataStore, {giftcard_details: displayCart}, "addGiftToCart").then(r => {
         })
-        router.push("/homepage/cart")
+        if (props.isMobile) {
+            router.push("/homepage/cart")
+        } else {
+            props.setShowCart(true)
+            props.setShowModal(true)
+        }
     }
 
     const focusStyle = "focus:ring-offset-0 focus:ring-0 focus:outline-0"
     const inputStyle = `bg-[#f1f2f3] w-full p-[3%] border-0 text-sm ${focusStyle} `
 
-    return (
+    let mobileView = (
         <div className={"fixed top-0 left-0 bg-black/50 w-[100vw] h-[100vh] z-[90] px-5 py-10 "}>
             <div className={'overflow-scroll bg-[#eceaea] border-[#b9b0b0] border-4 h-full w-full'}>
                 <div className={"text-right pr-1 font-800"}>
@@ -226,11 +231,120 @@ const GiftReceiverModal = (props) => {
                     </button>
                 </div>
             </div>
-            <Toast show={errorMsg} hideToast={() => setErrorMsg(null)}>
-                <span>{errorMsg}</span>
-            </Toast>
         </div>
     );
+    let browserView = <div className={"fixed top-0 left-0 bg-black/50 w-[100vw] h-[100vh] z-[90]  grid place-items-center"}>
+        <div className={'bg-[#eceaea] border-[#b9b0b0] border-4 w-1/2  px-5'}>
+            <div className={"text-right pt-2 font-800"}>
+                <button onClick={() => {
+                    props.setShowModal(false);
+                }}>X
+                </button>
+            </div>
+            <div className={"text-center"}>
+                <h3 className={"text-base"}>{props.gc_title} - INR {props.gc_price}</h3>
+                <h3 className={"text-2xl mt-2"}>Enter Gift Receiver Details </h3>
+            </div>
+            <div className={"grid grid-cols-3"}>
+                <div className={"flex flex-col gap-2 mt-1 p-4"}>
+                <span className={"font-700"}>
+                    Sender Details
+                </span>
+                    <div className={"flex flex-col gap-2"}>
+                        <input type="text"
+                               placeholder="Sender Name"
+                               name="sender_name"
+                               maxLength="255"
+                               className={inputStyle + [error === "sender_name" && "border-rose-500 border-[1px]"]}
+                               value={payload["sender_name"]}
+                               onChange={setPayload}
+                        />
+                        <input type="email"
+                               placeholder="Sender Email"
+                               name="sender_email"
+                               maxLength="255"
+                               value={payload["sender_email"]}
+                               className={inputStyle + [error === "sender_email" && "border-rose-500 border-[1px]"]}
+                               onChange={setPayload}
+                        />
+                        <input type="mobile"
+                               placeholder="Sender Phone"
+                               name="sender_telephone"
+                               maxLength="255"
+                               value={payload["sender_telephone"]}
+                               className={inputStyle + [error === "sender_telephone" && "border-rose-500 border-[1px]"]}
+                               onChange={setPayload}
+                        />
+                    </div>
+                </div>
+                <div className={"flex flex-col gap-2 mt-1 p-4"}>
+                <span className={"font-700"}>
+                    Receiver Details
+                </span>
+                    <div className={"flex flex-col gap-2"}>
+                        <input type="text"
+                               placeholder="Recipient Name"
+                               name="recipient_name"
+                               maxLength="255"
+                               value={payload["recipient_name"]}
+                               className={inputStyle + [error === "recipient_name" && "border-rose-500 border-[1px]"]}
+                               onChange={setPayload}
+                        />
+                        <input type="email"
+                               placeholder="Recipient Email"
+                               name="recipient_email"
+                               maxLength="255"
+                               value={payload["recipient_email"]}
+                               className={inputStyle + [error === "recipient_email" && "border-rose-500 border-[1px]"]}
+                               onChange={setPayload}
+                        />
+                        <input type="mobile"
+                               placeholder="Recipient Phone"
+                               name="recipient_telephone"
+                               maxLength="255"
+                               value={payload["recipient_telephone"]}
+                               className={inputStyle + [error === "recipient_telephone" && "border-rose-500 border-[1px]"]}
+                               onChange={setPayload}
+                        />
+                    </div>
+                </div>
+                <div className={"flex flex-col gap-2 mt-1 p-4"}>
+                <span className={"font-700"}>
+                    Message
+                </span>
+                    <input type="text"
+                           placeholder="Message"
+                           name="message"
+                           maxLength="255"
+                           value={payload["message"]}
+                           className={inputStyle + [" h-full"]}
+                           onChange={setPayload}
+                    />
+                </div>
+            </div>
+            <span className={"flex items-center gap-2 font-500"}>
+                        <input type="checkbox"
+                               name="same_as_sender"
+                               maxLength="255"
+                               className={`bg-[#f1f2f3] ${focusStyle}`}
+                               onChange={copySender}
+                               checked={copy}
+                        />
+                        <span className={"flex-9 text-sm"}>Recipient Details Same As Sender Details</span>
+                    </span>
+            <div className={"text-center my-4"}>
+                <button className={"text-white bg-black px-5 py-1"} onClick={save}>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    return <>
+        {props.isMobile ? mobileView : browserView}
+        <Toast show={errorMsg} hideToast={() => setErrorMsg(null)}>
+            <span>{errorMsg}</span>
+        </Toast>
+    </>
 };
 
 export default GiftReceiverModal;

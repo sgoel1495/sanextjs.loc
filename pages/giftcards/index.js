@@ -15,6 +15,7 @@ import GiftReceiverModal from "../../components/giftcards/GiftReceiverModal";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../../components/common/Toast";
+import CartModal from "../../components/sidebar/cart/CartModal";
 
 const ImageBlock = (props) => (
     <span className={`block relative w-full aspect-square`}>
@@ -30,6 +31,7 @@ function GiftcardsPage() {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [showGiftReceiverModal, setShowGiftReceiverModal] = useState(false)
     const [giftReceiverModalData, setGiftReceiverModalData] = useState({})
+    const [showCart,setShowCart] = useState(false)
     const [mobile, setMobile] = useState(false);
     const [data, setData] = useState(null);
     const [show, setShow] = useState(false)
@@ -211,6 +213,8 @@ function GiftcardsPage() {
             {showGiftReceiverModal
                 ? ReactDom.createPortal(<GiftReceiverModal
                     showModal={showGiftReceiverModal}
+                    isMobile={mobile}
+                    setShowCart={setShowCart}
                     setShowModal={setShowGiftReceiverModal}
                     gc_asset_id={giftReceiverModalData.gc_asset_id}
                     gc_price={giftReceiverModalData.gc_price}
@@ -222,6 +226,12 @@ function GiftcardsPage() {
             <Toast isMobile={mobile} show={show} hideToast={() => {
                 setShow(false)
             }}>Please Enter Gift Card Code</Toast>
+            {
+                showCart
+                &&
+                ReactDom.createPortal(<CartModal closeModal={()=>setShowCart(false)}/>,
+                    document.getElementById("cartside"))
+            }
         </Fragment>
     );
 

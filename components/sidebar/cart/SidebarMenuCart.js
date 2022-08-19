@@ -25,7 +25,6 @@ function SidebarMenuCart(props) {
     const closeModal = () => {
         setShowSidebarMenuCart(false);
     }
-    const data = [];
 
     let iconHeight;
     switch (props.type) {
@@ -59,7 +58,7 @@ function SidebarMenuCart(props) {
             {
                 showSidebarMenuCart
                 &&
-                ReactDom.createPortal(<CartModal data={data} closeModal={closeModal.bind(this)}/>,
+                ReactDom.createPortal(<CartModal closeModal={closeModal.bind(this)}/>,
                     document.getElementById("cartside"))
             }
         </span>
