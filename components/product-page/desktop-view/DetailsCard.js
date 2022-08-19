@@ -41,7 +41,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
 
-    const sizeAvail = JSON.parse(data.size_avail.replace(/=>/g, ":"))
+    const sizeAvail = returnSizes(data)
 
     const checkDelivery = async () => {
         if (pincode == null)
@@ -69,7 +69,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
         let measurements = {}
         if (currMeasurement.measure_id) {
             if (!selectedSize) {
-                cart['size'] = sizeAvail[0][Object.keys(sizeAvail[0])[0]]
+                cart['size'] = sizeAvail[0]
             }
             cart["measurment_id"] = currMeasurement.measure_id
             measurements = {...currMeasurement}

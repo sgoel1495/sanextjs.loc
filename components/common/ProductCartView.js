@@ -8,7 +8,7 @@ function ProductCartView({isMobile}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [toastMsg, setToastMsg] = useState(null)
-    
+
     const changeQty = async (product, updatedQty) => {
         if (updatedQty === 0) {
             setToastMsg("Minimum Quantity Selected")
@@ -42,10 +42,13 @@ function ProductCartView({isMobile}) {
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
                                     <p className="text-[10px]">{p.tag_line}</p>
                                 </div>
-                                <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{(p.multi_color) ? "multicolor" : p.color.name}</p>
-                                    <p className="text-[10px]">SIZE:{p.size}</p>
-                                </div>
+                                {
+                                    p.product_id.toLowerCase().includes("giftcard") ? "" :
+                                        <div className="text-[#777] uppercase">
+                                            <p className="text-[10px]">COLOR:{(p.multi_color) ? "multicolor" : p.color.name}</p>
+                                            <p className="text-[10px]">SIZE:{p.size}</p>
+                                        </div>
+                                }
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty
                                     <div className="text-[#555]" onClick={() => changeQty(p, p.qty - 1)}>-</div>
@@ -81,10 +84,13 @@ function ProductCartView({isMobile}) {
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
                                     <p className="text-[10px]">{p.tag_line}</p>
                                 </div>
-                                <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{p.color.name}</p>
-                                    <p className="text-[10px]">SIZE:{p.size}</p>
-                                </div>
+                                {
+                                    p.product_id.toLowerCase().includes("giftcard") ? <div className={"h-9"}/> :
+                                        <div className="text-[#777] uppercase">
+                                            <p className="text-[10px]">COLOR:{p.color.name}</p>
+                                            <p className="text-[10px]">SIZE:{p.size}</p>
+                                        </div>
+                                }
                                 {/* <div>
                                     <span onClick={() => quickEditTailored(p)}>EDIT</span>
                                     <span onClick={() => quickViewTailored(p)}>VIEW</span>
@@ -132,10 +138,13 @@ function ProductCartView({isMobile}) {
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
                                     <p className="text-[10px]">{p.tag_line}</p>
                                 </div>
-                                <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{(p.multi_color) ? "multicolor" : p.color.name}</p>
-                                    <p className="text-[10px]">SIZE:{p.size}</p>
-                                </div>
+                                {
+                                    p.product_id.toLowerCase().includes("giftcard") ? "" :
+                                        <div className="text-[#777] uppercase">
+                                            <p className="text-[10px]">COLOR:{(p.multi_color) ? "multicolor" : p.color.name}</p>
+                                            <p className="text-[10px]">SIZE:{p.size}</p>
+                                        </div>
+                                }
                                 <div className="inline-flex gap-4 text-sm items-center">
                                     Qty
                                     <div className="text-[#555]" onClick={() => changeQty(p, p.qty - 1)}>-</div>
@@ -174,10 +183,13 @@ function ProductCartView({isMobile}) {
                                     <p className="font-600 text-sm leading-none">{p.name}</p>
                                     <p className="text-[10px]">{p.tag_line}</p>
                                 </div>
-                                <div className="text-[#777] uppercase">
-                                    <p className="text-[10px]">COLOR:{p.color.name}</p>
-                                    <p className="text-[10px]">SIZE:{p.size}</p>
-                                </div>
+                                {
+                                    p.product_id.toLowerCase().includes("giftcard") ? "" :
+                                        <div className="text-[#777] uppercase">
+                                            <p className="text-[10px]">COLOR:{p.color.name}</p>
+                                            <p className="text-[10px]">SIZE:{p.size}</p>
+                                        </div>
+                                }
                                 {/* <div>
                                     <span onClick={() => quickEditTailored(p)}>EDIT</span>
                                     <span onClick={() => quickViewTailored(p)}>VIEW</span>
