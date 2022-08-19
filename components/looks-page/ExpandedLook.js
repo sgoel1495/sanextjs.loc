@@ -83,7 +83,7 @@ const ExpandedLook = ({expandLook, setExpandLook, data, isMobile}) => {
 
     const mobileView = <>
         <span className={"block relative w-full aspect-square"}>
-            <Image src={WEBASSETS + expandLook.bg_img_path} layout={`fill`} objectFit={`cover`}/>
+            <Image src={WEBASSETS + expandLook.bg_img_path} layout={`fill`} objectFit={`cover`}  alt={""}/>
             <span className={"absolute top-2 right-3 font-900 text-white text-lg"} onClick={() => setExpandLook({})}>
                 X
             </span>

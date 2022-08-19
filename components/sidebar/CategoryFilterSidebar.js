@@ -49,7 +49,7 @@ function Checkbox(props) {
     const [isChecked, setIsChecked] = useState(false)
     useEffect(() => {
         const result = !!(props.checkBoxes[props.item.name] && props.checkBoxes[props.item.name].includes(props.filter))
-        if (result != isChecked)
+        if (result !== isChecked)
             setIsChecked(result)
     }, [props.checkBoxes, props.refresh])
 

@@ -230,7 +230,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
                 <UserLogin setShowSidebarMenuUser={setShowLogin} closeModal={() => setShowLogin(false)}/>,
                 document.getElementById("userband"))}
             <Toast show={showToast} hideToast={() => setShowToast(false)}>
-                <span>Sorry! you don't have measurements from past order! Enter New Measurements</span>
+                <span>Sorry! you don&apos;t have measurements from past order! Enter New Measurements</span>
             </Toast>
         </>
     );

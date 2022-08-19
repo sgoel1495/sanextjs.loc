@@ -23,7 +23,7 @@ const CustomizeSleeve = ({closeModal, data, currentMeasurement, updateValues, de
                                     onClick={() => updateValues("selected_sleeve", item)}>
                                     <span className={"relative block w-full aspect-square mb-4"}>
                                         <Image src={WEBASSETS + `/assets/dresses-sleeve/${item.toLowerCase().replace(" ", "_").replace("/", "")}.jpg`} layout={`fill`}
-                                               objectFit={`cover`}/>
+                                               objectFit={`cover`} alt={""}/>
                                     </span>
                                     <span className={"capitalize"}>{item}</span>
                                 </div>
@@ -73,7 +73,7 @@ const CustomizeSleeve = ({closeModal, data, currentMeasurement, updateValues, de
                                     className={"w-full overflow-hidden text-center relative " + [currentMeasurement["selected_sleeve"] === item ? "border-black border-2" : ""]}
                                     onClick={() => updateValues("selected_sleeve", item)}>
                                     <span className={"relative block w-full aspect-[217/156] mb-8"}>
-                                        <Image src={WEBASSETS + `/assets/dresses-sleeve/${item.toLowerCase().replace(" ", "_").replace("/", "")}.jpg`} layout={`fill`} objectFit={`cover`}/>
+                                        <Image src={WEBASSETS + `/assets/dresses-sleeve/${item.toLowerCase().replace(" ", "_").replace("/", "")}.jpg`} layout={`fill`} objectFit={`cover`} alt={""}/>
                                     </span>
                                     <span className={"absolute bottom-0 left-[50%] translate-x-[-50%] capitalize"}>{item}</span>
 

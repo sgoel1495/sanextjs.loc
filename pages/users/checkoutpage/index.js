@@ -26,19 +26,22 @@ function UsersCheckoutPage() {
         if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === "")) updateDataStore("currentOrderId", Date.now().toString());
     }, [dataStore.currentOrderId]);
 
-    useEffect(async () => {
-        if(dataStore.userServe.email || dataStore.userServe.temp_user_id) {
-            let user = getUserObject(dataStore, updateDataStore)
-            const gotOrderSummaryCall = await apiCall("getOrderSummary", dataStore.apiToken, {user: user});
-            if (gotOrderSummaryCall.status === 200) {
-                updateDataStore("orderSummary", {
-                    ...gotOrderSummaryCall,
-                });
-            } else {
-                router.push("/new-arrivals/all")
+    useEffect(() => {
+        let order = async () => {
+            if(dataStore.userServe.email || dataStore.userServe.temp_user_id) {
+                let user = getUserObject(dataStore, updateDataStore)
+                const gotOrderSummaryCall = await apiCall("getOrderSummary", dataStore.apiToken, {user: user});
+                if (gotOrderSummaryCall.status === 200) {
+                    updateDataStore("orderSummary", {
+                        ...gotOrderSummaryCall,
+                    });
+                } else {
+                    router.push("/new-arrivals/all")
+                }
+                await refreshCart(dataStore, updateDataStore)
             }
-            await refreshCart(dataStore, updateDataStore)
         }
+        order()
     }, [dataStore.userServe.email,dataStore.userServe.temp_user_id])
 
 

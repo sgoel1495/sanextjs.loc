@@ -18,7 +18,7 @@ function DefaultAddressBookInformation(props) {
                 }
             })
             .catch(e=>console.log(e.message))
-    },[dataStore.userServe.emailt, dataStore.apiToken]);
+    },[dataStore.userServe.email, dataStore.apiToken]);
 
     const mobileView = <div className={"p-8 bg-[#f1f2f3] flex flex-col items-start "+[isProfilePage || "mx-3"]}>
         {isProfilePage && <p className="text-xl font-500 mb-2 mt-1">Address Book</p>}

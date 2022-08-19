@@ -194,7 +194,7 @@ function GetVirtualAppointmentPage() {
         <h2 className={"text-2xl font-900 uppercase tracking-wider text-[#db8b7d] font-cursive"}>styling appointment</h2>
         <h3 className={"text-h3 font-cursive leading-none mb-6 text-[#db8b7d]"}>Experience Salt Attire</h3>
         <span className={"block relative w-full aspect-[6/5]"}>
-            <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} layout={`fill`} objectFit={`cover`}/>
+            <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} layout={`fill`} objectFit={`cover`} alt={""}/>
         </span>
         <div className={`text-2xl font-100 text-center my-5 font-cursive text-[#595756]`}>Book An Online Styling Session</div>
         <div className={`grid grid-cols-2 gap-x-10 gap-y-4`}>

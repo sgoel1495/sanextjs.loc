@@ -112,7 +112,7 @@ function GetAppointmentPage() {
         <h3 className={"text-3xl font-cursive leading-none mb-6 text-[#db8b7d]"}>Experience Salt Attire</h3>
         <div className={"bg-white"}>
             <span className={"block relative w-full aspect-[6/5]"}>
-                <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} layout={`fill`} objectFit={`cover`}/>
+                <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} layout={`fill`} objectFit={`cover`} alt={""}/>
             </span>
             <div className={"py-7 text-center"}>
                 <span className={"block text-xl font-500 font-cursive tracking-widest text-[#333231]"}>SALT ATTIRE-MEGA MALL</span>
@@ -130,7 +130,7 @@ function GetAppointmentPage() {
         </div>
         <div className={"bg-white"}>
             <span className={"block relative w-full aspect-[6/5]"}>
-                <Image src={WEBASSETS + "/assets/images/our_store_800_v2.jpg"} layout={`fill`} objectFit={`cover`}/>
+                <Image src={WEBASSETS + "/assets/images/our_store_800_v2.jpg"} layout={`fill`} objectFit={`cover`} alt={""}/>
             </span>
             <div className={"py-7 text-center"}>
                 <span className={"block text-xl font-500 font-cursive tracking-widest text-[#333231]"}>SALT ATTIRE-INFINITI</span>
@@ -149,7 +149,7 @@ function GetAppointmentPage() {
         </div>
         <div className={"bg-white"}>
             <span className={"block relative w-full aspect-[6/5]"}>
-                <Image src={WEBASSETS + "/assets/images/our_store_800_v3.jpg"} layout={`fill`} objectFit={`cover`}/>
+                <Image src={WEBASSETS + "/assets/images/our_store_800_v3.jpg"} layout={`fill`} objectFit={`cover`} alt={""}/>
             </span>
             <div className={"py-7 text-center"}>
                 <span className={"block text-xl font-500 font-cursive tracking-widest text-[#333231]"}>SALT ATTIRE-PHOENIX</span>
