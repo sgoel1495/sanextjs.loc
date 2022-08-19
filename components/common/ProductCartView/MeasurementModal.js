@@ -14,7 +14,7 @@ const MeasurementModal = ({data, closeModal, edit}) => {
             <div className={"font-cursive text-3xl italic text-center font-500 relative"}>
                 <span>Edit</span>
                 <span className="top-0 right-0 absolute" onClick={closeModal}>
-                    <Image src={WEBASSETS + "/assets/images/cancel.png"} height={"20px"} width={"20px"}/>
+                    <Image src={WEBASSETS + "/assets/images/cancel.png"} height={"20px"} width={"20px"} alt={""}/>
                 </span>
             </div>
             <div className={"text-center text-xl font-800 tracking-wider uppercase my-2"}>{data.name}</div>

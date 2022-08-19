@@ -105,7 +105,7 @@ const ProductDetails = ({data, hpid}) => {
                     <div className='leading-none'>
                         <div className={"flex items-center"}>
                             <button className={"relative block h-6 w-6"} onClick={() => setShowShare(!showShare)}>
-                                <Image src={WEBASSETS + "/assets/images/share-1.svg"} layout={`fill`} objectFit={`cover`}/>
+                                <Image src={WEBASSETS + "/assets/images/share-1.svg"} layout={`fill`} objectFit={`cover`} alt={"share"}/>
                             </button>
                             {
                                 showShare &&

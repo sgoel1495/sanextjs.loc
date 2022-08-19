@@ -30,7 +30,7 @@ function LooksPage(props) {
     const mobileView = <Fragment>
         <section className={`bg-[#222222] overflow-auto`}>
             <span className={"block relative w-full aspect-square"}>
-                <Image src={WEBASSETS + "/assets/images/looks/looks.banner_v1.jpg"} layout={`fill`} objectFit={`cover`}/>
+                <Image src={WEBASSETS + "/assets/images/looks/looks.banner_v1.jpg"} layout={`fill`} objectFit={`cover`} alt={""}/>
             </span>
             <BlockHeader
                 space={"py-[1.125rem]"}

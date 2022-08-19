@@ -123,7 +123,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
                     <div className='flex items-center gap-2 relative'>
                         <WishlistButton pid={hpid}/>
                         <button className={"relative block h-4 w-4"} onClick={() => setShowShare(!showShare)}>
-                            <Image src={WEBASSETS + "/assets/images/share-1.svg"} layout={`fill`} objectFit={`cover`}/>
+                            <Image src={WEBASSETS + "/assets/images/share-1.svg"} layout={`fill`} objectFit={`cover`} alt={""}/>
                         </button>
                         {
                             showShare &&
@@ -162,6 +162,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
                             src={WEBASSETS + "/assets/images/plus.png"}
                             layout={`fill`}
                             objectFit={`cover`}
+                            alt={""}
                         />
                     </span>
                     &nbsp;

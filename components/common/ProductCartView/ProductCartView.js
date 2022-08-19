@@ -136,7 +136,7 @@ function ProductCartView({isMobile}) {
 
                         </div>
                         <div className={"flex items-center"}>
-                            <img className={"h-4 w-4"} src={WEBASSETS + "/assets/images/cart_delete.png"}
+                            <Image height={"16px"} width={"16px"} src={WEBASSETS + "/assets/images/cart_delete.png"}
                                  alt="cancel"
                                  onClick={() => removeFromCart(dataStore, updateDataStore, p)}
                             />

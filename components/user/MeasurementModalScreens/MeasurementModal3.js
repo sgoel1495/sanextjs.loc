@@ -26,6 +26,7 @@ function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveMo
                                     src={WEBASSETS + `/assets/dresses-review/${measurement.selected_sleeve.toLowerCase().replace(" ", "_").replace("/", "")}-${measurement.selected_length.toLowerCase().replace(" ", "_")}.jpg`}
                                     layout={`fill`} objectFit={`contain`}
                                     className={"border border-[#b3aeab]"}
+                                    alt={""}
                                 />
                             </div>
                         }
@@ -117,6 +118,7 @@ function MeasurementModal3({closeModal, isMobile, measurement, lastModal, saveMo
                                     src={WEBASSETS + `/assets/dresses-review/${measurement.selected_sleeve.toLowerCase().replace(" ", "_").replace("/", "")}-${measurement.selected_length.toLowerCase().replace(" ", "_")}.jpg`}
                                     layout={`fill`} objectFit={`contain`}
                                     className={"border border-[#b3aeab]"}
+                                    alt={""}
                                 />
                             </div>
                         }
