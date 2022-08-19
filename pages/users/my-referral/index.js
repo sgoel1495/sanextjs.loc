@@ -48,6 +48,7 @@ function UsersMyReferralsPage() {
                             src={WEBASSETS + "/assets/images/share_icon.svg"}
                             height={"10px"}
                             width={"10px"}
+                            alt={""}
                             onClick={() => {
                                 copyTextToClipboard().then(() => {
                                     setShowToaster(true)
@@ -71,6 +72,7 @@ function UsersMyReferralsPage() {
                             src={WEBASSETS + "/assets/images/share_icon.svg"}
                             height={"10px"}
                             width={"10px"}
+                            alt={""}
                             onClick={() => {
                                 copyTextToClipboard().then(() => {
                                     setShowToaster(true)
