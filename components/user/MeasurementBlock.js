@@ -22,7 +22,7 @@ function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mo
     }
 
     const mobileView = (
-        <div className="mt-6 pl-6 bg-[#f1f2f3]">
+        <div className="mt-6 pl-6">
             <div>
                 <div className="font-bold mb-2">{index + 1}. Measurement Profile</div>
                 <div className="mb-2">Measurement ID: {measurement.measure_id}</div>

@@ -1,36 +1,35 @@
-import React, { Fragment, useContext, useEffect, useReducer, useState } from "react";
+import React, {Fragment, useContext, useEffect, useReducer, useState} from "react";
 import AppWideContext from "../../../store/AppWideContext";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import Image from "next/image";
-import { isMobile } from "react-device-detect";
-import { apiCall } from "../../../helpers/apiCall";
+import {isMobile} from "react-device-detect";
+import {apiCall} from "../../../helpers/apiCall";
 import UsersMenu from "../../../components/user/UsersMenu";
 import Link from "next/link";
 import Toast from "../../../components/common/Toast";
-import { addToCart } from "../../../helpers/addTocart";
+import {addToCart} from "../../../helpers/addTocart";
 
 
 function UsersFavouritesPage() {
 
     const [mobile, setMobile] = useState(false);
-    const router = useRouter();
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [favProductData, setFavProductData] = useState([])
     const [favorites, setFavorites] = useState([])
     const [show, setShow] = useState(false)
     const [message, setMessage] = useState("")
     const [selectedSize, setSelectedSize] = useReducer((state, payload) => {
-        return { ...state, ...payload }
+        return {...state, ...payload}
     }, {})
 
 
     const loadData = async (pid) => {
-        const favCall = await apiCall("getProduct", dataStore.apiToken, { product_id: pid })
+        const favCall = await apiCall("getProduct", dataStore.apiToken, {product_id: pid})
         if (favCall.status === 200 && favCall.response && favCall.response.product_id) {
             const p = favCall.response
             return {
@@ -67,7 +66,7 @@ function UsersFavouritesPage() {
     }, [])
 
     useEffect(() => {
-        apiCall("userServe", dataStore.apiToken, { contact: dataStore.userData.contact })
+        apiCall("userServe", dataStore.apiToken, {contact: dataStore.userData.contact})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
                     setFavorites(pData.response.favorites)
@@ -118,7 +117,7 @@ function UsersFavouritesPage() {
             "sleeve_length": favProductData[index].sleeve_length,
             "dress_length": favProductData[index].dress_length
         }
-        addToCart(dataStore, updateDataStore, { cart: cart }).then(r => {
+        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
             setMessage(`${favProductData[index].title}: Size ${selectedSize[favProductData[index].product_id]} moved to your Bag!`)
             setShow(true)
             removeFromFav(index)
@@ -126,14 +125,14 @@ function UsersFavouritesPage() {
 
     }
 
-    const FavProdCardMobile = ({ favProduct }) => {
+    const FavProdCardMobile = ({favProduct}) => {
         return (<>
             {
                 favProduct.map((item, index) => {
                     return (
                         <div className={"m-3 flex gap-3"} key={index}>
                             <div>
-                                <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88" />
+                                <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88"/>
                             </div>
                             <div className={"flex flex-1 flex-col text-[#777]"}>
                                 <span> {item.title} </span>
@@ -142,13 +141,13 @@ function UsersFavouritesPage() {
                                 <ul className={"flex justify-between my-1"}>
                                     {
                                         item.sizes.map((s, index) => <li key={index} className={"p-2 " + [selectedSize[item.product_id] === s && "border-[1px] border-[#777]"]}
-                                            onClick={() => setSelectedSize({ [item.product_id]: s })}>{s}</li>)
+                                                                         onClick={() => setSelectedSize({[item.product_id]: s})}>{s}</li>)
                                     }
                                 </ul>
                                 <span className={"text-m my-1 font-500"} onClick={() => addToBag(index)}> ADD TO BAG</span>
                             </div>
                             <div className={"mr-1 mt-1"}>
-                                <Image onClick={() => removeFromFav(index)} src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16" />
+                                <Image onClick={() => removeFromFav(index)} src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
                             </div>
                         </div>
                     )
@@ -156,14 +155,14 @@ function UsersFavouritesPage() {
             }
         </>)
     }
-    const FavProdCardBrowser = ({ favProduct }) => {
+    const FavProdCardBrowser = ({favProduct}) => {
         return (<>
             {
                 favProduct.map((item, index) => {
                     return (
                         <div className={"m-3 flex gap-3"} key={index}>
                             <div>
-                                <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88" />
+                                <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88"/>
                             </div>
                             <div className={"flex flex-1 flex-col text-[#777]"}>
                                 <span> {item.title} </span>
@@ -177,7 +176,7 @@ function UsersFavouritesPage() {
                                 <span className={"text-m my-1 font-500"}> ADD TO BAG</span>
                             </div>
                             <div className={"mr-1 mt-1"} onClick={() => removeFromFav(index)}>
-                                <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16" />
+                                <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
                             </div>
                         </div>
                     )
@@ -207,7 +206,7 @@ function UsersFavouritesPage() {
                 "sleeve_length": favProductData[i].sleeve_length,
                 "dress_length": favProductData[i].dress_length
             }
-            let resp = addToCart(dataStore, updateDataStore, { cart: cart })
+            let resp = addToCart(dataStore, updateDataStore, {cart: cart})
             if (resp) {
                 msg.push(<p>{`${favProductData[i].title}: Size ${selectedSize[favProductData[i].product_id]} moved to your Bag!`}</p>)
                 toBeRemoved.push(favProductData[i].product_id)
@@ -235,7 +234,7 @@ function UsersFavouritesPage() {
         {
             favProductData.length
                 ? <>
-                    <FavProdCardMobile favProduct={favProductData} />
+                    <FavProdCardMobile favProduct={favProductData}/>
                     <div className={"flex flex-col"}>
                         <button className={"bg-[#222] py-3 mx-5 text-white"} onClick={moveAllToCart}>
                             MOVE ALL PRODUCTS TO BAG
@@ -243,7 +242,9 @@ function UsersFavouritesPage() {
 
                         <div className={"mt-4 text-center font-500"}>
                             <Link href={"/new-arrivals/all"}>
-                                <span className={"text-xs"}>&lt;</span> <span>BACK TO SHOPPING</span>
+                                <>
+                                    <span className={"text-xs"}>&lt;</span> <span>BACK TO SHOPPING</span>
+                                </>
                             </Link>
                         </div>
                     </div>
@@ -254,7 +255,7 @@ function UsersFavouritesPage() {
     const browserView = (
         <div className="xl:w-3/5 mx-auto flex divide-x items-start gap-x-8 min-h-[80vh]">
             <div className="flex-1 py-3">
-                <UsersMenu />
+                <UsersMenu/>
             </div>
             <div className="pl-8 flex-[3] flex flex-col items-start gap-4">
                 <p className="text-[28px] mb-2">Favourites</p>
@@ -271,7 +272,7 @@ function UsersFavouritesPage() {
                             return (
                                 <div className="flex gap-5 w-full mb-4 text-[#777777] text-sm" key={index}>
                                     <div className="flex-[3] inline-flex items-start">
-                                        <Image src={WEBASSETS + item.img} alt="cart" width="70" height="112" />
+                                        <Image src={WEBASSETS + item.img} alt="cart" width="70" height="112"/>
                                         <div className={"ml-3"}>
                                             <p>{item.title}</p>
                                             <p>{item.label}</p>
@@ -287,7 +288,7 @@ function UsersFavouritesPage() {
                                     </div>
                                     <div className="flex-[1]">ADD TO BAG</div>
                                     <div className="w-[20px]" onClick={() => removeFromFav(index)}>
-                                        <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16" />
+                                        <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
                                     </div>
                                 </div>
                             )
@@ -297,7 +298,7 @@ function UsersFavouritesPage() {
                                 MOVE ALL PRODUCTS TO BAG
                             </button>
                             <div className={"mt-4 text-center font-500"}>
-                                <span className={"text-xs"}>&lt;</span> <Link href={"/new-arrivals/all"}>BACK TO SHOPPING</Link>
+                                <span className={"text-xs"}>&lt;</span> <Link href={"/new-arrivals/all"}><span>BACK TO SHOPPING</span></Link>
                             </div>
                         </div>
                     </>
@@ -308,10 +309,10 @@ function UsersFavouritesPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/favourites"} id={"profile"} isMobile={mobile} />
-            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile} />
+            <PageHead url={"/users/favourites"} id={"profile"} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
             {(mobile) ? mobileView : browserView}
-            <Footer isMobile={mobile} minimal={true} />
+            <Footer isMobile={mobile} minimal={true}/>
             <Toast show={show} hideToast={() => setShow(false)}>
                 {message}
             </Toast>
