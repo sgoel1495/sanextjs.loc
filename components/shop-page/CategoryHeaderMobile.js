@@ -1,8 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Link from "next/link";
 import AppWideContext from "../../store/AppWideContext";
-import ReactDom from "react-dom";
-import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
+import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar/CategoryFilterSidebar";
 
 const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal, filterData, group, groups}) => {
     const {dataStore} = useContext(AppWideContext);

@@ -167,3 +167,21 @@ body.scroll-overflow .navigator {
         @apply ml-12 scale-[.6] opacity-50;
     }
 }
+
+.mobileCheckbox:checked::before {
+    content: '';
+    position: absolute;
+    width: 1.4ex;
+    height: 0.7ex;
+    background: rgba(0, 0, 0, 0);
+    top:0.32rem;
+    left:0.28rem;
+    border: 2px solid #997756;
+    border-top: none;
+    border-right: none;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
