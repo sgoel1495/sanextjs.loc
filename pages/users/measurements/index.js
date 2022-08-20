@@ -1,20 +1,20 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
-import {apiCall} from "../../../helpers/apiCall";
+import { apiCall } from "../../../helpers/apiCall";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
-import {isMobile} from "react-device-detect";
-import {getUserObject} from "../../../helpers/addTocart";
+import { isMobile } from "react-device-detect";
+import { getUserObject } from "../../../helpers/addTocart";
 import TailoredSize from "../../../components/product-page/TailoredSize";
 
 function UsersMeasurementsPage() {
     const router = useRouter();
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const [mobile, setMobile] = useState(false);
     const [userMeasurements, setUserMeasurements] = useState({});
     const [currentMeasurement, setCurrentMeasurement] = useState(emptyMeasurement)
@@ -39,7 +39,7 @@ function UsersMeasurementsPage() {
     const saveMeasurement = () => {
         apiCall("addMeasurements", dataStore.apiToken, {
             user: getUserObject(dataStore, updateDataStore),
-            "measurments": {...currentMeasurement, "measure_id": (new Date()).getTime().toString() + "_m"}
+            "measurments": { ...currentMeasurement, "measure_id": (new Date()).getTime().toString() + "_m" }
         })
             .then(pData => {
                 if (pData.status === 200) {
@@ -54,15 +54,17 @@ function UsersMeasurementsPage() {
 
     const measurementBlocks = () => {
         return Object.keys(userMeasurements).map((key, index) => {
-            return <MeasurementBlock
-                measurement={userMeasurements[key]}
-                // showModal={showModal.bind(this)}
-                deleteMeasurement={deleteMeasurement}
-                refresh={getMeasurements}
-                index={index}
-                key={index}
-                mobile={mobile}
-            />
+            return (
+                <MeasurementBlock
+                    measurement={userMeasurements[key]}
+                    // showModal={showModal.bind(this)}
+                    deleteMeasurement={deleteMeasurement}
+                    refresh={getMeasurements}
+                    index={index}
+                    key={index}
+                    mobile={mobile}
+                />
+            )
         });
     };
 
@@ -89,14 +91,14 @@ function UsersMeasurementsPage() {
                     </div>
                     <div className="flex-1 grid place-items-center">
                         <TailoredSize isMobile={true} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
-                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true}/>
+                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true} />
 
                     </div>
                 </div>
                 <div>
                     <p className="text-[28px] mt-4">Measurements</p>
                     {Object.keys(userMeasurements).length > 0 ? (
-                        <div>{measurementBlocks()}</div>
+                        <>{measurementBlocks()}</>
                     ) : (
                         <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
                             <p>No measurement found!</p>
@@ -119,30 +121,29 @@ function UsersMeasurementsPage() {
                     </div>
                     <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
                         <TailoredSize isMobile={false} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
-                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true}/>
+                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true} />
                     </div>
                 </div>
-                <div>
+                <>
                     <p className="text-[28px] mt-4">Measurements</p>
-                    {Object.keys(userMeasurements).length > 0 ? (
-                        <div>{measurementBlocks()}</div>
-                    ) : (
-                        <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
+                    {Object.keys(userMeasurements).length > 0
+                        ? measurementBlocks()
+                        : <div className="bg-[#f1f1f1] p-5 text-[#777] font-500">
                             <p>No measurement found!</p>
                             <p>Please add measurement.</p>
                         </div>
-                    )}
-                </div>
+                    }
+                </>
             </UserPageTemplate>
         );
     };
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
+            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
             {mobile ? mobileView() : browserView()}
-            <Footer isMobile={dataStore.mobile} minimal={true}/>
+            <Footer isMobile={dataStore.mobile} minimal={true} />
         </Fragment>
     );
 }

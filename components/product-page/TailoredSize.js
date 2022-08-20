@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MeasurementModal0 from "../user/MeasurementModalScreens/MeasurementModal0";
 import MeasurementModal1 from "../user/MeasurementModalScreens/MeasurementModal1";
 import MeasurementModalDress12 from "../user/MeasurementModalScreens/MeasurementModalDress1_2";
@@ -8,15 +8,15 @@ import CustomizeLength from "../user/MeasurementModalScreens/CustomizeLength";
 import MeasurementModal3 from "../user/MeasurementModalScreens/MeasurementModal3";
 import ReactDom from "react-dom";
 import UserLogin from "../user/login/UserLogin";
-import {apiCall} from "../../helpers/apiCall";
-import {getUserObject} from "../../helpers/addTocart";
+import { apiCall } from "../../helpers/apiCall";
+import { getUserObject } from "../../helpers/addTocart";
 import AppWideContext from "../../store/AppWideContext";
-import {useRouter} from "next/router";
-import {isTailored} from "../../helpers/returnSizes";
+import { useRouter } from "next/router";
+import { isTailored } from "../../helpers/returnSizes";
 import Toast from "../common/Toast";
 
-const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit,saveMeasurement,addNew}) => {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit, saveMeasurement, addNew }) => {
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
     const router = useRouter();
     const [showModal, setShowModal] = useState(false);
     const [active, setActive] = useState(0)
@@ -34,7 +34,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     };
 
     const updateValues = (key, value) => {
-        setCurrentMeasurement({...currentMeasurement, [key]: value});
+        setCurrentMeasurement({ ...currentMeasurement, [key]: value });
     };
 
     const addNewModal = (m) => {
@@ -61,16 +61,16 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     };
 
     const saveModal = async () => {
-        if(edit){
+        if (edit) {
             saveMeasurement()
         }
         else if (isMobile) {
             if (!currentMeasurement.measure_id) {
-                setCurrentMeasurement({...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m"})
+                setCurrentMeasurement({ ...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m" })
                 setSize(null)
             }
         } else {
-            saveToCart({...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m"})
+            saveToCart({ ...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m" })
         }
         closeModal()
     };
@@ -92,19 +92,19 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     }, [dataStore.userMeasurements])
 
     let activeModalScreen
-    if(edit){
+    if (edit) {
         switch (active) {
             case 0:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       nextModal={nextModal} updateValues={updateValues} product={{}} edit={true}/>;
+                    nextModal={nextModal} updateValues={updateValues} product={{}} edit={true} />;
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
-                                                       lastModal={lastModal} updateValues={updateValues} product={{}} edit={true}/>;
+                    lastModal={lastModal} updateValues={updateValues} product={{}} edit={true} />;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       saveModal={saveModal} product={{}} edit={true}/>;
+                    saveModal={saveModal} product={{}} edit={true} />;
                 break;
         }
     }
@@ -114,31 +114,31 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
 
             case 0:
                 activeModalScreen = <MeasurementModal0 closeModal={closeModal} isMobile={isMobile} addNew={addNewModal} showPastOrders={pastOrdersModal}
-                                                       pastOrders={pastOrders} measureProduct={currentMeasureProduct} product={data}/>;
+                    pastOrders={pastOrders} measureProduct={currentMeasureProduct} product={data} />;
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       nextModal={nextModal} updateValues={updateValues} product={data}/>;
+                    nextModal={nextModal} updateValues={updateValues} product={data} />;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModalDress12 closeModal={closeModal} isMobile={isMobile} lastModal={lastModal} nextModal={nextModal} updateValues={updateValues}
-                                                             currentMeasurement={currentMeasurement}/>
+                    currentMeasurement={currentMeasurement} />
                 break;
             case 3:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
-                                                       lastModal={lastModal} updateValues={updateValues} product={data}/>;
+                    lastModal={lastModal} updateValues={updateValues} product={data} />;
                 break;
             case 4:
                 activeModalScreen =
                     <CustomizeSleeve closeModal={closeModal} isMobile={isMobile} data={data.sleeve_length_opt} defaultValue={data.sleeve_length} nextModal={nextModal}
-                                     lastModal={lastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data}/>
+                        lastModal={lastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data} />
                 break;
             case 5:
                 if (data.sleeve_length_opt.length <= 1) {
                     customLastModal = () => setActive(active - 2)
                 }
                 activeModalScreen = <CustomizeLength closeModal={closeModal} isMobile={isMobile} data={data.dress_length_opt} defaultValue={data.dress_length} nextModal={nextModal}
-                                                     lastModal={customLastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data}/>
+                    lastModal={customLastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data} />
                 break;
             case 6:
                 if (data.dress_length_opt.length <= 1) {
@@ -150,84 +150,84 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
                 }
                 activeModalScreen =
                     <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={customLastModal} saveModal={saveModal}
-                                       product={data}/>;
+                        product={data} />;
                 break;
         }
     } else {
         switch (active) {
             case 0:
                 activeModalScreen = <MeasurementModal0 closeModal={closeModal} isMobile={isMobile} addNew={addNewModal} showPastOrders={pastOrdersModal}
-                                                       pastOrders={pastOrders} measureProduct={currentMeasureProduct}/>;
+                    pastOrders={pastOrders} measureProduct={currentMeasureProduct} />;
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       nextModal={nextModal} updateValues={updateValues} product={data}/>;
+                    nextModal={nextModal} updateValues={updateValues} product={data} />;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
-                                                       lastModal={lastModal} updateValues={updateValues} product={data}/>;
+                    lastModal={lastModal} updateValues={updateValues} product={data} />;
                 break;
             case 3:
                 activeModalScreen = <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       saveModal={saveModal} product={data}/>;
+                    saveModal={saveModal} product={data} />;
                 break;
         }
     }
     return (
         <>
             {
-                addNew?
+                addNew ?
                     <button
-                        className={"bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"+[isMobile ? " rounded-full" : ""]}
+                        className={"bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" + [isMobile ? " rounded-full" : ""]}
                         onClick={() => setShowModal(true)}
                     >
                         ADD NEW
                     </button>
                     :
-                edit ?
-                    <button
-                        className={"bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 "+[isMobile ? " rounded-full" :""]}
-                        onClick={() => setShowModal(true)}
-                    >
-                        Edit
-                    </button>
-                    :
-
-                    isMobile ?
-                        <div
-                            className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [currentMeasurement.measure_id ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"] + [isTailored(data) ? "" : " pointer-events-none opacity-25"]}
-                            onClick={() => {
-                                setShowModal(true);
-                            }}
+                    edit ?
+                        <button
+                            className={"bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 " + [isMobile ? " rounded-full" : ""]}
+                            onClick={() => setShowModal(true)}
                         >
-                            {
-                                currentMeasurement.measure_id ? <>
+                            Edit
+                        </button>
+                        :
+
+                        isMobile ?
+                            <div
+                                className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [currentMeasurement.measure_id ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"] + [isTailored(data) ? "" : " pointer-events-none opacity-25"]}
+                                onClick={() => {
+                                    setShowModal(true);
+                                }}
+                            >
+                                {
+                                    currentMeasurement.measure_id ? <>
                                         <p className={'uppercase font-900 text-xs'}>Tailored</p>
                                         <p className={'uppercase font-900 text-sm'}>T</p>
                                         <p className={' uppercase font-400 text-[10px]'}>edit</p>
                                     </>
-                                    :
-                                    <>
-                                        <p className={'uppercase font-900 text-xs'}>Tailored</p>
-                                        <p className={' uppercase font-400 text-xs'}>size</p>
-                                    </>
-                            }
-                        </div>
-                        :
-                        <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={() => setShowModal(true)}>
-                            <span className={"uppercase underline cursor-pointer"}>tailor it</span>
-                            <span className={""}>/</span>
-                            <span className={"uppercase underline cursor-pointer"}>customise</span>
-                        </div>
+                                        :
+                                        <>
+                                            <p className={'uppercase font-900 text-xs'}>Tailored</p>
+                                            <p className={' uppercase font-400 text-xs'}>size</p>
+                                        </>
+                                }
+                            </div>
+                            :
+                            <div className={"flex justify-center items-center gap-2 font-700 text-sm text-black/60 mb-4"} onClick={() => setShowModal(true)}>
+                                <span className={"uppercase underline cursor-pointer"}>tailor it</span>
+                                <span className={""}>/</span>
+                                <span className={"uppercase underline cursor-pointer"}>customise</span>
+                            </div>
 
             }
 
             {showModal &&
-            ReactDom.createPortal(<>{activeModalScreen}</>,
-                document.getElementById('measurementmodal'),
-            )}
+                ReactDom.createPortal(<>{activeModalScreen}</>,
+                    document.getElementById('measurementmodal'),
+                )}
             {showLogin && ReactDom.createPortal(
-                <UserLogin setShowSidebarMenuUser={setShowLogin} closeModal={() => setShowLogin(false)}/>,
+                <UserLogin setShowSidebarMenuUser={setShowLogin} closeModal={() => setShowLogin(false)} />,
                 document.getElementById("userband"))}
             <Toast show={showToast} hideToast={() => setShowToast(false)}>
                 <span>Sorry! you don&apos;t have measurements from past order! Enter New Measurements</span>

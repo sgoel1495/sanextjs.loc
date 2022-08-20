@@ -1,12 +1,12 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, { Fragment, useContext, useState } from "react";
 import TailoredSize from "../product-page/TailoredSize";
-import {apiCall} from "../../helpers/apiCall";
-import {getUserObject} from "../../helpers/addTocart";
+import { apiCall } from "../../helpers/apiCall";
+import { getUserObject } from "../../helpers/addTocart";
 import AppWideContext from "../../store/AppWideContext";
 
-function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mobile, refresh}) {
+function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mobile, refresh }) {
     const [currentMeasurement, setCurrentMeasurement] = useState(measurement)
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
 
     const saveMeasurement = () => {
         apiCall("updateMeasurements", dataStore.apiToken, {
@@ -22,7 +22,7 @@ function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mob
     }
 
     const mobileView = (
-        <div className="mt-6 pl-6">
+        <div className="mt-6 pl-6 bg-[#f1f2f3]">
             <div>
                 <div className="font-bold mb-2">{index + 1}. Measurement Profile</div>
                 <div className="mb-2">Measurement ID: {measurement.measure_id}</div>
@@ -39,7 +39,7 @@ function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mob
             </div>
             <div className="flex justify-evenly">
                 <TailoredSize isMobile={true} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
-                }} edit={true} saveMeasurement={saveMeasurement}/>
+                }} edit={true} saveMeasurement={saveMeasurement} />
 
                 <button
                     className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
@@ -51,29 +51,33 @@ function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mob
         </div>
     );
     const browserView = (
-        <Fragment>
-            <div>
-                <div>{index + 1}. Measurement Profile</div>
-                <div>Measurement ID: {measurement.measure_id}</div>
-                <div>Bust: {measurement.bust}</div>
-                <div>Waist: {measurement.waist}</div>
-                <div>Hips: {measurement.hips}</div>
-                <div>
-                    Height: {measurement.height_f}ft {measurement.height_i}inch(es)
+        <div className="bg-[#f1f2f3] p-5 w-full">
+            <div className="font-600 mb-2">{index + 1}. Measurement Profile</div>
+            <div className="text-[#777777] text-sm grid grid-cols-2 justify-items-start my-4 font-500">
+                <div className="py-1">Measurement ID: {measurement.measure_id}</div>
+                <div className="py-1">Bust: {measurement.bust}</div>
+                <div className="py-1">Waist: {measurement.waist}</div>
+                <div className="py-1">Hips: {measurement.hips}</div>
+                <div className="py-1">Height: {measurement.height_f}ft {measurement.height_i}inch(es)</div>
+                <div className="py-1">Wearing Waist: {measurement.wearing_waist}</div>
+                <div className="py-1">Biceps: {measurement.biceps}</div>
+                <div className="py-1">Others: {measurement.others}</div>
+                <div className="py-1">Shoulder: {measurement.shoulder}</div>
+            </div>
+            <div className="grid grid-cols-2 justify-items-start w-full items-center">
+                <TailoredSize
+                    isMobile={false}
+                    currentMeasurement={currentMeasurement}
+                    setCurrentMeasurement={setCurrentMeasurement}
+                    setSize={() => { }}
+                    edit={true}
+                    saveMeasurement={saveMeasurement}
+                />
+                <div className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => deleteMeasurement(measurement.measure_id)}>
+                    DELETE
                 </div>
-                <div>Biceps: {measurement.biceps}</div>
-                <div>Wearing Waist: {measurement.wearing_waist}</div>
-                <div>Shoulder: {measurement.shoulder}</div>
-                <div>Others: {measurement.others}</div>
             </div>
-            <TailoredSize isMobile={false} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
-            }} edit={true} saveMeasurement={saveMeasurement}/>
-            <div
-                onClick={() =>deleteMeasurement(measurement.measure_id)}
-            >
-                DELETE
-            </div>
-        </Fragment>
+        </div>
     );
 
     return mobile ? mobileView : browserView;
