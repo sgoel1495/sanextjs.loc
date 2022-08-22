@@ -6,7 +6,6 @@ import Footer from "../../components/footer/Footer";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import MobileProductCard from "../../components/shop-page/ProductCard";
-import ShopPage from "../../components/shop-page/ShopPage";
 
 function BestSellingPage(props) {
     const [mobile, setMobile] = useState(false)
@@ -18,14 +17,12 @@ function BestSellingPage(props) {
 
 
     const mobileView = <>
-        <PageHead url="/best-selling" id="best-selling" isMobile={mobile}/>
-        <Header type={mobile ? "shopMenu" : ""} isMobile={mobile}/>
-        <HomePageHeaderSwiper page={"best-selling"} isMobile={mobile} slides={carousal}/>
+
         <section className={"bg-[#faf4f0] pt-5 pb-10"}>
 
-            <div className={"flex items-center justify-center gap-10"}>
+            <div className={"flex items-center justify-center gap-10 text-2xl font-cursive italic leading-0"}>
                 <span>~</span>
-                <span><i>Top Selling<br/>Products</i></span>
+                <span>Top Selling<br/>Products</span>
                 <span>~</span>
             </div>
 
@@ -33,13 +30,27 @@ function BestSellingPage(props) {
                 {data.data && data.data.map((item, index) => <MobileProductCard prod={item} key={index} isMobile={true}/>)}
             </div>
         </section>
-        <Footer isMobile={mobile}/>
     </>
 
     const browserView = (
-        <ShopPage category={"best-selling"} hpid={"best-selling"} data={props.data}/>
+        <>
+            <div className={"flex items-center justify-center gap-10 text-xl uppercase leading-0 pt-5 tracking-wide"}>
+                <hr className={"w-20 border-black"}/>
+                <span>Top Selling Products</span>
+                <hr className={"w-20 border-black"}/>
+            </div>
+            <div className={"grid grid-cols-3 gap-16 container py-5 px-16 "}>
+                {data.data && data.data.map((item, index) => <MobileProductCard prod={item} key={index}/>)}
+            </div>
+        </>
     );
-    return mobile ? mobileView : browserView
+    return <>
+        <PageHead url="/best-selling" id="best-selling" isMobile={mobile}/>
+        <Header type={mobile ? "shopMenu" : ""} isMobile={mobile}/>
+        <HomePageHeaderSwiper page={"best-selling"} isMobile={mobile} slides={carousal}/>
+        {mobile ? mobileView : browserView}
+        <Footer isMobile={mobile}/>
+    </>
 }
 
 

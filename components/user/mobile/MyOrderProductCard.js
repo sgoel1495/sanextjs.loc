@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import Image from "next/image";
 import ReactDom from "react-dom";
 import StarSVG from "./StarSVG";
 import Modal from "./MyOrdersModals"
-
+import {DateTime} from "luxon";
+import AppWideContext from "../../../store/AppWideContext";
 
 const MyOrderProductCard = ({ product, itemIndex, isMobile }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const {dataStore} = useContext(AppWideContext);
     const [showModal, setShowModal] = useState(0)
 
     const mobile = <div className={"flex flex-col bg-[#f7f7f7] mx-2 py-3"}>
@@ -93,26 +95,26 @@ const MyOrderProductCard = ({ product, itemIndex, isMobile }) => {
             <div className={"flex flex-col"}>
                 <span className={"block text-xs mb-2 font-500"}>ORDER # {product.order_id}</span>
                 <div>
-                    <strong className='leading-[1]'>ORDER PLACED</strong>
-                    <span className={"block mb-3 text-sm font-500"}>{product.order_date_time}</span>
+                    <strong className='leading-[1] text-sm'>ORDER PLACED</strong>
+                    <span className={"block mb-3 text-sm font-500 text-sm"}>{new DateTime.fromISO(product.order_date_time).toLocaleString(DateTime.DATETIME_SHORT)}</span>
                     <strong>TOTAL AMOUNT:</strong>
-                    <span className='block text-sm font-500'> {"Rs."}{product.payable}</span>
+                    <span className='block text-sm font-500'>{dataStore.currSymbol} {product.payable}</span>
                 </div>
                 <div className={"flex flex-col my-2"}>
                     <strong> SHIP TO:</strong>
-                    <span className={"text-xs font-500"}>{product.delivery_address.address}</span>
-                    <span className={"text-xs font-500"}>{product.delivery_address.country}, {product.delivery_address.state}</span>
-                    <span className={"text-xs font-500"}>{product.delivery_address.city},{product.delivery_address.zip_code}</span>
+                    <span className={"text-[13px] font-500"}>{product.delivery_address.address}</span>
+                    <span className={"text-[13px] font-500"}>{product.delivery_address.country}, {product.delivery_address.state}</span>
+                    <span className={"text-[13px] font-500"}>{product.delivery_address.city},{product.delivery_address.zip_code}</span>
                     <span
                         onClick={() => {
                             setShowModal(1)
                         }}
-                        className={"text-xs font-500"}
+                        className={"text-[11px] font-600 hover:underline cursor-pointer"}
                     >
                         Change Shipping Address
                     </span>
                 </div>
-                <div className={"flex flex-col gap-1 mb-5 mt-1"}>
+                <div className={"flex flex-col gap-1 mb-5 mt-1 text-sm"}>
                     <strong>
                         ORDER CONFIRMED
                     </strong>
@@ -120,7 +122,7 @@ const MyOrderProductCard = ({ product, itemIndex, isMobile }) => {
                         onClick={() => {
                             setShowModal(2)
                         }}
-                        className='text-xs font-700 flex items-center mt-2'
+                        className='font-700 flex items-center mt-2'
                     >
                         <StarSVG type={"filledBlackStar"} />RATE &amp; REVIEW PRODUCT
                     </span>

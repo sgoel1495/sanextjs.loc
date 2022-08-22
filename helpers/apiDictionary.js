@@ -278,6 +278,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+            case "getHomePageMenu":
+            url += "/get_home_page_menu";
+            body = {
+                home: {
+                    token: apiToken
+                }
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "bookAppointmentMob":
             url += "/book_appointment_mob";
             body = {
