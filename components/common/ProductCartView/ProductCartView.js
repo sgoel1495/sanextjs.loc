@@ -4,7 +4,6 @@ import AppWideContext from "../../../store/AppWideContext";
 import {removeFromCart, updateCart} from "../../../helpers/addTocart";
 import Toast from "../Toast";
 import MeasurementModal from "./MeasurementModal";
-import ReactDOM from "react-dom";
 
 function ProductCartView({isMobile}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -30,7 +29,7 @@ function ProductCartView({isMobile}) {
             returnValues = (
                 <>
                     {returnValues}
-                    <div>
+                    <div className={"flex gap-x-2 items-center bg-white p-3"}>
                         <div className="border p-1">
                             <div className="relative h-40 aspect-[9/16]">
                                 <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
@@ -50,8 +49,8 @@ function ProductCartView({isMobile}) {
                             {
                                 p.product_id.toLowerCase().includes("giftcard") ? "" :
                                     <div className="text-[#777] uppercase">
-                                        <p className="text-[10px]">COLOR:{(p.multi_color) ? "multicolor" : p.color.name}</p>
-                                        <p className="text-[10px]">SIZE:{p.size}</p>
+                                        <p className="text-[10px]">COLOR: {(p.multi_color) ? "multicolor" : p.color.name}</p>
+                                        <p className="text-[10px]">SIZE: {p.is_tailor ? "Tailored" : p.size}</p>
                                         {
                                             p.is_tailor && <div>
                                                 <span className={"text-[11px] underline text-[#777] mr-1"} onClick={() => setShowMeasure({
@@ -110,7 +109,7 @@ function ProductCartView({isMobile}) {
                                 p.product_id.toLowerCase().includes("giftcard") ? "" :
                                     <div className="text-[#777]">
                                         <p className="text-[10px]">Color:{p.color.name}</p>
-                                        <p className="text-[10px]">Size: {p.is_tailor?"Tailored":p.size}</p>
+                                        <p className="text-[10px]">Size: {p.is_tailor ? "Tailored" : p.size}</p>
                                         {
                                             p.is_tailor && <div>
                                                 <span className={"text-[11px] underline text-[#777] mr-1"} onClick={() => setShowMeasure({
@@ -137,8 +136,8 @@ function ProductCartView({isMobile}) {
                         </div>
                         <div className={"flex items-center"}>
                             <Image height={"16px"} width={"16px"} src={WEBASSETS + "/assets/images/cart_delete.png"}
-                                 alt="cancel"
-                                 onClick={() => removeFromCart(dataStore, updateDataStore, p)}
+                                   alt="cancel"
+                                   onClick={() => removeFromCart(dataStore, updateDataStore, p)}
                             />
                         </div>
                     </div>
@@ -153,15 +152,15 @@ function ProductCartView({isMobile}) {
         {isMobile ? mobileProductCartView() : productCartView()}
         {
             showMeasure.product !== null &&
-            ReactDOM.createPortal(
-                <MeasurementModal
-                    data={showMeasure.product}
-                    edit={showMeasure.edit}
-                    closeModal={() => setShowMeasure({
-                        edit: false,
-                        product: null
-                    })}
-                />, document.getElementById("measurementmodal"))
+            <MeasurementModal
+                data={showMeasure.product}
+                edit={showMeasure.edit}
+                closeModal={() => setShowMeasure({
+                    edit: false,
+                    product: null
+                })}
+                isMobile={isMobile}
+            />
         }
         <Toast show={toastMsg} hideToast={setToastMsg}>
             {toastMsg}

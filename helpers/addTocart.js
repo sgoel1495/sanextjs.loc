@@ -113,3 +113,17 @@ export async function removeFromCart(dataStore, updateDataStore, product) {
         await refreshCart(dataStore, updateDataStore)
     }
 }
+
+export async function updateCartMeasurement(dataStore, updateDataStore,cart_id,product){
+    let user = getUserObject(dataStore, updateDataStore)
+    let item = {
+        "product": {
+            "product_cart_id": cart_id
+        }
+    }
+    await apiCall("removeCart", dataStore.apiToken, {user: user, ...item})
+    const resp = await apiCall("addToCart", dataStore.apiToken, {user: user, ...product})
+    if ((resp.response && resp.response === "success") || (resp.msg && resp.msg === "success")) {
+        await refreshCart(dataStore, updateDataStore)
+    }
+}

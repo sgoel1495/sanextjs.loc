@@ -13,7 +13,7 @@ const MobileView = ({ hpid, data }) => {
     return (
         <>
             <div className={"bg-[#f6f1ef]"}>
-                <div className={"overflow-x-scroll"}>
+                <div className={"overflow-x-scroll scrollbar-none"}>
                     <div className={"inline-flex"}>
                         {data.images.map((image, index) => {
                             return (

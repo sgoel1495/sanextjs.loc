@@ -1,16 +1,36 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Image from "next/image";
+import {addToCart, updateCartMeasurement} from "../../../helpers/addTocart";
+import AppWideContext from "../../../store/AppWideContext";
 
-const MeasurementModal = ({data, closeModal, edit}) => {
+const MeasurementModal = ({data, closeModal, edit, isMobile}) => {
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [measurement, setMeasurement] = React.useReducer((state, e) => {
         return {...state, [e.target.name]: e.target.value}
     }, data.meas)
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const inputField = 'w-[100px] border border-[#a2a2a2] p-1 bg-white placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black text-sm';
 
-    console.log(data)
+    const save = () => {
+        if (edit) {
+            let cart = {
+                "product_id": data.product_id,
+                "size": data.size,
+                "qty": 1,
+                "is_sale": data.is_sale,
+                "is_tailor": true,
+                "sleeve_length": measurement.selected_sleeve,
+                "dress_length": measurement.selected_length,
+                "measurment_id": measurement.measure_id
+            }
+            updateCartMeasurement(dataStore, updateDataStore, data.cart_id, {cart: cart, measurments: measurement}).then(r => {
+            })
+        }
+        closeModal();
+    }
+
     return (
-        <div className={'bg-white h-screen fixed inset-0 z-modal p-4'}>
+        <div className={'bg-white h-screen fixed inset-y-0 z-modal p-4' + [isMobile ? " inset-x-0" : " right-0 max-w-[400px] w-full"]}>
             <div className={"font-cursive text-3xl italic text-center font-500 relative"}>
                 <span>Edit</span>
                 <span className="top-0 right-0 absolute" onClick={closeModal}>
@@ -56,7 +76,7 @@ const MeasurementModal = ({data, closeModal, edit}) => {
                     <input className={inputField + [" w-[200px]"]} name={"others"} value={measurement.others} onChange={setMeasurement} disabled={!edit}/>
                 </div>
                 <div className={"col-span-2 my-6"}>
-                    <button className={"bg-black text-white px-2 py-1 uppercase text-base"}>{edit?"save":"close"}</button>
+                    <button className={"bg-black text-white px-2 py-1 uppercase text-base"} onClick={save}>{edit ? "save" : "close"}</button>
                 </div>
             </div>
         </div>

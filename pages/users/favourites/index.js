@@ -17,7 +17,6 @@ import {addToCart} from "../../../helpers/addTocart";
 function UsersFavouritesPage() {
 
     const [mobile, setMobile] = useState(false);
-    const router = useRouter();
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [favProductData, setFavProductData] = useState([])
@@ -243,7 +242,9 @@ function UsersFavouritesPage() {
 
                         <div className={"mt-4 text-center font-500"}>
                             <Link href={"/new-arrivals/all"}>
-                                <span className={"text-xs"}>&lt;</span> <span>BACK TO SHOPPING</span>
+                                <>
+                                    <span className={"text-xs"}>&lt;</span> <span>BACK TO SHOPPING</span>
+                                </>
                             </Link>
                         </div>
                     </div>
@@ -258,60 +259,48 @@ function UsersFavouritesPage() {
             </div>
             <div className="pl-8 flex-[3] flex flex-col items-start gap-4">
                 <p className="text-[28px] mb-2">Favourites</p>
+                <div className="flex w-full font-600 uppercase gap-5">
+                    <div className="flex-[3]">Products</div>
+                    <div className="flex-[1]">Price</div>
+                    <div className="flex-[2] text-center">Size</div>
+                    <div className="flex-[1]">Bag</div>
+                    <div className="w-[20px]"></div>
+                </div>
                 {favProductData.length
                     ? <>
-                        <table className={"w-full"}>
-                            <tr>
-                                <th>PRODUCTS</th>
-                                <th>PRICE</th>
-                                <th>SIZE</th>
-                                <th>BAG</th>
-                            </tr>
-                            {
-                                favProductData.map((item, index) => {
-                                    return (
-                                        <tr className={"text-[#777]"} key={index}>
-                                            <td className={"flex"}>
-                                                <span>
-                                                    <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88"/>
-                                                </span>
-                                                <div className={"ml-2"}>
-                                                    <p> {item.title} </p>
-                                                    <p> {item.label} </p>
-                                                </div>
-
-                                            </td>
-                                            <td>
-                                                <span> {item.price} </span>
-                                            </td>
-                                            <td>
-                                                <ul className={"flex justify-between my-1"}>
-                                                    {
-                                                        item.sizes.map((s, index) => <li key={index}>{s}</li>)
-                                                    }
-                                                </ul>
-                                            </td>
-                                            <td>
-                                                <span className={"text-m my-1 font-500"}> ADD TO BAG</span>
-                                            </td>
-                                            <td className={"mr-1 mt-1"} onClick={() => removeFromFav(index)}>
-                                                <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </table>
-                        <div className={"flex flex-col"}>
-                            <button onClick={moveAllToCart} className={"bg-[#222] py-3 mx-5 text-white"}>
+                        {favProductData?.map((item, index) => {
+                            return (
+                                <div className="flex gap-5 w-full mb-4 text-[#777777] text-sm" key={index}>
+                                    <div className="flex-[3] inline-flex items-start">
+                                        <Image src={WEBASSETS + item.img} alt="cart" width="70" height="112"/>
+                                        <div className={"ml-3"}>
+                                            <p>{item.title}</p>
+                                            <p>{item.label}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex-[1]">
+                                        {item.price}
+                                    </div>
+                                    <div className="flex-[2]">
+                                        <ul className={"flex justify-evenly"}>
+                                            {item.sizes.map((s, index) => <li key={index}>{s}</li>)}
+                                        </ul>
+                                    </div>
+                                    <div className="flex-[1]">ADD TO BAG</div>
+                                    <div className="w-[20px]" onClick={() => removeFromFav(index)}>
+                                        <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                        <div className={"flex w-full items-center text-sm flex-col"}>
+                            <button onClick={moveAllToCart} className={"bg-[#222] py-3 tracking-wider px-5 w-fit text-white"}>
                                 MOVE ALL PRODUCTS TO BAG
                             </button>
-
                             <div className={"mt-4 text-center font-500"}>
-                                <span className={"text-xs"}>&lt;</span> <Link href={"/new-arrivals/all"}>BACK TO SHOPPING</Link>
+                                <span className={"text-xs"}>&lt;</span> <Link href={"/new-arrivals/all"}><span>BACK TO SHOPPING</span></Link>
                             </div>
                         </div>
-
                     </>
                     : <p className="text-[#777] text-lg">No Favourites Found!</p>
                 }

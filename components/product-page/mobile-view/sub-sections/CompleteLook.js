@@ -13,7 +13,7 @@ const CompleteLook = ({ paired_products, id }) => {
         <div className="py-5">
             <span className="block text-center text-xl">Complete The Look</span>
             <span className="block text-center uppercase text-[9px] tracking-[1.5px]">pairings that work</span>
-            <div className="overflow-x-scroll pt-8 pb-4">
+            <div className="overflow-x-scroll scrollbar-none pt-8 pb-4">
                 <div className="inline-flex">
                     {
                         paired_products.map((item, index) => {
