@@ -39,18 +39,14 @@ const Index = () => {
                                             <Image src={WEBASSETS + item['img_path']} alt='collection' layout={`fill`} objectFit={`cover`}/>
                                         </span>
                                     </Link>
-                                    <p className='font-cursive italic leading-none text-2xl text-black/80 block text-center sentence'>{item['title']}</p>
-                                    <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-600 tracking-widest'>{item['subtitle'][currCurrency]}</p>
+                                    <p className='font-cursive italic leading-none text-3xl text-black/80 block text-center sentence'>{item['title']}</p>
+                                    <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-500 tracking-widest'>{item['subtitle'][currCurrency]}</p>
                                     <div className={`py-5 zoomInSwiper`}>
                                         <Swiper
                                             slidesPerView={2}
                                             spaceBetween={50}
                                             centeredSlides={true}
                                             loop={true}
-                                            autoplay={{
-                                                "delay": 2500,
-                                                "disableOnInteraction": false
-                                            }}
                                             navigation={true}
                                         >
                                             {item.products_imgs.map((product, i) => {
