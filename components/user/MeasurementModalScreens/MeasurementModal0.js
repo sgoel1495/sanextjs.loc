@@ -2,16 +2,16 @@ import React, {useContext} from 'react';
 import AppWideContext from '../../../store/AppWideContext';
 import emptyMeasurement from '../../../store/emptyMeasurement.json';
 import Image from 'next/image';
+import {PastOrderItem} from "./PastOrders";
 
 function MeasurementModal0({closeModal, isMobile, addNew, pastOrders, measureProduct, showPastOrders, product}) {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
-    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+
     const getCategory = (i) => {
         const splitItem = i.split('-');
         return splitItem[0];
     };
 
-    const buttonClass = 'border-2 border-black px-8 py-4 font-800 text-[#777] cursor-pointer';
+    const buttonClass = 'border-2 border-black px-8 py-4 font-800 text-[#777] cursor-pointer ';
     const buttonClassMobile = 'border-[1.5vw] border-white p-[5%] font-800 text-center text-[3.75vw] w-[80%] rounded-[5vw] shadow-xl bg-[#faede3] tracking-[1px]';
 
     const mobileView = () => {
@@ -25,9 +25,10 @@ function MeasurementModal0({closeModal, isMobile, addNew, pastOrders, measurePro
                         </button>
                         <p className='uppercase font-700 text-center my-3'>SELECT MEASUREMENTS</p>
                         <div className='grid place-items-center place-content-center gap-5 h-full'>
-                            <div className={buttonClassMobile + ' mt-36' + [pastOrders.length && "bg-success"]} onClick={showPastOrders}>
+                            <div className={buttonClassMobile + ' ' + [pastOrders.length && "!bg-[#4eb16d] text-white"]} onClick={showPastOrders}>
                                 CHOOSE MEASUREMENTS FROM PAST ORDERS
                             </div>
+                            {measureProduct && <PastOrderItem item={measureProduct} setCurrentMeasurementProduct={()=>{}} gap={"gap-10"}/>}
                             <div className='font-800 text-[#777]'>OR</div>
                             <div className={buttonClassMobile}
                                  onClick={() => addNew({...emptyMeasurement, "selected_length": product.dress_length, "selected_sleeve": product.sleeve_length})}>
@@ -55,11 +56,20 @@ function MeasurementModal0({closeModal, isMobile, addNew, pastOrders, measurePro
                         </button>
                         <p className='uppercase text-xl font-500 text-[#777] text-center my-5'>SELECT MEASUREMENTS</p>
                         <div className='grid place-items-center place-content-center gap-5'>
-                            <div className={buttonClass + ' mt-20'} onClick={showPastOrders}>
-                                CHOOSE MEASUREMENTS FROM PAST ORDERS
+                            <div className={buttonClass + ' mt-20 uppercase text-center w-full '+[pastOrders.length && "!text-white bg-[#333231]"]} onClick={showPastOrders}>
+                                {
+                                    measureProduct ?
+                                        <>
+                                            selected measurements of:
+                                            <p className={"font-400"}>({getCategory(measureProduct.asset_id)}) {measureProduct.name}</p>
+                                        </>
+                                        :
+                                        "CHOOSE MEASUREMENTS FROM PAST ORDERS"
+                                }
+
                             </div>
                             <div className='font-800 text-[#777]'>OR</div>
-                            <div className={buttonClass} onClick={() => addNew({...emptyMeasurement, "selected_length": product.dress_length, "selected_sleeve": product.sleeve_length})}>
+                            <div className={buttonClass+" px-20"} onClick={() => addNew({...emptyMeasurement, "selected_length": product.dress_length, "selected_sleeve": product.sleeve_length})}>
                                 ENTER NEW MEASUREMENTS
                             </div>
                         </div>

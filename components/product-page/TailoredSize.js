@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import MeasurementModal0 from "../user/MeasurementModalScreens/MeasurementModal0";
 import MeasurementModal1 from "../user/MeasurementModalScreens/MeasurementModal1";
 import MeasurementModalDress12 from "../user/MeasurementModalScreens/MeasurementModalDress1_2";
@@ -8,19 +8,22 @@ import CustomizeLength from "../user/MeasurementModalScreens/CustomizeLength";
 import MeasurementModal3 from "../user/MeasurementModalScreens/MeasurementModal3";
 import ReactDom from "react-dom";
 import UserLogin from "../user/login/UserLogin";
-import { apiCall } from "../../helpers/apiCall";
-import { getUserObject } from "../../helpers/addTocart";
+import {apiCall} from "../../helpers/apiCall";
+import {getUserObject} from "../../helpers/addTocart";
 import AppWideContext from "../../store/AppWideContext";
-import { useRouter } from "next/router";
-import { isTailored } from "../../helpers/returnSizes";
+import {useRouter} from "next/router";
+import {isTailored} from "../../helpers/returnSizes";
 import Toast from "../common/Toast";
+import useApiCall from "../../hooks/useApiCall";
+import PastOrders from "../user/MeasurementModalScreens/PastOrders";
 
-const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit, saveMeasurement, addNew }) => {
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit, saveMeasurement, addNew}) => {
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const router = useRouter();
     const [showModal, setShowModal] = useState(false);
     const [active, setActive] = useState(0)
     const [pastOrders, setPastOrders] = useState([])
+    const [showOrderModal, setShowOrderModal] = useState(true)
     const [showLogin, setShowLogin] = useState(false)
     const [currentMeasureProduct, setCurrentMeasurementProduct] = useState(null);
     const [showToast, setShowToast] = useState(false)
@@ -34,7 +37,7 @@ const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize
     };
 
     const updateValues = (key, value) => {
-        setCurrentMeasurement({ ...currentMeasurement, [key]: value });
+        setCurrentMeasurement({...currentMeasurement, [key]: value});
     };
 
     const addNewModal = (m) => {
@@ -46,7 +49,10 @@ const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize
 
     const pastOrdersModal = () => {
         if (dataStore.userServe.email) {
-            setShowToast(true)
+            if (pastOrders.length === 0)
+                setShowToast(true)
+            else
+                setShowOrderModal(true)
         } else {
             if (isMobile)
                 router.push("/homepage/signin")
@@ -63,82 +69,86 @@ const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize
     const saveModal = async () => {
         if (edit) {
             saveMeasurement()
-        }
-        else if (isMobile) {
+        } else if (isMobile) {
             if (!currentMeasurement.measure_id) {
-                setCurrentMeasurement({ ...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m" })
+                setCurrentMeasurement({...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m"})
                 setSize(null)
             }
         } else {
-            saveToCart({ ...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m" })
+            saveToCart({...currentMeasurement, measure_id: (new Date()).getTime().toString() + "_m"})
         }
         closeModal()
     };
 
     const refreshMeasurements = async () => {
-        const measurementCall = await apiCall("userMeasurements", dataStore.apiToken, {
-            "user": getUserObject(dataStore, updateDataStore)
+        const measurementCall = await apiCall("userOrderHistory", dataStore.apiToken, {
+            "user": {...getUserObject(dataStore, updateDataStore), token: dataStore.apiToken}
         });
-        if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
-            updateDataStore("userMeasurements", measurementCall.response)
+        const items = []
+        if (measurementCall.status !== 200)
+            return
+        const orders = Object.keys(measurementCall.response)
+        orders.forEach(orderID => {
+            let order = measurementCall.response[orderID]
+            order.item.forEach(item => {
+                if (item.measurement)
+                    items.push({...item.measurement, asset_id: item.asset_id, old_product_id: item.old_product_id, name: item.name})
+            })
+        })
+        setPastOrders(items)
     }
 
     useEffect(() => {
         refreshMeasurements()
     }, [])
 
-    useEffect(() => {
-        setPastOrders(Object.keys(dataStore.userMeasurements).filter(measurement => dataStore.userMeasurements[measurement].old_product_id || dataStore.userMeasurements[measurement].asset_id))
-    }, [dataStore.userMeasurements])
-
     let activeModalScreen
     if (edit) {
         switch (active) {
             case 0:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                    nextModal={nextModal} updateValues={updateValues} product={{}} edit={true} />;
+                                                       nextModal={nextModal} updateValues={updateValues} product={{}} edit={true}/>;
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
-                    lastModal={lastModal} updateValues={updateValues} product={{}} edit={true} />;
+                                                       lastModal={lastModal} updateValues={updateValues} product={{}} edit={true}/>;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                    saveModal={saveModal} product={{}} edit={true} />;
+                                                       saveModal={saveModal} product={{}} edit={true}/>;
                 break;
         }
-    }
-    else if (data.is_customize) {
+    } else if (data.is_customize) {
         let customLastModal = lastModal
         switch (active) {
 
             case 0:
                 activeModalScreen = <MeasurementModal0 closeModal={closeModal} isMobile={isMobile} addNew={addNewModal} showPastOrders={pastOrdersModal}
-                    pastOrders={pastOrders} measureProduct={currentMeasureProduct} product={data} />;
+                                                       pastOrders={pastOrders} measureProduct={currentMeasureProduct} product={data}/>;
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                    nextModal={nextModal} updateValues={updateValues} product={data} />;
+                                                       nextModal={nextModal} updateValues={updateValues} product={data}/>;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModalDress12 closeModal={closeModal} isMobile={isMobile} lastModal={lastModal} nextModal={nextModal} updateValues={updateValues}
-                    currentMeasurement={currentMeasurement} />
+                                                             currentMeasurement={currentMeasurement}/>
                 break;
             case 3:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
-                    lastModal={lastModal} updateValues={updateValues} product={data} />;
+                                                       lastModal={lastModal} updateValues={updateValues} product={data}/>;
                 break;
             case 4:
                 activeModalScreen =
                     <CustomizeSleeve closeModal={closeModal} isMobile={isMobile} data={data.sleeve_length_opt} defaultValue={data.sleeve_length} nextModal={nextModal}
-                        lastModal={lastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data} />
+                                     lastModal={lastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data}/>
                 break;
             case 5:
                 if (data.sleeve_length_opt.length <= 1) {
                     customLastModal = () => setActive(active - 2)
                 }
                 activeModalScreen = <CustomizeLength closeModal={closeModal} isMobile={isMobile} data={data.dress_length_opt} defaultValue={data.dress_length} nextModal={nextModal}
-                    lastModal={customLastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data} />
+                                                     lastModal={customLastModal} currentMeasurement={currentMeasurement} updateValues={updateValues} product={data}/>
                 break;
             case 6:
                 if (data.dress_length_opt.length <= 1) {
@@ -150,26 +160,26 @@ const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize
                 }
                 activeModalScreen =
                     <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={customLastModal} saveModal={saveModal}
-                        product={data} />;
+                                       product={data}/>;
                 break;
         }
     } else {
         switch (active) {
             case 0:
                 activeModalScreen = <MeasurementModal0 closeModal={closeModal} isMobile={isMobile} addNew={addNewModal} showPastOrders={pastOrdersModal}
-                    pastOrders={pastOrders} measureProduct={currentMeasureProduct} />;
+                                                       pastOrders={pastOrders} measureProduct={currentMeasureProduct} product={data}/>;
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                    nextModal={nextModal} updateValues={updateValues} product={data} />;
+                                                       nextModal={nextModal} updateValues={updateValues} product={data}/>;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
-                    lastModal={lastModal} updateValues={updateValues} product={data} />;
+                                                       lastModal={lastModal} updateValues={updateValues} product={data}/>;
                 break;
             case 3:
                 activeModalScreen = <MeasurementModal3 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                    saveModal={saveModal} product={data} />;
+                                                       saveModal={saveModal} product={data}/>;
                 break;
         }
     }
@@ -202,10 +212,10 @@ const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize
                             >
                                 {
                                     currentMeasurement.measure_id ? <>
-                                        <p className={'uppercase font-900 text-xs'}>Tailored</p>
-                                        <p className={'uppercase font-900 text-sm'}>T</p>
-                                        <p className={' uppercase font-400 text-[10px]'}>edit</p>
-                                    </>
+                                            <p className={'uppercase font-900 text-xs'}>Tailored</p>
+                                            <p className={'uppercase font-900 text-sm'}>T</p>
+                                            <p className={' uppercase font-400 text-[10px]'}>edit</p>
+                                        </>
                                         :
                                         <>
                                             <p className={'uppercase font-900 text-xs'}>Tailored</p>
@@ -223,11 +233,15 @@ const TailoredSize = ({ data, currentMeasurement, setCurrentMeasurement, setSize
             }
 
             {showModal &&
-                ReactDom.createPortal(<>{activeModalScreen}</>,
-                    document.getElementById('measurementmodal'),
-                )}
+            ReactDom.createPortal(<>{activeModalScreen}</>,
+                document.getElementById('measurementmodal'),
+            )}
             {showLogin && ReactDom.createPortal(
-                <UserLogin setShowSidebarMenuUser={setShowLogin} closeModal={() => setShowLogin(false)} />,
+                <UserLogin setShowSidebarMenuUser={setShowLogin} closeModal={() => setShowLogin(false)}/>,
+                document.getElementById("userband"))}
+            {showOrderModal && ReactDom.createPortal(
+                <PastOrders pastOrders={pastOrders} closeModal={() => setShowOrderModal(false)} isMobile={isMobile} setCurrentMeasurementProduct={setCurrentMeasurementProduct}
+                            setCurrentMeasurement={setCurrentMeasurement}/>,
                 document.getElementById("userband"))}
             <Toast show={showToast} hideToast={() => setShowToast(false)}>
                 <span>Sorry! you don&apos;t have measurements from past order! Enter New Measurements</span>

@@ -19,7 +19,6 @@ function UsersCheckoutPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const router = useRouter();
-    const [giftPaymentComplete, setGiftPaymentComplete] = useState(false);
     const [active, setActive] = useState(1);
 
     useEffect(() => {
@@ -66,8 +65,7 @@ function UsersCheckoutPage() {
             break;
         case 4:
             ActiveForm = (
-                <GiftAndPayment giftPaymentComplete={giftPaymentComplete}
-                    updateCompleteness={setGiftPaymentComplete.bind(this)} setActive={setActive}/>
+                <GiftAndPayment setActive={setActive}/>
             );
             break;
         case 5:

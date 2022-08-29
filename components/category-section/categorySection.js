@@ -49,9 +49,6 @@ const CategorySection = () => {
                                     "disableOnInteraction": false
                                 }}
                                 navigation={false}
-                                pagination={{
-                                    clickable: true
-                                }}
                                 loop={true}
                                 onSlideChange={(swiper) => setActive(swiper.realIndex)}
                                 initialSlide={0}
@@ -59,7 +56,7 @@ const CategorySection = () => {
                                 {carousalResp.response.data.mob.imgs?.slice(0,10).map((item, index) => {
                                     return <SwiperSlide key={index}>
                                         <Link href={carousalResp.response.data.mob.links[index] ? carousalResp.response.data.mob.links[index] : ""}>
-                                            <a className={'block relative h-[498px] w-full'}>
+                                            <a className={'block relative aspect-[9/16] w-full'}>
                                                 <Image
                                                     src={WEBASSETS + item}
                                                     alt=""
@@ -72,10 +69,10 @@ const CategorySection = () => {
                                 })}
                             </Swiper>
                         </div>
-                        <div className="col-span-2 flex items-center justify-center gap-2">
+                        <div className="col-span-2 flex items-center justify-center gap-2 mt-2 flex-wrap">
                             {carousalResp.response.data.mob.links.map((_, index) => {
                                 return (
-                                    <span className={`block w-2.5 h-2.5 rounded-full ${activeIndex === index ? 'bg-[#dbd5d3]' : 'bg-[#faf3f0]'}`} key={index}/>
+                                    <span className={`block w-2.5 h-2.5 rounded-full opacity-[.2] ${activeIndex === index ? 'bg-[#000000]' : 'bg-[#fe9e0b]'}`} key={index}/>
                                 )
                             })}
                         </div>
