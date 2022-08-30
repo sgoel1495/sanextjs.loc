@@ -12,7 +12,7 @@ function SizeGuide({ closeModal, isMobile }) {
             returnValues = (
                 <div className="text-center mb-10">
                     {returnValues}
-                    <p className="font-600 text-lg mb-5">
+                    <p className="font-600 lg:text-lg mb-5">
                         {p} (Body Measurements)
                     </p>
                     <table className="size_guide_table">
@@ -253,13 +253,13 @@ function SizeGuide({ closeModal, isMobile }) {
     const mobileView = ()=> {
         return (
             <div className="bg-black/60 h-screen w-screen fixed inset-0 z-modal2 grid place-items-center" onClick={closeModal}>
-                <div className="bg-white relative h-[90vh] flex flex-col overflow-y-auto" onClick={e => e.stopPropagation()}>
+                <div className="bg-white relative h-full flex flex-col overflow-y-auto" onClick={e => e.stopPropagation()}>
                     <button className="absolute top-0 right-4 text-2xl z-50" onClick={closeModal}>X</button>
-                    <div className="text-center my-8">
+                    <div className="text-center mt-10 mb-7">
                         <p className="text-h2 mb-2">Size Guide</p>
-                        <p className="text-lg">The measurements below are Body Measurements</p>
+                        <p className="text-lg leading-[1.2]">The measurements below are<br/>Body Measurements</p>
                     </div>
-                    <div className="px-12">
+                    <div className="px-5 lg:px-12">
                         <div>{upperProducts()}</div>
                         <div>{lowerProducts()}</div>
                         <div>{skirtProducts()}</div>

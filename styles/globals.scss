@@ -64,7 +64,7 @@ body.scroll-overflow .navigator {
     @apply w-full table-fixed;
 
     thead th {
-        @apply text-[#777]
+        @apply text-[#777] text-xs lg:text-base
     }
 
     tr {
@@ -76,11 +76,11 @@ body.scroll-overflow .navigator {
 
         td,
         th {
-            @apply py-3;
+            @apply py-3 text-xs lg:text-base;
         }
 
         td {
-            @apply text-[#777]
+            @apply text-[#777] text-xs lg:text-base
         }
     }
 }
