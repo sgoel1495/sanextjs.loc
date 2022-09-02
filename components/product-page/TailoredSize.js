@@ -23,7 +23,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     const [showModal, setShowModal] = useState(false);
     const [active, setActive] = useState(0)
     const [pastOrders, setPastOrders] = useState([])
-    const [showOrderModal, setShowOrderModal] = useState(true)
+    const [showOrderModal, setShowOrderModal] = useState(false)
     const [showLogin, setShowLogin] = useState(false)
     const [currentMeasureProduct, setCurrentMeasurementProduct] = useState(null);
     const [showToast, setShowToast] = useState(false)
@@ -234,7 +234,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
 
             {showModal &&
             ReactDom.createPortal(<>{activeModalScreen}</>,
-                document.getElementById('measurementmodal'),
+                document.getElementById('measurementmodal')
             )}
             {showLogin && ReactDom.createPortal(
                 <UserLogin setShowSidebarMenuUser={setShowLogin} closeModal={() => setShowLogin(false)}/>,
