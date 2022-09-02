@@ -30,7 +30,7 @@ const Index = () => {
                                 <SwiperSlide key={index}>
                                     <Link href={`looks/#${item.look_id}`}>
                                         <a className={"block rounded-3xl overflow-hidden mx-4"}>
-                                                <span className="block relative h-[300px] aspect-square">
+                                                <span className="block relative h-full aspect-square">
                                                     <Image
                                                         src={WEBASSETS + item.img_path}
                                                         alt={item.name}

@@ -77,7 +77,7 @@ const Customize = ({data, selected, setSelected}) => {
     const [showSleeve, setShowSleeve] = React.useReducer((state, action) => {
         return !state
     }, false)
-    console.log(selected)
+
     if (data.is_customize)
         return <>
             <div className={"grid grid-cols-3 gap-3 place-items-center text-[#4eb16d] text-xs font-900 tracking-widest"}>
