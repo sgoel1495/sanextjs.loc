@@ -278,7 +278,7 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
-            case "getHomePageMenu":
+        case "getHomePageMenu":
             url += "/get_home_page_menu";
             body = {
                 home: {
@@ -645,6 +645,33 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
 
         case  "redeemVoucher":
             url += "/users/redeem_voucher"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+        case  "saveRating":
+            url += "/save_rating_review"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+        case  "getRating":
+            url += "/get_rating_review_data"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+            case  "editShippingAddress":
+            url += "/editshippingaddress"
             body = {
                 token: apiToken,
                 ...queryObject
