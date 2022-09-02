@@ -75,7 +75,7 @@ const PastOrders = ({isMobile, closeModal, pastOrders, setCurrentMeasurementProd
     }
 
     const items = (gap) => {
-        return pastOrders.map(item => <PastOrderItem item={item} setCurrentMeasurementProduct={selectItem} closeModal={closeModal} gap={gap}/>)
+        return pastOrders.map((item,index) => <PastOrderItem key={index} item={item} setCurrentMeasurementProduct={selectItem} closeModal={closeModal} gap={gap}/>)
     }
 
     let mobileView = <div className={['bg-black/60 h-screen fixed inset-0 z-modal2 grid place-items-center']} onClick={closeModal}>

@@ -16,6 +16,16 @@ function UsersOrderHistoryPage() {
     const {dataStore} = useContext(AppWideContext);
     const [productData, setProductData] = useState({});
 
+    const getOrderHistory = () =>{
+        apiCall("userOrderHistory", dataStore.apiToken,{user:{token:dataStore.apiToken ,contact:dataStore.userData.contact}})
+            .then(pData=>{
+                if (pData.status === 200 && pData.response){
+                    setProductData(pData.response);
+                }
+            })
+            .catch(e=>console.log(e.message))
+    }
+
     useEffect(() => {
         if (dataStore.userData.contact == null)
             router.replace("/"); //illegal direct access
@@ -24,14 +34,7 @@ function UsersOrderHistoryPage() {
         setMobile(isMobile)
     }, [])
     useEffect(()=>{
-        apiCall("userOrderHistory", dataStore.apiToken,{user:{token:dataStore.apiToken ,contact:dataStore.userData.contact}})
-            .then(pData=>{
-                if (pData.status === 200 && pData.response){
-                    console.log('eerreeeeee', pData.response);
-                    setProductData(pData.response);
-                }
-            })
-            .catch(e=>console.log(e.message))
+        getOrderHistory()
     },[dataStore.userData.contact, dataStore.apiToken])
 
     const MyOrderProducts = () => {
@@ -41,7 +44,7 @@ function UsersOrderHistoryPage() {
                     returnValue = (
                         <Fragment>
                             {returnValue}
-                            <MyOrderProductCard key={productIndex} product={productData[key]} itemIndex={itemIndex} isMobile={mobile}/>
+                            <MyOrderProductCard key={productIndex} product={productData[key]} itemIndex={itemIndex} isMobile={mobile} getOrderHistory={getOrderHistory}/>
                         </Fragment>
                     );
                 }          

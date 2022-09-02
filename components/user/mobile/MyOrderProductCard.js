@@ -5,18 +5,20 @@ import StarSVG from "./StarSVG";
 import Modal from "./MyOrdersModals"
 import {DateTime} from "luxon";
 import AppWideContext from "../../../store/AppWideContext";
+import Toast from "../../common/Toast";
 
-const MyOrderProductCard = ({ product, itemIndex, isMobile }) => {
+const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore} = useContext(AppWideContext);
     const [showModal, setShowModal] = useState(0)
+    const [toastMsg, setToastMsg] = React.useState(false)
 
     const mobile = <div className={"flex flex-col bg-[#f7f7f7] mx-2 py-3"}>
         <div className={"flex justify-between gap-4"}>
             <div className={"flex flex-col"}>
                 <Image
                     src={WEBASSETS + "/assets/" + product.item[itemIndex].asset_id + "/thumb.jpg"} alt="cart"
-                    width="129" height="208" />
+                    width="129" height="208"/>
                 <span className={"flex flex-col items-center"}>
                     <span> {product.item.tagline}</span>
                     <span className={"flex gap-2 text-xs"}>Qty: {product.item[itemIndex].qty}<span>SIZE {product.item[itemIndex].size}</span></span>
@@ -53,7 +55,7 @@ const MyOrderProductCard = ({ product, itemIndex, isMobile }) => {
                             setShowModal(2)
                         }}
                     >
-                        <StarSVG type={"filledBlackStar"} />RATE &amp; REVIEW PRODUCT
+                        <StarSVG type={"filledBlackStar"}/>RATE &amp; REVIEW PRODUCT
                     </span>
                 </div>
             </div>
@@ -124,7 +126,7 @@ const MyOrderProductCard = ({ product, itemIndex, isMobile }) => {
                         }}
                         className='font-700 flex items-center mt-2'
                     >
-                        <StarSVG type={"filledBlackStar"} />RATE &amp; REVIEW PRODUCT
+                        <StarSVG type={"filledBlackStar"}/>RATE &amp; REVIEW PRODUCT
                     </span>
                 </div>
             </div>
@@ -154,13 +156,19 @@ const MyOrderProductCard = ({ product, itemIndex, isMobile }) => {
             showModal > 0
             && ReactDom.createPortal(
                 <Modal
+                    isMobile={isMobile}
                     setShowModal={setShowModal}
                     index={showModal}
                     data={product}
+                    itemIndex={itemIndex}
+                    setToastMsg={setToastMsg}
                 />,
                 document.getElementById("measurementmodal")
             )
         }
+        <Toast show={toastMsg} hideToast={() => setToastMsg(false)}>
+            {toastMsg}
+        </Toast>
     </>
 };
 
