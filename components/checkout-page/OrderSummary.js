@@ -1,8 +1,7 @@
 
 import React, {useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
-import Toast from "../common/Toast";
-import currencyFormatter from "../../helpers/currencyFormatter";
+import appSettings from "../../store/appSettings";
 
 function OrderSummary() {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -14,15 +13,16 @@ function OrderSummary() {
     firstDate.setDate(firstDate.getDate() + 10);
     const secondDate = new Date();
     secondDate.setDate(secondDate.getDate() + 12);
-    const curr = dataStore.currCurrency.toUpperCase();
-
+    const currCurrency = dataStore.currCurrency;
+    const currencyData = appSettings("currency_data");
+    const currencySymbol = currencyData[currCurrency].curr_symbol;
 
     useEffect(() => {
         let tempGross = 0;
         let tempBag = 0;
         let tempPromo = 0;
         if (dataStore.orderSummary) {
-            if (curr === "INR") {
+            if (currCurrency.toUpperCase() === "INR") {
                 tempBag = dataStore.orderSummary.grand_total_inr
                 tempGross = dataStore.orderSummary.grand_total_inr
             } else {
@@ -30,7 +30,7 @@ function OrderSummary() {
                 tempGross = dataStore.orderSummary.grand_total_usd
             }
             if (dataStore.orderSummary.discount_hash && Object.keys(dataStore.orderSummary.discount_hash).length) {
-                if (curr === "INR") {
+                if (currCurrency.toUpperCase() === "INR") {
                     tempPromo = dataStore.orderSummary.discount_hash.discount_inr
                     tempGross = dataStore.orderSummary.discount_hash.after_discount_grand_total_inr
                 } else {
@@ -64,23 +64,23 @@ function OrderSummary() {
                 <tbody>
                 <tr>
                     <td>Bag Total</td>
-                    <td>{currencyFormatter(curr).format(bagTotal)}</td>
+                    <td>{currencySymbol}{bagTotal}</td>
                 </tr>
                 <tr>
                     <td>Promo</td>
-                    <td>{currencyFormatter(curr).format(isNaN(promo) ? 0 : promo)}</td>
+                    <td>{currencySymbol}{(isNaN(promo) ? 0 : promo)}</td>
                 </tr>
                 {
                     dataStore.userWallet.WalletAmount > 0 ?
                         <>
                             <tr>
                                 <td>Gross Total</td>
-                                <td>{currencyFormatter(curr).format(gross)}</td>
+                                <td>{currencySymbol}{gross}</td>
                             </tr>
                             <tr>
                                 <td>Wallet</td>
                                 <td>
-                                    {currencyFormatter(curr).format(dataStore.userWallet.WalletAmount)}
+                                    {currencySymbol}{dataStore.userWallet.WalletAmount}
                                 </td>
                             </tr>
                         </>
@@ -103,7 +103,7 @@ function OrderSummary() {
             </table>
             <div className='flex font-600 text-[#777] mt-5'>
                 <p className='flex-1'>Amount Payable</p>
-                <p>{currencyFormatter(curr).format(total)}</p>
+                <p>{currencySymbol}{total}</p>
             </div>
             <p className='text-[10px] font-500'>* Inclusive GST</p>
         </div>
@@ -118,22 +118,22 @@ function OrderSummary() {
                 <tbody>
                 <tr>
                     <td>Bag Total</td>
-                    <td>{currencyFormatter(curr).format(bagTotal)}</td>
+                    <td>{currencySymbol}{bagTotal}</td>
                 </tr>
                 <tr>
                     <td>Promo</td>
-                    <td>{currencyFormatter(curr).format(promo)}</td>
+                    <td>{currencySymbol}{promo}</td>
                 </tr>
                 {dataStore.userWallet.WalletAmount > 0 ?
                     <>
                         <tr>
                             <td>Gross Total</td>
-                            <td>{currencyFormatter(curr).format(gross)}</td>
+                            <td>{currencySymbol}{gross}</td>
                         </tr>
                         <tr>
                             <td>Wallet</td>
                             <td>
-                                {currencyFormatter(curr).format(dataStore.userWallet.WalletAmount)}
+                                {currencySymbol}{dataStore.userWallet.WalletAmount}
                             </td>
                         </tr>
                     </>
@@ -149,7 +149,7 @@ function OrderSummary() {
             </table>
             <div className='flex font-600 text-[#777] mt-5'>
                 <p className='flex-1'>Amount Payable</p>
-                <p>{currencyFormatter(curr).format(total)}</p>
+                <p>{currencySymbol}{total}</p>
             </div>
             <p className='text-[10px] font-500'>* Inclusive GST</p>
         </div>

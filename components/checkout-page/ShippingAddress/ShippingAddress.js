@@ -4,7 +4,6 @@ import DisplayAddress from "./DisplayAddress";
 import AddressForm from "./AddressForm";
 import Toast from "../../common/Toast";
 import ReactDom from "react-dom";
-import AccountMenu from "../../user/AccountMenu";
 import UserLogin from "../../user/login/UserLogin";
 
 function ShippingAddress({setActive}) {

@@ -29,7 +29,6 @@ function GiftAndPayment({setActive}) {
     const [useWallet, setUseWallet] = useReducer((state) => {
         return !state
     }, dataStore.orderSummary.payment ? dataStore.orderSummary.payment.is_wallet : false);
-    const curr = dataStore.currCurrency.toUpperCase();
 
     useEffect(() => {
         updateDataStore("orderSummary", {...dataStore.orderSummary, "payMode": payMode})
@@ -219,7 +218,7 @@ function GiftAndPayment({setActive}) {
             {
                 !dataStore.mobile && payMode === "COD" && ReactDOM.createPortal(<>
                     <td>COD Handling Fee</td>
-                    <td>{currencyFormatter(curr).format(80)}</td>
+                    <td>{currencySymbol}{80}</td>
                 </>, document.getElementById("codCharges"))
             }
             {showOTPModal && ReactDOM.createPortal(
