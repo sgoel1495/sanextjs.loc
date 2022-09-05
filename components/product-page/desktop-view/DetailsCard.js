@@ -15,6 +15,7 @@ import Image from "next/image";
 import {FaFacebookF, FaTwitter} from 'react-icons/fa';
 import TailoredSize from "../TailoredSize";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
+import currencyFormatter from "../../../helpers/currencyFormatter";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -30,8 +31,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
     const {dataStore, updateDataStore} = useContext(AppWideContext)
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const currCurrency = dataStore.currCurrency
-    const currencyData = appSettings("currency_data")
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const curr = dataStore.currCurrency.toUpperCase();
     const [deliveryAvailable, setDeliveryAvailable] = useState(null)
     const [pincode, setPinCode] = useState(null)
     const [sizeModal, setSizeModal] = useState(false)
@@ -119,7 +119,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
         <div>
             <div className={"bg-white p-4 shadow-xl"}>
                 <div className={"flex items-center justify-between text-black/60 text-sm font-500 mb-4"}>
-                    <span>{currencySymbol} {currCurrency === "inr" ? data.price : data.usd_price}</span>
+                    <span>{currencyFormatter(curr).format(currCurrency === "inr" ? data.price : data.usd_price).split(".")[0]}</span>
                     <div className='flex items-center gap-2 relative'>
                         <WishlistButton pid={hpid}/>
                         <button className={"relative block h-4 w-4"} onClick={() => setShowShare(!showShare)}>

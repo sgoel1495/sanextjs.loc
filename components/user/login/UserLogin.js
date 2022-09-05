@@ -24,13 +24,13 @@ function UserLogin(props) {
     let ActiveForm = <></>
     switch (active) {
         case 0:
-            ActiveForm = <LoginForm showToast={showToast} setShowSidebarMenuUser={props.setShowSidebarMenuUser} />
+            ActiveForm = <LoginForm showToast={showToast} setShowSidebarMenuUser={props.setShowSidebarMenuUser} isMobile={props.isMobile} />
             break;
         case 1:
-            ActiveForm = <SignUpForm showToast={showToast}/>
+            ActiveForm = <SignUpForm showToast={showToast} isMobile={props.isMobile}/>
             break;
         case 2:
-            ActiveForm = <ForgotPassword closeModal={closeModal} showToast={showToast}/>
+            ActiveForm = <ForgotPassword closeModal={closeModal} showToast={showToast} isMobile={props.isMobile}/>
             break;
     }
     const browserView = (

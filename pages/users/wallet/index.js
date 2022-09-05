@@ -5,7 +5,6 @@ import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
-import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
 import {isMobile} from "react-device-detect";
 import Toast from "../../../components/common/Toast";
 import {apiCall} from "../../../helpers/apiCall";

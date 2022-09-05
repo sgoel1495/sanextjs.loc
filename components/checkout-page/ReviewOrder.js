@@ -5,10 +5,13 @@ import ProductCartView from "../common/ProductCartView/ProductCartView";
 import currencyFormatter from "../../helpers/currencyFormatter";
 import ReactDom from "react-dom";
 import OtpModal from "./OtpModal";
+import appSettings from "../../store/appSettings";
 
 function ReviewOrder(props) {
     const {dataStore} = useContext(AppWideContext);
-    const curr = dataStore.currCurrency.toUpperCase();
+    const currCurrency = dataStore.currCurrency;
+    const currencyData = appSettings("currency_data");
+    const currencySymbol = currencyData[currCurrency].curr_symbol;
     const address = dataStore.orderSummary.address ? dataStore.orderSummary.address : {};
     const measurements = dataStore.orderSummary.measurements ? dataStore.orderSummary.measurements : {};
     const [showOTPModal, setShowOTPModal] = useReducer((state) => {
@@ -51,7 +54,7 @@ function ReviewOrder(props) {
 
                 <div className='flex justify-between'>
                     <p className='font-bold text-l'>Amount to be paid</p>
-                    <p>{currencyFormatter(curr).format(total)}</p>
+                    <p>{currencySymbol}{total}</p>
                 </div>
                 <p className='font-bold text-l mt-4'>Your Size info</p>
                 <div className='uppercase my-4 grid grid-cols-2'>

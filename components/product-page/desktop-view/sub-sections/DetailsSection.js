@@ -1,19 +1,18 @@
 import React, { useContext, useState } from 'react';
 import Image from "next/image";
 import AppWideContext from "../../../../store/AppWideContext";
-import appSettings from "../../../../store/appSettings";
 import Link from "next/link";
 import returnSizes from "../../../../helpers/returnSizes";
 import { addToCart } from "../../../../helpers/addTocart";
 import Toast from "../../../common/Toast";
+import currencyFormatter from "../../../../helpers/currencyFormatter";
 
 const DetailsSection = ({ theme, data, selectedSize, setSelectedSize }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const { dataStore, updateDataStore } = useContext(AppWideContext);
     const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const curr = dataStore.currCurrency.toUpperCase();
 
     const [selected, setSelected] = useState(0)
     const [toastMsg, setToastMsg] = useState(null)
@@ -87,7 +86,7 @@ const DetailsSection = ({ theme, data, selectedSize, setSelectedSize }) => {
     return (
         <div className={[`flex-[5] p-4 text-${theme}`]}>
             <div className={"flex justify-between px-10"}>
-                <span className={"block"}>{currencySymbol}{currCurrency === "inr" ? data.price : data.usd_price}</span>
+                <span className={"block"}>{currencyFormatter(curr).format(currCurrency === "inr" ? data.price : data.usd_price).split(".")[0]}</span>
                 <span className={"block"}>SHARE</span>
             </div>
             <div className="flex flex-col items-center text-center mt-20">
@@ -120,9 +119,9 @@ const DetailsSection = ({ theme, data, selectedSize, setSelectedSize }) => {
             </div>
             <div className='my-8'>
                 <div className={"flex items-end justify-start gap-10 font-600 mb-2"}>
-                    <p className={"uppercase cursor-pointer"} onClick={() => setSelected(0)}>Description</p>
-                    <p className={"uppercase cursor-pointer"} onClick={() => setSelected(1)}>details</p>
-                    <p className={"uppercase cursor-pointer"} onClick={() => setSelected(2)}>fabric & care</p>
+                    <p className={"uppercase cursor-pointer relative "+[selected===0 && "description-active"]} onClick={() => setSelected(0)}>Description</p>
+                    <p className={"uppercase cursor-pointer relative "+[selected===1 && "description-active"]} onClick={() => setSelected(1)}>details</p>
+                    <p className={"uppercase cursor-pointer relative "+[selected===2 && "description-active"]} onClick={() => setSelected(2)}>fabric & care</p>
                 </div>
                 <ul className='list-disc text-sm font-500 pl-5'>
                     {description.map((value, index) => value.length > 0 && <li className={""} key={index}>{value}</li>)}

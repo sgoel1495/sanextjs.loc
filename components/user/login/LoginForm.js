@@ -94,7 +94,7 @@ const LoginForm = (props) => {
                             } else {
                                 if (props.setShowSidebarMenuUser)
                                     props.setShowSidebarMenuUser(false)
-                                else
+                                if (props.isMobile)
                                     router.push("/")
                                 props.showToast("Welcome");
                                 // <CartModal isMobile={true} />
@@ -122,6 +122,10 @@ const LoginForm = (props) => {
                 if (response.status === 200) {
                     response.json().then(data => {
                         if (data['status'] === 200) {
+                            if (props.setShowSidebarMenuUser)
+                                props.setShowSidebarMenuUser(false)
+                            if (props.isMobile)
+                                router.push("/")
                             saveUserDataAfterSuccessfulLogin(uname)
                         } else {
                             props.showToast(data['response']['body'].toUpperCase());

@@ -145,7 +145,7 @@ function Navbar(props) {
             break;
         default:
             browserView =
-                <nav className={navStyle + " flex items-center gap-x-4"}>
+                <nav className={navStyle + " flex items-center gap-x-4 absolute bg-white/60 w-full hover:bg-white transition-colors shadow"}>
                     <SaltIcon type={props.type} isMobile={false}/>
                     <SidebarMenuHamburger type={props.type} isMobile={false}/>
                     <Menu type={props.type} isMobile={false}/>

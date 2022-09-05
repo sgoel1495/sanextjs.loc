@@ -3,9 +3,9 @@ import Loader from "../../common/Loader";
 import { validateEmail } from "../../../helpers/loginSignUpHelpers";
 import { apiDictionary } from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
-import {apiCall} from "../../../helpers/apiCall";
 import "../../../helpers/updateUserDataAfterLogin";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+import {useRouter} from "next/router";
 
 const SignUpForm = (props) => {
 
@@ -26,7 +26,7 @@ const SignUpForm = (props) => {
         password: '',
         confirm_password: ''
     })
-
+    const router = useRouter();
     const saveUserDataAfterSuccessfulLogin = async (username) => {
         const updateData = await updateUserDataAfterLogin(username,dataStore.apiToken,dataStore.userMeasurements,dataStore.userCart);
         Object.keys(updateData).forEach((key)=>{
@@ -91,6 +91,8 @@ const SignUpForm = (props) => {
                         response.json().then(respData => {
                             if (respData['status'] === 200) {
                                 saveUserDataAfterSuccessfulLogin(data.email)
+                                if (props.isMobile)
+                                    router.push("/")
                             } else {
                                 props.showToast(respData['response'].toUpperCase())
                             }
