@@ -10,6 +10,7 @@ import NotifyMeModal from "../common/NotifyMeModal";
 import Toast from "../common/Toast";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
+import currencyFormatter from "../../helpers/currencyFormatter";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -29,8 +30,8 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = dataStore.currCurrency;
+    const curr = currCurrency.toUpperCase();
     const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
     const inr = currencyData["inr"].curr_symbol;
     const usd = currencyData["usd"].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
@@ -121,7 +122,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                     (currCurrency === "inr" || !prod.usd_price) ?
                                         <>
                                             {inr}
-                                            <span className={prod.is_sale ? "line-through" : ""}>{prod.price}</span>
+                                            <span className={prod.is_sale ? "line-through" : ""}>{currencyFormatter(curr).format(prod.price).split(".")[0]}</span>
                                             {
                                                 prod.is_sale && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
                                             }
@@ -181,8 +182,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                              onClick={() => saveToCart()}>
                                             <span className={`uppercase`}>Add to bag</span>
                                             <p className={`text-xs`}>
-                                                {currencySymbol}
-                                                {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                                {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                             </p>
                                         </div>
                                     </Fragment>

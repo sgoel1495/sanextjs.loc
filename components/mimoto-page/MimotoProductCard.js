@@ -10,6 +10,7 @@ import {Fragment} from "react";
 import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
+import currencyFormatter from "../../helpers/currencyFormatter";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -30,6 +31,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     const [showSize, setShowSize] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null)
     const [addToCartWasPressed, setAddToCartWasPressed] = useState(false)
+    const curr = currCurrency.toUpperCase();
 
     const saveToCart = async (size = "", addIt = false) => {
         const haveSize = (size !== "") ? true : !!(selectedSize)
@@ -76,8 +78,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                             </div>
                             <div className='inline-flex flex-col items-center'>
                                 <p className={`text-xs`}>
-                                    {currencySymbol}
-                                    {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                 </p>
                                 <WishListButton pid={prod.asset_id}/>
                             </div>
@@ -100,8 +101,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
                         <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
                         <p className={`text-xs`}>
-                            {currencySymbol}
-                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                            {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                         </p>
                     </div>
                 </a>
@@ -174,8 +174,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                                          onClick={() => saveToCart("", true)}>
                                         <span className={`uppercase`}>Add to bag</span>
                                         <p className={`text-xs`}>
-                                            {currencySymbol}
-                                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                            {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                         </p>
                                     </div>
                                 </Fragment>

@@ -6,9 +6,14 @@ import AppWideContext from "../../store/AppWideContext";
 import {savePayment, updateAddressForOrder} from "./functions";
 import OtpModal from "./OtpModal";
 import currencyFormatter from "../../helpers/currencyFormatter";
+import appSettings from "../../store/appSettings";
 
 function GiftAndPayment({setActive}) {
     const {dataStore, updateDataStore} = useContext(AppWideContext);
+    const currCurrency = dataStore.currCurrency;
+    const currencyData = appSettings("currency_data");
+    const currencySymbol = currencyData[currCurrency].curr_symbol;
+
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
     const [isGift, setIsGift] = useReducer((state) => {
