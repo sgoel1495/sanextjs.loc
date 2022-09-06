@@ -7,6 +7,7 @@ import DetailsSection from "./sub-sections/DetailsSection";
 import Footer from "../../footer/Footer";
 import CompleteLook from "./sub-sections/CompleteLook";
 import ExploreSections from "./sub-sections/ExploreSections";
+import {calcLuminance} from "../../../helpers/calcLuminance";
 
 const DesktopView = ({ hpid, data }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -15,10 +16,15 @@ const DesktopView = ({ hpid, data }) => {
     const [theme, setTheme] = useState("black")
     const videoRef = useRef(null);
 
+    React.useEffect(()=>{
+        if(calcLuminance(data.bg_color)){
+            setTheme("white")
+        }
+    },[data])
+
     useEffect(() => {
         videoRef.current?.load();
     }, [hpid]);
-
     return (
         <div>
             <div className={"relative w-full h-screen"}>
@@ -50,7 +56,7 @@ const DesktopView = ({ hpid, data }) => {
             <span className={"block relative aspect-[16/5] w-full"}>
                 <Image src={WEBASSETS + "/assets/fabrics/" + hpid + ".jpg"} alt='' layout={`fill`} objectFit={`contain`} />
             </span>
-            <div className={"flex flex-column bg-[#F7EDEE]"} id="product_details">
+            <div className={"flex flex-column bg-[#F7EDEE]"} id="product_details" style={{background:data.bg_color}}>
                 <div className={"flex-[7]"}>
                     <ImageSwitcher images={data.images} />
                 </div>

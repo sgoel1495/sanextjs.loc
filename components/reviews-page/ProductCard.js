@@ -4,15 +4,14 @@ import Link from "next/link";
 import {apiDictionary} from "../../helpers/apiDictionary";
 import AppWideContext from "../../store/AppWideContext";
 import appSettings from "../../store/appSettings";
+import currencyFormatter from "../../helpers/currencyFormatter";
 
 const ProductCard = ({product}) => {
     const {dataStore} = React.useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [data, setData] = React.useState({})
     const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings('currency_data');
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
-
+    const curr = currCurrency.toUpperCase();
     React.useEffect(() => {
         if (product) {
 
@@ -40,7 +39,7 @@ const ProductCard = ({product}) => {
                 <div className={"w-40 flex flex-col justify-center items-center"}>
                     <div className={"text-base font-600"}>{data.name}</div>
                     <div className={"text-xs font-200"}>{data.tag_line}</div>
-                    <div className={"text-xs font-900"}>{currencySymbol} {currCurrency === 'inr' ? data.price : data.usd_price}</div>
+                    <div className={"text-xs font-900"}>{currencyFormatter(curr).format((currCurrency === "inr") ? data.price : data.usd_price).split(".")[0]}</div>
                 </div>
             </div>
         </Link>

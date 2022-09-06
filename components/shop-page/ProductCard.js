@@ -10,6 +10,7 @@ import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
+import currencyFormatter from "../../helpers/currencyFormatter";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -29,8 +30,8 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = dataStore.currCurrency;
+    const curr = currCurrency.toUpperCase();
     const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
     const inr = currencyData["inr"].curr_symbol;
     const usd = currencyData["usd"].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
@@ -109,7 +110,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                     className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
                 <Link href={"/" + prod.asset_id}>
                     <a className={`block z-0`} id={prod.asset_id}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.seo?prod.seo.imgalt:prod.name} outOfStock={prod.in_stock !== "true"}/>
+                        <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} outOfStock={prod.in_stock !== "true"}/>
                         <div className={`flex px-5 items-center leading-none py-3`}>
                             <div className='flex-1'>
                                 <p className={`font-600 font-cursive italic`}>{prod.name}</p>
@@ -117,8 +118,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                             </div>
                             <div className='inline-flex flex-col items-center'>
                                 <p className={`text-xs`}>
-                                    {currencySymbol}
-                                    {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                 </p>
                                 <WishListButton pid={prod.asset_id} isMobile={true}/>
                             </div>
@@ -135,7 +135,8 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                 <a className={`block text-center z-0`} id={prod.asset_id}>
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo?prod.seo.imgalt:prod.name} portrait={true} outOfStock={prod.in_stock !== "true"}/>
+                        <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={true}
+                                            outOfStock={prod.in_stock !== "true"}/>
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
@@ -145,8 +146,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                 {
                                     (currCurrency === "inr" || !prod.usd_price) ?
                                         <>
-                                            {inr}
-                                            <span className={prod.sale_price ? "line-through" : ""}>{prod.price}</span>
+                                            <span className={prod.sale_price ? "line-through" : ""}>{currencyFormatter(curr).format(prod.price).split(".")[0]}</span>
                                             {
                                                 prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
                                             }
@@ -181,7 +181,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                         <a>
                             <ShopDataBlockImage
                                 src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.new.jpg" : "/new.jpg")}
-                                alt={prod.seo?prod.seo.imgalt:prod.name} portrait={portrait}/>
+                                alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={portrait}/>
                         </a>
                     </Link>
                     {(showSize)
@@ -202,8 +202,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                              onClick={() => saveToCart()}>
                                             <span className={`uppercase`}>Add to bag</span>
                                             <p className={`text-xs`}>
-                                                {currencySymbol}
-                                                {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                                {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                             </p>
                                         </div>
                                     </Fragment>
@@ -235,7 +234,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                 <NotifyMeModal
                     closeModal={closeModal.bind(this)}
                     isMobile={dataStore.isMobile}
-                    userO={getUserObject(dataStore,updateDataStore)}
+                    userO={getUserObject(dataStore, updateDataStore)}
                     product={prod}
                 />,
                 document.getElementById("measurementmodal"))
