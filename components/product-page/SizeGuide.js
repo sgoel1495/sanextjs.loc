@@ -147,7 +147,7 @@ function SizeGuide({closeModal, isMobile}) {
                                                     if (cell === "" && item.columns[cellIndex - 1] !== "") {
                                                         if (rowIndex === 0) {
                                                             return <td rowSpan={item.rows.length + (item.rows[item.rows.length - 1][0] === "TAILORED" ? -1 : 0)}>Standard lengths
-                                                                fit average heights of 5'2" to 5'4"</td>
+                                                                fit average heights of 5&apos;2&quot; to 5&apos;4&quot;</td>
                                                         }
                                                     } else {
                                                         return <td colSpan={row.length === 2 ? item.columns.length : ""}>{cell}</td>
