@@ -12,6 +12,10 @@ import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
+function isV1Collection(name){
+    return ['rida' ,'taiyo' ,'doresshi' ,'ori' ,'chanderi' ,'kaansya' ,'shatsu' ,'radiance' ,'svarnam' ,'salt' ,'sith' ,'ikebana' ,'nostalgia' ,'noor'].includes(name)
+}
+
 const renderData = (arr, length) => arr.reduce((renderArray, one, i) => {
     const rowItems = Math.floor(i / length);
     renderArray[rowItems] = [].concat(renderArray[rowItems] || [], one);
@@ -72,7 +76,7 @@ function MimotoSlider({data, ...props}) {
         ? <div className={props.className}>
             <div className="bg-red-400 w-full aspect-[5/4] relative">
                 <div className={"relative w-full aspect-[5/4]"}>
-                    <Image src={WEBASSETS + data.mimoto_collection.home_img} layout={`fill`} objectFit={`cover`} objectPosition={"top"}
+                    <Image src={WEBASSETS + "/assets/images/"+data.mimoto_collection.name+[isV1Collection(data.mimoto_collection.name)?"_v1.jpg":".jpg"]} layout={`fill`} objectFit={`cover`} objectPosition={"top"}
                            alt={data.mimoto_collection.collection_id}/>
                 </div>
                 <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-10 bg-[#ffffffe6]">
