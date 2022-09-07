@@ -56,7 +56,7 @@ function MimotoSlider({data, ...props}) {
                             ))}
                             {
                                 item.length < 9 ?
-                                    new Array(9 - item.length).fill("").map(() => <div/>)
+                                    new Array(9 - item.length).fill("").map((_, index) => <div key={index}/>)
                                     :
                                     null
                             }
@@ -72,7 +72,7 @@ function MimotoSlider({data, ...props}) {
         ? <div className={props.className}>
             <div className="bg-red-400 w-full aspect-[5/4] relative">
                 <div className={"relative w-full aspect-[5/4]"}>
-                    <Image src={WEBASSETS  + data.mimoto_collection.home_img} layout={`fill`} objectFit={`cover`} objectPosition={"top"}
+                    <Image src={WEBASSETS + data.mimoto_collection.home_img} layout={`fill`} objectFit={`cover`} objectPosition={"top"}
                            alt={data.mimoto_collection.collection_id}/>
                 </div>
                 <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-10 bg-[#ffffffe6]">
