@@ -1,256 +1,172 @@
-import React, { Fragment } from "react";
+import React, {Fragment} from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-function SizeGuide({ closeModal, isMobile }) {
+function SizeGuide({closeModal, isMobile}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const upperProductArray = ["Tops/Shirts", "Tunics", "Dresses", "Outerwear"]
-    const lowerProductArray = ["Jumpsuits", "Shorts", "Pants"]
-    const upperProducts = () => {
-        let returnValues = null;
-        upperProductArray.forEach(p => {
-            returnValues = (
-                <div className="text-center mb-10">
-                    {returnValues}
-                    <p className="font-600 lg:text-lg mb-5">
-                        {p} (Body Measurements)
-                    </p>
-                    <table className="size_guide_table">
-                        <thead>
+    const upperProducts = [
+        {
+            heading: "Tops/Shirts (Body Measurements)",
+            columns: ["TO FIT BUST (in)", "TO FIT HIPS (in)", "LENGTH", "SHOULDER"],
+            rows: [
+                ["XS", "32\"", "35\"", "23\"", "13.5\""],
+                ["S", "34\"", "37\"", "23\"", "14\""],
+                ["M", "36\"", "39\"", "24\"", "14.5\""],
+                ["L", "38\"", "41\"", "24\"", "15\""],
+                ["XL", "40\"", "43\"", "25\"", "15.5\""],
+                ["XXL", "42\"", "45\"", "26\"", "16\""]
+            ]
+        },
+        {
+            heading: "Tunics (Body Measurements)",
+            columns: ["TO FIT BUST (in)", "TO FIT HIPS (in)", "LENGTH", "SHOULDER"],
+            rows: [
+                ["XS", "32\"", "35\"", "27.5\"", "13.5\""],
+                ["S", "34\"", "37\"", "28\"", "14\""],
+                ["M", "36\"", "39\"", "28\"", "14.5\""],
+                ["L", "38\"", "41\"", "29\"", "15\""],
+                ["XL", "40\"", "43\"", "29.5\"", "15.5\""],
+                ["XXL", "42\"", "45\"", "30\"", "16\""]
+            ]
+        },
+        {
+            heading: "Dresses (Body Measurements)",
+            columns: ["TO FIT BUST (in)", "TO FIT WAIST (in)", "TO FIT HIPS (in)", "KNEE LENGTH", "SHOULDER"],
+            rows: [
+                ["XS", "32\"", "26\"", "35\"", "36.5\"", "13.5\""],
+                ["S", "34\"", "28\"", "37\"", "37\"", "14\""],
+                ["M", "36\"", "30\"", "39\"", "37.5\"", "14.5\""],
+                ["L", "38\"", "32\"", "41\"", "38\"", "15\""],
+                ["XL", "40\"", "34\"", "43\"", "38.5\"", "15.5\""],
+                ["XXL", "42\"", "36\"", "45\"", "39\"", "16\""]
+            ]
+        },
+        {
+            heading: "Outerwear (Body Measurements)",
+            columns: ["TO FIT BUST (in)", "TO FIT WAIST (in)", "TO FIT HIPS (in)"],
+            rows: [
+                ["XS", "32\"", "26\"", "35\""],
+                ["S", "34\"", "28\"", "37\""],
+                ["M", "36\"", "30\"", "39\""],
+                ["L", "38\"", "32\"", "41\""],
+                ["XL", "40\"", "34\"", "43\""],
+                ["XXL", "42\"", "36\"", "45\""]
+            ]
+        },
+        {
+            heading: "Jumpsuits (Body Measurements)",
+            columns: ["TO FIT BUST (in)", "TO FIT WAIST (in)", "TO FIT HIPS (in)", "LENGTH", "SHOULDER", "TO FIT THIGH (in)"],
+            rows: [
+                ["XS", "32\"", "26\"", "35\"", "", "13.5\"", "21\""],
+                ["S", "34\"", "28\"", "37\"", "", "14\"", "22\""],
+                ["M", "36\"", "30\"", "39\"", "", "14.5\"", "23\""],
+                ["L", "38\"", "32\"", "41\"", "", "15\"", "24\""],
+                ["XL", "40\"", "34\"", "43\"", "", "15.5\"", "24\""],
+                ["XXL", "42\"", "36\"", "45\"", "", "16\"", "25\""]
+            ]
+        },
+        {
+            heading: "Shorts (Body Measurements)",
+            columns: ["TO FIT WAIST (in)", "TO FIT HIPS (in)", "LENGTH", "TO FIT THIGH (in)"],
+            rows: [
+                ["XS", "26\"", "35\"", "", "21\""],
+                ["S", "28\"", "37\"", "", "22\""],
+                ["M", "30\"", "39\"", "", "23\""],
+                ["L", "32\"", "41\"", "", "24\""],
+                ["XL", "34\"", "43\"", "", "24\""],
+                ["XXL", "36\"", "45\"", "", "25\""],
+                ["TAILORED", "You can enter your measurements, including customized LENGTH and we will tailor it for you!"]
+            ]
+        },
+        {
+            heading: "Pants (Body Measurements)",
+            columns: ["TO FIT WAIST (in)", "TO FIT HIPS (in)", "LENGTH", "TO FIT THIGH (in)"],
+            rows: [
+                ["XS", "26\"", "35\"", "", "21\""],
+                ["S", "28\"", "37\"", "", "22\""],
+                ["M", "30\"", "39\"", "", "23\""],
+                ["L", "32\"", "41\"", "", "24\""],
+                ["XL", "34\"", "43\"", "", "24\""],
+                ["XXL", "36\"", "45\"", "", "25\""],
+                ["TAILORED", "You can enter your measurements, including customized LENGTH and we will tailor it for you!"]
+            ]
+        },
+        {
+            heading: "Skirts (Body Measurements)",
+            columns: ["TO FIT WAIST (in)", "TO FIT HIPS (in)", "LENGTH"],
+            rows: [
+                ["XS", "26\"", "35\"", "21\""],
+                ["S", "28\"", "37\"", "22\""],
+                ["M", "30\"", "39\"", "23\""],
+                ["L", "32\"", "41\"", "24\""],
+                ["XL", "34\"", "43\"", "24\""],
+                ["XXL", "36\"", "45\"", "25\""],
+                ["TAILORED", "You can enter your measurements, including customized LENGTH and we will tailor it for you!"]
+            ]
+        },
+        {
+            heading: "Belts (Body Measurements)",
+            columns: ["TO FIT WAIST (in)", ""],
+            rows: [
+                ["S", "28\" to 32\"", ""],
+                ["M", "32\" to 36\"", ""],
+                ["L", "34\" to 38\"", ""],
+                ["XL", "36\" to 40\"", ""]
+            ]
+        }
+    ]
+
+    const productTable = () => {
+        return <div>
+            {
+                upperProducts.map((item, index) => (
+                    <div className="text-center mb-10" key={index}>
+                        <p className="font-600 text-lg mb-5">
+                            {item.heading}
+                        </p>
+                        <table className="size_guide_table">
+                            <thead>
                             <tr>
                                 <th></th>
-                                <th>BUST</th>
-                                <th>HIPS</th>
-                                <th>LENGTH</th>
-                                <th>SHOULDER</th>
+                                {
+                                    item.columns.map((heading, headIndex) => (
+                                        <th key={headIndex}>{heading}</th>
+                                    ))
+                                }
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>XS</th>
-                                <td>32&quot;</td>
-                                <td>35&quot;</td>
-                                <td>23&quot;</td>
-                                <td>13.5&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>S</th>
-                                <td>34&quot;</td>
-                                <td>37&quot;</td>
-                                <td>23&quot;</td>
-                                <td>14&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>M</th>
-                                <td>36&quot;</td>
-                                <td>39&quot;</td>
-                                <td>24&quot;</td>
-                                <td>14.5&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>L</th>
-                                <td>38&quot;</td>
-                                <td>41&quot;</td>
-                                <td>24&quot;</td>
-                                <td>15&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>L</th>
-                                <td>40&quot;</td>
-                                <td>43&quot;</td>
-                                <td>25&quot;</td>
-                                <td>15.5&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>XXL</th>
-                                <td>42&quot;</td>
-                                <td>45&quot;</td>
-                                <td>26&quot;</td>
-                                <td>16&quot;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            )
-        })
-        return returnValues
-    }
-    const lowerProducts = () => {
-        let returnValues = null;
-        lowerProductArray.forEach(p => {
-            returnValues = (
-                <div className="text-center mb-10">
-                    {returnValues}
-                    <p className="font-600 text-lg mb-5">
-                        {p} (Body Measurements)
-                    </p>
-                    <table className="size_guide_table">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>BUST</th>
-                                <th>WAIST</th>
-                                <th>HIPS</th>
-                                <th>LENGTH</th>
-                                <th>SHOULDER</th>
-                                <th>THIGH</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>XS</th>
-                                <td>32&quot;</td>
-                                <td>26&quot;</td>
-                                <td>35&quot;</td>
-                                <td rowSpan={6}>Standard lengths fit average heights of 5&apos;2&quot; to 5&apos;4&quot;</td>
-                                <td>13.5&quot;</td>
-                                <td>21&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>S</th>
-                                <td>34&quot;</td>
-                                <td>28&quot;</td>
-                                <td>37&quot;</td>
-                                <td>14&quot;</td>
-                                <td>22&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>M</th>
-                                <td>36&quot;</td>
-                                <td>30&quot;</td>
-                                <td>39&quot;</td>
-                                <td>14.5&quot;</td>
-                                <td>23&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>L</th>
-                                <td>38&quot;</td>
-                                <td>32&quot;</td>
-                                <td>41&quot;</td>
-                                <td>15&quot;</td>
-                                <td>24&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>XL</th>
-                                <td>40&quot;</td>
-                                <td>34&quot;</td>
-                                <td>43&quot;</td>
-                                <td>15.5&quot;</td>
-                                <td>24&quot;</td>
-                            </tr>
-                            <tr>
-                                <th>XXL</th>
-                                <td>42&quot;</td>
-                                <td>36&quot;</td>
-                                <td>45&quot;</td>
-                                <td>16&quot;</td>
-                                <td>25&quot;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            )
-        })
-        return returnValues
-    }
-    const skirtProducts = () => {
-        return (
-            <div className="text-center mb-10">
-                <p className="font-600 text-lg mb-5">
-                    Skirts (Body Measurements)
-                </p>
-                <table className="size_guide_table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Waist</th>
-                            <th>HIPS</th>
-                            <th>LENGTH</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>XS</th>
-                            <td>26&quot;</td>
-                            <td>35&quot;</td>
-                            <td>21&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>S</th>
-                            <td>28&quot;</td>
-                            <td>37&quot;</td>
-                            <td>22&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>M</th>
-                            <td>30&quot;</td>
-                            <td>39&quot;</td>
-                            <td>23&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>L</th>
-                            <td>32&quot;</td>
-                            <td>41&quot;</td>
-                            <td>24&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>XL</th>
-                            <td>34&quot;</td>
-                            <td>43&quot;</td>
-                            <td>25&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>XXL</th>
-                            <td>36&quot;</td>
-                            <td>45&quot;</td>
-                            <td>26&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>Tailored</th>
-                            <td colSpan={3}>You can enter your measurements, including customized LENGTH and we will tailor it for you!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
-    const beltProducts = () => {
-        return (
-            <div className="text-center mb-10">
-                <p className="font-600 text-lg mb-5">
-                    Belts (Body Measurements)
-                </p>
-                <table className="size_guide_table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>TO FIT WAIST</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>S</th>
-                            <td>28&quot; to 32&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>M</th>
-                            <td>32&quot; to 36&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>L</th>
-                            <td>34&quot; to 38&quot;</td>
-                        </tr>
-                        <tr>
-                            <th>XL</th>
-                            <td>36&quot; to 40&quot;</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        )
+                            </thead>
+                            <tbody>
+                            {
+                                item.rows.map((row, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        {
+                                            row.map((cell, cellIndex) => {
+                                                if (cellIndex === 0) {
+                                                    return <th>{cell}</th>
+                                                } else {
+                                                    if (cell === "" && item.columns[cellIndex - 1] !== "") {
+                                                        if (rowIndex === 0) {
+                                                            return <td rowSpan={item.rows.length + (item.rows[item.rows.length - 1][0] === "TAILORED" ? -1 : 0)}>Standard lengths
+                                                                fit average heights of 5'2" to 5'4"</td>
+                                                        }
+                                                    } else {
+                                                        return <td colSpan={row.length === 2 ? item.columns.length : ""}>{cell}</td>
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    </tr>
+                                ))
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                ))
+            }
+        </div>
     }
 
-    const mobileView = ()=> {
+    const mobileView = () => {
         return (
             <div className="bg-black/60 h-screen w-screen fixed inset-0 z-modal2 grid place-items-center" onClick={closeModal}>
                 <div className="bg-white relative h-full flex flex-col overflow-y-auto" onClick={e => e.stopPropagation()}>
@@ -260,16 +176,13 @@ function SizeGuide({ closeModal, isMobile }) {
                         <p className="text-lg leading-[1.2]">The measurements below are<br/>Body Measurements</p>
                     </div>
                     <div className="px-5 lg:px-12">
-                        <div>{upperProducts()}</div>
-                        <div>{lowerProducts()}</div>
-                        <div>{skirtProducts()}</div>
-                        <div>{beltProducts()}</div>
+                        {productTable()}
                     </div>
                     <div className="text-center text-[#777] mb-5">Measurement Guide</div>
                     <div className="px-10">
                         <span className="relative block w-full aspect-square">
                             <Image
-                                src={WEBASSETS+"/assets/images/Measurement.png"}
+                                src={WEBASSETS + "/assets/images/Measurement.png"}
                                 layout={`fill`}
                                 objectFit={`contain`}
                                 alt={"measurement guide"}
@@ -299,16 +212,13 @@ function SizeGuide({ closeModal, isMobile }) {
                         <p className="">The measurements below are Body Measurements</p>
                     </div>
                     <div className="px-10">
-                        <div>{upperProducts()}</div>
-                        <div>{lowerProducts()}</div>
-                        <div>{skirtProducts()}</div>
-                        <div>{beltProducts()}</div>
+                        {productTable()}
                     </div>
                     <div className="text-center text-[#777] mb-5">Measurement Guide</div>
-                    <div className="px-10">
+                    <div className="px-40">
                         <span className="relative block w-full aspect-square">
                             <Image
-                                src={WEBASSETS+"/assets/images/Measurement.png"}
+                                src={WEBASSETS + "/assets/images/Measurement.png"}
                                 layout={`fill`}
                                 objectFit={`contain`}
                                 alt={"measurement guide"}
@@ -319,7 +229,7 @@ function SizeGuide({ closeModal, isMobile }) {
                     <div className="text-[#777] p-10">
                         *The waist measurement in the table is that of your natural waist. All are pants fit on the Wearing waist. As shown in the figure.
                         Please
-                        <Link href="/salt/contact-us">
+                        <Link href={"/salt/contact-us"}>
                             <a className="cursor-pointer text-[#333]"> Contact Us </a>
                         </Link>
                         if you have any questions about your fit.
