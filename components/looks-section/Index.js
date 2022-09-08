@@ -11,8 +11,12 @@ const Index = () => {
     const resp = useApiCall("getLookSection", dataStore.apiToken);
     return (
         <div className={"py-4 bg-[#f5efea]"}>
-            <h3 className='text-h3 text-[#96c7d0] font-900 uppercase tracking-widest mx-4'>Looks</h3>
-            <h3 className='text-h3 text-[#96c7d0] font-cursive italic leadding-none tracking-wider mx-4 mb-4'>Handpicked for you</h3>
+            <Link href={"/looks"}>
+                <a>
+                    <h3 className='text-h3 text-[#96c7d0] font-900 uppercase tracking-widest mx-4'>Looks</h3>
+                    <h3 className='text-h3 text-[#96c7d0] font-cursive italic leading-none tracking-wider mx-4 mb-4'>Handpicked for you</h3>
+                </a>
+            </Link>
             {resp && resp.response &&
             <>
                 <section className={"newArrivals mb-5"}>
@@ -26,7 +30,7 @@ const Index = () => {
                                 <SwiperSlide key={index}>
                                     <Link href={`looks/#${item.look_id}`}>
                                         <a className={"block rounded-3xl overflow-hidden mx-4"}>
-                                                <span className="block relative h-[300px] aspect-square">
+                                                <span className="block relative h-full aspect-square">
                                                     <Image
                                                         src={WEBASSETS + item.img_path}
                                                         alt={item.name}
@@ -57,13 +61,13 @@ const Index = () => {
                                 style = "border-t-4 border-l-2 border-b-2 border-r-4 border-white rounded-tr-[15%]"
                                 break;
                             case 2:
-                                style = "border-t-2 border-l-4 border-b-2 border-r-2 border-white"
+                                style = "border-t-2 border-l-4 border-b-4 border-r-2 border-white"
                                 break;
                             case 3:
                                 style = "border-t-2 border-l-2 border-b-4 border-r-4 border-white rounded-br-[15%]"
                                 break;
                             case 4:
-                                style = "border-t-2 border-l-4 border-b-4 border-r-4 border-white rounded-bl-[15%]"
+                                style = "border-t-0 border-l-4 border-b-4 border-r-2 border-white rounded-bl-[15%]"
                                 break;
                         }
                         return (
@@ -76,7 +80,7 @@ const Index = () => {
                         )
                     })}
                     <Link href={"/looks"} passHref>
-                        <div className={"relative h-full grid place-items-center text-center content-center"}>
+                        <div className={"relative h-full grid place-items-center text-center content-center border-l-2 border-white"}>
                             <p className='text-[20px] font-600 font-cursive italic leading-none'>Tap to see more</p>
                             <p className="text-[10px] font-600 text-black/70 uppercase tracking-widest">ALL LOOKS SECTION</p>
                         </div>

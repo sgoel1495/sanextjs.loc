@@ -1,7 +1,26 @@
-import {Fragment} from "react";
+import React, { Fragment, useContext, useState } from "react";
+import TailoredSize from "../product-page/TailoredSize";
+import { apiCall } from "../../helpers/apiCall";
+import { getUserObject } from "../../helpers/addTocart";
+import AppWideContext from "../../store/AppWideContext";
 
-function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mobile}) {
-    //<MeasurementBlock measurement={dataStore.userMeasurements[key]} index={index} mobile={dataStore.mobile} />
+function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mobile, refresh }) {
+    const [currentMeasurement, setCurrentMeasurement] = useState(measurement)
+    const { dataStore, updateDataStore } = useContext(AppWideContext);
+
+    const saveMeasurement = () => {
+        apiCall("updateMeasurements", dataStore.apiToken, {
+            user: getUserObject(dataStore, updateDataStore),
+            "measurments": currentMeasurement
+        })
+            .then(pData => {
+                if (pData.status === 200) {
+                    refresh()
+                }
+            })
+            .catch(e => console.log(e.message))
+    }
+
     const mobileView = (
         <div className="mt-6 pl-6">
             <div>
@@ -19,12 +38,9 @@ function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mob
                 <div className="mb-2">Others: {measurement.others}</div>
             </div>
             <div className="flex justify-evenly">
-                <button
-                    className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
-                    onClick={() => showModal(measurement)}
-                >
-                    Edit
-                </button>
+                <TailoredSize isMobile={true} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
+                }} edit={true} saveMeasurement={saveMeasurement} />
+
                 <button
                     className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
                     onClick={() => deleteMeasurement(measurement.measure_id)}
@@ -35,78 +51,36 @@ function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mob
         </div>
     );
     const browserView = (
-        <Fragment>
-            <div>
-                <div>{index + 1}. Measurement Profile</div>
-                <div>Measurement ID: {measurement.measure_id}</div>
-                <div>Bust: {measurement.bust}</div>
-                <div>Waist: {measurement.waist}</div>
-                <div>Hips: {measurement.hips}</div>
-                <div>
-                    Height: {measurement.height_f}ft {measurement.height_i}inch(es)
+        <div className="bg-[#f1f2f3] p-5 w-full">
+            <div className="font-600 mb-2">{index + 1}. Measurement Profile</div>
+            <div className="text-[#777777] text-sm grid grid-cols-2 justify-items-start my-4 font-500">
+                <div className="py-1">Measurement ID: {measurement.measure_id}</div>
+                <div className="py-1">Bust: {measurement.bust}</div>
+                <div className="py-1">Waist: {measurement.waist}</div>
+                <div className="py-1">Hips: {measurement.hips}</div>
+                <div className="py-1">Height: {measurement.height_f}ft {measurement.height_i}inch(es)</div>
+                <div className="py-1">Wearing Waist: {measurement.wearing_waist}</div>
+                <div className="py-1">Biceps: {measurement.biceps}</div>
+                <div className="py-1">Others: {measurement.others}</div>
+                <div className="py-1">Shoulder: {measurement.shoulder}</div>
+            </div>
+            <div className="grid grid-cols-2 justify-items-start w-full items-center">
+                <TailoredSize
+                    isMobile={false}
+                    currentMeasurement={currentMeasurement}
+                    setCurrentMeasurement={setCurrentMeasurement}
+                    setSize={() => { }}
+                    edit={true}
+                    saveMeasurement={saveMeasurement}
+                />
+                <div className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => deleteMeasurement(measurement.measure_id)}>
+                    DELETE
                 </div>
-                <div>Biceps: {measurement.biceps}</div>
-                <div>Wearing Waist: {measurement.wearing_waist}</div>
-                <div>Shoulder: {measurement.shoulder}</div>
-                <div>Others: {measurement.others}</div>
             </div>
-            <div
-                onClick={() => {
-                    showModal(measurement);
-                }}
-            >
-                EDIT
-            </div>
-            <div
-                onClick={() => {
-                    deleteMeasurement(measurement.measure_id);
-                }}
-            >
-                DELETE
-            </div>
-        </Fragment>
+        </div>
     );
 
     return mobile ? mobileView : browserView;
 }
 
 export default MeasurementBlock;
-
-/*
-{
-  "measure_id": "",
-  "bust": "",
-  "waist": "",
-  "hips": "",
-  "height_f": "",
-  "height_i" : "",
-  "wearing_waist": "",
-  "biceps": "",
-  "fitting": "",
-  "abdomen": "",
-  "biceps_fit": "",
-  "others": "",
-  "shoulder": "",
-  "length": "",
-  "size": "",
-  "bre_size": "",
-  "bra_size_other": "",
-  "jeans_pant": "",
-  "jeans_pant_other": "",
-  "brand_top": "",
-  "brand_top_other": "",
-  "brand_top_size": "",
-  "brand_top_size_other": "",
-  "brand_pant": "",
-  "brand_pant_other": "",
-  "brand_pant_size": "",
-  "brand_pant_size_other": "",
-  "brand_dress": "",
-  "brand_dress_other": "",
-  "brand_dress_size": "",
-  "brand_dress_size_other": "",
-  "selected_sleeve": "",
-  "selected_length": ""
-}
-
- */

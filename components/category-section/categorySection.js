@@ -39,10 +39,9 @@ const CategorySection = () => {
             </div>
             <div className={"pb-8 px-[10vw] bg-[#f0eae6]"}>
 
-                {
-                    carousalResp && carousalResp.status === 200 &&
+                {carousalResp && carousalResp.status === 200 &&
                     <>
-                        <div className='overflow-hidden rounded-3xl border-4 border-white'>
+                        <div className='overflow-hidden rounded-3xl border-4 border-white category-section-swiper'>
                             <Swiper
                                 slidesPerView={1}
                                 autoplay={{
@@ -50,15 +49,14 @@ const CategorySection = () => {
                                     "disableOnInteraction": false
                                 }}
                                 navigation={false}
-                                pagination={false}
                                 loop={true}
                                 onSlideChange={(swiper) => setActive(swiper.realIndex)}
                                 initialSlide={0}
                             >
-                                {carousalResp.response.data.mob.imgs.map((item, index) => {
+                                {carousalResp.response.data.mob.imgs?.slice(0,10).map((item, index) => {
                                     return <SwiperSlide key={index}>
                                         <Link href={carousalResp.response.data.mob.links[index] ? carousalResp.response.data.mob.links[index] : ""}>
-                                            <a className={'block relative h-[65vh] w-full'}>
+                                            <a className={'block relative aspect-[9/16] w-full'}>
                                                 <Image
                                                     src={WEBASSETS + item}
                                                     alt=""
@@ -71,10 +69,10 @@ const CategorySection = () => {
                                 })}
                             </Swiper>
                         </div>
-                        <div className="col-span-2 flex items-center justify-center gap-2">
+                        <div className="col-span-2 flex items-center justify-center gap-2 mt-2 flex-wrap">
                             {carousalResp.response.data.mob.links.map((_, index) => {
                                 return (
-                                    <span className={`block w-2.5 h-2.5 rounded-full ${activeIndex === index ? 'bg-[#dbd5d3]' : 'bg-[#faf3f0]'}`} key={index}/>
+                                    <span className={`block w-2.5 h-2.5 rounded-full opacity-[.2] ${activeIndex === index ? 'bg-[#000000]' : 'bg-[#fe9e0b]'}`} key={index}/>
                                 )
                             })}
                         </div>

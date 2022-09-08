@@ -2,7 +2,7 @@
  * @params {isMobile} props
  * @constructor
  */
-import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
+import React, {Fragment, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import SaltIcon from "./SaltIcon";
@@ -12,8 +12,10 @@ import SearchMenu from "../search/SearchMenu";
 import Menu from "./Menu";
 import SidebarMenuCart from "../sidebar/cart/SidebarMenuCart";
 import SidebarMenuUser from "../sidebar/SidebarMenuUser";
+import AppWideContext from "../../store/AppWideContext";
 
 function Navbar(props) {
+    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const menuRef = useRef(null);
     const subMenuRef = useRef(null);
@@ -64,14 +66,14 @@ function Navbar(props) {
                 </nav>
             mobileView = <Fragment>
                 <div className={navStyle + " flex items-center justify-between bg-white"}>
-                    <SidebarMenuHamburger />
-                    <SaltIcon isMobile={true} type={props.type} />
+                    <SidebarMenuHamburger/>
+                    <SaltIcon isMobile={true} type={props.type}/>
                     <p className={'text-[10px] font-500 leading-none'}>BESPOKE &amp; <br/> CUSTOM CLOTHING</p>
-                    <SearchMenu isMobile={true} />
-                    <SidebarMenuCart isMobile={true} />
+                    <SearchMenu isMobile={true}/>
+                    <SidebarMenuCart isMobile={true}/>
                 </div>
                 <div className="z-30 sticky top-0 pt-2 flex items-center bg-white" ref={menuRef}>
-                    <Link href="/" >
+                    <Link href="/">
                         <a className="block px-4">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 1024" className='w-5 h-5'>
                                 <path d="M169.387067 0h1020.161199v1020.1612H169.387067z" fill="#FFFFFF"
@@ -116,12 +118,19 @@ function Navbar(props) {
             mobileView = (
                 <div className={"flex justify-between items-center bg-white/90 z-20 px-4"}>
                     <div className={"inline-flex items-center gap-x-5"}>
-                        <Link href={"/homepage/signin"}>
-                            <a className={"relative block w-6 h-6"}>
-                                <Image src={WEBASSETS + "/assets/images/user_icon.svg"} alt="user" layout={`fill`}
-                                       objectFit={`cover`}/>
-                            </a>
-                        </Link>
+                        {
+                            (dataStore.userServe.user_name !== "") ?
+                                <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"}>
+                                    {dataStore.userServe.user_name[0].toUpperCase()}
+                                </div>
+                                :
+                                <Link href={"/homepage/signin"}>
+                                    <a>
+                                        <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"}
+                                               alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
+                                    </a>
+                                </Link>
+                        }
                         <SearchMenu isMobile={true}/>
                     </div>
                     <div className={"flex-1 inline-flex justify-center"}>
@@ -136,7 +145,7 @@ function Navbar(props) {
             break;
         default:
             browserView =
-                <nav className={navStyle + " flex items-center gap-x-4"}>
+                <nav className={navStyle + " flex items-center gap-x-4 absolute bg-white/60 w-full hover:bg-white transition-colors shadow"}>
                     <SaltIcon type={props.type} isMobile={false}/>
                     <SidebarMenuHamburger type={props.type} isMobile={false}/>
                     <Menu type={props.type} isMobile={false}/>
@@ -161,12 +170,19 @@ function Navbar(props) {
                             <SidebarMenuHamburger isMobile={false}/>
                         </li>
                         <li>
-                            <Link href={"/homepage/signin"}>
-                                <a>
-                                    <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"}
-                                           alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
-                                </a>
-                            </Link>
+                            {
+                                (dataStore.userServe.user_name !== "") ?
+                                    <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"}>
+                                        {dataStore.userServe.user_name[0].toUpperCase()}
+                                    </div>
+                                    :
+                                    <Link href={"/homepage/signin"}>
+                                        <a>
+                                            <Image className={"w-6 h-6"} src={WEBASSETS + "/assets/images/user_icon.svg"}
+                                                   alt="user" width={iconHeightWeight} height={iconHeightWeight}/>
+                                        </a>
+                                    </Link>
+                            }
                         </li>
                         <li>
                             <Link href={"/new-arrivals/all"}>
@@ -180,7 +196,7 @@ function Navbar(props) {
                             <Link href={"/homepage/signin"}>
                                 <a>
                                     <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav"
-                                           width={iconHeightWeight} height={iconHeightWeight} />
+                                           width={iconHeightWeight} height={iconHeightWeight}/>
                                 </a>
                             </Link>
                         </li>

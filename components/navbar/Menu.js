@@ -18,7 +18,7 @@ import SubMenu from "./SubMenu";
 import React, { Fragment, useContext, useState } from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
-import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar";
+import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar/CategoryFilterSidebar";
 
 function Menu(props) {
     const { dataStore } = useContext(AppWideContext);

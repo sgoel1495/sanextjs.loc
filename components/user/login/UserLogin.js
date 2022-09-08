@@ -24,18 +24,18 @@ function UserLogin(props) {
     let ActiveForm = <></>
     switch (active) {
         case 0:
-            ActiveForm = <LoginForm showToast={showToast}/>
+            ActiveForm = <LoginForm showToast={showToast} setShowSidebarMenuUser={props.setShowSidebarMenuUser} isMobile={props.isMobile} />
             break;
         case 1:
-            ActiveForm = <SignUpForm showToast={showToast}/>
+            ActiveForm = <SignUpForm showToast={showToast} isMobile={props.isMobile}/>
             break;
         case 2:
-            ActiveForm = <ForgotPassword closeModal={closeModal} showToast={showToast}/>
+            ActiveForm = <ForgotPassword closeModal={closeModal} showToast={showToast} isMobile={props.isMobile}/>
             break;
     }
     const browserView = (
         <>
-            <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-40`}>
+            <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-100`}>
                 <div
                     className="h-fit w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
                     onClick={(e) => e.stopPropagation()}
@@ -111,9 +111,9 @@ function UserLogin(props) {
     );
     const mobileView = (
         <>
-            <div id="userlogindiv" className={`bg-theme-900/50 fixed inset-0 z-40`}>
+            <div id="userlogindiv" className={props.inBody?"mt-20":`bg-theme-900/50 fixed inset-0 z-40`}>
                 <div
-                    className="h-fit w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
+                    className="h-full w-full bg-white overflow-hidden p-10 flex flex-col gap-y-8 relative"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button className={`w-8 h-8 absolute right-10 top-10`} onClick={closeModal}>
@@ -122,7 +122,7 @@ function UserLogin(props) {
                                 d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
                         </svg>
                     </button>
-                    <div className={`flex items-center gap-x-4 text-sm uppercase text-black/60`}>
+                    <div className={`flex flex-wrap gap-x-4 text-sm uppercase text-black/60`}>
                         {(active == 0)
                             ? <Fragment>
                                 <div

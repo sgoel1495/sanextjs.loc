@@ -1,12 +1,12 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PageHead from "../../components/PageHead";
 import Footer from "../../components/footer/Footer";
 import Image from "next/image";
 import BlockHeader from "../../components/common/blockHeader";
 import Header from "../../components/navbar/Header";
-import {apiCall} from "../../helpers/apiCall";
+import { apiCall } from "../../helpers/apiCall";
 
-import {isMobile} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import LooksItem from "../../components/looks-page/LooksItem";
 
 
@@ -23,14 +23,14 @@ function LooksPage(props) {
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
             <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                   alt={"loader"}/>
+                alt={"loader"} />
         </span>
     </span>
 
     const mobileView = <Fragment>
         <section className={`bg-[#222222] overflow-auto`}>
             <span className={"block relative w-full aspect-square"}>
-                <Image src={WEBASSETS + "/assets/images/looks/looks.banner_v1.jpg"} layout={`fill`} objectFit={`cover`}/>
+                <Image src={WEBASSETS + "/assets/images/looks/looks.banner_v1.jpg"} layout={`fill`} objectFit={`cover`} alt={""} />
             </span>
             <BlockHeader
                 space={"py-[1.125rem]"}
@@ -47,7 +47,7 @@ function LooksPage(props) {
             </div>
             {(data)
                 ? <main className={`grid grid-cols-2`}>
-                    <LooksItem data={data} isMobile={mobile}/>
+                    <LooksItem data={data} isMobile={mobile} />
                 </main>
                 : loader
             }
@@ -66,7 +66,7 @@ function LooksPage(props) {
             </BlockHeader>
             {(data)
                 ? <main className={`px-10 grid grid-cols-3 gap-7`}>
-                    <LooksItem data={data} isMobile={mobile}/>
+                    <LooksItem data={data} isMobile={mobile} />
                 </main>
                 : loader
             }
@@ -75,10 +75,10 @@ function LooksPage(props) {
     </Fragment>
 
     return <>
-        <PageHead url="/looks" id="looks" isMobile={mobile}/>
-        <Header type={mobile ? "shopMenu" : "minimal"} isMobile={mobile}/>
+        <PageHead url="/looks" id="looks" isMobile={mobile} />
+        <Header type={mobile ? "shopMenu" : "minimal"} isMobile={mobile} />
         {mobile ? mobileView : browserView}
-        <Footer isMobile={true}/>
+        <Footer isMobile={true} />
     </>
 
 }
@@ -86,7 +86,7 @@ function LooksPage(props) {
 export async function getStaticProps() {
     const fetchData = async () => {
         let gotData = false;
-        const callObject = await apiCall("getLooksData", process.env.API_TOKEN, {look_id: "", limit: 10000, skip: 0})
+        const callObject = await apiCall("getLooksData", process.env.API_TOKEN, { look_id: "", limit: 10000, skip: 0 })
         if (
             callObject.hasOwnProperty("response")
             && callObject.response.hasOwnProperty("look")

@@ -1,18 +1,22 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import {validateUsername} from "../../../helpers/loginSignUpHelpers";
 import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
 import Loader from "../../common/Loader";
 import Image from "next/image";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+import CartModal from '../../sidebar/cart/CartModal';
+import {useRouter} from "next/router";
 
 
 const LoginForm = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
+    const router = useRouter();
     const username = useRef(null);
     const password = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [otploading, setOtploading] = useState(false);
+    const [signInloading, setSignInloading] = useState(false);
     const [otpSent, setOTPSent] = useState(false)
     const {dataStore, updateDataStore} = useContext(AppWideContext);
 
@@ -20,13 +24,17 @@ const LoginForm = (props) => {
         loadFbLoginApi()
     }, [])
 
+
     const saveUserDataAfterSuccessfulLogin = async (username) => {
         const updateData = await updateUserDataAfterLogin(username, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
-        Object.keys(updateData).forEach((key) => {
-            updateDataStore(key, updateData[key]);
+        Object.keys(updateData).forEach((key, index) => {
+            setTimeout(() => {
+                updateDataStore(key, updateData[key]);
+            }, index * 100)
         })
         localStorage.setItem("userData", JSON.stringify(updateData["userData"]));
     }
+
 
     const loadFbLoginApi = () => {
 
@@ -68,7 +76,13 @@ const LoginForm = (props) => {
                 password: pwd,
                 otp_login: otp_login
             }
-            setLoading(true)
+            // setLoading(true)
+            if (action == 'sendOTP') {
+                setOtploading(true)
+            }
+            if (action == 'verifyOTP' || action == 'signIn') {
+                setSignInloading(true)
+            }
             let api = apiDictionary("userLogin", dataStore.apiToken, payload)
             fetch(api.url, api.fetcher).then((response) => {
                 if (response.status === 200) {
@@ -78,6 +92,12 @@ const LoginForm = (props) => {
                                 setOTPSent(true)
                                 props.showToast("We've sent an OTP to your Email or Phone!")
                             } else {
+                                if (props.setShowSidebarMenuUser)
+                                    props.setShowSidebarMenuUser(false)
+                                if (props.isMobile)
+                                    router.push("/")
+                                props.showToast("Welcome");
+                                // <CartModal isMobile={true} />
                                 saveUserDataAfterSuccessfulLogin(uname)
                                     .then(() => {
                                     })
@@ -89,7 +109,9 @@ const LoginForm = (props) => {
                     })
                 }
             }).finally(() => {
-                setLoading(false)
+                // setLoading(false)
+                setOtploading(false)
+                setSignInloading(false)
             })
         };
 
@@ -100,6 +122,10 @@ const LoginForm = (props) => {
                 if (response.status === 200) {
                     response.json().then(data => {
                         if (data['status'] === 200) {
+                            if (props.setShowSidebarMenuUser)
+                                props.setShowSidebarMenuUser(false)
+                            if (props.isMobile)
+                                router.push("/")
                             saveUserDataAfterSuccessfulLogin(uname)
                         } else {
                             props.showToast(data['response']['body'].toUpperCase());
@@ -115,7 +141,6 @@ const LoginForm = (props) => {
             if (response.status === 'connected') {
                 window.FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender'}, function (response) {
                     saveUserDataAfterSuccessfulLogin(response.email)
-                    //console.log('FB ID:' + response.id + 'Name:' + response.first_name + ',' + response.last_name + 'Email:' + response.email + 'Gender:' + response.gender)
                 })
             } else {
                 props.showToast("Facebook Login Failed");
@@ -155,7 +180,7 @@ const LoginForm = (props) => {
     const inputStyle = "placeholder:text-black/30 border-black focus:ring-0 focus:border-black focus:shadow-none border py-2 px-4 text-sm leading-none";
     const buttonStyle = "uppercase border py-3 px-6 text-sm text-black/60 font-600 tracking-wider border-black/30 hover:border-black duration-100";
     return (
-        <form className={`grid grid-cols-4 gap-x-8`}>
+        <form className={`grid ` + [dataStore.mobile ? "grid-cols-1 gap-y-4" : "grid-cols-4 gap-x-8 "]}>
             <input
                 type="text"
                 name='username'
@@ -171,15 +196,15 @@ const LoginForm = (props) => {
                 className={`${inputStyle}`}
                 placeholder={otpSent ? "Enter your OTP" : "Enter your password"}
             />
-            <div className={`col-span-2 flex items-center gap-x-8 justify-start`}>
+            <div className={` items-center gap-x-8 justify-start` + [dataStore.mobile ? " grid grid-cols-1 gap-y-4 place-items-center" : " flex col-span-2 "]}>
                 <button
                     type="button"
                     onClick={() => signInAction(otpSent ? "verifyOTP" : "signIn")}
                     className={`${buttonStyle}`}
-                    disabled={loading}
+                    disabled={signInloading}
                 >
                     {
-                        loading ?
+                        signInloading ?
                             <Loader className="text-grey"/>
                             :
                             otpSent ? <>Verify OTP</> : <>Sign In</>
@@ -190,10 +215,10 @@ const LoginForm = (props) => {
                     type="button"
                     onClick={() => signInAction("sendOTP")}
                     className={`${buttonStyle}`}
-                    disabled={loading}
+                    disabled={otploading}
                 >
                     {
-                        loading ?
+                        otploading ?
                             <Loader className="text-grey"/>
                             :
                             otpSent ? <>Resend OTP</> : <>Login Using OTP</>

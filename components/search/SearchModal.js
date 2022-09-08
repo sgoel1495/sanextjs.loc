@@ -76,7 +76,12 @@ function SearchModal(props) {
                     </svg>
                 </button>
             </div>
-            {showResult()}
+            <p className={"text-center text-lg font-500 mt-8"}>{data.length} results found</p>
+            <div className={"overflow-auto h-full"}>
+                <div className="grid grid-cols-2 gap-4 px-2 mt-2">
+                    {showResult()}
+                </div>
+            </div>
         </div>);
 
     const browserView = (

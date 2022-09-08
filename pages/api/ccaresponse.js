@@ -1,5 +1,4 @@
 export default function ccaresponse(req, res) {
-    console.log(req.body)
     const nodeCCAvenue = require('node-ccavenue');
     const ccav = new nodeCCAvenue.Configure({
         merchant_id: process.env.merchant_id,
@@ -8,5 +7,4 @@ export default function ccaresponse(req, res) {
 
     const { encResp } = req.body;
     const decryptedJsonResponse = ccav.redirectResponseToJson(encResp);
-    console.log(decryptedJsonResponse)
 }

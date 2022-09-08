@@ -4,7 +4,7 @@
  * @returns {null}
  */
 export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
-    const apiServer = "http://103.90.241.54:2023/api/v1";
+    const apiServer = "http://216.48.180.99:8443/api/v1";
     let url = apiServer;
 
     const headers = {
@@ -188,6 +188,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "updateUserDetails":
+            url += "/users/update_user_details"
+            body = {
+                token: apiToken,
+                ...queryObject
+            }
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "giftcards":
             url += "/giftcards/get_giftcards";
             finalFetcher = {...getFetcher}
@@ -268,6 +278,17 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "getHomePageMenu":
+            url += "/get_home_page_menu";
+            body = {
+                home: {
+                    token: apiToken
+                }
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
         case "bookAppointmentMob":
             url += "/book_appointment_mob";
             body = {
@@ -303,7 +324,6 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
         case "removeFromFav":
             url += "/remove_from_fav";
             body = {
-                token: apiToken,
                 ...queryObject
             };
             postFetcher.body = JSON.stringify(body);
@@ -501,6 +521,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             finalFetcher = {...postFetcher}
             break;
 
+        case "measurmentForReview":
+            url += "/checkout/add_measurment_for_review";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
 
 
         //====================== INSTAGRAM
@@ -547,17 +577,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             break;
 
         //====================== COD Payment
-        /* INCORRECT
-    case "codcheckout":
-        url += "/checkout";
-        body = {
-            token: apiToken,
-            ...queryObject
-        };
-        postFetcher.body = JSON.stringify(body);
-        finalFetcher = {...postFetcher}
-        break;
-    */
+        case "codCheckout":
+            url += "/checkout";
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
 
         case "codOtp":
             url += "/checkout/send_otp_for_cod";
@@ -607,6 +635,43 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
 
         case  "addGiftToCart":
             url += "/giftcards/add_giftcard_to_cart"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case  "redeemVoucher":
+            url += "/users/redeem_voucher"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+        case  "saveRating":
+            url += "/save_rating_review"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+        case  "getRating":
+            url += "/get_rating_review_data"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+        case  "editShippingAddress":
+            url += "/editshippingaddress"
             body = {
                 token: apiToken,
                 ...queryObject

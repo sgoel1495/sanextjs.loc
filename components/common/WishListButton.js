@@ -24,7 +24,6 @@ const WishListButton = (props) => {
     useEffect(() => {
         if (dataStore.userServe.favorites.includes(props.pid))
             setPidChecked(true);
-        //console.log(props.pid,"Tell me about it",dataStore.userServe.favorites.includes(props.pid),dataStore.userServe.favorites)
     }, [dataStore.userData.contact, dataStore.userServe.favorites, props.pid])
 
     const addRemoveFav = async () => {

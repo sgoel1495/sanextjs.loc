@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import AppWideContext from "../../store/AppWideContext";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import {isMobile} from "react-device-detect";
-import ProductCard from "./ProductCard";
+import ProductCard from "../../components/reviews-page/ProductCard";
 
 
 function ReviewsPage() {
@@ -100,8 +100,8 @@ function ReviewsPage() {
                                 </div>
                                 <div className={"flex overflow-y-scroll"}>
                                     {
-                                        review.post_products.map((product) => {
-                                            return <ProductCard product={product}/>
+                                        review.post_products.map((product,index) => {
+                                            return <ProductCard product={product} key={index}/>
                                         })
                                     }
                                 </div>

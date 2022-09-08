@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext} from 'react';
 import PageHead from '../components/PageHead';
 import AppWideContext from "../store/AppWideContext";
 import SafetyBlock from "../components/safety-block/SafetyBlock";

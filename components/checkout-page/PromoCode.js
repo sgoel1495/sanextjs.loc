@@ -1,16 +1,15 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, {Fragment, useContext, useState} from "react";
 import Toast from "../common/Toast";
 import AppWideContext from "../../store/AppWideContext";
-import getUserO from "../../helpers/getUserO";
-import { apiCall } from "../../helpers/apiCall";
+import {apiCall} from "../../helpers/apiCall";
 import Accordion from "../common/accordion";
+import {getUserObject} from "../../helpers/addTocart";
 
 function PromoCode() {
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
+    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-    const [promoCode, setPromoCode] = useState("");
-    const userO = getUserO(dataStore);
+    const [promoCode, setPromoCode] = useState(dataStore.orderSummary && dataStore.orderSummary.coupon_apply ? dataStore.orderSummary.coupon_apply.coupon : "");
 
     const applyPromo = async () => {
         if (!promoCode) {
@@ -18,7 +17,7 @@ function PromoCode() {
             setShow(true);
         } else {
             const query = {
-                user: userO,
+                user: getUserObject(dataStore, updateDataStore),
                 order: {
                     order_id: dataStore.currentOrderId,
                     coupon_code: promoCode,
@@ -26,7 +25,7 @@ function PromoCode() {
             };
             const promoCall = await apiCall("applyCoupon", dataStore.apiToken, query);
             if (promoCall.hasOwnProperty("coupon_apply") && promoCall.coupon_apply.hasOwnProperty("msg") && promoCall.coupon_apply.msg === "Success") {
-                updateDataStore("orderPromo", promoCall);
+                updateDataStore("orderSummary", {...dataStore.orderSummary, ...promoCall});
                 setMessage("Coupon Accepted");
                 setShow(true);
             } else {
@@ -60,7 +59,7 @@ function PromoCode() {
                     </div>
                 </div>
             </Accordion>
-            <Toast show={show} hideToast={() => setShow(false)}>
+            <Toast show={show} hideToast={() => setShow(false)} bottom={"40px"}>
                 <span>{message}</span>
             </Toast>
         </Fragment>

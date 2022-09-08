@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useMemo, useState} from "react";
 import ReactDom from "react-dom";
 import Link from "next/link";
 import {NewTag} from "../common/Tags";
@@ -8,6 +8,8 @@ import AppWideContext from "../../store/AppWideContext";
 import {isMobile} from "react-device-detect";
 import SearchMenu from "../search/SearchMenu";
 import CurrencySwitcher from "../navbar/CurrencySwitcher";
+import UserLogin from "../user/login/UserLogin";
+import useApiCall from "../../hooks/useApiCall";
 
 /**
  * @todo account signin pending
@@ -17,200 +19,6 @@ import CurrencySwitcher from "../navbar/CurrencySwitcher";
 
 
 const navigationDataInit = [
-    {
-        title: `NEW ARRIVALS`,
-        description: `Recently Launched`,
-        child: [
-            {
-                title: `ALL NEW ARRIVALS`,
-                link: `/new-arrivals/all`
-            },
-            {
-                title: `NITTO - knits: for the snug season`,
-                link: `/mimoto-knit`
-            },
-            {
-                title: `NOOR - spreading light`,
-                link: `/mimoto-noor`
-            },
-            {
-                title: `SALT - the signature collection`,
-                link: `/mimoto-salt`
-            },
-            {
-                title: `MOYO - poetry in prints`,
-                link: `/mimoto-moyo`
-            },
-            {
-                title: `MRIDU - playing dress up`,
-                link: `/mimoto-mridu`
-            }
-        ]
-    },
-    {
-        title: `POPULAR`,
-        description: `Our Bestselling items`,
-        link: `/best-selling`
-    },
-    {
-        title: `GIFT CARDS`,
-        description: `Show Your Love`,
-        link: `/giftcards`
-    },
-    {
-        title: `STEAL DEAL`,
-        description: `UPTO 60% Off`,
-        new: true,
-        link: `/end-of-season-sale`
-    },
-    {
-        title: `SHOP THE LOOK`,
-        description: `Looks We Love`,
-        link: `/looks`
-    },
-    {
-        title: `COTTON MASKS`,
-        description: `For Your Protection`,
-        new: true,
-        link: `/shop-masks`
-    },
-    {
-        title: `TOPS`,
-        description: `Blouses, Shirts & Tunics`,
-        child: [
-            {
-                title: `BLOUSES`,
-                link: `/shop-tops`
-            },
-            {
-                title: `SHIRTS`,
-                link: `/shop-shirts`
-            },
-            {
-                title: `TUNICS`,
-                link: `/shop-tunics`
-            }
-        ]
-    },
-    {
-        title: `JUMPSUITS`,
-        description: `Easy To Wear & Stylish`,
-        new: true,
-        link: `/shop-jumpsuits`
-    },
-    {
-        title: `DRESSES`,
-        description: `Desk to Dinner`,
-        link: `/shop-dresses`
-    },
-    {
-        title: `SWEATERS`,
-        description: `Winter Wears`,
-        new: true,
-        link: `/shop-sweaters`
-    },
-    {
-        title: `TROUSERS`,
-        description: `Tailored Trousers`,
-        link: `/shop-tailored-pants`
-    },
-    {
-        title: `SHORTS`,
-        description: `Raise Your Chic`,
-        new: true,
-        link: `/shop-shorts`
-    },
-    {
-        title: `SKIRTS`,
-        description: `Tailored Skirts`,
-        link: `/shop-tailored-skirts`
-    },
-    {
-        title: `OUTERWEAR`,
-        description: `Jackets & Capes`,
-        link: `/shop-outerwear`
-    },
-    {
-        title: `ACCESSORIES`,
-        description: `Scarves, Belts & Jewellery`,
-        child: [
-            {
-                title: `SCARVES`,
-                link: `/shop-scarves`
-            },
-            {
-                title: `BELTS`,
-                link: `/shop-belts`
-            },
-            {
-                title: `JEWELLERY`,
-                new: true,
-                link: `/shop-jewellery`
-            },
-            {
-                title: `MASKS`,
-                new: true,
-                link: `/shop-masks`
-            }
-        ]
-    },
-    {
-        title: `REVIEWS`,
-        description: `What Customers Say About Us`,
-        link: `/reviews`
-    },
-    {
-        title: `DISCOVER SALT`,
-        description: `Our Philosophy`,
-        child: [
-            {
-                title: `OUR STORY`,
-                link: `/salt/about-us`
-            },
-            {
-                title: `OUR DESIGN`,
-                link: `/salt/about-us/our-design`
-            },
-            {
-                title: `FABRIC`,
-                link: `/salt/about-us/fabric`
-            },
-            {
-                title: `SIZE & FIT`,
-                link: `/salt/about-us/size-fit`
-            },
-            {
-                title: `FINISHING & DETAILS`,
-                link: `/salt/about-us/finishing-details`
-            },
-            {
-                title: `WHY SALT?`,
-                link: `/salt/about-us/why-salt`
-            },
-            {
-                title: `CONTACT US`,
-                link: `/salt/about-us/contact-us`
-            }
-        ]
-    },
-    {
-        title: `ABOUT US`,
-        description: `Our Services`,
-        new: true,
-        link: `/blog/about-salt`
-    },
-    {
-        title: `VIRTUAL APPOINTMENT`,
-        description: `Raise Your Chic`,
-        new: true,
-        link: `/get-virtual-appointment`
-    },
-    {
-        title: `IN-STORE APPOINTMENT`,
-        description: `Raise Your Chic`,
-        new: true,
-        link: `/get-appointment`
-    },
     {
         title: `SHIPPING & RETURNS`,
         description: ``,
@@ -253,209 +61,6 @@ const navigationDataInit = [
     }
 ];
 const mobileNavigationDataInit = [
-    {
-        title: `NEW ARRIVALS`,
-        description: `Recently Launched`,
-        link: "/new-arrivals/all"
-    },
-    {
-        title: `POPULAR`,
-        description: `Our Bestselling items`,
-        link: `/best-selling`
-    },
-    {
-        title: `GIFT CARDS`,
-        description: `Show Your Love`,
-        link: `/giftcards`
-    },
-    {
-        title: `STEAL DEAL`,
-        description: `Flat Price`,
-        new: true,
-        link: `/end-of-season-sale`
-    },
-    {
-        title: `SHOP THE LOOK`,
-        description: `Looks We Love`,
-        link: `/looks`
-    },
-    {
-        title: `COTTON MASKS`,
-        description: `For Your Protection`,
-        new: true,
-        link: `/shop-masks`
-    },
-    {
-        title: `TOPS`,
-        description: `Blouses, Shirts & Tunics`,
-        child: [
-            {
-                title: `BLOUSES`,
-                link: `/shop-tops`
-            },
-            {
-                title: `SHIRTS`,
-                link: `/shop-shirts`
-            },
-            {
-                title: `TUNICS`,
-                link: `/shop-tunics`
-            }
-        ]
-    },
-    {
-        title: `JUMPSUITS`,
-        description: `Easy To Wear & Stylish`,
-        new: true,
-        link: `/shop-jumpsuits`
-    },
-    {
-        title: `DRESSES`,
-        description: `Desk to Dinner`,
-        link: `/shop-dresses`
-    },
-    {
-        title: `SWEATERS`,
-        description: `Winter Wears`,
-        new: true,
-        link: `/shop-sweaters`
-    },
-    {
-        title: `TROUSERS`,
-        description: `Tailored Trousers`,
-        link: `/shop-tailored-pants`
-    },
-    {
-        title: `SHORTS`,
-        description: `Raise Your Chic`,
-        new: true,
-        link: `/shop-shorts`
-    },
-    {
-        title: `SKIRTS`,
-        description: `Tailored Skirts`,
-        link: `/shop-tailored-skirts`
-    },
-    {
-        title: `OUTERWEAR`,
-        description: `Jackets & Capes`,
-        link: `/shop-outerwear`
-    },
-    {
-        title: `ACCESSORIES`,
-        description: `Scarves, Belts & Jewellery`,
-        child: [
-            {
-                title: `SCARVES`,
-                link: `/shop-scarves`
-            },
-            {
-                title: `BELTS`,
-                link: `/shop-belts`
-            },
-            {
-                title: `JEWELLERY`,
-                new: true,
-                link: `/shop-jewellery`
-            },
-            {
-                title: `MASKS`,
-                new: true,
-                link: `/shop-masks`
-            }
-        ]
-    },
-    {
-        title: `SHOP BY PREFERENCES`,
-        description: `Preferred Your Style First`,
-        child: [
-            {
-                title: `COTTON & LINENS`,
-                link: `/group/cottons-&-linens`
-            },
-            {
-                title: `POLKA DOTS`,
-                link: `/group/polka`
-            },
-            {
-                title: `STRIPES`,
-                link: `/group/stripes`
-            },
-            {
-                title: `BOARDROOM DRESSES`,
-                link: `/group/boardroom-dresses`
-            },
-            {
-                title: `FORMAL JACKETS & BLAZERS`,
-                link: `/group/formal-jackets-&-blazers`
-            },
-            {
-                title: `FLORAL PRINT`,
-                link: `/group/floral-&-foliage-print`
-            },
-            {
-                title: `ALL THINGS SOLIDS`,
-                link: `/group/solids`
-            }
-        ]
-    },
-    {
-        title: `REVIEWS`,
-        description: `What Customers Say About Us`,
-        link: `/reviews`
-    },
-    {
-        title: `DISCOVER SALT`,
-        description: `Our Philosophy`,
-        child: [
-            {
-                title: `OUR STORY`,
-                link: `/salt/about-us`
-            },
-            {
-                title: `OUR DESIGN`,
-                link: `/salt/about-us/our-design`
-            },
-            {
-                title: `FABRIC`,
-                link: `/salt/about-us/fabric`
-            },
-            {
-                title: `SIZE & FIT`,
-                link: `/salt/about-us/size-fit`
-            },
-            {
-                title: `FINISHING & DETAILS`,
-                link: `/salt/about-us/finishing-details`
-            },
-            {
-                title: `WHY SALT?`,
-                link: `/salt/about-us/why-salt`
-            },
-            {
-                title: `CONTACT US`,
-                link: `/salt/about-us/contact-us`
-            }
-        ]
-    },
-    {
-        title: `ABOUT US`,
-        description: `Our Services`,
-        new: true,
-        link: `/blog/about-salt`
-    },
-    {
-        title: `VIRTUAL APPOINTMENT`,
-        description: `Online Styling`,
-        new: true,
-        link: `/get-virtual-appointment`
-    },
-    {
-        title: `IN-STORE APPOINTMENT`,
-        description: `Styling Assistance`,
-        new: true,
-        link: `/get-appointment`
-    },
     {
         id: "login",
         title: `Login/Signup`,
@@ -534,11 +139,19 @@ const SelfLink = (props) => {
                 </span>
         {props.description && <span className="text-xs block leading-none">{props.description}</span>}
     </a>;
-    return (
-        <Link href={props.link}>
+    if (props.link)
+        return (
+            <Link href={props.link}>
+                {props.isMobile ? props.centered ? mobileCenteredView : mobileView : browserView}
+            </Link>
+        )
+    else
+        return <div onClick={(e) => {
+            e.stopPropagation();
+            props.onClick();
+        }}>
             {props.isMobile ? props.centered ? mobileCenteredView : mobileView : browserView}
-        </Link>
-    )
+        </div>
 }
 
 const ChildLink = props => {
@@ -647,6 +260,7 @@ function HamburgerModal(props) {
                             : <SelfLink
                                 key={index}
                                 link={item.link}
+                                onClick={item.onClick}
                                 title={item.title}
                                 description={item.description}
                                 new={item.new}
@@ -670,7 +284,43 @@ function SidebarMenuHamburger(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [navigationData, setNavigationData] = useState([]);
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
+    const [showLogin, setShowLogin] = useState(false)
     const [mobile, setMobile] = useState(false)
+    const navMenu = useApiCall("getHomePageMenu", dataStore.apiToken);
+    const navData = useMemo(() => {
+        if (!navMenu || navMenu.status !== 200) {
+            return []
+        }
+        let nav = [
+            ...navMenu.home_page_menu.sort((a, b) => a.sequence - b.sequence).map(item => {
+                if ((mobile && item.is_mob_visible) || (!mobile && item.is_visible)) {
+                    let temp = {
+                        title: item.name,
+                        description: item.tagline,
+                        new: item.is_new
+
+                    }
+                    if (item.url) {
+                        temp["link"] = item.url
+                    } else {
+                        temp["child"] = item.sub_menu.map((subItem) => {
+                            return {
+                                title: subItem.name,
+                                link:subItem.url
+                            }
+                        })
+                    }
+                    return temp
+                }
+            }),
+        ].filter(item=>item!==undefined)
+        if (mobile) {
+            nav = nav.concat(mobileNavigationDataInit)
+        } else {
+            nav = nav.concat(navigationDataInit)
+        }
+        return nav
+    }, [mobile, navMenu])
 
     useEffect(() => {
         setMobile(isMobile)
@@ -683,7 +333,7 @@ function SidebarMenuHamburger(props) {
     useEffect(() => {
         if (mobile) {
             if (dataStore.userData.contact != null) {
-                let navigation = mobileNavigationDataInit.map(item => {
+                let navigation = navData.map(item => {
                     if (item.id !== "login") {
                         return item
                     } else {
@@ -732,7 +382,7 @@ function SidebarMenuHamburger(props) {
                 })
                 setNavigationData(navigation)
             } else {
-                setNavigationData(mobileNavigationDataInit)
+                setNavigationData(navData)
             }
         } else if (dataStore.userData.contact != null) {
             setNavigationData([
@@ -774,16 +424,16 @@ function SidebarMenuHamburger(props) {
                             link: `/users/logout`
                         }
                     ]
-                }, ...navigationDataInit]);
+                }, ...navData]);
         } else {
             setNavigationData([
                 {
                     title: `ACCOUNT`,
                     description: `Login/Signup`,
-                    link: `login`
-                }, ...navigationDataInit]);
+                    onClick: () => setShowLogin(true)
+                }, ...navData]);
         }
-    }, [dataStore.userData.contact, dataStore.userServe.user_name, mobile]);
+    }, [dataStore.userData.contact, dataStore.userServe.user_name, navData]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);
@@ -814,6 +464,9 @@ function SidebarMenuHamburger(props) {
                     </div>
                 }
                 <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu} isMobile={mobile}/>
+                {showLogin && ReactDom.createPortal(
+                    <UserLogin closeModal={() => setShowLogin(false)} setShowSidebarMenuUser={() => setShowLogin(false)}/>,
+                    document.getElementById("userband"))}
             </span>
             : <Fragment/>}
     </Fragment>;

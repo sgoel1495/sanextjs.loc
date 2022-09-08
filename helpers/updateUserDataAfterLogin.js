@@ -1,4 +1,5 @@
 import {apiCall} from "./apiCall";
+import {addToCart, checkItemInCart} from "./addTocart";
 
 export async function updateUserDataAfterLogin(username, apiToken, currentMeasurements, currentCart) {
     //==================== user Data
@@ -73,17 +74,32 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     //==================== user Cart
     // we may have products that we need to add to user
     // first we add any measurements that may be there.
-    // console.log("CURRENT CART",currentCart)
-    for (let x = 0; x < currentCart.length; x++) {
-        const newCart = currentCart[x].order
-        newCart.qty = currentCart[x].qty
-        // console.log("INSERTING product to cart",newCart)
-        const callResult = await apiCall("addToCart", apiToken, {user: userO, cart: newCart})
-        // console.log("CALL RESULT",callResult)
-    }
 
     let userCart = [];
-    const cartCall = await apiCall("getCart", apiToken, {"user": userO});
+    let cartCall = await apiCall("getCart", apiToken, {"user": userO});
+    if (cartCall.response && Array.isArray(cartCall.response))
+        userCart = cartCall.response.filter(item => {
+            return item.qty != null
+        })
+
+    for (let x = 0; x < currentCart.length; x++) {
+        let apiName = "addToCart"
+        let newCart = currentCart[x]
+        let item = await checkItemInCart(userCart, currentCart, false)
+        if (item) {
+            newCart = {
+                "product": {
+                    "product_cart_id": item.cart_id,
+                    "qty": item.qty + 1
+                }
+            }
+            apiName = "updateCart"
+        }
+
+        const callResult = await apiCall(apiName, apiToken, {user: userO, cart: newCart})
+    }
+
+    cartCall = await apiCall("getCart", apiToken, {"user": userO});
     if (cartCall.response && Array.isArray(cartCall.response))
         userCart = cartCall.response.filter(item => {
             return item.qty != null
@@ -112,19 +128,11 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
         "user": {contact: username, token: apiToken}
     });
-    // console.log("ORDER HISTORY CALL",orderHistoryCall)
     let userOrderHistory = {};
     if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && orderHistoryCall.response != "user not found"
         && Object.keys(orderHistoryCall.response).length > 0)
         userOrderHistory = {...orderHistoryCall.response}
 
-    // console.log("userData",userData);
-    // console.log("userWallet",userWallet);
-    // console.log("userServe",userServe);
-    // console.log("userAddresses",userAddresses);
-    // console.log("userCart",userCart);
-    // console.log("userMeasurements",userMeasurements);
-    // console.log("userOrderHistory",userOrderHistory);
 
     return {
         "userData": userData,

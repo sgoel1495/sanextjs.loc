@@ -30,7 +30,7 @@ body.scroll-overflow .navigator {
 .swiper-rtl .swiper-button-next:after,
 .swiper-button-next:after,
 .swiper-rtl .swiper-button-prev:after {
-    color  : black;
+    color: black;
     opacity: 0.35;
 }
 
@@ -42,7 +42,7 @@ body.scroll-overflow .navigator {
     background: black;
 }
 
-.measurementBlock1__sizes{
+.measurementBlock1__sizes {
     background-image: url('https://saltattire.com/assets/images/illustration.jpg');
     background-repeat: no-repeat;
     background-size: contain;
@@ -51,32 +51,42 @@ body.scroll-overflow .navigator {
     width: 100%;
 }
 
-.size_guide_table{
+.measurementBlock1__sizes__mob {
+    background-image: url('https://saltattire.com/assets/images/illustration.jpg');
+    background-repeat: no-repeat;
+    background-size: 200%;
+    background-position: center;
+    height: 90%;
+    width: 100%;
+}
+
+.size_guide_table {
     @apply w-full table-fixed;
 
-    thead th{
-        @apply text-[#777]
+    thead th {
+        @apply text-[#777] text-xs lg:text-base
     }
 
-    tr{
+    tr {
         @apply border-t border-b;
 
-        &:first-child{
+        &:first-child {
             @apply border-t-0;
         }
 
-        td,th{
-            @apply py-3;
+        td,
+        th {
+            @apply py-3 text-xs lg:text-base;
         }
 
-        td{
-            @apply text-[#777]
+        td {
+            @apply text-[#777] text-xs lg:text-base
         }
     }
 }
 
-.order_summary_table{
-    *{
+.order_summary_table {
+    * {
         @apply block;
     }
 
@@ -85,30 +95,128 @@ body.scroll-overflow .navigator {
     tr {
         @apply flex;
 
-        td{
+        td {
             @apply py-3 font-600 text-[#777];
         }
 
-        td:first-child{
+        td:first-child {
             @apply flex-1
         }
     }
 }
 
-.fade-up{
+
+.order_summary_table_mobile {
+    * {
+        @apply block;
+    }
+
+    @apply block w-full border-t border-b border-[#808080] py-5;
+
+    tr {
+        @apply flex;
+
+        td {
+            @apply py-1 font-600 text-[#777];
+        }
+
+        td:first-child {
+            @apply flex-1
+        }
+    }
+}
+
+
+.fade-up {
     animation: fadeup .4s ease;
 }
 
 @keyframes fadeup {
-    from{
+    from {
         transform: translateY(50%);
         opacity: 0;
     }
-    to{
+
+    to {
         transform: translateY(0);
         opacity: 1;
     }
 }
 
 /* For Mobiles */
-@media only screen and (max-width: 450px) {}
+@media (max-width: 768px) {
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.zoomInSwiper div {
+    .swiper-wrapper .swiper-slide{
+        @apply scale-[0.8] duration-300;
+    }
+
+    .swiper-wrapper .swiper-slide-active{
+        @apply scale-100 duration-300;
+    }
+
+    .swiper-button-next {
+        @apply mr-12 scale-[.6] opacity-50;
+    }
+
+    .swiper-button-prev {
+        @apply ml-12 scale-[.6] opacity-50;
+    }
+}
+
+.mobileCheckbox:checked::before {
+    content: '';
+    position: absolute;
+    width: 1.4ex;
+    height: 0.7ex;
+    background: rgba(0, 0, 0, 0);
+    top:0.32rem;
+    left:0.28rem;
+    border: 2px solid #997756;
+    border-top: none;
+    border-right: none;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.description-active::before{
+    content: '\25be';
+    position: absolute;
+    top: -16px;
+    left: 30%;
+    text-align: center;
+    width: 40%;
+    font-size: 16px;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+    color: #000000 !important;
+}
+
+.down-arrow{
+    box-sizing: border-box;
+    position: relative;
+}
+
+.down-arrow::after{
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 0.37rem;
+    height: 0.37rem;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    transform: rotate(45deg);
+    right: 0;
+    top: 0.375rem;
+}

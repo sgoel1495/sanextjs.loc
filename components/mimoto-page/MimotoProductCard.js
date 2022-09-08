@@ -5,12 +5,12 @@ import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
-import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 import returnSizes from "../../helpers/returnSizes";
 import {Fragment} from "react";
 import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
-import getUserO from "../../helpers/getUserO";
+import {addToCart, getUserObject} from "../../helpers/addTocart";
+import currencyFormatter from "../../helpers/currencyFormatter";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -24,33 +24,17 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null)
     const [addToCartWasPressed, setAddToCartWasPressed] = useState(false)
+    const curr = currCurrency.toUpperCase();
 
-    const addToCart = async (size = "", addIt = false) => {
-        const haveSize = (size != "") ? true : (selectedSize) ? true : false
-        const currSize = (size != "") ? size : selectedSize
+    const saveToCart = async (size = "", addIt = false) => {
+        const haveSize = (size !== "") ? true : !!(selectedSize)
+        const currSize = (size !== "") ? size : selectedSize
         if ((haveSize && addToCartWasPressed) || (haveSize && addIt)) {
-            // do add to cart with this size
-            let tempId = null;
-            if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id == "") {
-                tempId = Date.now()
-                dataStore.userServe.temp_user_id = tempId
-                updateDataStore("userServe", dataStore.userServe)
-            } else
-                tempId = dataStore.userServe.temp_user_id
-
-            const userO = {
-                email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-                is_guest: !(dataStore.userData.contact),
-                temp_user_id: tempId
-            }
-
             const cart = {
                 product_id: prod.asset_id,
                 size: currSize,
@@ -60,44 +44,10 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                 sleeve_length: "",
                 dress_length: ""
             }
-            const displayCart = {
-                asset_id: "/assets/" + prod.asset_id + "/new.jpg",
-                product_id: prod.asset_id,
-                cart_id: prod.product_id + "+" + currSize,
-                name: prod.name,
-                tag_line: prod.tag_line,
-                color: (prod.hasOwnProperty("color")) ? prod.color : {name: "MULTICOLOR"},
-                multi_color: (prod.hasOwnProperty("multi_color")) ? prod.multi_color : false,
-                qty: "1",
-                size: currSize,
-                is_tailor: false,
-                price: prod.price,
-                usd_price: prod.usd_price,
-                order: cart
-            }
-            //check if the product already in cart
-            let isPresentInCart = false
-            if (dataStore.userCart.length > 0) {
-                dataStore.userCart.forEach(item => {
-                    if (item.product_id === prod.asset_id && item.size === currSize)
-                        isPresentInCart = true
-                })
-            }
-
-            if (isPresentInCart) {
-                setToastMsg("Already in cart")
-            } else {
-                if (dataStore.userData.contact) {
-                    // logged in user
-                    await addToCartLoggedIn(dataStore.apiToken, userO, {cart: cart}, updateDataStore)
-                } else {
-                    //not logged in
-                    dataStore.userCart.push(displayCart)
-                    updateDataStore("userCart", dataStore.userCart)
-                }
-                setToastMsg("Added to Cart")
+            addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
+                setToastMsg(`${prod.name}: Size ${currSize} added to your Bag!`)
                 setShowToast(true)
-            }
+            })
             setShowSize(false)
             setAddToCartWasPressed(false)
             setSelectedSize(null)
@@ -126,8 +76,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                             </div>
                             <div className='inline-flex flex-col items-center'>
                                 <p className={`text-xs`}>
-                                    {currencySymbol}
-                                    {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                 </p>
                                 <WishListButton pid={prod.asset_id}/>
                             </div>
@@ -150,8 +99,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
                         <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
                         <p className={`text-xs`}>
-                            {currencySymbol}
-                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                            {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                         </p>
                     </div>
                 </a>
@@ -173,12 +121,12 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     }
 
     const whatSizes = () => {
-        const sizeData = returnSizes(prod.category);
+        const sizeData = returnSizes(prod);
         let returnValue = null
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -221,11 +169,10 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                                 ? <Fragment>
                                     <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
                                     <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                         onClick={() => addToCart("", true)}>
+                                         onClick={() => saveToCart("", true)}>
                                         <span className={`uppercase`}>Add to bag</span>
                                         <p className={`text-xs`}>
-                                            {currencySymbol}
-                                            {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                            {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                         </p>
                                     </div>
                                 </Fragment>
@@ -254,7 +201,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                 <NotifyMeModal
                     closeModal={closeModal.bind(this)}
                     isMobile={dataStore.isMobile}
-                    userO={getUserO(dataStore)}
+                    userO={getUserObject(dataStore, updateDataStore)}
                     product={prod}
                 />,
                 document.getElementById("measurementmodal"))

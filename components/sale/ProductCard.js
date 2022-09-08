@@ -3,13 +3,14 @@ import Link from "next/link";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
-import addToCartLoggedIn from "../../helpers/addToCartLoggedIn";
 import returnSizes from "../../helpers/returnSizes";
 import ReactDom from "react-dom";
-import getUserO from "../../helpers/getUserO";
-import WishListButton from "../../components/common/WishListButton";
-import NotifyMeModal from "../../components/common/NotifyMeModal";
-import Toast from "../../components/common/Toast";
+import WishListButton from "../common/WishListButton";
+import NotifyMeModal from "../common/NotifyMeModal";
+import Toast from "../common/Toast";
+import {addToCart, getUserObject} from "../../helpers/addTocart";
+import {useRouter} from "next/router";
+import currencyFormatter from "../../helpers/currencyFormatter";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -23,105 +24,91 @@ const ShopDataBlockImage = (props) => (
 )
 
 const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
-
+    const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = dataStore.currCurrency;
+    const curr = currCurrency.toUpperCase();
     const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
     const inr = currencyData["inr"].curr_symbol;
     const usd = currencyData["usd"].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null)
-    const [addToCartWasPressed, setAddToCartWasPressed] = useState(false)
+    const [addToCartClick, setAddToCartClick] = useState(false)
 
-    const addToCart = async (size = "", addIt = false) => {
-        const haveSize = (size != "") ? true : (selectedSize) ? true : false
-        const currSize = (size != "") ? size : selectedSize
-        if ((haveSize && addToCartWasPressed) || (haveSize && addIt)) {
-            // do add to cart with this size
-            let tempId = null;
-            if (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id == "") {
-                tempId = Date.now()
-                dataStore.userServe.temp_user_id = tempId
-                updateDataStore("userServe", dataStore.userServe)
-            } else
-                tempId = dataStore.userServe.temp_user_id
+    const closeModal = (sent = null) => {
+        if (sent === true) {
+            setToastMsg("We will notify you when the product is back in stock")
+            setShowToast(true)
+            setShowNotifyMe(false)
+        } else if (sent === null) {
+            setToastMsg("Please complete form and try again")
+            setShowToast(true)
+        } else
+            setShowNotifyMe(false)
+    }
 
-            const userO = {
-                email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-                is_guest: !(dataStore.userData.contact),
-                temp_user_id: tempId
-            }
+    const whatSizes = () => {
+        const sizeData = returnSizes(prod);
+        let returnValue = null
+        sizeData.forEach(size => {
+            returnValue = <Fragment>
+                {returnValue}
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => saveToCart(size)}>
+                    {size}
+                </button>
+            </Fragment>
+        })
+        return <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
+            {returnValue}
+        </div>
+    }
 
-            const cart = {
-                product_id: prod.asset_id,
-                size: currSize,
-                qty: "1",
-                is_sale: false,
-                is_tailor: false,
-                sleeve_length: "",
-                dress_length: ""
-            }
-            const displayCart = {
-                asset_id: prod.single_view_img,
-                product_id: prod.asset_id,
-                cart_id: prod.product_id + "+" + currSize,
-                name: prod.name,
-                tag_line: prod.tag_line,
-                color: (prod.hasOwnProperty("color")) ? prod.color : {name: "MULTICOLOR"},
-                multi_color: (prod.hasOwnProperty("multi_color")) ? prod.multi_color : false,
-                qty: "1",
-                size: currSize,
-                is_tailor: false,
-                price: prod.price,
-                usd_price: prod.usd_price,
-                order: cart
-            }
-            //check if the product already in cart
-            let isPresentInCart = false
-            if (dataStore.userCart.length > 0) {
-                dataStore.userCart.forEach(item => {
-                    if (item.product_id === prod.asset_id && item.size === currSize)
-                        isPresentInCart = true
-                })
-            }
-
-            if (isPresentInCart) {
-                setToastMsg("Already in cart")
-            } else {
-                if (dataStore.userData.contact) {
-                    // logged in user
-                    await addToCartLoggedIn(dataStore.apiToken, userO, {cart: cart}, updateDataStore)
-                } else {
-                    //not logged in
-                    dataStore.userCart.push(displayCart)
-                    updateDataStore("userCart", dataStore.userCart)
-                }
-                setToastMsg("Added to Cart")
-                setShowToast(true)
-            }
-            setShowSize(false)
-            setAddToCartWasPressed(false)
-            setSelectedSize(null)
-        } else {
-            if (haveSize)
-                setSelectedSize(currSize)
-            if (addIt) {
-                setAddToCartWasPressed(true)
-                setShowSize(true)
-            }
+    const saveToCart = (size = "") => {
+        if (size === "T") {
+            router.push("/" + prod.asset_id);
+            return
         }
+        if (!size) {
+            setAddToCartClick(true)
+        }
+        if (!selectedSize && !size) {
+            setShowSize(true)
+            return
+        } else if (size) {
+            setSelectedSize(size)
+        }
+        if (!showSize) {
+            setShowSize(true)
+            setSelectedSize("")
+            return
+        }
+        if (!addToCartClick) {
+            return
+        }
+        const cart = {
+            "product_id": prod.asset_id,
+            "size": size ? size : selectedSize,
+            "qty": 1,
+            "is_sale": false,
+            "is_tailor": false,
+            "sleeve_length": "",
+            "dress_length": ""
+        }
+        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
+            setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
+            setShowToast(true)
+        })
     }
 
     if (isMobile) {
         return <div className={"relative"}>
             <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true}/>
-            <Link href={"/" + prod.asset_id}>
+            <Link href={"/" + (prod.is_sale ? prod.product_id : prod.asset_id)}>
                 <a className={`block text-center z-0`} id={prod.asset_id}>
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
@@ -135,9 +122,9 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                     (currCurrency === "inr" || !prod.usd_price) ?
                                         <>
                                             {inr}
-                                            <span className={prod.sale_price ? "line-through" : ""}>{prod.price}</span>
+                                            <span className={prod.is_sale ? "line-through" : ""}>{currencyFormatter(curr).format(prod.price).split(".")[0]}</span>
                                             {
-                                                prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
+                                                prod.is_sale && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
                                             }
                                         </>
                                         :
@@ -155,33 +142,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
 
     }
 
-    const closeModal = (sent = null) => {
-        if (sent === true) {
-            setToastMsg("We will notify you when the product is back in stock")
-            setShowToast(true)
-            setShowNotifyMe(false)
-        } else if (sent === null) {
-            setToastMsg("Please complete form and try again")
-            setShowToast(true)
-        } else
-            setShowNotifyMe(false)
-    }
 
-    const whatSizes = () => {
-        const sizeData = returnSizes(prod.category);
-        let returnValue = null
-        sizeData.forEach(size => {
-            returnValue = <Fragment>
-                {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => addToCart(size)}>
-                    {size}
-                </button>
-            </Fragment>
-        })
-        return <div className='absolute bottom-16 inset-x-0 bg-white/80 z-10 py-2 flex items-center justify-center gap-x-3'>
-            {returnValue}
-        </div>
-    }
 
     return (
         <>
@@ -213,13 +174,15 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                             ? <Fragment>
                                 {(prod.in_stock === "true")
                                     ? <Fragment>
-                                        <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
+                                        <button className={`font-800`} onClick={() => {
+                                            setShowSize(true)
+                                            setAddToCartClick(false)
+                                        }}>SIZE</button>
                                         <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                             onClick={() => addToCart("", true)}>
+                                             onClick={() => saveToCart()}>
                                             <span className={`uppercase`}>Add to bag</span>
                                             <p className={`text-xs`}>
-                                                {currencySymbol}
-                                                {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                                {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
                                             </p>
                                         </div>
                                     </Fragment>
@@ -251,7 +214,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                 <NotifyMeModal
                     closeModal={closeModal.bind(this)}
                     isMobile={dataStore.isMobile}
-                    userO={getUserO(dataStore)}
+                    userO={getUserObject(dataStore,updateDataStore)}
                     product={prod}
                 />,
                 document.getElementById("measurementmodal"))

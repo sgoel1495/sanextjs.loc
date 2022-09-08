@@ -15,6 +15,7 @@ import GiftReceiverModal from "../../components/giftcards/GiftReceiverModal";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../../components/common/Toast";
+import CartModal from "../../components/sidebar/cart/CartModal";
 
 const ImageBlock = (props) => (
     <span className={`block relative w-full aspect-square`}>
@@ -30,6 +31,7 @@ function GiftcardsPage() {
     const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [showGiftReceiverModal, setShowGiftReceiverModal] = useState(false)
     const [giftReceiverModalData, setGiftReceiverModalData] = useState({})
+    const [showCart,setShowCart] = useState(false)
     const [mobile, setMobile] = useState(false);
     const [data, setData] = useState(null);
     const [show, setShow] = useState(false)
@@ -67,6 +69,15 @@ function GiftcardsPage() {
         }
     }
 
+    const handlerAddToCart = (card)=>{
+        setShowGiftReceiverModal(true)
+        setGiftReceiverModalData({
+            gc_asset_id: card.asset_id,
+            gc_title: card.display_name,
+            gc_price: card.price
+        })
+    }
+
     const showGiftCards = (view) => {
         let sgc = null;
         if (data)
@@ -87,25 +98,18 @@ function GiftcardsPage() {
                                 {
                                     view === "mobile"
                                         ? <div
-                                            className="flex flex-col items-center justify-center h-16 relative text-sm">
+                                            className="flex flex-col items-center justify-center h-16 relative text-sm cursor-pointer"
+                                            onClick={()=>handlerAddToCart(card)}
+                                        >
                                             <p className={`text-m font-800`}>{card.display_name}</p>
                                             <p className={`text-sm font-200`}>{currencySymbol}{(currCurrency === "inr") ? card.price : card.usd_price}</p>
-                                            <div
-                                                className="grid place-items-center content-center bg-black text-white"
-                                                onClick={() => {
-                                                    console.log(card.asset_id)
-                                                    setShowGiftReceiverModal(true)
-                                                    setGiftReceiverModalData({
-                                                        gc_asset_id: card.asset_id,
-                                                        gc_title: card.display_name,
-                                                        gc_price: card.price
-                                                    })
-                                                }}
-                                            >
+                                            <div className="grid place-items-center content-center bg-black text-white" >
                                                 <p className={`font-600 text-white text-sm mx-2`}>Add To Bag</p>
                                             </div>
                                         </div>
-                                        : <div className="flex items-center justify-center h-16 relative">
+                                        : <div className="flex items-center justify-center h-16 relative cursor-pointer"
+                                               onClick={()=>handlerAddToCart(card)}
+                                        >
                                             <p className={`font-cursive text-2xl`}>{card.display_name}</p>
                                             <div
                                                 className="hidden group-hover:grid place-items-center content-center absolute inset-0 bg-black text-white">
@@ -209,6 +213,8 @@ function GiftcardsPage() {
             {showGiftReceiverModal
                 ? ReactDom.createPortal(<GiftReceiverModal
                     showModal={showGiftReceiverModal}
+                    isMobile={mobile}
+                    setShowCart={setShowCart}
                     setShowModal={setShowGiftReceiverModal}
                     gc_asset_id={giftReceiverModalData.gc_asset_id}
                     gc_price={giftReceiverModalData.gc_price}
@@ -220,6 +226,12 @@ function GiftcardsPage() {
             <Toast isMobile={mobile} show={show} hideToast={() => {
                 setShow(false)
             }}>Please Enter Gift Card Code</Toast>
+            {
+                showCart
+                &&
+                ReactDom.createPortal(<CartModal closeModal={()=>setShowCart(false)}/>,
+                    document.getElementById("cartside"))
+            }
         </Fragment>
     );
 

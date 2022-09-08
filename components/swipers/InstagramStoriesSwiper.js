@@ -38,19 +38,15 @@ function InstagramStoriesSwiper(props) {
             .then(function (response) {
                 //if(response.response.token) {
                 if (false) {
-                    console.log('Using token Token RESPONSE', response.response.token)
                     fetchJsonp(instaGramUrl + "?access_token=" + response.response.token)
                         .then(function (response) {
                             return response.json()
                         }).then(function (json) {
-                            console.log('INSTAGRAM RESPONSE', json)
                         }).catch(function (ex) {
-                            console.log('parsing failed', ex)
                         })
                 }
 
             }).catch(function (ex) {
-                console.log('Token Failed', ex)
             })
     }, [props.apiToken])
     const mobileView = null;

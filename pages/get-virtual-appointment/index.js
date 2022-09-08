@@ -8,7 +8,7 @@ import Header from "../../components/navbar/Header";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../../components/common/Toast";
 import {isMobile} from "react-device-detect";
-import Image from "next/Image";
+import Image from "next/image";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
@@ -26,6 +26,7 @@ function GetVirtualAppointmentPage() {
         date: "", time: "", lastname: "", phonenumber: "", message: "",
         firstname: "", shoppedbefore: "", somethingspecific: "", email: ""
     })
+    const [refresh,setRefresh]=useState(false)
 
     useEffect(() => {
         setMobile(isMobile)
@@ -59,6 +60,7 @@ function GetVirtualAppointmentPage() {
     const updateData = (key, value) => {
         formData[key] = value;
         setFormData(formData)
+        setRefresh(!refresh)
     }
 
     const bookAppointment = async () => {
@@ -107,6 +109,29 @@ function GetVirtualAppointmentPage() {
 
     const browserView = (
         <>
+            <div>
+                DLF MEGA MALL
+                LG-51, DLF MEGA MALL, GOLF COURSE ROAD, GURUGRAM, HARYANA 122002
+                CONTACT: +91 124 4116917
+                STORE TIMINGS:
+                11:00 AM - 08:00 PM, OPEN ALL 7 DAYS
+
+                PHOENIX PALLADIUM
+                5A, THIRD FLOOR, EAST ZONE, PHOENIX PALLADIUMSENAPATI BAPAT ROAD, MUMBAI, MAHARASHTRA
+                CONTACT: +91 8976892272
+
+                STORE TIMINGS:
+                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
+
+                INFINITI MALAD
+                123, FIRST FLOOR, INFINITI MALAD, MUMBAI, MAHARASHTRA
+                CONTACT: +91 8976892273
+
+                STORE TIMINGS:
+                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
+
+                OUR STORE IS OPEN!
+            </div>
             <div className={`text-2xl font-600 text-center mb-12`}>Book An Online Styling Session</div>
             <form className={`grid grid-cols-2 gap-x-20 gap-y-5`}>
                 <div className={`grid grid-cols-2 gap-x-10 gap-y-8`}>
@@ -169,7 +194,7 @@ function GetVirtualAppointmentPage() {
         <h2 className={"text-2xl font-900 uppercase tracking-wider text-[#db8b7d] font-cursive"}>styling appointment</h2>
         <h3 className={"text-h3 font-cursive leading-none mb-6 text-[#db8b7d]"}>Experience Salt Attire</h3>
         <span className={"block relative w-full aspect-[6/5]"}>
-            <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} layout={`fill`} objectFit={`cover`}/>
+            <Image src={WEBASSETS + "/assets/images/our_store_800_v1.jpg"} layout={`fill`} objectFit={`cover`} alt={""}/>
         </span>
         <div className={`text-2xl font-100 text-center my-5 font-cursive text-[#595756]`}>Book An Online Styling Session</div>
         <div className={`grid grid-cols-2 gap-x-10 gap-y-4`}>

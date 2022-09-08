@@ -22,7 +22,6 @@ import {useRouter} from "next/router";
 
 
 function ShopPage(props) {
-    console.log("=========== SHOP PAGE DATA RECEIVED IN PROPS",props.data)
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
     //all paths start with shop-
@@ -44,11 +43,9 @@ function ShopPage(props) {
                 }
             })
         } else {
-            newData = [...data.data]
+            newData = data?[...data.data.filter(item => item.size_avail !== "")]:[]
         }
 
-        console.log("NEW DATA", newData)
-        console.log("Filter DATA", dataStore.filter)
 
         setVisibleData(newData)
     }, [dataStore.refreshFilter])

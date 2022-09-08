@@ -1,7 +1,10 @@
-import {useState} from "react";
+import React, {useState} from "react";
 
-const StarSVG = ({type, onChange}) => {
+const StarSVG = ({type, onChange, value}) => {
     const [checked, setChecked] = useState(-1)
+    React.useEffect(() => {
+        setChecked(value-1)
+    }, [value])
     let star = {
         filledBlackStar: (
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
@@ -20,8 +23,10 @@ const StarSVG = ({type, onChange}) => {
                         return (
                             <svg
                                 onClick={() => {
-                                    setChecked(index)
-                                    onChange && onChange(index + 1)
+                                    if (onChange)
+                                        onChange(index + 1)
+                                    else
+                                        setChecked(index)
                                 }}
                                 key={index}
                                 aria-hidden="true"
