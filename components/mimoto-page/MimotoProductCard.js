@@ -24,8 +24,6 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)

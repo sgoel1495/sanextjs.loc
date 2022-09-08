@@ -61,14 +61,19 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory}) => 
             </div>
         </div>
         <div className={"flex flex-col items-center"}>
-            <button
-                onClick={() => {
-                    setShowModal(3)
-                }}
-                className="ml-3 w-[60%] bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-2"
-            >
-                CANCEL
-            </button>
+            {
+                Object.keys(product.item_status).length <= 1 ?
+                    <button
+                        onClick={() => {
+                            setShowModal(3)
+                        }}
+                        className="ml-3 w-[60%] bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-2"
+                    >
+                        CANCEL
+                    </button>
+                    :
+                    null
+            }
             <button
                 onClick={() => {
                     setShowModal(4)
@@ -107,14 +112,19 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory}) => 
                     <span className={"text-[13px] font-500"}>{product.delivery_address.address}</span>
                     <span className={"text-[13px] font-500"}>{product.delivery_address.country}, {product.delivery_address.state}</span>
                     <span className={"text-[13px] font-500"}>{product.delivery_address.city},{product.delivery_address.zip_code}</span>
-                    <span
-                        onClick={() => {
-                            setShowModal(1)
-                        }}
-                        className={"text-[11px] font-600 hover:underline cursor-pointer"}
-                    >
-                        Change Shipping Address
-                    </span>
+                    {
+                        Object.keys(product.item_status).length <= 1 ?
+                            <span
+                                onClick={() => {
+                                    setShowModal(1)
+                                }}
+                                className={"text-[11px] font-600 hover:underline cursor-pointer"}
+                            >
+                                Change Shipping Address
+                            </span>
+                            :
+                            null
+                    }
                 </div>
                 <div className={"flex flex-col gap-1 mb-5 mt-1 text-sm"}>
                     <strong>
@@ -162,6 +172,7 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory}) => 
                     data={product}
                     itemIndex={itemIndex}
                     setToastMsg={setToastMsg}
+                    getOrderHistory={getOrderHistory}
                 />,
                 document.getElementById("measurementmodal")
             )

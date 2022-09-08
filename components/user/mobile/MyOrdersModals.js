@@ -1,14 +1,26 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import StarSVG from "./StarSVG";
 import AppWideContext from "../../../store/AppWideContext";
 import {apiCall} from "../../../helpers/apiCall";
 
-const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMobile}) => {
+const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMobile, getOrderHistory}) => {
     const {dataStore} = useContext(AppWideContext);
     const [fit, setFit] = React.useState(0)
     const [fabric, setFabric] = React.useState(0)
     const [service, setService] = React.useState(0)
     const [comment, setComment] = React.useState("")
+    const [userAddresses, setUserAddresses] = React.useState([])
+    const [address, setAddress] = React.useState("-1")
+
+    useEffect(() => {
+        apiCall("userAddresses", dataStore.apiToken, {user: {email: dataStore.userServe.email}})
+            .then(pData => {
+                if (pData.status === 200 && pData.response) {
+                    setUserAddresses(pData.response)
+                }
+            })
+            .catch(e => console.log(e.message))
+    }, [dataStore.userServe.email, dataStore.apiToken]);
 
     const getData = () => {
         let body;
@@ -66,10 +78,15 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
         setToastMsg("Thank you so much. Your review has been saved")
         setShowModal(false)
     }
-    const changeAddress = () =>{
-
+    const changeAddress = () => {
+        apiCall("editShippingAddress", dataStore.apiToken, {
+            "order_id": data.order_id,
+            "address": userAddresses[address],
+        })
+        getOrderHistory()
+        setShowModal(false)
     }
-    console.log(data.delivery_address)
+
     const element = [
         {
             innerHTML: (
@@ -96,16 +113,18 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
 
                     <div className={"flex flex-col text-[#5f6061]"}>
                         <label className={"text-xs"}>Choose Address</label>
-                        <select name="cars" id="cars" placeholder={"Please Select Address"}>
-                            <option value="Please Select Address">Please Select Address</option>
-                            <option value="mockAddress">Knowhere</option>
+                        <select name="cars" id="cars" placeholder={"Please Select Address"} onChange={(e) => setAddress(e.target.value)}>
+                            <option value="-1">Please Select Address</option>
+                            {
+                                userAddresses.map((item, index) => {
+                                    return <option value={index} key={index}>{item.address},{item.city},{item.state},{item.zip_code}</option>
+                                })
+                            }
                         </select>
 
                     </div>
                     <button
-                        onClick={() => {
-                            setShowModal(false)
-                        }}
+                        onClick={changeAddress}
                         className="bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-10">
                         save
                     </button>
