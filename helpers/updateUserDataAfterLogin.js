@@ -62,6 +62,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
             email: username
         }
     });
+
     let defaultAddress = null
     if (
         defaultAddressCall.hasOwnProperty("response")
@@ -73,6 +74,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     //==================== user Cart
     // we may have products that we need to add to user
     // first we add any measurements that may be there.
+
     let userCart = [];
     let cartCall = await apiCall("getCart", apiToken, {"user": userO});
     if (cartCall.response && Array.isArray(cartCall.response))
