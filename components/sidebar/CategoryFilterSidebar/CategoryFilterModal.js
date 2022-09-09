@@ -9,7 +9,7 @@ import {applyFilters, setFilter, setFilterCheckbox, setSortBy} from "../../../Re
 
 function CategoryFilterModal(props) {
     const router = useRouter()
-    const [route, setRoute] = useState(router.route)
+
     const [checkedBoxes, setCheckedBoxes] = useState(props.filterCheckboxes);
 
     const closeModalAndApplyFilter = () => {
@@ -29,23 +29,9 @@ function CategoryFilterModal(props) {
         props.setFilterCheckbox(initArray)
     }
 
-    React.useEffect(() => {
-        if (router.query.sorted_by) {
-            props.setSortBy(router.query.sorted_by)
-        }
-    }, [router.query])
 
-    React.useEffect(() => {
-        if (router.route !== route) {
-            if (router.query.sorted_by) {
-                props.setSortBy(router.query.sorted_by)
-            } else {
-                props.setSortBy("")
-            }
-            props.setFilterCheckbox({})
-            setRoute(router.route)
-        }
-    }, [router.route])
+
+
 
     React.useEffect(() => {
         if (Object.keys(checkedBoxes).length === 0)

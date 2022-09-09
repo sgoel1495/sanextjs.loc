@@ -20,11 +20,13 @@ import Loader from "../common/Loader";
 import {useRouter} from "next/router";
 import {connect} from "react-redux";
 import {apiCall} from "../../helpers/apiCall";
+import {applyFilters, setFilterCheckbox, setSortBy} from "../../ReduxStore/reducers/filterSlice";
 
 
 function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
+    const [route, setRoute] = useState("")
     //all paths start with shop-
     const {category, hpid, appConfig, data} = props
     const [loading, setLoading] = useState(false)
@@ -90,10 +92,33 @@ function ShopPage(props) {
             })
     }
 
-
     useEffect(() => {
-        updateVisibleData()
+        if (route) {
+            updateVisibleData()
+        }
     }, [props.refreshFilter])
+
+    React.useEffect(() => {
+        if (router.route !== route) {
+            if (router.query.sorted_by) {
+                props.setSortBy(router.query.sorted_by)
+            } else {
+                props.setSortBy("")
+            }
+            props.setFilterCheckbox({})
+            setTimeout(() => {
+                setRoute(router.route)
+                props.applyFilters()
+            },100)
+
+        }
+    }, [router.route])
+
+    React.useEffect(() => {
+        if (router.query.sorted_by) {
+            props.setSortBy(router.query.sorted_by)
+        }
+    }, [router.query])
 
     const navControl = useNavControl(-20)
 
@@ -216,4 +241,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(ShopPage);
+export default connect(mapStateToProps, {setFilterCheckbox, setSortBy, applyFilters})(ShopPage);
