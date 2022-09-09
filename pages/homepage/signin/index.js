@@ -6,15 +6,15 @@ import {isMobile} from "react-device-detect";
 import UserLogin from "../../../components/user/login/UserLogin";
 import {useRouter} from "next/router";
 import AppWideContext from "../../../store/AppWideContext";
+import {connect} from "react-redux";
 
-function HomepageSignInPage() {
+function HomepageSignInPage({userData}) {
 
-    const {dataStore} = useContext(AppWideContext);
     const [mobile, setMobile] = useState(false)
     const router = useRouter();
 
     useEffect(() => {
-        if (dataStore.userServe.email) {
+        if (userData.userServe.email) {
             router.push("/")
         }
         setMobile(isMobile)
@@ -41,4 +41,10 @@ function HomepageSignInPage() {
     );
 }
 
-export default HomepageSignInPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData
+    }
+}
+
+export default connect(mapStateToProps)(HomepageSignInPage);

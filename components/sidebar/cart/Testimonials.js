@@ -5,14 +5,14 @@ import SwiperCore, {Autoplay} from "swiper";
 import {Swiper, SwiperSlide} from "swiper/react";
 import useApiCall from "../../../hooks/useApiCall";
 import AppWideContext from "../../../store/AppWideContext";
+import {connect} from "react-redux";
 
 SwiperCore.use([Autoplay]);
 
-const Testimonials = () => {
-    const {dataStore} = React.useContext(AppWideContext);
+const Testimonials = ({appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const blockHeader = "border-4 border-theme-200 p-2 uppercase mb-5 tracking-wide mx-5"
-    const resp = useApiCall("reviews", dataStore.apiToken);
+    const resp = useApiCall("reviews", appConfig.apiToken);
 
     if (resp && resp.msg === "Successfully Get")
         return (
@@ -58,4 +58,10 @@ const Testimonials = () => {
     return <></>
 };
 
-export default Testimonials;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Testimonials);

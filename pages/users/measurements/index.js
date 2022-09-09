@@ -1,26 +1,25 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
-import { apiCall } from "../../../helpers/apiCall";
+import {apiCall} from "../../../helpers/apiCall";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
-import { isMobile } from "react-device-detect";
-import { getUserObject } from "../../../helpers/addTocart";
+import {isMobile} from "react-device-detect";
+import {getUserObject} from "../../../helpers/addTocart";
 import TailoredSize from "../../../components/product-page/TailoredSize";
+import {connect} from "react-redux";
 
-function UsersMeasurementsPage() {
+function UsersMeasurementsPage({appConfig, userData}) {
     const router = useRouter();
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
-    const [mobile, setMobile] = useState(false);
     const [userMeasurements, setUserMeasurements] = useState({});
     const [currentMeasurement, setCurrentMeasurement] = useState(emptyMeasurement)
     const getMeasurements = () => {
-        apiCall("userMeasurements", dataStore.apiToken, {
-            user: getUserObject(dataStore, updateDataStore)
+        apiCall("userMeasurements", appConfig.apiToken, {
+            user: getUserObject(userData)
         })
             .then(pData => {
                 if (pData.status === 200 && pData.response && Object.keys(pData.response).length > 0) {
@@ -31,15 +30,14 @@ function UsersMeasurementsPage() {
     }
 
     useEffect(() => {
-        if (dataStore.userData.contact == null) router.replace("/");
-        setMobile(isMobile);
+        if (userData.userServe.email == null) router.replace("/");
         getMeasurements()
     }, []);
 
     const saveMeasurement = () => {
-        apiCall("addMeasurements", dataStore.apiToken, {
-            user: getUserObject(dataStore, updateDataStore),
-            "measurments": { ...currentMeasurement, "measure_id": (new Date()).getTime().toString() + "_m" }
+        apiCall("addMeasurements", appConfig.apiToken, {
+            user: getUserObject(userData),
+            "measurments": {...currentMeasurement, "measure_id": (new Date()).getTime().toString() + "_m"}
         })
             .then(pData => {
                 if (pData.status === 200) {
@@ -71,8 +69,8 @@ function UsersMeasurementsPage() {
     const deleteMeasurement = async (m) => {
         let temp = JSON.parse(JSON.stringify(userMeasurements));
         delete temp[m]
-        await apiCall("removeMeasurements", dataStore.apiToken, {
-            user: getUserObject(dataStore, updateDataStore),
+        await apiCall("removeMeasurements", appConfig.apiToken, {
+            user: getUserObject(userData),
             measurments: {
                 measure_id: m
             }
@@ -86,12 +84,12 @@ function UsersMeasurementsPage() {
                 <p className="text-[28px]">Measurement Summary</p>
                 <div className="flex flex-col gap-8 w-full">
                     <div className="flex-1 px-6 py-8 font-600 text-[#555]">
-                        <p>User Id: {dataStore.userData.contact}</p>
+                        <p>User Id: {userData.userServe.email}</p>
                         <p>Total Measurement(s): {Object.keys(userMeasurements).length}</p>
                     </div>
                     <div className="flex-1 grid place-items-center">
                         <TailoredSize isMobile={true} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
-                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true} />
+                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true}/>
 
                     </div>
                 </div>
@@ -116,12 +114,12 @@ function UsersMeasurementsPage() {
                 <p className="text-[28px]">Measurement Summary</p>
                 <div className="flex gap-8 w-full">
                     <div className="flex-1 bg-[#f1f2f3] px-6 py-8 font-600 text-[#555]">
-                        <p>User Id: {dataStore.userData.contact}</p>
+                        <p>User Id: {userData.userServe.email}</p>
                         <p>Total Measurement(s): {Object.keys(userMeasurements).length}</p>
                     </div>
                     <div className="flex-1 bg-[#f1f2f3] grid place-items-center">
                         <TailoredSize isMobile={false} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
-                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true} />
+                        }} edit={true} saveMeasurement={saveMeasurement} addNew={true}/>
                     </div>
                 </div>
                 <>
@@ -140,12 +138,19 @@ function UsersMeasurementsPage() {
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
-            {mobile ? mobileView() : browserView()}
-            <Footer isMobile={dataStore.mobile} minimal={true} />
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={appConfig.isMobile}/>
+            <Header type={appConfig.isMobile ? "minimal" : "shopMenu"} isMobile={appConfig.isMobile}/>
+            {appConfig.isMobile ? mobileView() : browserView()}
+            <Footer isMobile={appConfig.isMobile} minimal={true}/>
         </Fragment>
     );
 }
 
-export default UsersMeasurementsPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(UsersMeasurementsPage);

@@ -1,10 +1,10 @@
-import React, {Fragment, useContext} from "react";
+import React, {Fragment} from "react";
 import {useRouter} from "next/router";
-import AppWideContext from "../../../../store/AppWideContext";
 import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";
 import CategoryHeaderImage from "../../../../components/common/CategoryHeaderImage";
 import Footer from "../../../../components/footer/Footer";
+import {connect} from "react-redux";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
@@ -12,9 +12,8 @@ import Footer from "../../../../components/footer/Footer";
  * @constructor
  */
 
-function GroupCategoryPage() {
+function GroupCategoryPage({appConfig}) {
     // we are dealing with color and cateogry
-    const {dataStore} = useContext(AppWideContext);
     const router = useRouter();
     const query = router.query;
     const design = query.groupdesign;
@@ -30,17 +29,23 @@ function GroupCategoryPage() {
 
     return (
         <Fragment>
-            <PageHead url="/salt/group" id="group" isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile?"minimal":"shopMenu"} isMobile={dataStore.mobile}/>
+            <PageHead url="/salt/group" id="group" isMobile={appConfig.isMobile}/>
+            <Header type={appConfig.isMobile?"minimal":"shopMenu"} isMobile={appConfig.isMobile}/>
             <CategoryHeaderImage category={design}/>
             <section className="container my-20 select-none">
-                {(dataStore.mobile) ? mobileView : browserView}
+                {(appConfig.isMobile) ? mobileView : browserView}
             </section>
-            <Footer isMobile={dataStore.mobile}/>
+            <Footer isMobile={appConfig.isMobile}/>
         </Fragment>
     )
 
 
 }
 
-export default GroupCategoryPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(GroupCategoryPage);

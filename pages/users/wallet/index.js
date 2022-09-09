@@ -11,33 +11,34 @@ import {apiCall} from "../../../helpers/apiCall";
 import UsersMenu from "../../../components/user/UsersMenu";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
 import {getUserObject} from "../../../helpers/addTocart";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
+import {setUserState} from "../../../ReduxStore/reducers/userSlice";
 
-function UsersWalletPage() {
+function UsersWalletPage({appConfig,userConfig, userData, ...props}) {
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
     const [voucher, setVoucher] = useState('')
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [walletAmount, setWalletAmount] = useState(null);
 
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (userData.userServe.email == null)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
+    }, [userData.userServe.email, router])
 
     useEffect(() => {
         setMobile(isMobile)
-        console.log('datastore', dataStore)
     }, [])
 
     useEffect(() => {
-        apiCall("userWallet", dataStore.apiToken, {contact: dataStore.userData.contact})
+        apiCall("userWallet", appConfig.apiToken, {contact: userData.userServe.email})
             .then(pData => {
                 if (pData.msg === 'Found' && pData.user) {
                     setWalletAmount(pData.user.WalletAmount)
                 }
             })
             .catch(e => console.log(e.message))
-    }, [dataStore.userData.contact, dataStore.apiToken]);
+    }, [userData.userServe.email, appConfig.apiToken]);
 
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
@@ -45,32 +46,30 @@ function UsersWalletPage() {
     const redeemVoucher = async () => {
         if (voucher === "")
             return
-        if (!dataStore.userData.contact) {
+        if (!userData.userServe.email) {
             setMessage("You need to be logged in to redeem voucher")
             setShow(true)
             return
         }
 
-        const userO = getUserObject(dataStore, updateDataStore)
+        const userO = getUserObject(userData)
         const queryO = {
             user: userO,
             voucher: {
-                email: dataStore.userData.contact,
+                email: userData.userServe.email,
                 voucher: voucher
             }
         }
 
-        const voucherCall = await apiCall("redeemVoucher", dataStore.apiToken, queryO)
+        const voucherCall = await apiCall("redeemVoucher", appConfig.apiToken, queryO)
 
         if (voucherCall.status = 200) {
             setMessage(voucherCall.msg)
             if (voucherCall.msg && voucherCall.msg === "Gift Card Voucher redeem successfully!!") {
                 // we update the whole storage
-                const updateData = await updateUserDataAfterLogin(dataStore.userData.contact, dataStore.apiToken, {}, [])
-                Object.keys(updateData).forEach((key) => {
-                    updateDataStore(key, updateData[key]);
-                })
-                localStorage.setItem("userData", JSON.stringify(updateData["userData"]));
+                const updateData = await updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, {}, [])
+                props.setCart(updateData.shoppingCart)
+                props.setUserState(updateData.userState);
             }
         } else
             setMessage("Voucher could not be redeemed. Please ensure it is valid")
@@ -83,7 +82,7 @@ function UsersWalletPage() {
             <p className="text-[20px] mb-2">SALT Store Credit</p>
             {walletAmount >= 0 ? <p className="text-[#777] font-500 mt-4">
                     Available Balance: <span
-                    className={"text-black font-700"}>{dataStore.currSymbol} {walletAmount}</span>
+                    className={"text-black font-700"}>{userConfig.currSymbol} {walletAmount}</span>
                 </p>
                 :
                 ""}
@@ -109,7 +108,7 @@ function UsersWalletPage() {
                     <p className="text-[28px] mb-2">SALT Store Credit</p>
                     {
                         walletAmount >= 0 ? <p className="text-[#777] font-500 mt-4">
-                                Available Balance: <span className={"font-600 text-black"}>{dataStore.currSymbol} {walletAmount}</span>
+                                Available Balance: <span className={"font-600 text-black"}>{userConfig.currSymbol} {walletAmount}</span>
                             </p>
                             :
                             ""
@@ -142,4 +141,13 @@ function UsersWalletPage() {
     )
 }
 
-export default UsersWalletPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps, {setCart, setUserState})(UsersWalletPage);

@@ -8,6 +8,7 @@ import Toast from "../../components/common/Toast";
 import {apiCall} from "../../helpers/apiCall";
 import {isMobile} from "react-device-detect";
 import Image from "next/image";
+import {connect} from "react-redux";
 
 
 /**
@@ -16,9 +17,8 @@ import Image from "next/image";
  * @constructor
  */
 
-function GetAppointmentPage() {
+function GetAppointmentPage({appConfig,userData}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [mobile, setMobile] = useState(false);
     const [show, setShow] = useState(false)
     const [msg, setMsg] = useState(null);
@@ -91,11 +91,11 @@ function GetAppointmentPage() {
                 "email": formData.email,
                 "phone": formData.phonenumber,
                 "apt_type": "physical",
-                "is_custome": (dataStore.userData.contact) ? "yes" : "no",
+                "is_custome": (userData.userServe.email) ? "yes" : "no",
                 "is_fitting": "Message: " + formData.message + " Specific: " + formData.somethingspecific
             }
 
-            const resp = await apiCall("bookAppointmentMob", dataStore.apiToken, query);
+            const resp = await apiCall("bookAppointmentMob", appConfig.apiToken, query);
 
             if (resp.response && resp.response == "Done") {
                 setMsg("Appointment done")
@@ -334,4 +334,11 @@ function GetAppointmentPage() {
 
 }
 
-export default GetAppointmentPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(GetAppointmentPage);

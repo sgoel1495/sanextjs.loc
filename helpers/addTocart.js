@@ -1,29 +1,28 @@
 import {apiCall} from "./apiCall";
 
-export async function refreshCart(dataStore, updateDataStore) {
-    let user = getUserObject(dataStore, updateDataStore)
-    const respCart = await apiCall("getCart", dataStore.apiToken, {user: user})
+export async function refreshCart(userData, apiToken, setCart) {
+    let user = getUserObject(userData)
+    const respCart = await apiCall("getCart", apiToken, {user: user})
     if (respCart.response && Array.isArray(respCart.response)) {
         const actualCart = respCart.response.filter(item => {
             return item.qty != null
         })
-        updateDataStore("userCart", actualCart)
+        setCart("userCart", actualCart)
     }
 }
 
-export function getUserObject(dataStore, updateDataStore) {
+export function getUserObject(userData) {
     let tempId;
-    if (dataStore.userServe && (!dataStore.userServe.temp_user_id || dataStore.userServe.temp_user_id === "")) {
+    if (userData.userServe && (!userData.userServe.temp_user_id || userData.userServe.temp_user_id === "")) {
         tempId = Date.now()
-        dataStore.userServe.temp_user_id = tempId
-        updateDataStore("userServe", dataStore.userServe)
+        userData.userServe.temp_user_id = tempId
     } else
-        tempId = dataStore.userServe.temp_user_id
+        tempId = userData.userServe.temp_user_id
 
     return {
-        email: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-        contact: (dataStore.userData.contact) ? dataStore.userData.contact : "",
-        is_guest: !(dataStore.userData.contact),
+        email: (userData.userServe.email) ? userData.userServe.email : "",
+        contact: (userData.userServe.email) ? userData.userServe.email : "",
+        is_guest: !(userData.userServe.email),
         temp_user_id: tempId
     }
 }
@@ -58,12 +57,12 @@ export async function checkItemInCart(userCart, product, isGC) {
     })
 }
 
-export async function addToCart(dataStore, updateDataStore, cart, apiName = "addToCart") {
-    let user = getUserObject(dataStore, updateDataStore)
+export async function addToCart(userData, userCart, apiToken, setCart, cart, apiName = "addToCart") {
+    let user = getUserObject(userData)
 
     //update payload and apiname if item already in cart
     let isGC = apiName === "addGiftToCart";
-    let item = await checkItemInCart(dataStore.userCart, cart[isGC ? "giftcard_details" : "cart"], isGC)
+    let item = await checkItemInCart(userCart, cart[isGC ? "giftcard_details" : "cart"], isGC)
     if (item) {
         cart = {
             "product": {
@@ -74,17 +73,17 @@ export async function addToCart(dataStore, updateDataStore, cart, apiName = "add
         apiName = "updateCart"
     }
 
-    const resp = await apiCall(apiName, dataStore.apiToken, {user: user, ...cart})
+    const resp = await apiCall(apiName, apiToken, {user: user, ...cart})
 
     if ((resp.response && resp.response === "success") || (resp.msg && resp.msg === "success")) {
-        await refreshCart(dataStore, updateDataStore)
+        await refreshCart(userData, apiToken, setCart)
         return true
     }
     return false
 }
 
-export async function updateCart(dataStore, updateDataStore, product) {
-    let user = getUserObject(dataStore, updateDataStore)
+export async function updateCart(userData, apiToken, setCart, product) {
+    let user = getUserObject(userData)
 
     product = {
         "product": {
@@ -93,37 +92,37 @@ export async function updateCart(dataStore, updateDataStore, product) {
         }
     }
 
-    const resp = await apiCall("updateCart", dataStore.apiToken, {user: user, ...product})
+    const resp = await apiCall("updateCart", apiToken, {user: user, ...product})
 
     if ((resp.response && resp.response === "success") || (resp.msg && resp.msg === "success")) {
-        await refreshCart(dataStore, updateDataStore)
+        await refreshCart(userData, apiToken, setCart)
     }
 }
 
-export async function removeFromCart(dataStore, updateDataStore, product) {
-    let user = getUserObject(dataStore, updateDataStore)
+export async function removeFromCart(userData, apiToken, setCart, product) {
+    let user = getUserObject(userData)
     product = {
         "product": {
             "product_cart_id": product.cart_id
         }
     }
-    const resp = await apiCall("removeCart", dataStore.apiToken, {user: user, ...product})
+    const resp = await apiCall("removeCart", apiToken, {user: user, ...product})
 
     if ((resp.response && resp.response === "success") || (resp.msg && resp.msg === "success")) {
-        await refreshCart(dataStore, updateDataStore)
+        await refreshCart(userData, apiToken, setCart)
     }
 }
 
-export async function updateCartMeasurement(dataStore, updateDataStore,cart_id,product){
-    let user = getUserObject(dataStore, updateDataStore)
+export async function updateCartMeasurement(userData, apiToken, setCart, cart_id, product) {
+    let user = getUserObject(userData)
     let item = {
         "product": {
             "product_cart_id": cart_id
         }
     }
-    await apiCall("removeCart", dataStore.apiToken, {user: user, ...item})
-    const resp = await apiCall("addToCart", dataStore.apiToken, {user: user, ...product})
+    await apiCall("removeCart", apiToken, {user: user, ...item})
+    const resp = await apiCall("addToCart", apiToken, {user: user, ...product})
     if ((resp.response && resp.response === "success") || (resp.msg && resp.msg === "success")) {
-        await refreshCart(dataStore, updateDataStore)
+        await refreshCart(userData, apiToken, setCart)
     }
 }

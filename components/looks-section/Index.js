@@ -4,11 +4,11 @@ import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import Link from 'next/link'
+import {connect} from "react-redux";
 
-const Index = () => {
+const Index = ({appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
-    const resp = useApiCall("getLookSection", dataStore.apiToken);
+    const resp = useApiCall("getLookSection", appConfig.apiToken);
     return (
         <div className={"py-4 bg-[#f5efea]"}>
             <Link href={"/looks"}>
@@ -92,4 +92,10 @@ const Index = () => {
     );
 };
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Index);

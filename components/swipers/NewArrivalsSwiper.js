@@ -15,14 +15,14 @@ import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
 import appSettings from "../../store/appSettings";
 import Link from 'next/link';
+import {connect} from "react-redux";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 function NewArrivalsSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
 
-    const resp = useApiCall("getHomePageNewArrivals", dataStore.apiToken);
+    const resp = useApiCall("getHomePageNewArrivals", props.appConfig.apiToken);
     const [data, setData] = useState(null);
     useEffect(() => {
         if (resp
@@ -34,9 +34,8 @@ function NewArrivalsSwiper(props) {
             setData(resp.response.data);
     }, [resp]);
 
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currSymbol = currencyData[currCurrency]["curr_symbol"];
+    const currCurrency = props.userConfig.currCurrency;
+    const currSymbol = props.userConfig.currSymbol;
 
     const actualData = [];
 
@@ -143,4 +142,11 @@ function NewArrivalsSwiper(props) {
 
 }
 
-export default NewArrivalsSwiper;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(NewArrivalsSwiper);

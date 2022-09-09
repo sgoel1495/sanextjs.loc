@@ -38,7 +38,6 @@ const AnswerBlock = ({item}) => {
 
 function SaltShippingNReturnsPage() {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [mobile, setMobile] = useState(false)
     const category = "Shipping & Returns";
 

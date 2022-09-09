@@ -4,10 +4,11 @@ import isValidEmail from "../../helpers/isValidEmail";
 import AppWideContext from "../../store/AppWideContext";
 import {useRouter} from "next/router";
 import {addToCart} from "../../helpers/addTocart";
+import {connect} from "react-redux";
+import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 
 const GiftReceiverModal = (props) => {
     const router = useRouter();
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [error, setError] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
     const [copy, setCopy] = useState(false)
@@ -113,7 +114,7 @@ const GiftReceiverModal = (props) => {
             "product_id": props.gc_asset_id,
             ...payload
         }
-        addToCart(dataStore, updateDataStore, {giftcard_details: displayCart}, "addGiftToCart").then(r => {
+        addToCart(props.userData, props.shoppingCart.cart, props.appConfig.apiToken, props.setCart, {giftcard_details: displayCart}, "addGiftToCart").then(r => {
         })
         if (props.isMobile) {
             router.push("/homepage/cart")
@@ -347,4 +348,12 @@ const GiftReceiverModal = (props) => {
     </>
 };
 
-export default GiftReceiverModal;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps,{setCart})(GiftReceiverModal);

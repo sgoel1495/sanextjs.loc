@@ -4,13 +4,13 @@ import {DateTime, Interval} from "luxon";
 import {apiDictionary} from "../../helpers/apiDictionary";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
+import {connect} from "react-redux";
 
 const focusStyle = "focus:ring-0 focus:border-white focus:shadow-none focus:ring-offset-transparent";
 const inputStyle = "border border-white px-1 text-sm text-center bg-[#f6f1ef] text-[#797979] tracking-[1px] " + focusStyle;
 
 const Index = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
 
     const [type, setType] = useState("")
     const [success, setSuccess] = useState(false)
@@ -37,7 +37,7 @@ const Index = () => {
         }
         queryObject["is_fitting"] = ""
         queryObject["bring_text"] = ""
-        const callObject = apiDictionary("bookAppointmentMob", dataStore.apiToken, queryObject);
+        const callObject = apiDictionary("bookAppointmentMob", appConfig.apiToken, queryObject);
         fetch(callObject.url, callObject.fetcher)
             .then(response => {
                 return response.json();
@@ -144,4 +144,10 @@ const Index = () => {
     );
 };
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Index);

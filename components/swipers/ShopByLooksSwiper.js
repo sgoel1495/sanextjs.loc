@@ -14,14 +14,14 @@ import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
+import {connect} from "react-redux";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 
 function ShopByLooksSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
-    const resp = useApiCall("getLooksData",dataStore.apiToken,{look_id: ""});
+    const resp = useApiCall("getLooksData",props.appConfig.apiToken,{look_id: ""});
     const [data,setData] = useState(null);
     useEffect(()=>{
         if(resp
@@ -94,5 +94,11 @@ function ShopByLooksSwiper(props) {
 
 }
 
-export default ShopByLooksSwiper;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(ShopByLooksSwiper);
 

@@ -1,11 +1,11 @@
 import Image from "next/image";
-import React, { useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import ReactDom from "react-dom";
 import "swiper/css";
 import AppWideContext from "../../../store/AppWideContext";
 import qtyInCart from "../../../helpers/qtyInCart";
 import CartModal from "./CartModal";
-
+import {connect} from "react-redux";
 
 
 /**
@@ -15,7 +15,6 @@ import CartModal from "./CartModal";
  */
 
 function SidebarMenuCart(props) {
-    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [showSidebarMenuCart, setShowSidebarMenuCart] = useState(false);
     React.useEffect(() => {
@@ -46,7 +45,7 @@ function SidebarMenuCart(props) {
                     href={props.isMobile ? "/homepage/cart" : "javascript:;"}
                     className={`block relative w-6 cursor-pointer ${iconHeight}`}
                 >
-                    <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{qtyInCart(dataStore)}</span>
+                    <span className="absolute top-1 -right-1 font-600 text-[#777] text-xs">{qtyInCart(props.shoppingCart.cart)}</span>
                     <Image
                         src={WEBASSETS + "/assets/images/cart.png"}
                         alt="carticon"
@@ -65,6 +64,12 @@ function SidebarMenuCart(props) {
     );
 }
 
-export default SidebarMenuCart;
+const mapStateToProps = (state) => {
+    return {
+        shoppingCart: state.shoppingCart
+    }
+}
+
+export default connect(mapStateToProps)(SidebarMenuCart);
 
 

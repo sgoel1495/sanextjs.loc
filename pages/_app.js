@@ -4,72 +4,15 @@
 import '../styles/globals.scss';
 import '../styles/variables.css';
 import '../styles/zoomInSwiper.scss';
-import AppWideContext from "../store/AppWideContext";
-import React, {Fragment, useCallback, useEffect, useState} from 'react';
-//import {apiDictionary} from "../helpers/apiDictionary";
-//import App from "next/app";
-import {isMobile} from "react-device-detect";
+import React, {Fragment} from 'react';
+import {Provider} from "react-redux";
+import {PersistGate} from "redux-persist/integration/react";
 import Script from 'next/script'
-import {updateUserDataAfterLogin} from "../helpers/updateUserDataAfterLogin";
+import {persistor, store} from "../ReduxStore/store";
+import AppWrapper from "../components/AppWrapper";
 
 
 function MyApp({Component, pageProps}) {
-    const dataStoreDefault = require('../store/defaultDataStore.json');
-    dataStoreDefault.userServe = {
-        "email": "",
-        "phone_number": "",
-        "user_name": "",
-        "favorites": [],
-        "cart": {},
-        "ref_id": null,
-        "temp_user_id": null
-    }
-    dataStoreDefault.mobile = isMobile
-
-    //dataStoreDefault.apiToken = pageProps.apiToken;
-    const [dataStore, setDataStore] = useState(dataStoreDefault);
-    const [refresh, setRefresh] = useState(true);
-
-    const updateDataStore = useCallback((key, value) => {
-        dataStore[key] = value;
-        setDataStore({...dataStore});
-        setRefresh(!refresh);
-    }, [dataStore, refresh])
-    useEffect(() => {
-        let userData = localStorage.getItem("userData")
-        let flag = true;
-        if (userData) {
-            userData = JSON.parse(userData)
-            if (userData.contact) {
-                updateUserDataAfterLogin(userData.contact, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart).then(updateData => {
-                    setDataStore({...dataStore, ...updateData});
-                })
-                flag = false
-            }
-        }
-        if (flag) {
-            let userServe = localStorage.getItem("userServe")
-            if (userServe) {
-                userServe = JSON.parse(userServe)
-                if (userServe.temp_user_id) {
-                    setDataStore({...dataStore, "userServe": userServe});
-                } else {
-                    userServe = {...dataStore.userServe, temp_user_id: Date.now().toString()}
-                    setDataStore({...dataStore, "userServe": userServe});
-                    localStorage.setItem("userServe", JSON.stringify(userServe));
-                }
-            } else {
-                userServe = {...dataStore.userServe, temp_user_id: Date.now().toString()}
-                setDataStore({...dataStore, "userServe": userServe});
-                localStorage.setItem("userServe", JSON.stringify(userServe));
-            }
-        }
-    }, [])
-
-    useEffect(() => {
-        if (dataStore.mobile != isMobile)
-            updateDataStore("mobile", isMobile)
-    }, [dataStore.mobile, updateDataStore])
 
     const facebookBlock = <Fragment>
         <Script src="https://connect.facebook.net/en_US/all.js?hash=c3e73dbaa85ad58c8934ca9e6c6f542c"
@@ -81,11 +24,13 @@ function MyApp({Component, pageProps}) {
     </Fragment>
 
     return <Fragment>
-        <AppWideContext.Provider value={{
-            dataStore: dataStore, updateDataStore: updateDataStore
-        }}>
-            <Component {...pageProps} />
-        </AppWideContext.Provider>
+        <Provider store={store}>
+            <PersistGate loading={<></>} persistor={persistor}>
+                <AppWrapper>
+                    <Component {...pageProps} />
+                </AppWrapper>
+            </PersistGate>
+        </Provider>
         <Script type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({

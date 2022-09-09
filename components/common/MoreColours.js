@@ -3,14 +3,14 @@ import {apiCall} from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
 import Image from "next/image";
 import Link from "next/link";
+import {connect} from "react-redux";
 
-function MoreColours ({hpid}) {
+function MoreColours ({hpid,appConfig}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext)
     const [data,setData] = useState([])
 
     useEffect(()=>{
-        apiCall("getProduct", dataStore.apiToken,{product_id:hpid})
+        apiCall("getProduct", appConfig.apiToken,{product_id:hpid})
             .then(pData=>{
                 if (pData.response && pData.response.pattern_no){
                     const queryObject = {
@@ -20,7 +20,7 @@ function MoreColours ({hpid}) {
                         "category-name": pData.response.pattern_no,
                         "curr-product-id": hpid
                     }
-                    apiCall("getProducts",dataStore.apiToken,queryObject)
+                    apiCall("getProducts",appConfig.apiToken,queryObject)
                         .then(cData=>{
                             if(cData.response && cData.response.data)
                                 setData(cData.response.data)
@@ -30,7 +30,7 @@ function MoreColours ({hpid}) {
             })
             .catch(e=>console.log(e.message))
 
-    },[hpid,dataStore.apiToken])
+    },[hpid,appConfig.apiToken])
 
     const mobileView = null
     const browserView = ()=>{
@@ -54,8 +54,14 @@ function MoreColours ({hpid}) {
         </div>
 
     }
-    return (dataStore.mobile)? mobileView:browserView()
+    return (appConfig.isMobile)? mobileView:browserView()
 
 }
 
-export default MoreColours
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(MoreColours)

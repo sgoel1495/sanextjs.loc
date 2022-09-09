@@ -11,6 +11,7 @@ import ProductCard from "../../../components/shop-page/ProductCard";
 import {isMobile} from "react-device-detect";
 import GroupDesignHeader from "../../../components/group/GroupDesignHeader";
 import Loader from "../../../components/common/Loader";
+import {connect} from "react-redux";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
@@ -18,12 +19,11 @@ import Loader from "../../../components/common/Loader";
  * @constructor
  */
 
-function GroupDesignPage() {
+function GroupDesignPage({appConfig}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     // we are dealing with design here.
-    const {dataStore} = useContext(AppWideContext);
     const router = useRouter();
-    const resp = useApiCall("getPreferencesData", dataStore.apiToken);
+    const resp = useApiCall("getPreferencesData", appConfig.apiToken);
     const [callData,setCallData] = useState(null)
     const [data, setData] = useState(null);
     const [visibleData, setVisibleData] = useState([]);
@@ -39,7 +39,7 @@ function GroupDesignPage() {
 
     useEffect(() => {
         if (design && data==null) {
-            apiCall("getProducts", dataStore.apiToken,
+            apiCall("getProducts", appConfig.apiToken,
                 {category: query.groupdesign, limit: 10000, skip: 0}
             ).then(response => {
                 if (response.status === 200) {
@@ -102,4 +102,10 @@ function GroupDesignPage() {
 
 }
 
-export default GroupDesignPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(GroupDesignPage);

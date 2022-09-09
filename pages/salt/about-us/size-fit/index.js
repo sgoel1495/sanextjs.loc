@@ -14,7 +14,6 @@ import Header from "../../../../components/navbar/Header";
 import {isMobile} from "react-device-detect";
 
 function SaltSizeFitPage(){
-    const {dataStore} = useContext(AppWideContext);
     const [mobile, setMobile] = useState(false);
     useEffect(() => {
         setMobile(isMobile);

@@ -9,11 +9,12 @@ import "swiper/css";
 import "swiper/css/pagination"
 import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
+import {connect} from "react-redux";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
-function isV1Collection(name){
-    return ['rida' ,'taiyo' ,'doresshi' ,'ori' ,'chanderi' ,'kaansya' ,'shatsu' ,'radiance' ,'svarnam' ,'salt' ,'sith' ,'ikebana' ,'nostalgia' ,'noor'].includes(name)
+function isV1Collection(name) {
+    return ['rida', 'taiyo', 'doresshi', 'ori', 'chanderi', 'kaansya', 'shatsu', 'radiance', 'svarnam', 'salt', 'sith', 'ikebana', 'nostalgia', 'noor'].includes(name)
 }
 
 const renderData = (arr, length) => arr.reduce((renderArray, one, i) => {
@@ -22,22 +23,20 @@ const renderData = (arr, length) => arr.reduce((renderArray, one, i) => {
     return renderArray;
 }, []);
 
-function MimotoSlider({data, ...props}) {
+function MimotoSlider({data, appConfig, ...props}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [collectionArray, setCollectionArray] = useState([])
 
     useEffect(() => {
         const fetchMimotoCollection = async () => {
-            const resp = await apiCall("getMimotoCollection", dataStore.apiToken)
+            const resp = await apiCall("getMimotoCollection", appConfig.apiToken)
             if (resp.hasOwnProperty("response") && resp.response.hasOwnProperty("mimoto"))
                 setCollectionArray([...resp.response.mimoto])
 
         }
-        if (dataStore && dataStore.apiToken)
-            fetchMimotoCollection().then(() => {
-            }).catch(e => e.message)
-    }, [dataStore, dataStore.apiToken])
+        fetchMimotoCollection().then(() => {
+        }).catch(e => e.message)
+    }, [])
 
     const displayCollection = () => {
         const collectionData = renderData(collectionArray, 9);
@@ -76,7 +75,8 @@ function MimotoSlider({data, ...props}) {
         ? <div className={props.className}>
             <div className="bg-red-400 w-full aspect-[5/4] relative">
                 <div className={"relative w-full aspect-[5/4]"}>
-                    <Image src={WEBASSETS + "/assets/images/"+data.mimoto_collection.name+[isV1Collection(data.mimoto_collection.name)?"_v1.jpg":".jpg"]} layout={`fill`} objectFit={`cover`} objectPosition={"top"}
+                    <Image src={WEBASSETS + "/assets/images/" + data.mimoto_collection.name + [isV1Collection(data.mimoto_collection.name) ? "_v1.jpg" : ".jpg"]} layout={`fill`}
+                           objectFit={`cover`} objectPosition={"top"}
                            alt={data.mimoto_collection.collection_id}/>
                 </div>
                 <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-10 bg-[#ffffffe6]">
@@ -95,4 +95,10 @@ function MimotoSlider({data, ...props}) {
 
 }
 
-export default MimotoSlider
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(MimotoSlider)

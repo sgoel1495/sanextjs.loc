@@ -9,7 +9,6 @@ import AppWideContext from "../../store/AppWideContext";
  */
 
 function AccountMenu(props) {
-    const { dataStore } = useContext(AppWideContext);
     const [topSpace, setTopSpace] = useState();
 
     useEffect(() => {

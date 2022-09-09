@@ -1,11 +1,11 @@
-
 import React, {useContext, useEffect, useState} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import appSettings from "../../store/appSettings";
+import {connect} from "react-redux";
+import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
 
-function OrderSummary() {
+function OrderSummary({appConfig, userData, userConfig, orderSummary, ...props}) {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [gross, setGross] = useState(0)
     const [bagTotal, setBagTotal] = useState(0)
     const [promo, setPromo] = useState(0)
@@ -13,48 +13,47 @@ function OrderSummary() {
     firstDate.setDate(firstDate.getDate() + 10);
     const secondDate = new Date();
     secondDate.setDate(secondDate.getDate() + 12);
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const currCurrency = userConfig.currCurrency;
+    const currencySymbol = userConfig.currSymbol;
 
     useEffect(() => {
         let tempGross = 0;
         let tempBag = 0;
         let tempPromo = 0;
-        if (dataStore.orderSummary) {
+        if (orderSummary) {
             if (currCurrency.toUpperCase() === "INR") {
-                tempBag = dataStore.orderSummary.grand_total_inr
-                tempGross = dataStore.orderSummary.grand_total_inr
+                tempBag = orderSummary.grand_total_inr
+                tempGross = orderSummary.grand_total_inr
             } else {
-                tempBag = dataStore.orderSummary.grand_total_usd
-                tempGross = dataStore.orderSummary.grand_total_usd
+                tempBag = orderSummary.grand_total_usd
+                tempGross = orderSummary.grand_total_usd
             }
-            if (dataStore.orderSummary.discount_hash && Object.keys(dataStore.orderSummary.discount_hash).length) {
+            if (orderSummary.discount_hash && Object.keys(orderSummary.discount_hash).length) {
                 if (currCurrency.toUpperCase() === "INR") {
-                    tempPromo = dataStore.orderSummary.discount_hash.discount_inr
-                    tempGross = dataStore.orderSummary.discount_hash.after_discount_grand_total_inr
+                    tempPromo = orderSummary.discount_hash.discount_inr
+                    tempGross = orderSummary.discount_hash.after_discount_grand_total_inr
                 } else {
-                    tempPromo = dataStore.orderSummary.discount_hash.after_discount_grand_total_usd
-                    tempGross = dataStore.orderSummary.discount_hash.after_discount_grand_total_usd
+                    tempPromo = orderSummary.discount_hash.after_discount_grand_total_usd
+                    tempGross = orderSummary.discount_hash.after_discount_grand_total_usd
                 }
             }
         }
         setGross(tempGross)
         setBagTotal(tempBag)
         setPromo(tempPromo)
-        if (dataStore.orderSummary.gross !== tempGross)
-            updateDataStore("orderSummary", {...dataStore.orderSummary, "gross": tempGross})
-    }, [dataStore.orderSummary])
+        if (orderSummary.gross !== tempGross)
+            props.setOrderSummary({...orderSummary, "gross": tempGross})
+    }, [orderSummary])
 
     let total = gross;
-    if (dataStore.orderSummary.payMode === "COD") {
+    if (orderSummary.payMode === "COD") {
         total += 80;
     }
-    if (dataStore.orderSummary.useWallet) {
-        if (dataStore.userWallet.WalletAmount >= total) {
+    if (orderSummary.useWallet) {
+        if (userData.wallet.WalletAmount >= total) {
             total = 0
         } else {
-            total -= dataStore.userWallet.WalletAmount
+            total -= userData.wallet.WalletAmount
         }
     }
     const mobileView = (
@@ -71,7 +70,7 @@ function OrderSummary() {
                     <td>{currencySymbol}{(isNaN(promo) ? 0 : promo)}</td>
                 </tr>
                 {
-                    dataStore.userWallet.WalletAmount > 0 ?
+                    userData.wallet.WalletAmount > 0 ?
                         <>
                             <tr>
                                 <td>Gross Total</td>
@@ -80,7 +79,7 @@ function OrderSummary() {
                             <tr>
                                 <td>Wallet</td>
                                 <td>
-                                    {currencySymbol}{dataStore.userWallet.WalletAmount}
+                                    {currencySymbol}{userData.wallet.WalletAmount}
                                 </td>
                             </tr>
                         </>
@@ -124,7 +123,7 @@ function OrderSummary() {
                     <td>Promo</td>
                     <td>{currencySymbol}{promo}</td>
                 </tr>
-                {dataStore.userWallet.WalletAmount > 0 ?
+                {userData.wallet.WalletAmount > 0 ?
                     <>
                         <tr>
                             <td>Gross Total</td>
@@ -133,7 +132,7 @@ function OrderSummary() {
                         <tr>
                             <td>Wallet</td>
                             <td>
-                                {currencySymbol}{dataStore.userWallet.WalletAmount}
+                                {currencySymbol}{userData.wallet.WalletAmount}
                             </td>
                         </tr>
                     </>
@@ -155,7 +154,16 @@ function OrderSummary() {
         </div>
     );
 
-    return dataStore.mobile ? mobileView : browserView;
+    return appConfig.isMobile ? mobileView : browserView;
 }
 
-export default OrderSummary;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        userConfig: state.userConfig,
+        orderSummary: state.orderData.orderSummary,
+    }
+}
+
+export default connect(mapStateToProps, {setOrderSummary})(OrderSummary);

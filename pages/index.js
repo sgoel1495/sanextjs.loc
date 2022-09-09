@@ -22,16 +22,15 @@ import AboutUs from '../components/about-us-section/Index'
 import OurStores from '../components/our-stores/Index'
 import Media from "../components/media/Index"
 import Reviews from "../components/review-section/Index"
+import {connect} from "react-redux";
 
 /**
  * @returns {JSX.Element}
  * @constructor
  */
 
-function RootPage() {
-    const {dataStore} = useContext(AppWideContext);
+function RootPage({appConfig}) {
 
-    console.log("----Index Page-----,\n ", dataStore)
     const mobileView = <Fragment>
         <CategorySection/>
         <NewArrivalsSection/>
@@ -46,22 +45,21 @@ function RootPage() {
     </Fragment>;
 
     const browserView = <Fragment>
-        <HomePageHeaderSwiper isMobile={dataStore.mobile}/>
-        <SafetyBlock isMobile={dataStore.mobile}/>
-        <NewArrivalsSwiper isMobile={dataStore.mobile}/>
-        <WhySalt isMobile={dataStore.mobile}/>
-        <AboutSaltHomepage isMobile={dataStore.mobile}/>
-        <MediaBuzzSwiper isMobile={dataStore.mobile}/>
-        <ShopByLooksSwiper isMobile={dataStore.mobile}/>
-        <InstagramStoriesSwiper isMobile={dataStore.mobile} apiToken={dataStore.apiToken}/>
-        <DesignBlock isMobile={dataStore.mobile}/>
+        <HomePageHeaderSwiper isMobile={false}/>
+        <SafetyBlock isMobile={false}/>
+        <NewArrivalsSwiper isMobile={false}/>
+        <WhySalt isMobile={false}/>
+        <AboutSaltHomepage isMobile={false}/>
+        <MediaBuzzSwiper isMobile={false}/>
+        <ShopByLooksSwiper isMobile={false}/>
+        <InstagramStoriesSwiper isMobile={false} apiToken={appConfig.apiToken}/>
+        <DesignBlock isMobile={false}/>
     </Fragment>;
 
     return (
         <Fragment>
-            <PageHead url="/" id="home" isMobile={dataStore.mobile}/>
-
-            {(dataStore.mobile) ?
+            <PageHead url="/" id="home" isMobile={appConfig.isMobile}/>
+            {(appConfig.isMobile) ?
                 <>
                     <Header isMobile={true}/>
                     {mobileView}
@@ -71,10 +69,15 @@ function RootPage() {
                     {browserView}
                 </>
             }
-            <Footer isMobile={dataStore.mobile}/>
+            <Footer isMobile={appConfig.isMobile}/>
         </Fragment>
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
 
-export default RootPage;
+export default connect(mapStateToProps)(RootPage);

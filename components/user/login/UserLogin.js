@@ -24,7 +24,7 @@ function UserLogin(props) {
     let ActiveForm = <></>
     switch (active) {
         case 0:
-            ActiveForm = <LoginForm showToast={showToast} setShowSidebarMenuUser={props.setShowSidebarMenuUser} isMobile={props.isMobile} />
+            ActiveForm = <LoginForm showToast={showToast} setShowLogin={props.setShowLogin} isMobile={props.isMobile} />
             break;
         case 1:
             ActiveForm = <SignUpForm showToast={showToast} isMobile={props.isMobile}/>

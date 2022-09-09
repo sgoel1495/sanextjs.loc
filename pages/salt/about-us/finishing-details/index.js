@@ -14,8 +14,6 @@ import Header from "../../../../components/navbar/Header";
 import {isMobile} from "react-device-detect";
 
 function SaltFinishingDetailsPage(){
-    const {dataStore} = useContext(AppWideContext);
-    const category = "Contact Us";
     const [mobile, setMobile] = useState(false);
     useEffect(() => {
         setMobile(isMobile);

@@ -1,18 +1,15 @@
 import {createSlice} from "@reduxjs/toolkit"
 import {shoppingCartState} from "../initialStates";
 
-const userSlice = createSlice({
+const shoppingCartSlice = createSlice({
     name: "shoppingCart",
     initialState: shoppingCartState,
     reducers: {
         setCart: (state, action) => {
-            if (!state.cart)
-                state.cart = action.payload
-            else if (state.cart.length >= 1) {
-                action.payload.map((item) => {
-                    state.cart.push(item)
-                })
-            }
+            state.cart = action.payload;
         }
     }
 })
+
+export const {setCart} = shoppingCartSlice.actions;
+export default shoppingCartSlice.reducer;

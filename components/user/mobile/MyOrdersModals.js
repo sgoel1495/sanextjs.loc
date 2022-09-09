@@ -2,9 +2,9 @@ import React, {useContext, useEffect} from 'react';
 import StarSVG from "./StarSVG";
 import AppWideContext from "../../../store/AppWideContext";
 import {apiCall} from "../../../helpers/apiCall";
+import {connect} from "react-redux";
 
-const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMobile, getOrderHistory}) => {
-    const {dataStore} = useContext(AppWideContext);
+const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMobile, getOrderHistory, appConfig, userData}) => {
     const [fit, setFit] = React.useState(0)
     const [fabric, setFabric] = React.useState(0)
     const [service, setService] = React.useState(0)
@@ -13,28 +13,28 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
     const [address, setAddress] = React.useState("-1")
 
     useEffect(() => {
-        apiCall("userAddresses", dataStore.apiToken, {user: {email: dataStore.userServe.email}})
+        apiCall("userAddresses", appConfig.apiToken, {user: {email: userData.userServe.email}})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
                     setUserAddresses(pData.response)
                 }
             })
             .catch(e => console.log(e.message))
-    }, [dataStore.userServe.email, dataStore.apiToken]);
+    }, [userData.userServe.email, appConfig.apiToken]);
 
     const getData = () => {
         let body;
         if (index === 2) {
             body = {
                 "user_params": {
-                    "email": dataStore.userServe.email,
+                    "email": userData.userServe.email,
                     "index": itemIndex,
                     "order_id": data.order_id,
-                    "phone": dataStore.userServe.phone_number,
+                    "phone": userData.userServe.phone_number,
                     "prod_id": data.item[itemIndex].asset_id
                 },
             }
-            apiCall("getRating", dataStore.apiToken, body).then(resp => {
+            apiCall("getRating", appConfig.apiToken, body).then(resp => {
                 if (resp.msg === "data found") {
                     setFit(resp.review.fit_rating)
                     setFabric(resp.review.fabric_rating)
@@ -68,18 +68,18 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                 "serv_rate": service,
                 "index": itemIndex,
                 "order_id": data.order_id,
-                "phone": dataStore.userServe.phone_number,
+                "phone": userData.userServe.phone_number,
                 "prod_id": data.item[itemIndex].asset_id,
                 "review": comment,
-                "user_id": dataStore.userServe.email
+                "user_id": userData.userServe.email
             },
         }
-        apiCall("saveRating", dataStore.apiToken, body)
+        apiCall("saveRating", appConfig.apiToken, body)
         setToastMsg("Thank you so much. Your review has been saved")
         setShowModal(false)
     }
     const changeAddress = () => {
-        apiCall("editShippingAddress", dataStore.apiToken, {
+        apiCall("editShippingAddress", appConfig.apiToken, {
             "order_id": data.order_id,
             "address": userAddresses[address],
         })
@@ -261,4 +261,11 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
     )
 }
 
-export default MyOrdersModals;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(MyOrdersModals);

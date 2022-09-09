@@ -16,6 +16,7 @@ import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../../components/common/Toast";
 import CartModal from "../../components/sidebar/cart/CartModal";
+import {connect} from "react-redux";
 
 const ImageBlock = (props) => (
     <span className={`block relative w-full aspect-square`}>
@@ -23,12 +24,10 @@ const ImageBlock = (props) => (
     </span>
 )
 
-function GiftcardsPage() {
-    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+function GiftcardsPage({appConfig,userConfig}) {
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS
+    const currCurrency = userConfig.currCurrency;
+    const currencySymbol = userConfig.currSymbol;
     const [showGiftReceiverModal, setShowGiftReceiverModal] = useState(false)
     const [giftReceiverModalData, setGiftReceiverModalData] = useState({})
     const [showCart,setShowCart] = useState(false)
@@ -36,7 +35,7 @@ function GiftcardsPage() {
     const [data, setData] = useState(null);
     const [show, setShow] = useState(false)
     const [giftAmount, setGiftAmount] = useState(null);
-    const resp = useApiCall("giftcards", dataStore.apiToken);
+    const resp = useApiCall("giftcards", appConfig.apiToken);
     const [code, setCode] = useReducer((state, e) => {
         return e.target.value
     }, "");
@@ -59,7 +58,7 @@ function GiftcardsPage() {
             setShow(true)
             return;
         }
-        const resp = await apiCall("checkGiftAmount", dataStore.apiToken, {"gift": {"gift_code": code}});
+        const resp = await apiCall("checkGiftAmount", appConfig.apiToken, {"gift": {"gift_code": code}});
         if (resp.msg === "Success") {
             setGiftAmount(resp.response.giftcard_amount);
         } else if (resp.msg === "is_redeemed") {
@@ -162,7 +161,7 @@ function GiftcardsPage() {
             </form>
         </section>
         <NewArrivalsBlock isMobile={true} currencySymbol={currencySymbol} currCurrency={currCurrency}
-                          apiToken={dataStore.apiToken}/>
+                          apiToken={appConfig.apiToken}/>
 
     </>
     const browserView = <>
@@ -201,9 +200,9 @@ function GiftcardsPage() {
             </form>
         </section>
         <NewArrivalsBlock isMobile={false} currencySymbol={currencySymbol} currCurrency={currCurrency}
-                          apiToken={dataStore.apiToken}/>
+                          apiToken={appConfig.apiToken}/>
         <OurSaleSection isMobile={false} currencySymbol={currencySymbol} currCurrency={currCurrency}
-                        apiToken={dataStore.apiToken}/>
+                        apiToken={appConfig.apiToken}/>
     </>
 
     return (
@@ -237,4 +236,11 @@ function GiftcardsPage() {
 
 }
 
-export default GiftcardsPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(GiftcardsPage);

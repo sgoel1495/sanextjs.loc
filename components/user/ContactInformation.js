@@ -1,21 +1,20 @@
-import AppWideContext from "../../store/AppWideContext";
 import Link from "next/link";
-import {useContext,useState,useEffect } from "react";
+import {useState,useEffect } from "react";
 import {apiCall} from "../../helpers/apiCall";
+import {connect} from "react-redux";
 
 function ContactInformation(props) {
-    const {dataStore} = useContext(AppWideContext);
     const [contactInfo,setContactInfo]= useState(null);
     
     useEffect(()=>{
-        apiCall("userServe", dataStore.apiToken,{contact:dataStore.userData.contact})
+        apiCall("userServe", props.appConfig.apiToken,{contact:props.userData.userServe.email})
             .then(pData=>{
                 if (pData.status === 200 && pData.response){
                     setContactInfo(pData.response)
                 }
             })
             .catch(e=>console.log(e.message))
-    },[dataStore.userData.contact,dataStore.apiToken]);
+    },[props.userData.userServe.email,props.appConfig.apiToken]);
 
     const mobileView =
      contactInfo && <div className="p-4 bg-[#f1f2f3]">
@@ -52,4 +51,11 @@ function ContactInformation(props) {
     return (props.mobile) ? mobileView : browserView;
 }
 
-export default ContactInformation;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(ContactInformation);

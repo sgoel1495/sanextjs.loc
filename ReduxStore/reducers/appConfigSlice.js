@@ -4,5 +4,11 @@ import {appConfigState} from "../initialStates"
 const appConfigSlice = createSlice({
     name: "appConfig",
     initialState: appConfigState,
-    reducers: {}
+    reducers: {
+        setIsMobile:(state, action)=>{
+            state.isMobile = action.payload
+        }
+    }
 })
+export const {setIsMobile} = appConfigSlice.actions;
+export default appConfigSlice.reducer;

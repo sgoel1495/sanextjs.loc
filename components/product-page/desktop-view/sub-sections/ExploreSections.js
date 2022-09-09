@@ -4,13 +4,13 @@ import ProductCard from "../../../shop-page/ProductCard";
 import Link from "next/link";
 import { apiDictionary } from "../../../../helpers/apiDictionary";
 import BlockHeader from '../../../common/blockHeader';
+import {connect} from "react-redux";
 
 const ExploreSections = (props) => {
-    const { dataStore } = useContext(AppWideContext);
     const [data, setData] = useState([])
 
     const fetchData = useCallback(() => {
-        const callObject = apiDictionary(props.api, dataStore.apiToken, props.query);
+        const callObject = apiDictionary(props.api, props.appConfig.apiToken, props.query);
         fetch(callObject.url, callObject.fetcher)
             .then(response => {
                 return response.json();
@@ -19,7 +19,7 @@ const ExploreSections = (props) => {
                 if (json && json.status === 200)
                     setData(json.response.data);
             })
-    }, [dataStore.apiToken, props.api, props.query])
+    }, [props.appConfig.apiToken, props.api, props.query])
 
     useEffect(() => {
         fetchData()
@@ -45,4 +45,10 @@ const ExploreSections = (props) => {
     );
 };
 
-export default ExploreSections;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(ExploreSections);

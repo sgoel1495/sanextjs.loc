@@ -5,11 +5,12 @@ import AddressForm from "./AddressForm";
 import Toast from "../../common/Toast";
 import ReactDom from "react-dom";
 import UserLogin from "../../user/login/UserLogin";
+import {connect} from "react-redux";
+import {setShowLogin} from "../../../ReduxStore/reducers/userConfigSlice";
 
-function ShippingAddress({setActive}) {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+function ShippingAddress({setActive, appConfig, userData, orderSummary, showLogin, ...props}) {
     const [selectedAddressIndex, setSelectedAddressIndex] = useReducer((state, payload) => {
-        if (dataStore.userServe.email || (dataStore.userAddresses && dataStore.userAddresses.length)) {
+        if (userData.userServe.email || (userData.userAddresses && userData.userAddresses.length)) {
             return payload
         } else {
             return -1
@@ -17,19 +18,17 @@ function ShippingAddress({setActive}) {
     }, null);
     const [show, setShow] = useState(false);
     const [review, setReview] = useState(false)
-    const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(dataStore.showSidebarMenuUser);
+
     const openModal = () => {
-        updateDataStore("showSidebarMenuUser", false);
-        setShowSidebarMenuUser(true);
+        props.setShowLogin(true);
     }
     const closeModal = () => {
-        updateDataStore("showSidebarMenuUser", false);
-        setShowSidebarMenuUser(false);
+        props.setShowLogin(false);
     }
 
     const nextModal = () => {
-        let index = parseInt(dataStore.orderSummary.address_index)
-        if (!(index >= 0 && index < dataStore.userAddresses.length)) {
+        let index = parseInt(orderSummary.address_index)
+        if (!(index >= 0 && index < userData.userAddresses.length)) {
             setShow(true);
         } else if (review) {
             setActive(3);
@@ -45,20 +44,20 @@ function ShippingAddress({setActive}) {
         }
     }
     useEffect(() => {
-        if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
+        if (showLogin) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
-    }, [showSidebarMenuUser])
+    }, [showLogin])
 
     useEffect(() => {
-        if (dataStore.userServe.email) {
-            if (dataStore.userAddresses && dataStore.userAddresses.length) {
+        if (userData.userServe.email) {
+            if (userData.userAddresses && userData.userAddresses.length) {
                 setSelectedAddressIndex(null)
             } else {
                 setSelectedAddressIndex(-1)
             }
         } else {
-            if (dataStore.userAddresses && dataStore.userAddresses.length) {
-                if (dataStore.mobile)
+            if (userData.userAddresses && userData.userAddresses.length) {
+                if (appConfig.isMobile)
                     setSelectedAddressIndex(0)
                 else
                     setSelectedAddressIndex(null)
@@ -67,11 +66,11 @@ function ShippingAddress({setActive}) {
             }
 
         }
-    }, [dataStore.userServe.email, dataStore.userServe.temp_user_id, dataStore.mobile])
+    }, [userData.userServe.email, userData.userServe.temp_user_id, appConfig.isMobile])
 
     const mobileView = (
         <Fragment>
-            {dataStore.userData.contact ? null : (
+            {userData.userServe.email ? null : (
                 <div className="grid place-items-center mt-10">
                     <button className='mb-2 underline font-500' onClick={openModal}>
                         Already have an account?
@@ -86,16 +85,16 @@ function ShippingAddress({setActive}) {
                             <div className={'p-4 border-2 border-solid border-[#f1f2f3] mb-4'}>
                                 <div className='flex flex-col gap-y-1 mb-5 text-[#777]'>
                                     <p className='font-500'>
-                                        {dataStore.orderSummary.address.name} {dataStore.orderSummary.address.lastname}
+                                        {orderSummary.address.name} {orderSummary.address.lastname}
                                     </p>
                                     <p className='text-xs text-[#555]'>
-                                        {dataStore.orderSummary.address.address}, {dataStore.orderSummary.address.landmark}
+                                        {orderSummary.address.address}, {orderSummary.address.landmark}
                                     </p>
                                     <p className='text-xs text-[#555]'>
-                                        {dataStore.orderSummary.address.city}, {dataStore.orderSummary.address.state} {dataStore.orderSummary.address.zip_code}
+                                        {orderSummary.address.city}, {orderSummary.address.state} {orderSummary.address.zip_code}
                                     </p>
-                                    <p className='text-xs text-[#555]'>{dataStore.orderSummary.address.country}</p>
-                                    <p className='text-xs text-[#555]'>T: {dataStore.orderSummary.address.phone}</p>
+                                    <p className='text-xs text-[#555]'>{orderSummary.address.country}</p>
+                                    <p className='text-xs text-[#555]'>T: {orderSummary.address.phone}</p>
                                 </div>
                             </div>
                             :
@@ -125,7 +124,7 @@ function ShippingAddress({setActive}) {
         </Fragment>
     );
     const browserView = <Fragment>
-        {dataStore.userData.contact ? null : (
+        {userData.userServe.email ? null : (
             <button className='mb-2 underline font-500' onClick={openModal}>
                 Already have an account?
             </button>
@@ -146,9 +145,9 @@ function ShippingAddress({setActive}) {
 
 
     return <>
-        {dataStore.mobile ? mobileView : browserView}
-        {!dataStore.userServe.email && showSidebarMenuUser && ReactDom.createPortal(
-            <UserLogin closeModal={closeModal.bind(this)} isMobile={true}/>,
+        {appConfig.isMobile ? mobileView : browserView}
+        {!userData.userServe.email && showLogin && ReactDom.createPortal(
+            <UserLogin closeModal={closeModal} isMobile={true}/>,
             document.getElementById("userband"))}
         <Toast show={show} hideToast={() => setShow(false)} bottom={'50px'}>
             <span>Please Select an Address</span>
@@ -156,4 +155,13 @@ function ShippingAddress({setActive}) {
     </>
 }
 
-export default ShippingAddress;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        orderSummary: state.orderData.orderSummary,
+        showLogin: state.userConfig.showLogin
+    }
+}
+
+export default connect(mapStateToProps, {setShowLogin})(ShippingAddress);

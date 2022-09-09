@@ -2,23 +2,6 @@ import {apiCall} from "./apiCall";
 import {addToCart, checkItemInCart} from "./addTocart";
 
 export async function updateUserDataAfterLogin(username, apiToken, currentMeasurements, currentCart) {
-    //==================== user Data
-    let userData = {
-        contact: username
-    }
-
-    //==================== user Wallet
-    const walletCall = await apiCall("userWallet", apiToken, {contact: username});
-
-    let userWallet = {
-        "WalletAmount": 0,
-        "TotalCr": 0,
-        "TotalDr": 0,
-        "Wallet": []
-    };
-    if (walletCall.user)
-        userWallet = {...walletCall.user};
-
     //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, {contact: username});
 
@@ -45,6 +28,20 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
         is_guest: false,
         temp_user_id: tempId
     }
+
+    //==================== user Wallet
+    const walletCall = await apiCall("userWallet", apiToken, {contact: username});
+
+    let userWallet = {
+        "WalletAmount": 0,
+        "TotalCr": 0,
+        "TotalDr": 0,
+        "Wallet": []
+    };
+    if (walletCall.user)
+        userWallet = {...walletCall.user};
+
+
 
 
     //==================== user Address
@@ -109,7 +106,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     // first we add any measurements that may be there.
     const countMeasurements = Object.keys(currentMeasurements)
     for (let x = 0; x < countMeasurements; x++) {
-        await apiCall("addMeasurements", dataStore.apiToken, {
+        await apiCall("addMeasurements", apiToken, {
             "user": userO,
             "measurments": currentMeasurements[x]
         })
@@ -128,61 +125,15 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
         "user": {contact: username, token: apiToken}
     });
-    let userOrderHistory = {};
-    if (orderHistoryCall.hasOwnProperty("response") && orderHistoryCall.response && orderHistoryCall.response != "user not found"
-        && Object.keys(orderHistoryCall.response).length > 0)
-        userOrderHistory = {...orderHistoryCall.response}
-
 
     return {
-        "userData": userData,
-        "userWallet": userWallet,
-        "userServe": userServe,
-        "userAddresses": userAddresses,
-        "defaultAddress": defaultAddress,
-        "userCart": userCart,
-        "userMeasurements": userMeasurements,
-        "userOrderHistory": userOrderHistory,
-        "orderPromo": {},
-        "currentOrderId": "",
-        "currentOrderInCart": {
-            "address": {},
-            "measurement": {},
-            "account": {},
-            "order": {},
-            "payment": {},
-            "shipping_fee": 0,
-            "otp_verified": false
+        "userState":{
+            "userServe": userServe,
+            "defaultAddress": defaultAddress,
+            "userAddresses": userAddresses,
+            "wallet": userWallet,
+            "measurements": userMeasurements,
         },
-        "useWallet": false
+        "shoppingCart": userCart,
     }
 }
-
-/*
-  "userAddresses": [
-    {
-      "name": "test",
-      "lastname": "test",
-      "email": "shailaja.s@algowire.com",
-      "phone": 1234567890,
-      "address": "abc block",
-      "landmark": "",
-      "country": "india",
-      "zip_code": 110096,
-      "state": "Delhi",
-      "city": "New Delhi"
-    }
-  ],
-  "defaultAddress": {
-    "name": "test",
-    "lastname": "test",
-    "email": "shailaja.s@algowire.com",
-    "phone": 1234567890,
-    "address": "abc block",
-    "landmark": "",
-    "country": "india",
-    "zip_code": 110096,
-    "state": "Delhi",
-    "city": "New Delhi"
-  }
- */

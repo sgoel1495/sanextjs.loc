@@ -4,6 +4,8 @@ import WishlistButton from "../common/WishListButton";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
+import {userConfigState as userConfig} from "../../ReduxStore/initialStates";
+import {connect} from "react-redux";
 
 const ArrivalDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -11,13 +13,11 @@ const ArrivalDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod}) => {
+const ProductCard = ({prod, userConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [isOver, setIsOver] = useState(false);
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const currCurrency = userConfig.currCurrency;
+    const currencySymbol = userConfig.currSymbol;
 
     const imgPath = WEBASSETS + "/assets/" + prod.asset_id + (isOver ? "/mo.new.jpg" : "/new.jpg");
     const showProd = (
@@ -52,4 +52,10 @@ const ProductCard = ({prod}) => {
     </div>;
 };
 
-export default ProductCard;
+const mapStateToProps = (state) => {
+    return {
+        userConfig: state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(ProductCard);

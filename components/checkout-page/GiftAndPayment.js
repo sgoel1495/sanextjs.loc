@@ -5,47 +5,44 @@ import React, {Fragment, useContext, useEffect, useReducer, useState} from "reac
 import AppWideContext from "../../store/AppWideContext";
 import {savePayment, updateAddressForOrder} from "./functions";
 import OtpModal from "./OtpModal";
-import currencyFormatter from "../../helpers/currencyFormatter";
-import appSettings from "../../store/appSettings";
+import {connect} from "react-redux";
+import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
 
-function GiftAndPayment({setActive}) {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummary, currentOrderId, ...props}) {
+    const currencySymbol = userConfig.currSymbol;
 
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
     const [isGift, setIsGift] = useReducer((state) => {
         return !state
-    }, dataStore.orderSummary.payment ? dataStore.orderSummary.payment.is_gift : false);
+    }, orderSummary.payment ? orderSummary.payment.is_gift : false);
     const [showOTPModal, setShowOTPModal] = useReducer((state) => {
         return !state
     }, false)
     const [giftData, setGiftData] = useReducer((state, e) => {
         return {...state, [e.target.name]: e.target.value}
     }, {
-        gift_msg: dataStore.orderSummary.payment ? dataStore.orderSummary.payment.gift_msg : "",
-        gift_msg_to: dataStore.orderSummary.payment ? dataStore.orderSummary.payment.gift_msg_to : "",
-        gift_msg_from: dataStore.orderSummary.payment ? dataStore.orderSummary.payment.gift_msg_from : ""
+        gift_msg: orderSummary.payment ? orderSummary.payment.gift_msg : "",
+        gift_msg_to: orderSummary.payment ? orderSummary.payment.gift_msg_to : "",
+        gift_msg_from: orderSummary.payment ? orderSummary.payment.gift_msg_from : ""
     });
 
-    const [payMode, setPayMode] = useState(dataStore.orderSummary.payment ? dataStore.orderSummary.payment.payment_mode : false);
+    const [payMode, setPayMode] = useState(orderSummary.payment ? orderSummary.payment.payment_mode : false);
     const [useWallet, setUseWallet] = useReducer((state) => {
         return !state
-    }, dataStore.orderSummary.payment ? dataStore.orderSummary.payment.is_wallet : false);
+    }, orderSummary.payment ? orderSummary.payment.is_wallet : false);
 
     useEffect(() => {
-        updateDataStore("orderSummary", {...dataStore.orderSummary, "payMode": payMode})
-        if (dataStore.orderSummary.address_index >= 0 && dataStore.orderSummary.address_index < dataStore.userAddresses.length) {
+        props.setOrderSummary({...orderSummary, "payMode": payMode})
+        if (orderSummary.address_index >= 0 && orderSummary.address_index < userData.userAddresses.length) {
         } else {
-            updateAddressForOrder(0, dataStore, updateDataStore);
+            updateAddressForOrder(0, userData, {orderSummary, currentOrderId}, appConfig.apiToken, props.setOrderSummary);
         }
     }, [payMode])
 
     useEffect(() => {
-        updateDataStore("orderSummary", {...dataStore.orderSummary, "useWallet": useWallet})
-    },[useWallet])
+        props.setOrderSummary({...orderSummary, "useWallet": useWallet})
+    }, [useWallet])
 
     //for mobile
     const next = async () => {
@@ -61,7 +58,7 @@ function GiftAndPayment({setActive}) {
             setMessage("Please select a payment mode")
             return
         }
-        savePayment(isGift, giftData, payMode, useWallet, dataStore, updateDataStore)
+        savePayment(isGift, giftData, payMode, useWallet, userData, {orderSummary, currentOrderId}, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary)
         setActive(5);
     }
 
@@ -74,7 +71,7 @@ function GiftAndPayment({setActive}) {
                 return
             }
         }
-        await savePayment(isGift, giftData, payMode, useWallet, dataStore, updateDataStore)
+        await savePayment(isGift, giftData, payMode, useWallet, userData, {orderSummary, currentOrderId}, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary)
         if (payMode === "COD") {
             setShowOTPModal(true)
         }
@@ -87,7 +84,7 @@ function GiftAndPayment({setActive}) {
     const mobileView = (
         <Fragment>
             <p className='text-l text-center font-bold mb-2'>How do you want to pay ?</p>
-            {dataStore.userWallet.WalletAmount > 0 ? (
+            {userData.wallet.WalletAmount > 0 ? (
                 <label className='pl-5 py-2 flex items-center'>
                     <input type='checkbox' checked={useWallet} onChange={setUseWallet} className='ms-2 focus:ring-transparent text-[#777]'/>
                     <p className='px-2 font-600 text-[#5F6061] text-sm'>
@@ -169,7 +166,7 @@ function GiftAndPayment({setActive}) {
     const browserView = (
         <Fragment>
             <p className='text-xl mb-2'>Payment</p>
-            {dataStore.userWallet.WalletAmount > 0 ? (
+            {userData.wallet.WalletAmount > 0 ? (
                 <label className=' py-5 px-8 flex items-center'>
                     <input type='checkbox' checked={useWallet} onChange={setUseWallet} className='ms-2 focus:ring-transparent text-[#777]'/>
                     <p className='px-2 font-600 text-[#5F6061] text-base'>
@@ -215,13 +212,13 @@ function GiftAndPayment({setActive}) {
                 </label>
             </div>
             {
-                !dataStore.mobile && payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase'
-                                                                           onClick={placeOrder}>
+                payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase'
+                                                      onClick={placeOrder}>
                     {payMode === "COD" ? "verify otp for cod" : "Place order & pay"}
                 </div>, document.getElementById("paymentButton"))
             }
             {
-                !dataStore.mobile && payMode === "COD" && ReactDOM.createPortal(<>
+                payMode === "COD" && ReactDOM.createPortal(<>
                     <td>COD Handling Fee</td>
                     <td>{currencySymbol}{80}</td>
                 </>, document.getElementById("codCharges"))
@@ -233,7 +230,7 @@ function GiftAndPayment({setActive}) {
     );
 
     return <>
-        <label className={'font-500 my-10 flex items-center gap-2 ' + [dataStore.mobile && "px-5"]}>
+        <label className={'font-500 my-10 flex items-center gap-2 ' + [appConfig.isMobile && "px-5"]}>
             <input
                 className='ms-2 focus:ring-transparent text-[#777]'
                 type='checkbox'
@@ -245,8 +242,8 @@ function GiftAndPayment({setActive}) {
             <span className='text-[#777] font-600'>Is this a Gift?</span>
         </label>
         {isGift ? (
-            <div className={'grid gap-x-8 -mt-6 mb-4 ' + [dataStore.mobile ? "grid-cols-2 px-5" : "grid-cols-3"]}>
-                <div className={dataStore.mobile && "col-span-2"}>
+            <div className={'grid gap-x-8 -mt-6 mb-4 ' + [appConfig.isMobile ? "grid-cols-2 px-5" : "grid-cols-3"]}>
+                <div className={appConfig.isMobile && "col-span-2"}>
                     <label className={labelClass} htmlFor='gift_msg'>
                         Your Personalized Message
                     </label>
@@ -288,11 +285,21 @@ function GiftAndPayment({setActive}) {
                 </div>
             </div>
         ) : null}
-        {dataStore.mobile ? mobileView : browserView}
+        {appConfig.isMobile ? mobileView : browserView}
         <Toast show={show} hideToast={() => setShow(false)} bottom={"50px"}>
             <span>{message}</span>
         </Toast>
     </>;
 }
 
-export default GiftAndPayment;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        userConfig: state.userConfig,
+        orderSummary: state.orderData.orderSummary,
+        currentOrderId: state.orderData.currentOrderId
+    }
+}
+
+export default connect(mapStateToProps, {setOrderSummary})(GiftAndPayment);

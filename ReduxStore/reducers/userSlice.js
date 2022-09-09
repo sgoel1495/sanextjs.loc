@@ -5,28 +5,17 @@ const userSlice = createSlice({
     name: "user",
     initialState: userState,
     reducers: {
-        // login: (state, action) => {
-        //     if (state.token !== null) {
-        //         state.token = action.payload;
-        //     }
-        // },
-        setUsername: (state, action) => {
-            state.basicDetails = action.payload
+        setUserServe: (state, action) => {
+            state.userServe = action.payload
         },
-        setUserWallet: (state, action) => {
-            state.wallet = {...action.payload}
+        setUserState: (state, action) => {
+            return action.payload
         },
-        setBasicDetails: (state, action) => {
-            state.basicDetails = {...action.payload};
-        },
-        setOtherAddress: (state, action) => {
-            state.basicDetails.otherAddresses = [...action.payload]
-        },
-        setDefaultAddress: (state, action) => {
-            state.basicDetails.defaultAddress = {...action.payload}
-        },
-        setMeasurements: (state, action) => {
-            state.measurements = {...action.payload}
+        setUserAddresses: (state, action) => {
+            state.userAddresses = action.payload
         }
     }
 })
+
+export const {setUserServe, setUserState, setUserAddresses} = userSlice.actions;
+export default userSlice.reducer;

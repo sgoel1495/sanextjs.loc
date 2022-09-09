@@ -11,6 +11,8 @@ import Toast from "../common/Toast";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
 import currencyFormatter from "../../helpers/currencyFormatter";
+import {connect} from "react-redux";
+import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -23,13 +25,12 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
+const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, userConfig, ...props}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
-    const currCurrency = dataStore.currCurrency;
+    const currCurrency = userConfig.currCurrency;
     const curr = currCurrency.toUpperCase();
     const currencyData = appSettings("currency_data");
     const inr = currencyData["inr"].curr_symbol;
@@ -99,7 +100,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
             "sleeve_length": "",
             "dress_length": ""
         }
-        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
+        addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
             setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
             setShowToast(true)
         })
@@ -143,7 +144,6 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
     }
 
 
-
     return (
         <>
             <div className={`block bg-white text-center relative z-0`} id={prod.asset_id}>
@@ -177,7 +177,8 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
                                         <button className={`font-800`} onClick={() => {
                                             setShowSize(true)
                                             setAddToCartClick(false)
-                                        }}>SIZE</button>
+                                        }}>SIZE
+                                        </button>
                                         <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
                                              onClick={() => saveToCart()}>
                                             <span className={`uppercase`}>Add to bag</span>
@@ -213,8 +214,8 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
             ReactDom.createPortal(
                 <NotifyMeModal
                     closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    userO={getUserObject(dataStore,updateDataStore)}
+                    isMobile={appConfig.isMobile}
+                    userO={getUserObject(userData)}
                     product={prod}
                 />,
                 document.getElementById("measurementmodal"))
@@ -224,4 +225,13 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory}) => {
     );
 };
 
-export default ProductCard;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig: state.userConfig,
+    }
+}
+
+export default connect(mapStateToProps, {setCart})(ProductCard);

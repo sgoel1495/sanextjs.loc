@@ -7,22 +7,21 @@ import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import Footer from "../../../components/footer/Footer";
 import {useRouter} from "next/router";
+import {connect} from "react-redux";
 
 const Thankyou = (props) => {
     const router = useRouter();
     const orderID = router.query.id;
-    const {dataStore} = useContext(AppWideContext);
-    const curr = dataStore.currCurrency.toUpperCase();
+    const curr = props.userConfig.currCurrency.toUpperCase();
     const [mobile, setMobile] = useState(false)
     const [order, setOrder] = useState({})
     useEffect(() => {
-        if (dataStore.userOrderHistory[orderID]) {
-            setOrder(dataStore.userOrderHistory[orderID])
-        }
-        else{
+        if (props.orderData.orderHistory[orderID]) {
+            setOrder(props.orderData.orderHistory[orderID])
+        } else {
 
         }
-    }, [dataStore.userOrderHistory])
+    }, [props.orderData.orderHistory])
     const address = order.delivery_address || {}
     const cart = order.item || []
     useEffect(() => {
@@ -78,7 +77,7 @@ const Thankyou = (props) => {
                         <thead className={"bg-[#f9f9f9] text-[#222] text-[15px]"}>
                         <tr>
                             <th className={"p-1"} colSpan="4"/>
-                            <th className="text-center border-b border-[#222] p-1" colSpan="3">{dataStore.currSymbol}</th>
+                            <th className="text-center border-b border-[#222] p-1" colSpan="3">{props.userConfig.currSymbol}</th>
                         </tr>
                         <tr>
                             <th className="text-center w-[10%] p-1">S.No.</th>
@@ -108,12 +107,12 @@ const Thankyou = (props) => {
                         <tfoot className="font-600 text-[#777]">
                         <tr className="border-y">
                             <td colSpan="3" className={"p-2"}>Total</td>
-                            <td colSpan="5" className="text-right font-600">{dataStore.currSymbol} {order.total}</td>
+                            <td colSpan="5" className="text-right font-600">{props.userConfig.currSymbol} {order.total}</td>
                         </tr>
                         {
                             order.discount ? <tr className={"border-y"}>
                                     <td colSpan="3" className={"p-2"}>Promo</td>
-                                    <td colSpan="5" className="text-right">{dataStore.currSymbol} {order.discount}</td>
+                                    <td colSpan="5" className="text-right">{props.userConfig.currSymbol} {order.discount}</td>
                                 </tr>
                                 : null
                         }
@@ -121,30 +120,30 @@ const Thankyou = (props) => {
                             wallet && <>
                                 <tr className={"border-y"}>
                                     <td colSpan="3" className={"p-2"}>Gross Total</td>
-                                    <td colSpan="5" className="text-right">{dataStore.currSymbol} {gross}</td>
+                                    <td colSpan="5" className="text-right">{props.userConfig.currSymbol} {gross}</td>
                                 </tr>
                                 <tr className={"border-y"}>
                                     <td colSpan="3" className={"p-2"}>Cash From Wallet</td>
-                                    <td colSpan="5" className="text-right">{dataStore.currSymbol} {wallet}</td>
+                                    <td colSpan="5" className="text-right">{props.userConfig.currSymbol} {wallet}</td>
                                 </tr>
                             </>
                         }
                         {
                             order.payment_mode === "COD" && <tr className={"border-y"}>
                                 <td colSpan="3" className={"p-2"}>Cod Handling Charges**</td>
-                                <td colSpan="5" className="text-right">{dataStore.currSymbol} 80</td>
+                                <td colSpan="5" className="text-right">{props.userConfig.currSymbol} 80</td>
                             </tr>
                         }
                         {
                             order.delivery_charges - (order.payment_mode === "COD" ? 80 : 0) ? <tr className={"border-y"}>
                                     <td colSpan="3" className={"p-2"}>Shipping Charges**</td>
-                                    <td colSpan="5" className="text-right">{dataStore.currSymbol} {order.delivery_charges - 80}</td>
+                                    <td colSpan="5" className="text-right">{props.userConfig.currSymbol} {order.delivery_charges - 80}</td>
                                 </tr>
                                 : null
                         }
                         <tr className={"border-y"}>
                             <td colSpan="3" className={"p-2"}>Amount Payable *</td>
-                            <td colSpan="5" className="text-right">{dataStore.currSymbol} {order.pending_amount}</td>
+                            <td colSpan="5" className="text-right">{props.userConfig.currSymbol} {order.pending_amount}</td>
                         </tr>
                         <tr className={"border-y"}>
                             <td colSpan="8" className="p-2">
@@ -169,4 +168,11 @@ const Thankyou = (props) => {
     );
 };
 
-export default Thankyou;
+const mapStateToProps = (state) => {
+    return {
+        userConfig: state.userConfig,
+        orderData: state.orderData
+    }
+}
+
+export default connect(mapStateToProps)(Thankyou);

@@ -2,10 +2,9 @@ import React, {useContext, useEffect, useState} from 'react';
 import Link from "next/link";
 import AppWideContext from "../../store/AppWideContext";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar/CategoryFilterSidebar";
+import {connect} from "react-redux";
 
-const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal, filterData, group, groups}) => {
-    const {dataStore} = useContext(AppWideContext);
-
+const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal, availableFilters, group, groups, appConfig}) => {
     const [dropDownView, setDropDownView] = useState(false);
 
     const dropData = [];
@@ -17,7 +16,7 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal,
             });
         })
     } else {
-        const categories = {categories: dataStore.categories, accessories: dataStore.accessories}
+        const categories = {categories: appConfig.categories, accessories: appConfig.accessories}
         categories.categories.forEach((ele) => {
             dropData.push({
                 link: ele.link,
@@ -61,7 +60,7 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal,
                                 return (
                                     <Link href={item.link} key={index} passHref>
                                         <div className={"py-2.5 font-700 text-center uppercase text-white"}>
-                                            <span className={item.category===category && "border-b-2"} key={index}>{item.category}</span>
+                                            <span className={item.category === category && "border-b-2"} key={index}>{item.category}</span>
                                         </div>
                                     </Link>
                                 )
@@ -101,7 +100,7 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal,
                             </div>
                         }
                         <div className="inline-flex gap-4 items-center py-2">
-                            <CategoryFilterSidebar isMobile={true} filterData={filterData}/>
+                            <CategoryFilterSidebar isMobile={true} availableFilters={availableFilters}/>
                         </div>
                     </div>}
             </div>
@@ -109,4 +108,10 @@ const CategoryHeaderMobile = ({category, activeLayout, setActiveLayout, minimal,
     );
 };
 
-export default CategoryHeaderMobile;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(CategoryHeaderMobile);

@@ -1,15 +1,15 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useState} from "react";
 import Toast from "../common/Toast";
-import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
 import Accordion from "../common/accordion";
 import {getUserObject} from "../../helpers/addTocart";
+import {connect} from "react-redux";
+import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
 
-function PromoCode() {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+function PromoCode(props) {
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
-    const [promoCode, setPromoCode] = useState(dataStore.orderSummary && dataStore.orderSummary.coupon_apply ? dataStore.orderSummary.coupon_apply.coupon : "");
+    const [promoCode, setPromoCode] = useState(props.orderSummary && props.orderSummary.coupon_apply ? props.orderSummary.coupon_apply.coupon : "");
 
     const applyPromo = async () => {
         if (!promoCode) {
@@ -17,15 +17,15 @@ function PromoCode() {
             setShow(true);
         } else {
             const query = {
-                user: getUserObject(dataStore, updateDataStore),
+                user: getUserObject(props.userData),
                 order: {
-                    order_id: dataStore.currentOrderId,
+                    order_id: props.currentOrderId,
                     coupon_code: promoCode,
                 },
             };
-            const promoCall = await apiCall("applyCoupon", dataStore.apiToken, query);
+            const promoCall = await apiCall("applyCoupon", props.appConfig.apiToken, query);
             if (promoCall.hasOwnProperty("coupon_apply") && promoCall.coupon_apply.hasOwnProperty("msg") && promoCall.coupon_apply.msg === "Success") {
-                updateDataStore("orderSummary", {...dataStore.orderSummary, ...promoCall});
+                props.setOrderSummary({...props.orderSummary, ...promoCall});
                 setMessage("Coupon Accepted");
                 setShow(true);
             } else {
@@ -91,7 +91,16 @@ function PromoCode() {
         </Fragment>
     );
 
-    return dataStore.mobile ? mobileView : browserView;
+    return props.appConfig.isMobile ? mobileView : browserView;
 }
 
-export default PromoCode;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        currentOrderId: state.orderData.currentOrderId,
+        orderSummary: state.orderData.orderSummary
+    }
+}
+
+export default connect(mapStateToProps, {setOrderSummary})(PromoCode);

@@ -11,22 +11,22 @@ import {isMobile} from "react-device-detect";
 import AddressForm from "../../../components/user/AddressForm";
 import {apiCall} from "../../../helpers/apiCall";
 import Toast from "../../../components/common/Toast";
+import {connect} from "react-redux";
 
-function UsersAddressBookPage() {
+function UsersAddressBookPage({appConfig,userData}) {
     const router = useRouter();
     const [mobile, setMobile] = useState(false);
-    const {dataStore} = useContext(AppWideContext);
     const [edit, setEdit] = useState(null)
     const [userAddresses, setUserAddresses] = useState([])
     const [showToaster, setShowToaster] = useState(false)
 
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (userData.userServe.email == null)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
+    }, [userData.userServe.email, router])
 
     useEffect(() => {
-        apiCall("userAddresses", dataStore.apiToken, {user: {email: dataStore.userServe.email}})
+        apiCall("userAddresses", appConfig.apiToken, {user: {email: userData.userServe.email}})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
 
@@ -34,14 +34,14 @@ function UsersAddressBookPage() {
                 }
             })
             .catch(e => console.log(e.message))
-    }, [dataStore.userServe.email, dataStore.apiToken]);
+    }, [userData.userServe.email, appConfig.apiToken]);
 
     useEffect(() => {
         setMobile(isMobile)
     }, [])
 
     const deleteAddress = (i) => {
-        apiCall("removeAddressBook", dataStore.apiToken, {user: {email: dataStore.userServe.email}, address: {index: i}})
+        apiCall("removeAddressBook", appConfig.apiToken, {user: {email: userData.userServe.email}, address: {index: i}})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
                     setUserAddresses(userAddresses.filter((_, index) => index !== i))
@@ -54,8 +54,8 @@ function UsersAddressBookPage() {
     let address = edit >= 0 ? userAddresses[edit] : {
         "name": "",
         "lastname": "",
-        "email": dataStore.userData.contact,
-        "phone": dataStore.userServe.phone_number,
+        "email": userData.userServe.email,
+        "phone": userData.userServe.phone_number,
         "address": "",
         "landmark": "",
         "country": "India",
@@ -107,4 +107,11 @@ function UsersAddressBookPage() {
     )
 }
 
-export default UsersAddressBookPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(UsersAddressBookPage);

@@ -15,11 +15,11 @@ import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
 import Link from "next/link";
+import {connect} from "react-redux";
 
 SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay]);
 
 function HomePageHeaderSwiper(props) {
-    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     let imgs = [], links, transition_time;
     let overlay = null;
@@ -44,7 +44,7 @@ function HomePageHeaderSwiper(props) {
             </span>
         }
     } else {
-        apiToken = dataStore.apiToken
+        apiToken = props.appConfig.apiToken
     }
     const resp = useApiCall("getHomePageCarousal", apiToken);
     if (resp && resp.status === 200) {
@@ -93,4 +93,10 @@ function HomePageHeaderSwiper(props) {
         return <></>
 }
 
-export default HomePageHeaderSwiper;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(HomePageHeaderSwiper);

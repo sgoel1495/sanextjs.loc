@@ -1,9 +1,9 @@
-const qtyInCart = (ds)=>{
-    if(!ds || ds.userCart.length === 0)
+const qtyInCart = (cart)=>{
+    if(!cart || cart.length === 0)
         return null
 
     let count = 0
-    ds.userCart.forEach(p=>count += parseInt(p.qty))
+    cart.forEach(p=>count += parseInt(p.qty))
     return count
 }
 export default qtyInCart

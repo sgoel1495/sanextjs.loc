@@ -6,6 +6,8 @@ import ReactDom from "react-dom";
 import AccountMenu from "../user/AccountMenu";
 import UserLogin from "../user/login/UserLogin";
 import Toast from "./Toast";
+import {connect} from "react-redux";
+import {setUserServe} from "../../ReduxStore/reducers/userSlice";
 
 /**
  * @NoteG the favs of a user are available in api
@@ -16,37 +18,35 @@ import Toast from "./Toast";
  */
 
 const WishListButton = (props) => {
-    const router = useRouter();
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [pidChecked, setPidChecked] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
 
     useEffect(() => {
-        if (dataStore.userServe.favorites.includes(props.pid))
+        if (props.userData.userServe.favorites.includes(props.pid))
             setPidChecked(true);
-    }, [dataStore.userData.contact, dataStore.userServe.favorites, props.pid])
+    }, [props.userData.userServe.email, props.userData.userServe.favorites, props.pid])
 
     const addRemoveFav = async () => {
-        if (dataStore.userData.contact != null) {
-            const oldUserServe = dataStore.userServe;
+        if (props.userData.userServe.email != null) {
+            const oldUserServe = props.userData.userServe;
             if (pidChecked) {
                 //remove
-                oldUserServe.favorites = dataStore.userServe.favorites.filter((value, index, arr) => {
+                oldUserServe.favorites = props.userData.userServe.favorites.filter((value, index, arr) => {
                     return (value != props.pid)
                 });
-                updateDataStore("userServe", oldUserServe);
-                const resp = await apiCall("removeFromFav", dataStore.apiToken, {
+                props.setUserServe(oldUserServe);
+                const resp = await apiCall("removeFromFav", props.appConfig.apiToken, {
                     product: props.pid,
-                    email: dataStore.userData.contact
+                    email: props.userData.userServe.email
                 });
                 setPidChecked(false);
             } else {
                 //add
-                oldUserServe.favorites = [props.pid, ...dataStore.userServe.favorites];
-                updateDataStore("userServe", oldUserServe);
-                const resp = await apiCall("addToFav", dataStore.apiToken, {
+                oldUserServe.favorites = [props.pid, ...props.userData.userServe.favorites];
+                props.setUserServe(oldUserServe);
+                const resp = await apiCall("addToFav", props.appConfig.apiToken, {
                     product: props.pid,
-                    email: dataStore.userData.contact
+                    email: props.userData.userServe.email
                 });
                 setPidChecked(true);
             }
@@ -81,4 +81,11 @@ const WishListButton = (props) => {
     </button>;
 }
 
-export default WishListButton;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps, {setUserServe})(WishListButton);

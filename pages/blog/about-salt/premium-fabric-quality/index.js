@@ -10,9 +10,9 @@ import NoInventoryNoMassProduction from "../../../../components/blog/NoInventory
 import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatment";
 import Link from "next/link";
 import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTailoredClothing";
+import {connect} from "react-redux";
 
-function BlogPremiumFabricQualityPage(){
-    const {dataStore} = useContext(AppWideContext);
+function BlogPremiumFabricQualityPage({appConfig}){
 
     const mobileView = (
         <section className={`container`}>
@@ -50,12 +50,18 @@ function BlogPremiumFabricQualityPage(){
 
     return (
         <Fragment>
-            <PageHead url="/blog/about-salt/premium-fabric-quality" id="premium-fabric-quality" isMobile={dataStore.mobile}/>
-                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url="/blog/about-salt/premium-fabric-quality" id="premium-fabric-quality" isMobile={appConfig.isMobile}/>
+                <Header type={appConfig.isMobile?"minimal":""} isMobile={appConfig.isMobile}/>
+            {(appConfig.isMobile) ? mobileView : browserView}
+            <Footer isMobile={appConfig.isMobile}/>
         </Fragment>);
 
 }
 
-export default BlogPremiumFabricQualityPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(BlogPremiumFabricQualityPage);

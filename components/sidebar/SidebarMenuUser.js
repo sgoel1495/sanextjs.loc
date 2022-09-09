@@ -4,6 +4,8 @@ import ReactDom from "react-dom";
 import UserLogin from "../user/login/UserLogin";
 import AppWideContext from "../../store/AppWideContext";
 import AccountMenu from "../user/AccountMenu";
+import {connect} from "react-redux";
+import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
 
 /**
  * @todo API login to be done.
@@ -15,8 +17,7 @@ import AccountMenu from "../user/AccountMenu";
 
 function SidebarMenuUser(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
-    const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(dataStore.showSidebarMenuUser);
+    const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(props.showLogin);
 
     useEffect(() => {
         if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
@@ -24,13 +25,11 @@ function SidebarMenuUser(props) {
     }, [showSidebarMenuUser])
 
     const closeModal = () => {
-        updateDataStore("showSidebarMenuUser",false);
-        setShowSidebarMenuUser(false);
+        props.setShowLogin(false);
     }
 
-    const openModal = ()=>{
-        updateDataStore("showSidebarMenuUser",false);
-        setShowSidebarMenuUser(true);
+    const openModal = () => {
+        props.setShowLogin(true);
     }
 
     let iconHeight;
@@ -49,12 +48,12 @@ function SidebarMenuUser(props) {
                     props.type === "shopMenu" ?
                         <div className={"float-right text-right"}>
                             <span className={"block text-sm tracking-wide"}>Account</span>
-                            <span className={"block text-[10px] tracking-wider cursor-pointer"}>{dataStore.userServe.user_name || "Login/Signup"}</span>
+                            <span className={"block text-[10px] tracking-wider cursor-pointer"}>{props.userData.userServe.user_name || "Login/Signup"}</span>
                         </div>
                         :
-                        (dataStore.userServe.user_name !== "") ?
+                        (props.userData.userServe.user_name !== "") ?
                             <div className="rounded-full bg-slate-400 text-center cursor-pointer">
-                                <span className="text-sm text-white font-600 text-center">{dataStore.userServe.user_name[0].toUpperCase()}</span>
+                                <span className="text-sm text-white font-600 text-center">{props.userData.userServe.user_name[0].toUpperCase()}</span>
                             </div>
                             :
                             <Image
@@ -66,8 +65,9 @@ function SidebarMenuUser(props) {
                             />
                 }
             </span>
-            {showSidebarMenuUser && ReactDom.createPortal(
-                dataStore.userData.contact ? <AccountMenu closeModal={closeModal.bind(this)} /> : <UserLogin setShowSidebarMenuUser={setShowSidebarMenuUser} closeModal={closeModal.bind(this)} />,
+            {props.showLogin && ReactDom.createPortal(
+                props.userData.userServe.email ? <AccountMenu closeModal={closeModal}/> :
+                    <UserLogin setShowLogin={setShowLogin} closeModal={closeModal}/>,
                 document.getElementById("userband"))}
         </>
     );
@@ -78,4 +78,11 @@ function SidebarMenuUser(props) {
 
 }
 
-export default SidebarMenuUser;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        showLogin: state.userConfig.showLogin
+    }
+}
+
+export default connect(mapStateToProps, {setShowLogin})(SidebarMenuUser);

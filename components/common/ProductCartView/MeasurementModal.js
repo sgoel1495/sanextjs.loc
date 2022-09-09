@@ -2,9 +2,10 @@ import React, {useContext} from 'react';
 import Image from "next/image";
 import {addToCart, updateCartMeasurement} from "../../../helpers/addTocart";
 import AppWideContext from "../../../store/AppWideContext";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 
-const MeasurementModal = ({data, closeModal, edit, isMobile}) => {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+const MeasurementModal = ({data, closeModal, edit, isMobile, userData, appConfig, ...props}) => {
     const [measurement, setMeasurement] = React.useReducer((state, e) => {
         return {...state, [e.target.name]: e.target.value}
     }, data.meas)
@@ -23,7 +24,7 @@ const MeasurementModal = ({data, closeModal, edit, isMobile}) => {
                 "dress_length": measurement.selected_length,
                 "measurment_id": measurement.measure_id
             }
-            updateCartMeasurement(dataStore, updateDataStore, data.cart_id, {cart: cart, measurments: measurement}).then(r => {
+            updateCartMeasurement(userData, appConfig.apiToken, props.setCart, data.cart_id, {cart: cart, measurments: measurement}).then(r => {
             })
         }
         closeModal();
@@ -83,4 +84,12 @@ const MeasurementModal = ({data, closeModal, edit, isMobile}) => {
     );
 };
 
-export default MeasurementModal;
+const mapStateToProps = (state) =>{
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        shoppingCart: state.shoppingCart
+    }
+}
+
+export default connect(mapStateToProps,{setCart})(MeasurementModal);

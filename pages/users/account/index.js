@@ -8,6 +8,7 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../../helpers/apiCall";
 import Toast from "../../../components/common/Toast";
+import {connect} from "react-redux";
 
 const basicFields = [
     {
@@ -90,9 +91,8 @@ const passwordFields = [
     }
 ]
 
-function UsersAccountPage() {
+function UsersAccountPage({appConfig,userData}) {
     const [mobile, setMobile] = useState(false);
-    const {dataStore} = useContext(AppWideContext);
     const [show, setShow] = useState(false)
     const [changePasswordCheckbox, setChangePasswordCheckbox] = useState(false)
     const [error, setError] = useState(-1)
@@ -102,23 +102,23 @@ function UsersAccountPage() {
         }
         return state
     }, {
-        "contact": dataStore.userServe.email,
-        "user_name": dataStore.userServe.user_name,
-        "last_name": dataStore.userServe.last_name,
-        "birthday": dataStore.userServe.birthday,
-        "anniversary": dataStore.userServe.anniversary,
-        "bust": dataStore.userServe.bust,
-        "waist": dataStore.userServe.waist,
-        "hip": dataStore.userServe.hip,
-        "anyother": dataStore.userServe.anyother,
+        "contact": userData.userServe.email,
+        "user_name": userData.userServe.user_name,
+        "last_name": userData.userServe.last_name,
+        "birthday": userData.userServe.birthday,
+        "anniversary": userData.userServe.anniversary,
+        "bust": userData.userServe.bust,
+        "waist": userData.userServe.waist,
+        "hip": userData.userServe.hip,
+        "anyother": userData.userServe.anyother,
     })
     const [password, setPassword] = useReducer(() => {
     }, {new: "", confirm: ""})
     const router = useRouter();
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (userData.userServe.email == null)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
+    }, [userData.userServe.email, router])
 
     useEffect(() => {
         setMobile(isMobile)
@@ -146,7 +146,7 @@ function UsersAccountPage() {
                 password: changePasswordCheckbox ? password.new : ""
             }
         }
-        apiCall("updateUserDetails", dataStore.apiToken, {user: payload})
+        apiCall("updateUserDetails", appConfig.apiToken, {user: payload})
             .then(pData => {
                 if (pData.status === 200) {
                     setShow(true)
@@ -277,4 +277,11 @@ function UsersAccountPage() {
     )
 }
 
-export default UsersAccountPage;
+const mapStateToProps = (state) => {
+    return {
+        userData:state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(UsersAccountPage);

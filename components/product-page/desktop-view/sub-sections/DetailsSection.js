@@ -6,13 +6,14 @@ import returnSizes from "../../../../helpers/returnSizes";
 import { addToCart } from "../../../../helpers/addTocart";
 import Toast from "../../../common/Toast";
 import currencyFormatter from "../../../../helpers/currencyFormatter";
+import {connect} from "react-redux";
+import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 
-const DetailsSection = ({ theme, data, selectedSize, setSelectedSize }) => {
+const DetailsSection = ({ theme, data, selectedSize, setSelectedSize,...props }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
-    const currCurrency = dataStore.currCurrency;
-    const curr = dataStore.currCurrency.toUpperCase();
+    const currCurrency = props.userConfig.currCurrency;
+    const curr = currCurrency.toUpperCase();
 
     const [selected, setSelected] = useState(0)
     const [toastMsg, setToastMsg] = useState(null)
@@ -59,7 +60,7 @@ const DetailsSection = ({ theme, data, selectedSize, setSelectedSize }) => {
             sleeve_length: "",
             dress_length: ""
         }
-        addToCart(dataStore, updateDataStore, { cart: cart }).then(r => {
+        addToCart(props.userData, props.shoppingCart.cart, props.appConfig.apiToken, props.setCart, { cart: cart }).then(r => {
             setToastMsg("Added to Cart")
             setShowToast(true)
         })
@@ -161,4 +162,13 @@ const DetailsSection = ({ theme, data, selectedSize, setSelectedSize }) => {
     );
 };
 
-export default DetailsSection;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps,{setCart})(DetailsSection);

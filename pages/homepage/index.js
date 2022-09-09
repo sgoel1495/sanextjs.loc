@@ -1,11 +1,10 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment} from "react";
 import PageHead from "../../components/PageHead";
 import Footer from "../../components/footer/Footer";
-import AppWideContext from "../../store/AppWideContext";
 import Header from "../../components/navbar/Header";
+import {connect} from "react-redux";
 
-function HomePage() {
-    const {dataStore} = useContext(AppWideContext);
+function HomePage({appConfig}) {
     const mobileView = (<> </>);
     const browserView = (<></>);
 
@@ -14,16 +13,22 @@ function HomePage() {
             <PageHead
                 url="/homepage/"
                 id="homepage"
-                isMobile={dataStore.mobile}
+                isMobile={appConfig.isMobile}
             />
             <Header
-                type={dataStore.mobile ? "minimal" : "shopMenu"}
-                isMobile={dataStore.mobile}
+                type={appConfig.isMobile ? "minimal" : "shopMenu"}
+                isMobile={appConfig.isMobile}
             />
-            {dataStore.mobile ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"}/>
+            {appConfig.isMobile ? mobileView : browserView}
+            <Footer isMobile={appConfig.isMobile} minimal={true} color={"#f5f5f5"}/>
         </Fragment>
     );
 }
 
-export default HomePage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(HomePage);

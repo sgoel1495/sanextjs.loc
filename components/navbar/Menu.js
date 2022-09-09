@@ -9,7 +9,7 @@
  *      minimal - Mobile - header for about us pages
  * isMobile - Boolean(required)
  * category - String(optional) - shows an underline below the category name in the menu
- * filterData - JSON - for filter menu of shop page
+ * availableFilters - JSON - for filter menu of shop page
  * @returns {JSX.Element}
  **/
 
@@ -19,16 +19,15 @@ import React, { Fragment, useContext, useState } from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import CategoryFilterSidebar from "../sidebar/CategoryFilterSidebar/CategoryFilterSidebar";
+import {connect} from "react-redux";
 
 function Menu(props) {
-    const { dataStore } = useContext(AppWideContext);
-
-    const data = { categories: dataStore.categories, accessories: dataStore.accessories }
+    const data = { categories: props.appConfig.categories, accessories: props.appConfig.accessories }
     const [showShop, setShowShop] = useState(false);
     const [showMimoto, setShowMimoto] = useState(false);
 
     //mimoto data
-    const resp = useApiCall("getMimotoCollection", dataStore.apiToken, { skip: 0, limit: 50 });
+    const resp = useApiCall("getMimotoCollection", props.appConfig.apiToken, { skip: 0, limit: 50 });
 
     let mimotoList = null;
     if (resp && resp.status === 200) {
@@ -229,7 +228,7 @@ function Menu(props) {
 
                     </ul>
                     {(props.type === "minimal")
-                        ? <CategoryFilterSidebar isMobile={props.isMobile} filterData={props.filterData} />
+                        ? <CategoryFilterSidebar isMobile={props.isMobile} availableFilters={props.availableFilters} />
                         : null
                     }
                 </div>
@@ -240,4 +239,10 @@ function Menu(props) {
 
 }
 
-export default Menu;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Menu);

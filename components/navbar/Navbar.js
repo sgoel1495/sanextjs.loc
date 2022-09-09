@@ -13,9 +13,9 @@ import Menu from "./Menu";
 import SidebarMenuCart from "../sidebar/cart/SidebarMenuCart";
 import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 import AppWideContext from "../../store/AppWideContext";
+import {connect} from "react-redux";
 
 function Navbar(props) {
-    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const menuRef = useRef(null);
     const subMenuRef = useRef(null);
@@ -111,7 +111,7 @@ function Navbar(props) {
                     <SaltIcon type={props.type} isMobile={false}/>
                     <SidebarMenuHamburger type={props.type} isMobile={false}/>
                     <CurrencySwitcher type={props.type} isMobile={false}/>
-                    <Menu type={"minimal"} isMobile={false} filterData={props.filterData}/>
+                    <Menu type={"minimal"} isMobile={false} availableFilters={props.availableFilters}/>
                     <SearchMenu type={props.type} isMobile={false}/>
                     <SidebarMenuCart type={props.type} isMobile={false}/>
                 </nav>
@@ -119,9 +119,9 @@ function Navbar(props) {
                 <div className={"flex justify-between items-center bg-white/90 z-20 px-4"}>
                     <div className={"inline-flex items-center gap-x-5"}>
                         {
-                            (dataStore.userServe.user_name !== "") ?
+                            (props.userData.userServe.user_name !== "") ?
                                 <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"}>
-                                    {dataStore.userServe.user_name[0].toUpperCase()}
+                                    {props.userData.userServe.user_name[0].toUpperCase()}
                                 </div>
                                 :
                                 <Link href={"/homepage/signin"}>
@@ -171,9 +171,9 @@ function Navbar(props) {
                         </li>
                         <li>
                             {
-                                (dataStore.userServe.user_name !== "") ?
+                                (props.userData.userServe.user_name !== "") ?
                                     <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"}>
-                                        {dataStore.userServe.user_name[0].toUpperCase()}
+                                        {props.userData.userServe.user_name[0].toUpperCase()}
                                     </div>
                                     :
                                     <Link href={"/homepage/signin"}>
@@ -217,4 +217,10 @@ function Navbar(props) {
 
 }
 
-export default Navbar;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+    }
+}
+
+export default connect(mapStateToProps)(Navbar);

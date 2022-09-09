@@ -6,10 +6,10 @@ import Modal from "./MyOrdersModals"
 import {DateTime} from "luxon";
 import AppWideContext from "../../../store/AppWideContext";
 import Toast from "../../common/Toast";
+import {connect} from "react-redux";
 
-const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory}) => {
+const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, userConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [showModal, setShowModal] = useState(0)
     const [toastMsg, setToastMsg] = React.useState(false)
 
@@ -105,7 +105,7 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory}) => 
                     <strong className='leading-[1] text-sm'>ORDER PLACED</strong>
                     <span className={"block mb-3 text-sm font-500 text-sm"}>{new DateTime.fromISO(product.order_date_time).toLocaleString(DateTime.DATETIME_SHORT)}</span>
                     <strong>TOTAL AMOUNT:</strong>
-                    <span className='block text-sm font-500'>{dataStore.currSymbol} {product.payable}</span>
+                    <span className='block text-sm font-500'>{userConfig.currSymbol} {product.payable}</span>
                 </div>
                 <div className={"flex flex-col my-2"}>
                     <strong> SHIP TO:</strong>
@@ -183,4 +183,10 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory}) => 
     </>
 };
 
-export default MyOrderProductCard;
+const mapStateToProps = (state) => {
+    return {
+        userConfig: state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(MyOrderProductCard);

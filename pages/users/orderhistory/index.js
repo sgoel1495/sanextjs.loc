@@ -8,16 +8,16 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
 import MyOrderProductCard from "../../../components/user/mobile/MyOrderProductCard";
 import {apiCall} from "../../../helpers/apiCall";
+import {connect} from "react-redux";
 
-function UsersOrderHistoryPage() {
+function UsersOrderHistoryPage({appConfig,userData}) {
 
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
-    const {dataStore} = useContext(AppWideContext);
     const [productData, setProductData] = useState({});
 
     const getOrderHistory = () =>{
-        apiCall("userOrderHistory", dataStore.apiToken,{user:{token:dataStore.apiToken ,contact:dataStore.userData.contact}})
+        apiCall("userOrderHistory", appConfig.apiToken,{user:{token:appConfig.apiToken ,contact:userData.userServe.email}})
             .then(pData=>{
                 if (pData.status === 200 && pData.response){
                     setProductData(pData.response);
@@ -27,15 +27,15 @@ function UsersOrderHistoryPage() {
     }
 
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (userData.userServe.email == null)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
+    }, [userData.userServe.email, router])
     useEffect(() => {
         setMobile(isMobile)
     }, [])
     useEffect(()=>{
         getOrderHistory()
-    },[dataStore.userData.contact, dataStore.apiToken])
+    },[userData.userServe.email, appConfig.apiToken])
 
     const MyOrderProducts = () => {
             let returnValue = null;
@@ -74,4 +74,10 @@ function UsersOrderHistoryPage() {
     )
 }
 
-export default UsersOrderHistoryPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(UsersOrderHistoryPage);

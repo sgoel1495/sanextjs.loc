@@ -8,23 +8,18 @@ import Header from "../../../../components/navbar/Header";
 import UserPageTemplate from "../../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
 
-function UsersAddAddressPage() {
+function UsersAddAddressPage({appConfig,userData}) {
     const router = useRouter();
-    const {dataStore} = useContext(AppWideContext);
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (userData.userServe.email == null)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
-    const [mobile, setMobile] = useState(false);
-    useEffect(() => {
-        setMobile(isMobile)
-    }, [])
+    }, [userData.userServe.email, router])
 
     const address = {
         "name": "",
         "lastname": "",
-        "email": dataStore.userData.contact,
-        "phone": dataStore.userServe.phone_number,
+        "email": userData.userServe.email,
+        "phone": userData.userServe.phone_number,
         "address": "",
         "landmark": "",
         "country": "India",
@@ -47,11 +42,18 @@ function UsersAddAddressPage() {
 
     return (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
-            {(mobile) ? mobileView : browserView()}
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={appConfig.isMobile}/>
+            <Header type={appConfig.isMobile ? "minimal" : "shopMenu"} isMobile={appConfig.isMobile}/>
+            {(appConfig.isMobile) ? mobileView : browserView()}
         </Fragment>
     )
 }
 
-export default UsersAddAddressPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default (mapStateToProps)(UsersAddAddressPage);

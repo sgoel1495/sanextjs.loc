@@ -7,52 +7,93 @@
 
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import PageHead from "../PageHead";
-import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
-import AppWideContext from "../../store/AppWideContext";
+import React, {Fragment, useEffect, useState} from "react";
+import _ from "lodash"
 import Footer from "../footer/Footer";
 import Image from "next/image";
 import BlockHeader from "../common/blockHeader";
 import Header from "../navbar/Header";
-
 import ProductCard from "./ProductCard";
 import useNavControl from "../../hooks/useNavControl";
 import CategoryHeaderMobile from "./CategoryHeaderMobile";
 import Loader from "../common/Loader";
 import {useRouter} from "next/router";
+import {connect} from "react-redux";
+import {apiCall} from "../../helpers/apiCall";
 
 
 function ShopPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
     //all paths start with shop-
-    const {dataStore} = useContext(AppWideContext);
-    const {category, hpid} = props
-    const [data, setData] = useState(props.data);
-    const [visibleData, setVisibleData] = useState([])
+    const {category, hpid, appConfig, data} = props
+    const [loading, setLoading] = useState(false)
+    const [query, setQuery] = useState({
+        category: props.category,
+        skip: 0,
+        limit: 10000,
+        filter_by: {}
+    })
+    const [visibleData, setVisibleData] = useState(data.data)
 
-    const initVisibleData = useCallback(() => {
-        let newData = [];
-        const filterActive = (dataStore.filter.length > 0)
-        if (filterActive) {
-            dataStore.filter.forEach(asset_id => {
-                let product = data.data.find(asset => asset.asset_id === asset_id)
-                if (product) {
-                    if (product.is_visible) {
-                        newData.push(product)
-                    }
-                }
-            })
-        } else {
-            newData = data?[...data.data.filter(item => item.size_avail !== "")]:[]
+    const filterVisibleData = (rawData) => {
+        let newData = [...rawData.filter(item => item.size_avail !== "" && item.is_visible)]
+        setVisibleData(newData)
+    }
+
+    const updateVisibleData = () => {
+        const filterCategories = Object.keys(props.filterCheckboxes)
+
+        //case before init
+        if (filterCategories.length === 0)
+            return
+
+        // create query object
+        const queryObject = {
+            category: props.category,
+            skip: 0,
+            limit: 10000,
+            filter_by: {}
+        }
+        for (let x = 0; x < filterCategories.length; x++) {
+            if (props.filterCheckboxes[filterCategories[x]].length > 0) {
+                queryObject.filter_by[filterCategories[x]] = props.filterCheckboxes[filterCategories[x]]
+            }
+        }
+        if (props.sortBy) {
+            queryObject['sorted_by'] = props.sortBy;
         }
 
+        //set original data is not filter or sort is applied
+        if (queryObject['sorted_by'] === "" && Object.keys(queryObject.filter_by).length === 0) {
+            updateVisibleData(data.data)
+            return
+        }
 
-        setVisibleData(newData)
-    }, [dataStore.refreshFilter])
+        //if no new query is added, return
+        if (_.isEqual(query, queryObject)) {
+            return
+        }
+
+        // get new products
+        setLoading(true)
+        apiCall("getProducts", props.appConfig.apiToken, queryObject)
+            .then(resp => {
+                if (resp.response && resp.response.data) {
+                    filterVisibleData(resp.response.data)
+                    setQuery(queryObject)
+                }
+            })
+            .catch(e => console.log(e.message))
+            .finally(() => {
+                setLoading(false)
+            })
+    }
+
 
     useEffect(() => {
-        initVisibleData()
-    }, [dataStore.refreshFilter])
+        updateVisibleData()
+    }, [props.refreshFilter])
 
     const navControl = useNavControl(-20)
 
@@ -124,9 +165,9 @@ function ShopPage(props) {
     const mobileView = <div>
         <PageHead url={"/" + hpid} id={hpid} isMobile={true}/>
         <Header type={"shopMenu"} isMobile={true} category={hpid}
-                subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} filterData={data ? data.filter_count : {}}
+                subMenu={<CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} availableFilters={data ? data.filter_count : {}}
                                                activeLayout={activeLayout} minimal={true}/>}/>
-        <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} filterData={data ? data.filter_count : {}}/>
+        <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} availableFilters={data ? data.filter_count : {}}/>
         {data
             ? <main className={`grid grid-cols-${activeLayout} gap-5 container py-5 px-5 bg-[#faf4f0]`}>
                 {displayMobileData()}
@@ -142,13 +183,13 @@ function ShopPage(props) {
         <CategoryHeaderVideo category={category}>
             <Header type={"shopMenu"}/>
         </CategoryHeaderVideo>
-        <Header type={navControl ? "minimal" : "menu"} isMobile={false} filterData={data ? data.filter_count : {}}
+        <Header type={navControl ? "minimal" : "menu"} isMobile={false} availableFilters={data ? data.filter_count : {}}
                 category={hpid}/>
         <BlockHeader
             space={"py-5"}
             titleStyle={"text-center"}
         >
-            <h3 className={`text-h4 font-600 mb-4 uppercase`}>{(category==="best-selling")?"TOP SELLING PRODUCTS":category}</h3>
+            <h3 className={`text-h4 font-600 mb-4 uppercase`}>{(category === "best-selling") ? "TOP SELLING PRODUCTS" : category}</h3>
             <h4 className={`text-h6 leading-none font-cursive italic font-600 text-black/70`}>{tag_line}</h4>
         </BlockHeader>
         {(data)
@@ -163,7 +204,16 @@ function ShopPage(props) {
         <Footer isMobile={false}/>
     </Fragment>
 
-    return dataStore.mobile ? mobileView : browserView
+    return appConfig.isMobile ? mobileView : browserView
 }
 
-export default ShopPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        refreshFilter: state.filters.refreshFilter,
+        filterCheckboxes: state.filters.filterCheckboxes,
+        sortBy: state.filters.sortBy
+    }
+}
+
+export default connect(mapStateToProps)(ShopPage);

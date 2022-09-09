@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ReactDom from "react-dom";
 
 import CategoryFilterModal from "./CategoryFilterModal";
@@ -11,63 +11,63 @@ import CategoryFilterModal from "./CategoryFilterModal";
  */
 
 function CategoryFilterSidebar(props) {
-    const [showSidebarMenu, setShowSidebarMenu] = useState(false);
-    const [checkboxData, setCheckboxData] = useState(null);
-    const [dataChanged, setDataChanged] = useState(false);
-    const [filterData, setFilterData] = useState([])
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    const [allFilters, setAllFilters] = useState([])
     const [showSort, setShowSort] = useState(false)
+    const [category, setCategory] = useState("")
 
-
-    const updateCheckboxData = (key, value) => {
-        checkboxData[key] = value;
-        setCheckboxData({...checkboxData});
-        setDataChanged(!dataChanged);
-    }
 
     useEffect(() => {
-        if (props.filterData) {
-            let filterDataKeys = Object.keys(props.filterData);
-            filterDataKeys = filterDataKeys.map(item => item.split("-")[0])
-            filterDataKeys = Array.from(new Set(filterDataKeys))
+        if (props.availableFilters) {
+
+            // get filter categories
+            let filterCategories = Object.keys(props.availableFilters);
+            filterCategories = filterCategories.map(item => item.split("-")[0])
+            filterCategories = Array.from(new Set(filterCategories))
+
+            //get all filter keys of a category
             const initData = [];
-            filterDataKeys.forEach(category => {
+            filterCategories.forEach(category => {
                 let temp = {}
-                Object.keys(props.filterData).forEach(item => {
+                Object.keys(props.availableFilters).forEach(item => {
+                    if (item.includes("category-"))
+                        setCategory(item.substring(9))
                     if (item.startsWith(category)) {
                         let filter = item.replace(category + "-", "").replace("-", " ")
                         if (temp.filters) {
                             temp.filters.push(filter)
                             temp.key.push(item)
+                            temp.count.push(props.availableFilters[item])
                         } else {
                             temp = {
                                 name: category,
                                 key: [item],
-                                filters: [filter]
+                                filters: [filter],
+                                count: [props.availableFilters[item]]
                             }
                         }
-
                     }
                 });
                 initData.push(temp)
             })
-            setFilterData(initData)
+            setAllFilters(initData)
         }
-    }, [props.filterData]);
+    }, [props.availableFilters]);
 
     useEffect(() => {
-        if (showSidebarMenu) document.body.classList.add("scroll-overflow");
+        if (showFilterModal) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
-    }, [showSidebarMenu])
+    }, [showFilterModal])
 
     const closeModal = () => {
-        setShowSidebarMenu(false);
+        setShowFilterModal(false);
         setShowSort(false);
     }
 
     const mobileView = <>
         <button
             className="inline-flex items-center gap-2 text-[10px] uppercase tracking-wider font-500 leading-none"
-            onClick={() => setShowSidebarMenu(true)}
+            onClick={() => setShowFilterModal(true)}
         >
             Filter
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" fill="currentColor" className="w-4 h-4">
@@ -82,7 +82,7 @@ function CategoryFilterSidebar(props) {
         <button
             className="inline-flex items-center gap-2 text-[10px] uppercase tracking-wider font-500 leading-none"
             onClick={() => {
-                setShowSidebarMenu(true)
+                setShowFilterModal(true)
                 setShowSort(true)
             }}
         >
@@ -101,7 +101,7 @@ function CategoryFilterSidebar(props) {
 
     const browserView = (
         <>
-            <button onClick={() => setShowSidebarMenu(true)}
+            <button onClick={() => setShowFilterModal(true)}
                     className={`absolute inset-y-0 right-0 py-2 text-sm font-500 uppercase leading-none flex items-center gap-x-1`}>
                 Filters
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-3 h-3" viewBox="0 0 16 16">
@@ -114,16 +114,13 @@ function CategoryFilterSidebar(props) {
 
     return <>
         {props.isMobile ? mobileView : browserView}
-        {showSidebarMenu && ReactDom.createPortal(
+        {showFilterModal && ReactDom.createPortal(
             <CategoryFilterModal
                 showSort={showSort}
                 isMobile={props.isMobile}
-                originalData={props.filterData}
-                filterData={filterData}
-                setShowSidebarMenu={setShowSidebarMenu}
-                checkboxData={checkboxData}
-                updateCheckboxData={updateCheckboxData.bind(this)}
                 closeModal={closeModal}
+                category={category}
+                allFilters={allFilters}
             />,
             document.getElementById("hamburger"))}
     </>
