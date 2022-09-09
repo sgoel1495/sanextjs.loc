@@ -10,6 +10,7 @@ import {saveCartMeasurements} from "../../helpers/measurementHelper";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 import {setUserState} from "../../ReduxStore/reducers/userSlice";
+import {setOrderHistory} from "../../ReduxStore/reducers/orderSlice";
 
 function OtpModal(props) {
     const router = useRouter()
@@ -78,6 +79,7 @@ function OtpModal(props) {
                 let updateData = await updateUserDataAfterLogin(props.userData.userServe.email, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
                 props.setCart(updateData.shoppingCart)
                 props.setUserState(updateData.userState);
+                props.setOrderHistory(updateData.orderHistory);
             }
 
             await router.push("/salt/Thankyou?id=" + verifyCall.thank_you_order.order_id)
@@ -141,4 +143,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart, setUserState})(OtpModal)
+export default connect(mapStateToProps, {setCart, setUserState,setOrderHistory})(OtpModal)

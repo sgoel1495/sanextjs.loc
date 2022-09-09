@@ -14,8 +14,9 @@ import {getUserObject} from "../../../helpers/addTocart";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import {setUserState} from "../../../ReduxStore/reducers/userSlice";
+import {setOrderHistory} from "../../../ReduxStore/reducers/orderSlice";
 
-function UsersWalletPage({appConfig,userConfig, userData, ...props}) {
+function UsersWalletPage({appConfig, userConfig, userData, ...props}) {
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
     const [voucher, setVoucher] = useState('')
@@ -70,6 +71,7 @@ function UsersWalletPage({appConfig,userConfig, userData, ...props}) {
                 const updateData = await updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, {}, [])
                 props.setCart(updateData.shoppingCart)
                 props.setUserState(updateData.userState);
+                props.setOrderHistory(updateData.setOrderHistory)
             }
         } else
             setMessage("Voucher could not be redeemed. Please ensure it is valid")
@@ -146,8 +148,8 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         shoppingCart: state.shoppingCart,
         appConfig: state.appConfig,
-        userConfig:state.userConfig
+        userConfig: state.userConfig
     }
 }
 
-export default connect(mapStateToProps, {setCart, setUserState})(UsersWalletPage);
+export default connect(mapStateToProps, {setCart, setUserState, setOrderHistory})(UsersWalletPage);

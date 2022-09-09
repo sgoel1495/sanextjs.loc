@@ -332,7 +332,7 @@ function SidebarMenuHamburger(props) {
 
     useEffect(() => {
         if (mobile) {
-            if (props.userData.userServe.email != null) {
+            if (props.userData.userServe.email) {
                 let navigation = navData.map(item => {
                     if (item.id !== "login") {
                         return item
@@ -384,7 +384,7 @@ function SidebarMenuHamburger(props) {
             } else {
                 setNavigationData(navData)
             }
-        } else if (props.userData.userServe.email != null) {
+        } else if (props.userData.userServe.email) {
             setNavigationData([
                 {
                     title: props.userData.userServe.user_name,

@@ -8,6 +8,7 @@ import {useRouter} from "next/router";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import {setUserState} from "../../../ReduxStore/reducers/userSlice";
+import {setOrderHistory} from "../../../ReduxStore/reducers/orderSlice";
 
 
 const LoginForm = (props) => {
@@ -29,6 +30,7 @@ const LoginForm = (props) => {
         const updateData = await updateUserDataAfterLogin(username, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
         props.setCart(updateData.shoppingCart)
         props.setUserState(updateData.userState);
+        props.setOrderHistory(updateData.orderHistory);
     }
 
 
@@ -247,4 +249,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart, setUserState})(LoginForm);
+export default connect(mapStateToProps, {setCart, setUserState,setOrderHistory})(LoginForm);

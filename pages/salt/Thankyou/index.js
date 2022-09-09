@@ -15,18 +15,22 @@ const Thankyou = (props) => {
     const curr = props.userConfig.currCurrency.toUpperCase();
     const [mobile, setMobile] = useState(false)
     const [order, setOrder] = useState({})
+
     useEffect(() => {
-        if (props.orderData.orderHistory[orderID]) {
-            setOrder(props.orderData.orderHistory[orderID])
+        if (props.orderHistory[orderID]) {
+            setOrder(props.orderHistory[orderID])
         } else {
 
         }
-    }, [props.orderData.orderHistory])
+    }, [props.orderHistory])
+
     const address = order.delivery_address || {}
     const cart = order.item || []
+
     useEffect(() => {
         setMobile(isMobile)
     }, [])
+
     let gross = order.total - order.discount;
     let wallet;
     if (gross !== order.pending_amount - order.delivery_charges) {
@@ -171,7 +175,7 @@ const Thankyou = (props) => {
 const mapStateToProps = (state) => {
     return {
         userConfig: state.userConfig,
-        orderData: state.orderData
+        orderHistory: state.orderData.orderHistory
     }
 }
 

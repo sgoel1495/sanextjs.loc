@@ -14,7 +14,7 @@ import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogi
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import {setUserAddresses, setUserServe, setUserState} from "../../../ReduxStore/reducers/userSlice";
-import {setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
+import {setOrderHistory, setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
 
 const AddressForm = (props) => {
     const {isMobile, selectedAddressIndex, setSelectedAddressIndex, setReview, setActive, appConfig, userData, shoppingCart, userConfig, currentOrderId, orderSummary} = props;
@@ -146,6 +146,7 @@ const AddressForm = (props) => {
         const updateData = await updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, userData.measurements, shoppingCart.cart);
         props.setCart(updateData.shoppingCart)
         props.setUserState(updateData.userState);
+        props.setOrderHistory(updateData.orderHistory);
     }
 
     const checkAndSave = async () => {
@@ -455,4 +456,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart, setUserState, setUserServe, setUserAddresses, setOrderSummary})(AddressForm);
+export default connect(mapStateToProps, {setCart, setUserState, setUserServe, setUserAddresses, setOrderSummary, setOrderHistory})(AddressForm);

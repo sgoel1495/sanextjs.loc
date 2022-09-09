@@ -17,12 +17,11 @@ import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
 
 function SidebarMenuUser(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [showSidebarMenuUser, setShowSidebarMenuUser] = useState(props.showLogin);
 
     useEffect(() => {
-        if (showSidebarMenuUser) document.body.classList.add("scroll-overflow");
+        if (props.showLogin) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
-    }, [showSidebarMenuUser])
+    }, [props.showLogin])
 
     const closeModal = () => {
         props.setShowLogin(false);

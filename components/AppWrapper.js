@@ -5,6 +5,7 @@ import {isMobile} from "react-device-detect";
 import {setUserServe, setUserState} from "../ReduxStore/reducers/userSlice";
 import {setCart} from "../ReduxStore/reducers/shoppingCartSlice";
 import {setIsMobile} from "../ReduxStore/reducers/appConfigSlice";
+import {setOrderHistory} from "../ReduxStore/reducers/orderSlice";
 
 const AppWrapper = (props) => {
     const {userData, shoppingCart, appConfig} = props
@@ -15,6 +16,7 @@ const AppWrapper = (props) => {
                 updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, userData.measurements, shoppingCart.cart).then(updateData => {
                     props.setCart(updateData.shoppingCart)
                     props.setUserState(updateData.userState);
+                    props.setOrderHistory(updateData.orderHistory);
                 })
                 flag = false
             }
@@ -47,4 +49,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setUserServe, setUserState, setCart, setIsMobile})(AppWrapper);
+export default connect(mapStateToProps, {setUserServe, setUserState, setCart, setIsMobile,setOrderHistory})(AppWrapper);

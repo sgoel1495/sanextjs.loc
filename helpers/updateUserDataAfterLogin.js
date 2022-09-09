@@ -42,8 +42,6 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
         userWallet = {...walletCall.user};
 
 
-
-
     //==================== user Address
     const addressCall = await apiCall("userAddresses", apiToken, {
         "user": {
@@ -121,13 +119,15 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     if (measurementCall.hasOwnProperty("response") && measurementCall.response && Object.keys(measurementCall.response).length > 0)
         userMeasurements = {...measurementCall.response}
 
-    //==================== user Measurement
+    let orderHistory = {}
     const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
         "user": {contact: username, token: apiToken}
     });
-
+    if (orderHistoryCall.status === 200) {
+        orderHistory = orderHistoryCall.response
+    }
     return {
-        "userState":{
+        "userState": {
             "userServe": userServe,
             "defaultAddress": defaultAddress,
             "userAddresses": userAddresses,
@@ -135,5 +135,6 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
             "measurements": userMeasurements,
         },
         "shoppingCart": userCart,
+        "orderHistory": orderHistory
     }
 }

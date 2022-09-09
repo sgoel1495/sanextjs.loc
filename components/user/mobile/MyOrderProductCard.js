@@ -20,7 +20,7 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
                     src={WEBASSETS + "/assets/" + product.item[itemIndex].asset_id + "/thumb.jpg"} alt="cart"
                     width="129" height="208"/>
                 <span className={"flex flex-col items-center"}>
-                    <span> {product.item.tagline}</span>
+                    <span> {product.item[itemIndex].tagline}</span>
                     <span className={"flex gap-2 text-xs"}>Qty: {product.item[itemIndex].qty}<span>SIZE {product.item[itemIndex].size}</span></span>
                 </span>
             </div>
@@ -62,7 +62,7 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
         </div>
         <div className={"flex flex-col items-center"}>
             {
-                Object.keys(product.item_status).length <= 1 ?
+                Object.keys(product.item[itemIndex].item_status).length <= 1 ?
                     <button
                         onClick={() => {
                             setShowModal(3)
@@ -92,7 +92,7 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
                     width="174" height="282"
                 />
                 <div className={"absolute inset-x-0 bottom-0 bg-white/90 flex items-start p-3 text-xs"}>
-                    <div className='flex-1'>{product.item.tagline} Name</div>
+                    <div className='flex-1'>{product.item[itemIndex].tagline} Name</div>
                     <div className='text-right'>
                         <p>{product.item[itemIndex].qty}</p>
                         <p>{product.item[itemIndex].size}</p>
@@ -113,7 +113,7 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
                     <span className={"text-[13px] font-500"}>{product.delivery_address.country}, {product.delivery_address.state}</span>
                     <span className={"text-[13px] font-500"}>{product.delivery_address.city},{product.delivery_address.zip_code}</span>
                     {
-                        Object.keys(product.item_status).length <= 1 ?
+                        Object.keys(product.item[itemIndex].item_status).length <= 1 ?
                             <span
                                 onClick={() => {
                                     setShowModal(1)
