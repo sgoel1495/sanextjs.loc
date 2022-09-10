@@ -2,7 +2,7 @@
  * @params {isMobile} props
  * @constructor
  */
-import React, {Fragment, useCallback, useContext, useEffect, useRef, useState} from 'react';
+import React, {Fragment, useCallback,useEffect, useRef, useState} from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import SaltIcon from "./SaltIcon";
@@ -12,7 +12,6 @@ import SearchMenu from "../search/SearchMenu";
 import Menu from "./Menu";
 import SidebarMenuCart from "../sidebar/cart/SidebarMenuCart";
 import SidebarMenuUser from "../sidebar/SidebarMenuUser";
-import AppWideContext from "../../store/AppWideContext";
 import {connect} from "react-redux";
 
 function Navbar(props) {
@@ -90,7 +89,7 @@ function Navbar(props) {
                                 <a>NEW IN</a>
                             </Link>
                         </li>
-                        <Menu isMobile={true}/>
+                        <Menu type={props.type} isMobile={true}/>
                     </ul>
                     <div
                         className="absolute w-full shadow-[7.1px_7.1px_14.6px_0.5px_rgb(0,0,0,0.08)] transition-[top] duration-700 ease-in-out"

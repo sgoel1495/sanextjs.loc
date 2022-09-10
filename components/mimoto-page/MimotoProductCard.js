@@ -5,7 +5,7 @@ import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
-import returnSizes from "../../helpers/returnSizes";
+import returnSizes, {isInStock} from "../../helpers/returnSizes";
 import {Fragment} from "react";
 import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
@@ -166,7 +166,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                     }
                     <div className="grid grid-cols-2 items-center h-16">
                         {expandShop
-                            ? (prod.in_stock === "true")
+                            ? isInStock(prod)
                                 ? <Fragment>
                                     <button className={`font-800`} onClick={() => setShowSize(true)}>SIZE</button>
                                     <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}

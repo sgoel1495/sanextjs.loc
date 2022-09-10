@@ -126,3 +126,16 @@ export async function updateCartMeasurement(userData, apiToken, setCart, cart_id
         await refreshCart(userData, apiToken, setCart)
     }
 }
+
+export async function clearCart(userData, apiToken, cart, setCart) {
+    let user = getUserObject(userData)
+    for(let i in cart){
+        let product = {
+            "product": {
+                "product_cart_id": cart[i].cart_id
+            }
+        }
+        await apiCall("removeCart", apiToken, {user: user, ...product})
+    }
+    setCart([])
+}

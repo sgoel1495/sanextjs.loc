@@ -5,7 +5,7 @@ import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
-import returnSizes from "../../helpers/returnSizes";
+import returnSizes, {isInStock} from "../../helpers/returnSizes";
 import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
@@ -25,7 +25,7 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig,userConfig, ...props}) => {
+const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, userConfig, ...props}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [expandShop, setExpandShop] = useState(null);
@@ -111,7 +111,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
                 <Link href={"/" + prod.asset_id}>
                     <a className={`block z-0`} id={prod.asset_id}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} outOfStock={prod.in_stock !== "true"}/>
+                        <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} outOfStock={!isInStock(prod)}/>
                         <div className={`flex px-5 items-center leading-none py-3`}>
                             <div className='flex-1'>
                                 <p className={`font-600 font-cursive italic`}>{prod.name}</p>
@@ -137,7 +137,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
                         <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={true}
-                                            outOfStock={prod.in_stock !== "true"}/>
+                                            outOfStock={!isInStock(prod)}/>
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
@@ -192,28 +192,29 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div className="grid grid-cols-2 items-center h-16">
                         {(expandShop)
                             ? <Fragment>
-                                {(prod.in_stock === "true")
-                                    ? <Fragment>
-                                        <button className={`font-800`} onClick={() => {
-                                            setShowSize(true)
-                                            setAddToCartClick(false)
-                                        }}>SIZE
-                                        </button>
-                                        <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                             onClick={() => saveToCart()}>
-                                            <span className={`uppercase`}>Add to bag</span>
-                                            <p className={`text-xs`}>
-                                                {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
-                                            </p>
-                                        </div>
-                                    </Fragment>
-                                    : <Fragment>
-                                        <button className={`font-800`}>SOLD OUT</button>
-                                        <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                             onClick={() => setShowNotifyMe(true)}>
-                                            <span className={`uppercase`}>NOTIFY ME</span>
-                                        </div>
-                                    </Fragment>
+                                {
+                                    isInStock(prod)
+                                        ? <Fragment>
+                                            <button className={`font-800`} onClick={() => {
+                                                setShowSize(true)
+                                                setAddToCartClick(false)
+                                            }}>SIZE
+                                            </button>
+                                            <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
+                                                 onClick={() => saveToCart()}>
+                                                <span className={`uppercase`}>Add to bag</span>
+                                                <p className={`text-xs`}>
+                                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+                                                </p>
+                                            </div>
+                                        </Fragment>
+                                        : <Fragment>
+                                            <button className={`font-800`}>SOLD OUT</button>
+                                            <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
+                                                 onClick={() => setShowNotifyMe(true)}>
+                                                <span className={`uppercase`}>NOTIFY ME</span>
+                                            </div>
+                                        </Fragment>
                                 }
                             </Fragment>
 
@@ -250,7 +251,7 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         shoppingCart: state.shoppingCart,
         appConfig: state.appConfig,
-        userConfig:state.userConfig
+        userConfig: state.userConfig
     }
 }
 

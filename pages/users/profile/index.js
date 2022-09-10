@@ -1,5 +1,4 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
-import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";

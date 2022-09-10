@@ -36,10 +36,10 @@ function ShopPage(props) {
         limit: 10000,
         filter_by: {}
     })
-    const [visibleData, setVisibleData] = useState(data.data.filter(item => item.size_avail !== "" && item.is_visible))
+    const [visibleData, setVisibleData] = useState(data.data.filter(item => item.is_visible))
 
     const filterVisibleData = (rawData) => {
-        let newData = [...rawData.filter(item => item.size_avail !== "" && item.is_visible)]
+        let newData = [...rawData.filter(item => item.is_visible)]
         setVisibleData(newData)
     }
 
@@ -109,7 +109,7 @@ function ShopPage(props) {
             setTimeout(() => {
                 setRoute(router.route)
                 props.applyFilters()
-            },100)
+            }, 100)
 
         }
     }, [router.route])

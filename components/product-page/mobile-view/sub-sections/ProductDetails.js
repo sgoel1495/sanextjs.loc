@@ -15,6 +15,8 @@ import NotifyMe from "./NotifyMe";
 import emptyMeasurement from "../../../../store/emptyMeasurement.json";
 import {connect} from "react-redux";
 import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
+import returnSizes, {isInStock} from "../../../../helpers/returnSizes";
+import currencyFormatter from "../../../../helpers/currencyFormatter";
 
 const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -26,9 +28,9 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
     const [size, setSize] = useState(null)
     const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     const [error, setError] = useState(false)
-    const sizeAvail = JSON.parse(data.size_avail.replace(/=>/g, ":"))
+    const sizeAvail = returnSizes(data)
     const currCurrency = props.userConfig.currCurrency;
-    const currencySymbol = props.userConfig.currSymbol;
+    const curr = currCurrency.toUpperCase();
 
     let feature_icons = {};
     data.icon_assets.forEach((icon) => {
@@ -45,13 +47,13 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
     }).filter((key) => key)
 
     const save = () => {
-        if (!size && !currentMeasurement.measure_id) {
+        if (!size && !currentMeasurement.measure_id && !(sizeAvail.length === 1 && sizeAvail[0] === "F")) {
             setError(true)
             return;
         }
         let cart = {
             "product_id": data.product_id,
-            "size": size,
+            "size": sizeAvail.length === 1 && sizeAvail[0] === "F" ? "f" : size,
             "qty": 1,
             "is_sale": data.is_sale,
             "is_tailor": !!currentMeasurement.measure_id,
@@ -61,7 +63,7 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
         let measurements = {}
         if (currentMeasurement.measure_id) {
             if (!size) {
-                cart['size'] = sizeAvail[0][Object.keys(sizeAvail[0])[0]]
+                cart['size'] = sizeAvail[0]
             }
             cart["measurment_id"] = currentMeasurement.measure_id
             measurements = {...currentMeasurement}
@@ -129,8 +131,8 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
                     </div>
                     <div className={'text-right leading-none'}>
                         <WishListButton pid={hpid} isMobile={true}/>
-                        <p className={''}>
-                            {currencySymbol} {currCurrency === 'inr' ? data.price : data.usd_price}
+                        <p className={'text-lg'}>
+                            {currencyFormatter(curr).format(currCurrency === "inr" ? data.price : data.usd_price).split(".")[0]}
                         </p>
                         <p className={'text-[8px]'}>INCLUSIVE OF TAXES</p>
                     </div>
@@ -151,7 +153,7 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
                 </div>
                 <div className={'flex flex-col items-center relative'}>
                     {
-                        data.in_stock !== "true" &&
+                        !isInStock(data) &&
                         <div className={"absolute h-full w-full"}>
                             <div className={"h-full w-full bg-white/75 rounded-[8vw] grid place-items-center px-4 text-xs"}>
                                 <div className={"w-full bg-[#f6f1ef] text-[#997756] py-4 flex flex-col items-center rounded-[8vw]"}>

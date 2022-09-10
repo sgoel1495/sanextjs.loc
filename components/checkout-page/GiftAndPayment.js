@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Toast from "../common/Toast";
 import ReactDOM from "react-dom";
-import React, {Fragment, useContext, useEffect, useReducer, useState} from "react";
-import AppWideContext from "../../store/AppWideContext";
+import React, {Fragment,  useEffect, useReducer, useState} from "react";
 import {savePayment, updateAddressForOrder} from "./functions";
 import OtpModal from "./OtpModal";
 import {connect} from "react-redux";
@@ -80,7 +79,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
-
+    console.log(appConfig.isMobile)
     const mobileView = (
         <Fragment>
             <p className='text-l text-center font-bold mb-2'>How do you want to pay ?</p>
@@ -212,13 +211,13 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 </label>
             </div>
             {
-                payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase'
+                !appConfig.isMobile && payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase'
                                                       onClick={placeOrder}>
                     {payMode === "COD" ? "verify otp for cod" : "Place order & pay"}
                 </div>, document.getElementById("paymentButton"))
             }
             {
-                payMode === "COD" && ReactDOM.createPortal(<>
+                !appConfig.isMobile && payMode === "COD" && ReactDOM.createPortal(<>
                     <td>COD Handling Fee</td>
                     <td>{currencySymbol}{80}</td>
                 </>, document.getElementById("codCharges"))
