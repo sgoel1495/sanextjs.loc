@@ -16,7 +16,7 @@ function AddAddressEditByIdPage({userData}) {
         setMobile(isMobile)
     }, [])
     useEffect(() => {
-        if (!addressId || userData.userServe.email == null || !userData.userAddresses || userData.userAddresses.length < (addressId + 1)) {
+        if (!addressId || !userData.userServe.email || !userData.userAddresses || userData.userAddresses.length < (addressId + 1)) {
             router.replace("/"); // no illegal access
         }
     }, [addressId, userData.userServe.email, userData.userAddresses, userData.userAddresses.length, router])

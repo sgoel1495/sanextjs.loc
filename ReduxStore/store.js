@@ -10,7 +10,8 @@ import {
 
 const persistConfig = {
     key: "root",
-    storage
+    storage,
+    blacklist: ['orderData']
 };
 
 const configureStore = (preloadedState) => {

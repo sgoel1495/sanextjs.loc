@@ -146,9 +146,6 @@ function ShippingAddress({setActive, appConfig, userData, orderSummary, showLogi
 
     return <>
         {appConfig.isMobile ? mobileView : browserView}
-        {!userData.userServe.email && showLogin && ReactDom.createPortal(
-            <UserLogin closeModal={closeModal} isMobile={true}/>,
-            document.getElementById("userband"))}
         <Toast show={show} hideToast={() => setShow(false)} bottom={'50px'}>
             <span>Please Select an Address</span>
         </Toast>

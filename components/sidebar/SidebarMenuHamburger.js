@@ -11,6 +11,7 @@ import CurrencySwitcher from "../navbar/CurrencySwitcher";
 import UserLogin from "../user/login/UserLogin";
 import useApiCall from "../../hooks/useApiCall";
 import {connect} from "react-redux";
+import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
 
 /**
  * @todo account signin pending
@@ -284,7 +285,6 @@ function SidebarMenuHamburger(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [navigationData, setNavigationData] = useState([]);
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
-    const [showLogin, setShowLogin] = useState(false)
     const [mobile, setMobile] = useState(false)
     const navMenu = useApiCall("getHomePageMenu", props.appConfig.apiToken);
     const navData = useMemo(() => {
@@ -430,7 +430,7 @@ function SidebarMenuHamburger(props) {
                 {
                     title: `ACCOUNT`,
                     description: `Login/Signup`,
-                    onClick: () => setShowLogin(true)
+                    onClick: () => props.setShowLogin(true)
                 }, ...navData]);
         }
     }, [props.userData.userServe.user_name, props.userData.userServe.email, navData]);
@@ -464,9 +464,6 @@ function SidebarMenuHamburger(props) {
                     </div>
                 }
                 <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu} isMobile={mobile}/>
-                {showLogin && ReactDom.createPortal(
-                    <UserLogin closeModal={() => setShowLogin(false)} setShowLogin={setShowLogin}/>,
-                    document.getElementById("userband"))}
             </span>
             : <Fragment/>}
     </Fragment>;
@@ -479,4 +476,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(SidebarMenuHamburger);
+export default connect(mapStateToProps,{setShowLogin})(SidebarMenuHamburger);

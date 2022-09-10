@@ -139,7 +139,8 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         shoppingCart: state.shoppingCart,
         appConfig: state.appConfig,
-        currentOrderId: state.orderData.currentOrderId
+        currentOrderId: state.orderData.currentOrderId,
+        orderSummary: state.orderData.orderSummary
     }
 }
 

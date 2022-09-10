@@ -10,7 +10,7 @@ import {apiCall} from "../../../helpers/apiCall";
 import {connect} from "react-redux";
 import {setOrderHistory} from "../../../ReduxStore/reducers/orderSlice";
 
-function UsersOrderHistoryPage({appConfig, userData, orderHistory}) {
+function UsersOrderHistoryPage({appConfig, userData, orderHistory,...props}) {
 
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
@@ -19,7 +19,7 @@ function UsersOrderHistoryPage({appConfig, userData, orderHistory}) {
         apiCall("userOrderHistory", appConfig.apiToken, {user: {token: appConfig.apiToken, contact: userData.userServe.email}})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
-                    setOrderHistory(pData.response);
+                    props.setOrderHistory(pData.response);
                 }
             })
             .catch(e => console.log(e.message))

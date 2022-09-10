@@ -36,7 +36,7 @@ function ShopPage(props) {
         limit: 10000,
         filter_by: {}
     })
-    const [visibleData, setVisibleData] = useState(data.data)
+    const [visibleData, setVisibleData] = useState(data.data.filter(item => item.size_avail !== "" && item.is_visible))
 
     const filterVisibleData = (rawData) => {
         let newData = [...rawData.filter(item => item.size_avail !== "" && item.is_visible)]

@@ -116,7 +116,7 @@ function UsersAccountPage({appConfig,userData}) {
     }, {new: "", confirm: ""})
     const router = useRouter();
     useEffect(() => {
-        if (userData.userServe.email == null)
+        if (!userData.userServe.email)
             router.replace("/"); //illegal direct access
     }, [userData.userServe.email, router])
 

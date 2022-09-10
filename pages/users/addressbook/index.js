@@ -21,7 +21,7 @@ function UsersAddressBookPage({appConfig,userData}) {
     const [showToaster, setShowToaster] = useState(false)
 
     useEffect(() => {
-        if (userData.userServe.email == null)
+        if (!userData.userServe.email)
             router.replace("/"); //illegal direct access
     }, [userData.userServe.email, router])
 

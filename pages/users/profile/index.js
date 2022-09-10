@@ -17,7 +17,7 @@ function UsersProfilePage({appConfig,userData,userConfig}) {
     const router = useRouter();
     const [walletAmount,setWalletAmount] = useState(null);
     useEffect(() => {
-        if (userData.userServe.email == null)
+        if (!userData.userServe.email)
             router.replace("/"); //illegal direct access
     }, [userData.userServe.email, router])
     useEffect(() => {

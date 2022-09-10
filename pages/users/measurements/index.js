@@ -30,7 +30,7 @@ function UsersMeasurementsPage({appConfig, userData}) {
     }
 
     useEffect(() => {
-        if (userData.userServe.email == null) router.replace("/");
+        if (!userData.userServe.email) router.replace("/");
         getMeasurements()
     }, []);
 

@@ -66,7 +66,7 @@ function SidebarMenuUser(props) {
             </span>
             {props.showLogin && ReactDom.createPortal(
                 props.userData.userServe.email ? <AccountMenu closeModal={closeModal}/> :
-                    <UserLogin setShowLogin={setShowLogin} closeModal={closeModal}/>,
+                    <UserLogin setShowLogin={setShowLogin} closeModal={closeModal} isMobile={props.isMobile}/>,
                 document.getElementById("userband"))}
         </>
     );

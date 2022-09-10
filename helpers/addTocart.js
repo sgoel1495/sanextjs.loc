@@ -7,7 +7,7 @@ export async function refreshCart(userData, apiToken, setCart) {
         const actualCart = respCart.response.filter(item => {
             return item.qty != null
         })
-        setCart("userCart", actualCart)
+        setCart(actualCart)
     }
 }
 

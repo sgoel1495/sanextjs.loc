@@ -1,6 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
-import AppWideContext from "../../store/AppWideContext";
-import appSettings from "../../store/appSettings";
+import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
 

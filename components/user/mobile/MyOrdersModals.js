@@ -11,6 +11,7 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
     const [comment, setComment] = React.useState("")
     const [userAddresses, setUserAddresses] = React.useState([])
     const [address, setAddress] = React.useState("-1")
+    const [reason,setReason] = React.useState("")
 
     useEffect(() => {
         apiCall("userAddresses", appConfig.apiToken, {user: {email: userData.userServe.email}})
@@ -78,12 +79,31 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
         setToastMsg("Thank you so much. Your review has been saved")
         setShowModal(false)
     }
+
     const changeAddress = () => {
         apiCall("editShippingAddress", appConfig.apiToken, {
             "order_id": data.order_id,
             "address": userAddresses[address],
         })
-        getOrderHistory()
+        setTimeout(() => {
+            getOrderHistory()
+        }, 1000)
+        setShowModal(false)
+    }
+
+    const cancelOrder = () => {
+        apiCall("cancelOrder", appConfig.apiToken, {
+            "user":
+                {
+                    "order_id": data.order_id,
+                    "item_index": itemIndex,
+                    "reason": reason,
+                    "token": "b16ee1b2bcb512f67c3bca5fac24a924fcc2241bcbfe19ddfdde33ecd24114a0"
+                }
+        })
+        setTimeout(() => {
+            getOrderHistory()
+        }, 1000)
         setShowModal(false)
     }
 
@@ -193,20 +213,28 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                         X
                     </span>
                     <div className={"flex flex-col"}>
-                        <h1 className={"mb-5 uppercase"}>Cancel Order</h1>
+                        <div className={"text-[#333] text-sm font-700 mt-5"}>Are you sure you want to cancel your order: {data.order_id}?</div>
                         <input
                             type="text"
-                            placeholder={"Why do you want to cancel your order?"}
-                            className={" mt-10 placeholder:text-black"}
+                            placeholder={"Any specific reason you want to cancel your order?*"}
+                            className={" mt-10 placeholder:text-black bg-[#F1F2F3] text-sm"}
+                            onChange={(e)=>setReason(e.target.value)}
+                            value={reason}
                         />
-
-                        <button
-                            onClick={() => {
-                                setShowModal(false)
-                            }}
-                            className="bg-black px-4 py-1.5 text-white w-[50%] uppercase text-sm font-500 shadow-md my-10">
-                            save
-                        </button>
+                        <div className={"grid grid-cols-2 place-items-start"}>
+                            <button
+                                onClick={cancelOrder}
+                                className="bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-10">
+                                CANCEL ORDER
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setShowModal(false)
+                                }}
+                                className="bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-10">
+                                NO, THANKS
+                            </button>
+                        </div>
                     </div>
                 </>
             ),
@@ -224,11 +252,8 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                         X
                     </span>
                     <div className={"flex flex-col "}>
-                        <div className={"mt-10 uppercase items-center flex flex-col px-10"}>
-                            <h1 className={"mb-5"}>Track your order</h1>
-                            <span>
-                                (#{data.orderID})
-                            </span>
+                        <div className={"mt-10 uppercase items-center justify-center flex text-lg text-[#333] font-600 px-10"}>
+                            Track your order (#{data.order_id})
                         </div>
                         <span className="text-xs mt-1">
                             {data.date}
@@ -249,7 +274,7 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
             style: "p-3 h-[60vh]"
         }
     ]
-
+    console.log(data)
     return (
         <div className={"bg-black/60 h-full w-full fixed inset-0 z-50 grid place-items-center"}>
             <div
