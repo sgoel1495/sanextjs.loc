@@ -1,11 +1,10 @@
-import React, {useContext, useReducer, useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import {DateTime} from "luxon";
 import StatesAndCitiesOptions from "../../../helpers/StatesAndCitiesOptions";
 import CreateMyAccount from "../../../CreateMyAccount";
 import {apiCall} from "../../../helpers/apiCall";
 import capitalizeTheFirstLetterOfEachWord from "../../../helpers/capitalizeFirstWordOfEveryString";
 import validator from "validator";
-import AppWideContext from "../../../store/AppWideContext";
 import Toast from "../../common/Toast";
 import MeasurementForm from "./MeasurementForm";
 import {getUserObject} from "../../../helpers/addTocart";

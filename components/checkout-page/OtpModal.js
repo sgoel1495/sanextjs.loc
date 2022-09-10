@@ -3,7 +3,7 @@ import AppWideContext from "../../store/AppWideContext";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../common/Toast";
 import Loader from "../common/Loader";
-import {getUserObject} from "../../helpers/addTocart";
+import {clearCart, getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
 import {updateUserDataAfterLogin} from "../../helpers/updateUserDataAfterLogin";
 import {saveCartMeasurements} from "../../helpers/measurementHelper";
@@ -72,6 +72,7 @@ function OtpModal(props) {
         const verifyCall = await apiCall("verifyOtp", props.appConfig.apiToken, queryObject)
         if (verifyCall.message
             && verifyCall.message === "OTP Verification Successful for COD Order and Order placed successfully") {
+            clearCart(props.userData, props.appConfig.apiToken, props.shoppingCart.cart, props.setCart)
             setShow(true)
             setMessage("OTP Verified")
             saveCartMeasurements(props.userData, props.appConfig.apiToken, props.shoppingCart.cart)

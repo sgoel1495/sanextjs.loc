@@ -14,6 +14,7 @@ import Toast from "../../../components/common/Toast";
 import {addToCart} from "../../../helpers/addTocart";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
+import {isInStock} from "../../../helpers/returnSizes";
 
 
 function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
@@ -40,7 +41,7 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
                 label: p.tag_line,
                 price: p.price,
                 sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-                in_stock: p.in_stock === "true",
+                in_stock: isInStock(p),
                 sleeve_length: p.sleeve_length,
                 dress_length: p.dress_length
             }
@@ -101,7 +102,7 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
     }
 
     const addToBag = (index) => {
-        if (!favProductData[index].in_stock) {
+        if (!isInStock(favProductData[index])) {
             setShow(true)
             setMessage(favProductData[index].title + " is SOLD OUT")
         }
@@ -161,7 +162,7 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
         let msg = []
         let toBeRemoved = []
         for (let i in favProductData) {
-            if (!favProductData[i].in_stock) {
+            if (!isInStock(favProductData[i])) {
                 msg.push(<p>{favProductData[i].title + " is SOLD OUT"}</p>)
                 continue
             }

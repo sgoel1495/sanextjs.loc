@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
-import returnSizes from "../../helpers/returnSizes";
+import returnSizes, {isInStock} from "../../helpers/returnSizes";
 import ReactDom from "react-dom";
 import WishListButton from "../common/WishListButton";
 import NotifyMeModal from "../common/NotifyMeModal";
@@ -113,7 +113,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                 <a className={`block text-center z-0`} id={prod.asset_id}>
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.look_thumb} alt={prod.name} portrait={true} outOfStock={prod.in_stock !== "true"}/>
+                        <ShopDataBlockImage src={WEBASSETS + prod.look_thumb} alt={prod.name} portrait={true} outOfStock={!isInStock(prod)}/>
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
@@ -172,7 +172,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div className="grid grid-cols-2 items-center h-16">
                         {(expandShop)
                             ? <Fragment>
-                                {(prod.in_stock === "true")
+                                {(isInStock(prod))
                                     ? <Fragment>
                                         <button className={`font-800`} onClick={() => {
                                             setShowSize(true)

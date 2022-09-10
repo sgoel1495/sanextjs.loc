@@ -18,7 +18,7 @@ const SizeSelect = ({data, sizeAvail, size, setSize, currentMeasurement, setCurr
                         }
                     </span>
                     <div
-                        className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [size ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"]}
+                        className={'border-white shadow-xl text-center px-6 leading-4 rounded-[5vw] ' + [size ? "bg-[#4eb16d] text-white border-0 py-1" : "border-4 bg-[#faede3] py-2.5"] + [sizeAvail.length === 1 && sizeAvail[0] === "F" ? " pointer-events-none opacity-25" : ""]}
                         onClick={() => {
                             setShowStandardSize(!showStandardSize);
                         }}
@@ -54,7 +54,8 @@ const SizeSelect = ({data, sizeAvail, size, setSize, currentMeasurement, setCurr
                 <StandardSizeModal
                     closeModal={() => setShowStandardSize(false)}
                     setSizeModal={setSizeGuideModal}
-                    standardSizes={sizeAvail}
+                    standardSizes={data.size_avail ? JSON.parse(data.size_avail.replace(/=>/g, ":")) : []}
+                    sizeAvail={sizeAvail}
                     selected={size}
                     currentMeasurement={currentMeasurement}
                     setSelected={setSize}

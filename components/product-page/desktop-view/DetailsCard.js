@@ -7,7 +7,7 @@ import {apiCall} from "../../../helpers/apiCall";
 import ReactDom from "react-dom";
 import SizeGuide from "../SizeGuide";
 import Toast from "../../common/Toast";
-import returnSizes from "../../../helpers/returnSizes";
+import returnSizes, {isInStock} from "../../../helpers/returnSizes";
 import {Fragment} from "react";
 import MoreColours from "../../common/MoreColours";
 import {addToCart, getUserObject} from "../../../helpers/addTocart";
@@ -18,6 +18,7 @@ import emptyMeasurement from "../../../store/emptyMeasurement.json";
 import currencyFormatter from "../../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
+import NotifyMeModal from "../../common/NotifyMeModal";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -43,6 +44,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
     const [pincode, setPinCode] = useState(null)
     const [sizeModal, setSizeModal] = useState(false)
     const [showShare, setShowShare] = useState(false)
+    const [showNotifyMe, setShowNotifyMe] = useState(false)
     const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     //for toast
     const [toastMsg, setToastMsg] = useState(null)
@@ -59,14 +61,14 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
 
     const saveToCart = (currMeasurement = {...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length}) => {
 
-        if ((selectedSize == null || selectedSize === "") && !currMeasurement.measure_id) {
+        if ((selectedSize == null || selectedSize === "") && !currMeasurement.measure_id && !(sizeAvail.length === 1 && sizeAvail[0] === "F")) {
             setToastMsg("Please select a size first")
             setShowToast(true)
             return
         }
         let cart = {
             "product_id": data.product_id,
-            "size": selectedSize,
+            "size": sizeAvail.length === 1 && sizeAvail[0] === "F" ? "f" : selectedSize,
             "qty": 1,
             "is_sale": data.is_sale,
             "is_tailor": !!currMeasurement.measure_id,
@@ -94,9 +96,8 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
     }
 
     const whatSizes = () => {
-        const sizeData = returnSizes(data);
         let returnValue = null
-        sizeData.forEach((size, index) => {
+        sizeAvail.forEach((size, index) => {
             returnValue = <Fragment>
                 {returnValue}
                 <span key={"sdsda" + index}
@@ -149,18 +150,46 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
                     <p className={"text-2xl"}>{data.name}</p>
                     <p className={"text-sm text-black/50 font-500"}>{data.tag_line}</p>
                 </div>
-                {whatSizes()}
-                <p
-                    className={"text-center uppercase mb-2 text-black/60 font-600 text-xs cursor-pointer"}
-                    onClick={() => setSizeModal(true)}
-                >
-                    size guide
-                </p>
-                <TailoredSize data={data} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={setSelectedSize} isMobile={false}
-                              saveToCart={saveToCart}/>
+
+                {
+                    sizeAvail.length === 1 && sizeAvail[0] === "F" ?
+                        null
+                        :
+                        <>
+                            {whatSizes()}
+                            <p
+                                className={"text-center uppercase mb-2 text-black/60 font-600 text-xs cursor-pointer"}
+                                onClick={() => setSizeModal(true)}
+                            >
+                                size guide
+                            </p>
+                        </>
+                }
+
+                {
+                    sizeAvail.includes("T") &&
+                    <TailoredSize data={data} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={setSelectedSize} isMobile={false}
+                                  saveToCart={saveToCart}/>
+                }
+                {
+                    isInStock(data) ||
+                    <div className={"uppercase w-full text-white bg-black my-4 text-[13px] text-center"}>
+                        sold out
+                    </div>
+                }
                 <div className="flex items-center justify-center mb-5">
-                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={() => saveToCart()}>
-                        i&lsquo;ll take it
+                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={() => {
+                        if (isInStock(data))
+                            saveToCart()
+                        else
+                            setShowNotifyMe(true)
+                    }}>
+                        {
+                            isInStock(data) ?
+                                <>i&lsquo;ll take it</>
+                                :
+                                <>notify me!</>
+                        }
                     </button>
                 </div>
                 <div className={"flex items-center"}>
@@ -221,6 +250,16 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
             }}>
                 <p>{toastMsg}</p>
             </Toast>
+            {showNotifyMe &&
+            ReactDom.createPortal(
+                <NotifyMeModal
+                    closeModal={() => setShowNotifyMe(false)}
+                    isMobile={appConfig.isMobile}
+                    userO={getUserObject(userData)}
+                    product={data}
+                />,
+                document.getElementById("measurementmodal"))
+            }
         </div>
     );
 };

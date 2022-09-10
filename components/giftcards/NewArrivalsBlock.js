@@ -5,6 +5,7 @@ import Link from "next/link";
 import BlockHeader from "../common/blockHeader";
 import WishListButton from "../common/WishListButton";
 import {NewTag} from "../common/Tags";
+import {isInStock} from "../../helpers/returnSizes";
 
 
 /**
@@ -79,7 +80,7 @@ function NewArrivalsBlock(props) {
                                     src={WEBASSETS + product.double_view_img}
                                     alt="Dresses-Crimson-Dream-FauxWrapPleatedMidiDress"
                                     isMobile={true}
-                                    outOfStock={product.in_stock !== "true"}
+                                    outOfStock={!isInStock(product)}
                                 />
                                 <div className="flex items-center">
                                     <div className={`bg-white w-full`}>
