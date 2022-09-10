@@ -7,6 +7,7 @@ import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";
 import UserPageTemplate from "../../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
+import {connect} from "react-redux";
 
 function UsersAddAddressPage({appConfig,userData}) {
     const router = useRouter();
@@ -56,4 +57,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default (mapStateToProps)(UsersAddAddressPage);
+export default connect(mapStateToProps)(UsersAddAddressPage);
