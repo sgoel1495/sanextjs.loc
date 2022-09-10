@@ -16,15 +16,15 @@ import {isTailored} from "../../helpers/returnSizes";
 import Toast from "../common/Toast";
 import useApiCall from "../../hooks/useApiCall";
 import PastOrders from "../user/MeasurementModalScreens/PastOrders";
+import {connect} from "react-redux";
+import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
 
-const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit, saveMeasurement, addNew}) => {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit, saveMeasurement, addNew, appConfig, userData, ...props}) => {
     const router = useRouter();
     const [showModal, setShowModal] = useState(false);
     const [active, setActive] = useState(0)
     const [pastOrders, setPastOrders] = useState([])
     const [showOrderModal, setShowOrderModal] = useState(false)
-    const [showLogin, setShowLogin] = useState(false)
     const [currentMeasureProduct, setCurrentMeasurementProduct] = useState(null);
     const [showToast, setShowToast] = useState(false)
 
@@ -48,7 +48,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     };
 
     const pastOrdersModal = () => {
-        if (dataStore.userServe.email) {
+        if (userData.userServe.email) {
             if (pastOrders.length === 0)
                 setShowToast(true)
             else
@@ -57,7 +57,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
             if (isMobile)
                 router.push("/homepage/signin")
             else
-                setShowLogin(true)
+                props.setShowLogin(true)
         }
     };
 
@@ -81,8 +81,8 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     };
 
     const refreshMeasurements = async () => {
-        const measurementCall = await apiCall("userOrderHistory", dataStore.apiToken, {
-            "user": {...getUserObject(dataStore, updateDataStore), token: dataStore.apiToken}
+        const measurementCall = await apiCall("userOrderHistory", appConfig.apiToken, {
+            "user": {...getUserObject(userData), token: appConfig.apiToken}
         });
         const items = []
         if (measurementCall.status !== 200)
@@ -236,9 +236,6 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
             ReactDom.createPortal(<>{activeModalScreen}</>,
                 document.getElementById('measurementmodal')
             )}
-            {showLogin && ReactDom.createPortal(
-                <UserLogin setShowSidebarMenuUser={setShowLogin} closeModal={() => setShowLogin(false)}/>,
-                document.getElementById("userband"))}
             {showOrderModal && ReactDom.createPortal(
                 <PastOrders pastOrders={pastOrders} closeModal={() => setShowOrderModal(false)} isMobile={isMobile} setCurrentMeasurementProduct={setCurrentMeasurementProduct}
                             setCurrentMeasurement={setCurrentMeasurement}/>,
@@ -250,4 +247,11 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     );
 };
 
-export default TailoredSize;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps, {setShowLogin})(TailoredSize);

@@ -1,5 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
-import AppWideContext from "../../../store/AppWideContext";
+import React, { Fragment } from 'react';
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
@@ -8,6 +7,7 @@ import Image from "next/image";
 import LinkParser from "../../../components/common/LinkParser";
 import Accordion from "../../../components/common/accordion";
 import Header from "../../../components/navbar/Header";
+import {connect} from "react-redux";
 
 /**
  * @todo @Sambhav pls do css
@@ -34,9 +34,8 @@ const AnswerBlock = ({ item }) => {
     return item.check ? check : main;
 }
 
-function SaltCancellationModificationsPage() {
+function SaltCancellationModificationsPage({appConfig}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
 
     const category = "Cancellation & Modifications";
 
@@ -67,7 +66,7 @@ function SaltCancellationModificationsPage() {
                 </Accordion>
             </Fragment>;
         });
-        return (dataStore.mobile
+        return (appConfig.isMobile
             ? <div className={'px-5 flex flex-col gap-y-2 mt-4 mb-44'}>
                 <p className='text-center text-h2 leading-[1.25]'>Cancellation & Modifications</p>
                 {showSRData}
@@ -83,16 +82,22 @@ function SaltCancellationModificationsPage() {
     const browserView = showSR(cancellationModificationsData);
     return (
         <Fragment>
-            <PageHead url="/salt/cancellation-modifications" id="cancellationmodifications" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            <PageHead url="/salt/cancellation-modifications" id="cancellationmodifications" isMobile={appConfig.isMobile} />
+            <Header type={appConfig.isMobile ? "minimal" : "shopMenu"} isMobile={appConfig.isMobile} />
             <CategoryHeaderImage category={category} />
             <section>
-                {(dataStore.mobile) ? mobileView : browserView}
+                {(appConfig.isMobile) ? mobileView : browserView}
             </section>
-            <Footer isMobile={dataStore.mobile} />
+            <Footer isMobile={appConfig.isMobile} />
         </Fragment>
     )
 }
 
 
-export default SaltCancellationModificationsPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(SaltCancellationModificationsPage);

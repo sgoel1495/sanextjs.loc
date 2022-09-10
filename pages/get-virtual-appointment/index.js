@@ -2,13 +2,13 @@ import React from 'react';
 import PageHead from "../../components/PageHead";
 import CategoryHeaderImage from "../../components/common/CategoryHeaderImage";
 import Footer from "../../components/footer/Footer";
-import AppWideContext from "../../store/AppWideContext";
-import {Fragment, useContext, useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import Header from "../../components/navbar/Header";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../../components/common/Toast";
 import {isMobile} from "react-device-detect";
 import Image from "next/image";
+import {connect} from "react-redux";
 
 /**
  * @TODO FORM SUBMISSION LOGIC
@@ -16,9 +16,8 @@ import Image from "next/image";
  * @constructor
  */
 
-function GetVirtualAppointmentPage() {
+function GetVirtualAppointmentPage({appConfig, userData}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [mobile, setMobile] = useState(false);
     const [show, setShow] = useState(false)
     const [msg, setMsg] = useState(null);
@@ -26,7 +25,7 @@ function GetVirtualAppointmentPage() {
         date: "", time: "", lastname: "", phonenumber: "", message: "",
         firstname: "", shoppedbefore: "", somethingspecific: "", email: ""
     })
-    const [refresh,setRefresh]=useState(false)
+    const [refresh, setRefresh] = useState(false)
 
     useEffect(() => {
         setMobile(isMobile)
@@ -91,11 +90,11 @@ function GetVirtualAppointmentPage() {
                 "email": formData.email,
                 "phone": formData.phonenumber,
                 "apt_type": "physical",
-                "is_custome": (dataStore.userData.contact) ? "yes" : "no",
+                "is_custome": (userData.userServe.email) ? "yes" : "no",
                 "is_fitting": "Message: " + formData.message + " Specific: " + formData.somethingspecific
             }
 
-            const resp = await apiCall("bookAppointmentMob", dataStore.apiToken, query);
+            const resp = await apiCall("bookAppointmentMob", appConfig.apiToken, query);
 
             if (resp.response && resp.response == "Done") {
                 setMsg("Appointment done")
@@ -263,4 +262,11 @@ function GetVirtualAppointmentPage() {
 
 }
 
-export default GetVirtualAppointmentPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(GetVirtualAppointmentPage);

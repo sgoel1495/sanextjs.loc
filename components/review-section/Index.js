@@ -4,11 +4,11 @@ import useApiCall from "../../hooks/useApiCall";
 import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import {connect} from "react-redux";
 
-const Index = () => {
+const Index = ({appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
-    const resp = useApiCall("reviews", dataStore.apiToken);
+    const resp = useApiCall("reviews", appConfig.apiToken);
     if (resp && resp.reviews)
         return (
             <div className={"bg-[#f6f1ef] py-5"}>
@@ -65,4 +65,10 @@ const Index = () => {
         return <></>
 };
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Index);

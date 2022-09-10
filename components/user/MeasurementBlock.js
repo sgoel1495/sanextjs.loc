@@ -1,16 +1,16 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, {Fragment, useContext, useState} from "react";
 import TailoredSize from "../product-page/TailoredSize";
-import { apiCall } from "../../helpers/apiCall";
-import { getUserObject } from "../../helpers/addTocart";
+import {apiCall} from "../../helpers/apiCall";
+import {getUserObject} from "../../helpers/addTocart";
 import AppWideContext from "../../store/AppWideContext";
+import {connect} from "react-redux";
 
-function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mobile, refresh }) {
+function MeasurementBlock({measurement, showModal, deleteMeasurement, index, mobile, refresh, appConfig, userData}) {
     const [currentMeasurement, setCurrentMeasurement] = useState(measurement)
-    const { dataStore, updateDataStore } = useContext(AppWideContext);
 
     const saveMeasurement = () => {
-        apiCall("updateMeasurements", dataStore.apiToken, {
-            user: getUserObject(dataStore, updateDataStore),
+        apiCall("updateMeasurements", appConfig.apiToken, {
+            user: getUserObject(userData),
             "measurments": currentMeasurement
         })
             .then(pData => {
@@ -39,7 +39,7 @@ function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mo
             </div>
             <div className="flex justify-evenly">
                 <TailoredSize isMobile={true} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={() => {
-                }} edit={true} saveMeasurement={saveMeasurement} />
+                }} edit={true} saveMeasurement={saveMeasurement}/>
 
                 <button
                     className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2 rounded-full"
@@ -69,11 +69,13 @@ function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mo
                     isMobile={false}
                     currentMeasurement={currentMeasurement}
                     setCurrentMeasurement={setCurrentMeasurement}
-                    setSize={() => { }}
+                    setSize={() => {
+                    }}
                     edit={true}
                     saveMeasurement={saveMeasurement}
                 />
-                <div className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2" onClick={() => deleteMeasurement(measurement.measure_id)}>
+                <div className="bg-black px-4 py-1.5 block text-white uppercase text-sm font-500 tracking-wide shadow-md my-2"
+                     onClick={() => deleteMeasurement(measurement.measure_id)}>
                     DELETE
                 </div>
             </div>
@@ -83,4 +85,11 @@ function MeasurementBlock({ measurement, showModal, deleteMeasurement, index, mo
     return mobile ? mobileView : browserView;
 }
 
-export default MeasurementBlock;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(MeasurementBlock);

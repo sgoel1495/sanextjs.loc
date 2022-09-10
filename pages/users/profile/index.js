@@ -10,29 +10,29 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import formatTwoDecimal from "../../../helpers/formatTwoDecimal";
 import {isMobile} from "react-device-detect";
 import {apiCall} from "../../../helpers/apiCall"
+import {connect} from "react-redux";
 
-function UsersProfilePage() {
+function UsersProfilePage({appConfig,userData,userConfig}) {
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
-    const {dataStore} = useContext(AppWideContext);
     const [walletAmount,setWalletAmount] = useState(null);
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (!userData.userServe.email)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
+    }, [userData.userServe.email, router])
     useEffect(() => {
         setMobile(isMobile)
     }, [])
 
     useEffect(()=>{
-        apiCall("userWallet", dataStore.apiToken,{contact:dataStore.userData.contact})
+        apiCall("userWallet", appConfig.apiToken,{contact:userData.userServe.email})
             .then(pData=>{
                 if (pData.msg === 'Found' && pData.user){
                     setWalletAmount(pData.user.WalletAmount)
                 }
             })
             .catch(e=>console.log(e.message))
-    },[dataStore.userData.contact,dataStore.apiToken]);
+    },[userData.userServe.email,appConfig.apiToken]);
 
     const mobileView = () => {
         return (<UserPageTemplate mobile={true}>
@@ -40,7 +40,7 @@ function UsersProfilePage() {
             {/*<MyWalletInformation/>*/}
             <div className={"p-4 bg-[#f1f2f3]"}>
                 <p className="text-xl font-500 mb-2 mt-1 w-full">My Wallet</p>
-                {dataStore.currSymbol} {walletAmount && <p className="font-700 pb-10">{formatTwoDecimal(walletAmount)}</p>}
+                {userConfig.currSymbol} {walletAmount && <p className="font-700 pb-10">{formatTwoDecimal(walletAmount)}</p>}
             </div>
             <DefaultAddressBookInformation mobile={true} manage={true}/>
         </UserPageTemplate>)
@@ -65,4 +65,12 @@ function UsersProfilePage() {
     )
 }
 
-export default UsersProfilePage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(UsersProfilePage);

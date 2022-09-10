@@ -12,12 +12,13 @@ import UsersMenu from "../../../components/user/UsersMenu";
 import Link from "next/link";
 import Toast from "../../../components/common/Toast";
 import {addToCart} from "../../../helpers/addTocart";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 
 
-function UsersFavouritesPage() {
+function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
 
     const [mobile, setMobile] = useState(false);
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [favProductData, setFavProductData] = useState([])
     const [favorites, setFavorites] = useState([])
@@ -29,7 +30,7 @@ function UsersFavouritesPage() {
 
 
     const loadData = async (pid) => {
-        const favCall = await apiCall("getProduct", dataStore.apiToken, {product_id: pid})
+        const favCall = await apiCall("getProduct", appConfig.apiToken, {product_id: pid})
         if (favCall.status === 200 && favCall.response && favCall.response.product_id) {
             const p = favCall.response
             return {
@@ -56,29 +57,29 @@ function UsersFavouritesPage() {
         return newDataArray
     }
 
-    // useEffect(() => {
-    //     if (dataStore.userData.contact == null)
-    //         router.replace("/"); //illegal direct access
-    // }, [dataStore.userData.contact, router])
+    useEffect(() => {
+        if (!userData.userServe.email)
+            router.replace("/");
+    }, [userData.userServe.email])
 
     useEffect(() => {
         setMobile(isMobile)
     }, [])
 
     useEffect(() => {
-        apiCall("userServe", dataStore.apiToken, {contact: dataStore.userData.contact})
+        apiCall("userServe", appConfig.apiToken, {contact: userData.userServe.email})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
                     setFavorites(pData.response.favorites)
                 }
             })
             .catch(e => console.log(e.message))
-    }, [dataStore.userData.contact, dataStore.apiToken]);
+    }, [userData.userServe.email, appConfig.apiToken]);
 
 
     useEffect(() => {
 
-        if (dataStore.userData.contact) {
+        if (userData.userServe.email) {
             newData()
                 .then(resp => setFavProductData(resp))
                 .catch(e => console.log(e.message))
@@ -88,10 +89,10 @@ function UsersFavouritesPage() {
     const removeFromFav = async (i) => {
         const queryO = {
             product: favProductData[i].product_id,
-            email: dataStore.userData.contact,
-            token: dataStore.apiToken
+            email: userData.userServe.email,
+            token: appConfig.apiToken
         }
-        const removeCall = await apiCall("removeFromFav", dataStore.apiToken, queryO)
+        const removeCall = await apiCall("removeFromFav", appConfig.apiToken, queryO)
         if (removeCall.status === 200) {
             setFavProductData(favProductData.filter((d, k) => {
                 return (k !== i)
@@ -117,7 +118,7 @@ function UsersFavouritesPage() {
             "sleeve_length": favProductData[index].sleeve_length,
             "dress_length": favProductData[index].dress_length
         }
-        addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
+        addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
             setMessage(`${favProductData[index].title}: Size ${selectedSize[favProductData[index].product_id]} moved to your Bag!`)
             setShow(true)
             removeFromFav(index)
@@ -155,35 +156,6 @@ function UsersFavouritesPage() {
             }
         </>)
     }
-    const FavProdCardBrowser = ({favProduct}) => {
-        return (<>
-            {
-                favProduct.map((item, index) => {
-                    return (
-                        <div className={"m-3 flex gap-3"} key={index}>
-                            <div>
-                                <Image src={WEBASSETS + item.img} alt="cart" width="54" height="88"/>
-                            </div>
-                            <div className={"flex flex-1 flex-col text-[#777]"}>
-                                <span> {item.title} </span>
-                                <span> {item.label} </span>
-                                <span> {item.price} </span>
-                                <ul className={"flex justify-between my-1"}>
-                                    {
-                                        item.sizes.map((s, index) => <li key={index}>{s}</li>)
-                                    }
-                                </ul>
-                                <span className={"text-m my-1 font-500"}> ADD TO BAG</span>
-                            </div>
-                            <div className={"mr-1 mt-1"} onClick={() => removeFromFav(index)}>
-                                <Image src={WEBASSETS + "/assets/images/cancel.png"} alt="cart" width="16" height="16"/>
-                            </div>
-                        </div>
-                    )
-                })
-            }
-        </>)
-    }
 
     const moveAllToCart = async () => {
         let msg = []
@@ -206,7 +178,7 @@ function UsersFavouritesPage() {
                 "sleeve_length": favProductData[i].sleeve_length,
                 "dress_length": favProductData[i].dress_length
             }
-            let resp = addToCart(dataStore, updateDataStore, {cart: cart})
+            let resp = addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart})
             if (resp) {
                 msg.push(<p>{`${favProductData[i].title}: Size ${selectedSize[favProductData[i].product_id]} moved to your Bag!`}</p>)
                 toBeRemoved.push(favProductData[i].product_id)
@@ -220,10 +192,10 @@ function UsersFavouritesPage() {
             toBeRemoved.forEach((item) => {
                 const queryO = {
                     product: item,
-                    email: dataStore.userData.contact,
-                    token: dataStore.apiToken
+                    email: userData.userServe.email,
+                    token: appConfig.apiToken
                 }
-                apiCall("removeFromFav", dataStore.apiToken, queryO)
+                apiCall("removeFromFav", appConfig.apiToken, queryO)
             })
             setFavProductData(favProductData.filter((item) => !toBeRemoved.includes(item.product_id)))
         }
@@ -320,4 +292,12 @@ function UsersFavouritesPage() {
     )
 }
 
-export default UsersFavouritesPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps, {setCart})(UsersFavouritesPage);

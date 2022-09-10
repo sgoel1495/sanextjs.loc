@@ -4,6 +4,7 @@ import AppWideContext from "../../store/AppWideContext";
 import Image from "next/image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import Link from 'next/link';
+import {connect} from "react-redux";
 
 const ImageBlock = props => (
     <div className={'relative border-2 border-white overflow-hidden shadow-[4px_4px_14px_0.8px_#00000008] ' + props.style}>
@@ -16,11 +17,10 @@ const ImageBlock = props => (
     </div>
 )
 
-const CategorySection = () => {
+const CategorySection = ({appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
-    const resp = useApiCall("getCategoryCircle", dataStore.apiToken);
-    const carousalResp = useApiCall("getHomePageCarousal", dataStore.apiToken);
+    const resp = useApiCall("getCategoryCircle", appConfig.apiToken);
+    const carousalResp = useApiCall("getHomePageCarousal", appConfig.apiToken);
     const [activeIndex, setActive] = useState(0)
 
     return (
@@ -83,4 +83,10 @@ const CategorySection = () => {
     );
 };
 
-export default CategorySection;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(CategorySection);

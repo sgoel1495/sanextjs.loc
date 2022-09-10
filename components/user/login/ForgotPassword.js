@@ -3,10 +3,10 @@ import Loader from "../../common/Loader";
 import {validateUsername} from "../../../helpers/loginSignUpHelpers";
 import {apiDictionary} from "../../../helpers/apiDictionary";
 import AppWideContext from "../../../store/AppWideContext";
+import {connect} from "react-redux";
 
 const ForgotPassword = (props) => {
 
-    const {dataStore} = useContext(AppWideContext);
     const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState('');
 
@@ -22,7 +22,7 @@ const ForgotPassword = (props) => {
             return
         }
         setLoading(true)
-        let api = apiDictionary("forgotPassword", dataStore.apiToken, {username: username})
+        let api = apiDictionary("forgotPassword", props.appConfig.apiToken, {username: username})
         fetch(api.url, api.fetcher).then((response) => {
             if (response.status === 200) {
                 response.json().then(respData => {
@@ -42,7 +42,7 @@ const ForgotPassword = (props) => {
     const inputStyle = "placeholder:text-black/30 border-black focus:ring-0 focus:border-black focus:shadow-none border py-2 px-4 text-sm leading-none";
     const buttonStyle = "uppercase border py-3 px-6 text-sm text-black/60 font-600 tracking-wider border-black/30 hover:border-black duration-100";
     return (
-        <form className={dataStore.mobile ? "grid grid-cols-1 gap-y-4":"grid grid-cols-4 gap-x-8"} onSubmit={onSubmit}>
+        <form className={props.appConfig.isMobile ? "grid grid-cols-1 gap-y-4":"grid grid-cols-4 gap-x-8"} onSubmit={onSubmit}>
             <input
                 type="text"
                 placeholder="email/phone (required)"
@@ -68,4 +68,10 @@ const ForgotPassword = (props) => {
     );
 };
 
-export default ForgotPassword;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(ForgotPassword);

@@ -16,6 +16,8 @@ import {FaFacebookF, FaTwitter} from 'react-icons/fa';
 import TailoredSize from "../TailoredSize";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
 import currencyFormatter from "../../../helpers/currencyFormatter";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -23,15 +25,20 @@ import currencyFormatter from "../../../helpers/currencyFormatter";
  * @param hpid
  * @param selectedSize
  * @param setSelectedSize
+ * @param appConfig
+ * @param userData
+ * @param shoppingCart
+ * @param userConfig
+ * @param props
  * @returns {JSX.Element}
  * @constructor
  */
 
-const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
-    const {dataStore, updateDataStore} = useContext(AppWideContext)
+const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, userData, shoppingCart, userConfig, ...props}) => {
+
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const currCurrency = dataStore.currCurrency
-    const curr = dataStore.currCurrency.toUpperCase();
+    const currCurrency = userConfig.currCurrency
+    const curr = currCurrency.toUpperCase();
     const [deliveryAvailable, setDeliveryAvailable] = useState(null)
     const [pincode, setPinCode] = useState(null)
     const [sizeModal, setSizeModal] = useState(false)
@@ -46,7 +53,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
     const checkDelivery = async () => {
         if (pincode == null)
             return;
-        const resp = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode: pincode});
+        const resp = await apiCall("cityByZipcode", appConfig.apiToken, {zipcode: pincode});
         setDeliveryAvailable(!!(resp.response_data && resp.response_data.city))
     }
 
@@ -79,7 +86,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
             cart["is_tailor"] = true
             measurements = {...currMeasurement, "measure_id": measureID}
         }
-        addToCart(dataStore, updateDataStore, {cart: cart, measurments: measurements}).then(r => {
+        addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart, measurments: measurements}).then(r => {
             setCurrentMeasurement({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length})
             setToastMsg("Added to Cart")
             setShowToast(true)
@@ -152,7 +159,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
                 <TailoredSize data={data} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={setSelectedSize} isMobile={false}
                               saveToCart={saveToCart}/>
                 <div className="flex items-center justify-center mb-5">
-                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={()=>saveToCart()}>
+                    <button className="bg-black/90 text-white px-10 italic font-cursive text-xl pb-1 pt-3" onClick={() => saveToCart()}>
                         i&lsquo;ll take it
                     </button>
                 </div>
@@ -206,7 +213,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
             </div>
             {sizeModal &&
             ReactDom.createPortal(
-                <SizeGuide closeModal={() => setSizeModal(false)} isMobile={dataStore.isMobile}/>,
+                <SizeGuide closeModal={() => setSizeModal(false)} isMobile={appConfig.isMobile}/>,
                 document.getElementById("measurementmodal"))
             }
             <Toast show={showToast} hideToast={() => {
@@ -218,4 +225,13 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize}) => {
     );
 };
 
-export default DetailsCard;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig: state.userConfig
+    }
+}
+
+export default connect(mapStateToProps, {setCart})(DetailsCard);

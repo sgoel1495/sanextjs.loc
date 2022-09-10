@@ -2,44 +2,53 @@ import {useRouter} from "next/router";
 import React, {Fragment, useContext, useEffect} from "react";
 import AppWideContext from "../../../../../store/AppWideContext";
 import {apiCall} from "../../../../../helpers/apiCall";
+import {connect} from "react-redux";
+import {setUserAddresses} from "../../../../../ReduxStore/reducers/userSlice";
 
-function AddressBookDeleteByIdPage(){
+function AddressBookDeleteByIdPage({appConfig, userData,...props}) {
     const router = useRouter();
-    const {dataStore,updateDataStore} = useContext(AppWideContext);
     const addressId = router.query.id;
-    useEffect(()=>{
-        if( !addressId || dataStore.userData.contact==null || !dataStore.userAddresses || dataStore.userAddresses.length < (addressId+1))
+    useEffect(() => {
+        if (!addressId || !userData.userServe.email || !userData.userAddresses || userData.userAddresses.length < (addressId + 1))
             router.replace("/"); // no illegal access
-    },[addressId,dataStore.userData.contact,dataStore.userAddresses,dataStore.userAddresses.length,router])
+    }, [addressId, userData.userServe.email, userData.userAddresses, userData.userAddresses.length, router])
 
 
-
-    useEffect(()=>{
-        const processOnLoad = async ()=> {
-            const resp = await apiCall("removeAddressBook", dataStore.apiToken, {
+    useEffect(() => {
+        const processOnLoad = async () => {
+            const resp = await apiCall("removeAddressBook", appConfig.apiToken, {
                 "user": {
-                    email: dataStore.userData.contact
+                    email: userData.userServe.email
                 },
                 "address": {
                     "index": addressId
                 }
             });
             if (resp.status == 200) {
-                const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
+                const addressCall = await apiCall("userAddresses", appConfig.apiToken, {
                     "user": {
-                        email: dataStore.userData.contact
+                        email: userData.userServe.email
                     }
                 });
                 if (addressCall.hasOwnProperty("response") && addressCall.response) {
-                    updateDataStore("userAddresses", [...addressCall.response]);
+                    props.setUserAddresses("userAddresses", [...addressCall.response]);
                 }
             }
         }
         processOnLoad()
-            .then(()=>{router.back()})
-    },[router,updateDataStore,addressId,dataStore.apiToken,dataStore.userData.contact])
+            .then(() => {
+                router.back()
+            })
+    }, [router, addressId, appConfig.apiToken, userData.userServe.email])
 
     return <Fragment>Deleting Address</Fragment>;
 }
 
-export default AddressBookDeleteByIdPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps,{setUserAddresses})(AddressBookDeleteByIdPage);

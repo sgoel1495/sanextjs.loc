@@ -8,14 +8,14 @@ import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import {isMobile} from "react-device-detect";
 import ProductCard from "../../components/reviews-page/ProductCard";
+import {connect} from "react-redux";
 
 
-function ReviewsPage() {
+function ReviewsPage({appConfig}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [mobile, setMobile] = useState(false)
     const [data, setData] = useState(null);
-    const resp = useApiCall("reviews", dataStore.apiToken);
+    const resp = useApiCall("reviews", appConfig.apiToken);
 
     useEffect(() => {
         setMobile(isMobile)
@@ -134,4 +134,10 @@ function ReviewsPage() {
     );
 }
 
-export default ReviewsPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(ReviewsPage);

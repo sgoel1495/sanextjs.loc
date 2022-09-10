@@ -1,12 +1,11 @@
 import {getUserObject} from "./addTocart";
 import {apiCall} from "./apiCall";
 
-export const saveCartMeasurements = (dataStore, updateDataStore, cart) => {
-    let user = getUserObject(dataStore, updateDataStore)
-    console.log(cart)
+export const saveCartMeasurements = (userData, apiToken, cart) => {
+    let user = getUserObject(userData)
     cart.forEach(item => {
         if (item.is_tailor)
-            apiCall("addMeasurements", dataStore.apiToken, {
+            apiCall("addMeasurements", apiToken, {
                 user: user,
                 measurments: item.meas
             }).then(r => {

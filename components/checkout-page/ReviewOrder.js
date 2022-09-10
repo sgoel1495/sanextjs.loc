@@ -1,24 +1,20 @@
 import React, {Fragment, useContext, useReducer, useState} from "react";
-import AppWideContext from "../../store/AppWideContext";
 import Accordion from "../common/accordion";
 import ProductCartView from "../common/ProductCartView/ProductCartView";
-import currencyFormatter from "../../helpers/currencyFormatter";
 import ReactDom from "react-dom";
 import OtpModal from "./OtpModal";
-import appSettings from "../../store/appSettings";
+import {connect} from "react-redux";
 
 function ReviewOrder(props) {
-    const {dataStore} = useContext(AppWideContext);
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
-    const address = dataStore.orderSummary.address ? dataStore.orderSummary.address : {};
-    const measurements = dataStore.orderSummary.measurements ? dataStore.orderSummary.measurements : {};
+    const currencySymbol = props.userConfig.currSymbol;
+    const address = props.orderSummary.address ? props.orderSummary.address : {};
+    const measurements = props.orderSummary.measurements ? props.orderSummary.measurements : {};
     const [showOTPModal, setShowOTPModal] = useReducer((state) => {
         return !state
     }, false)
-    let total = dataStore.orderSummary.gross - (dataStore.orderSummary.payment && dataStore.orderSummary.payment.is_wallet ? dataStore.orderSummary.payment.cash_from_wallet : 0) + (dataStore.orderSummary.payment && dataStore.orderSummary.payment.payment_mode === "COD" ? 80 : 0)
-    let isCOD = dataStore.orderSummary.payment && (dataStore.orderSummary.payment.payment_mode === "COD")
+    let total = props.orderSummary.gross - (props.orderSummary.payment && props.orderSummary.payment.is_wallet ? props.orderSummary.payment.cash_from_wallet : 0) + (props.orderSummary.payment && props.orderSummary.payment.payment_mode === "COD" ? 80 : 0)
+    let isCOD = props.orderSummary.payment && (props.orderSummary.payment.payment_mode === "COD")
+
     const mobileView = (
         <Fragment>
             <Accordion
@@ -27,12 +23,12 @@ function ReviewOrder(props) {
                 titleStyle={`py-5 px-5`}
                 title={
                     <div className='text-xl mb-2'>
-                        Review Order - <span className='text-base font-500'>{dataStore.orderSummary.cart && Object.keys(dataStore.orderSummary.cart).length} item in bag</span>
+                        Review Order - <span className='text-base font-500'>{props.orderSummary.cart && Object.keys(props.orderSummary.cart).length} item in bag</span>
                     </div>
                 }
                 bodyStyle={`px-8 grid grid-cols-1 gap-10 border-solid`}
             >
-                <ProductCartView isMobile={dataStore.mobile}/>
+                <ProductCartView isMobile={false}/>
             </Accordion>
             <div className='px-5'>
                 <p className='font-bold text-l mt-4'>Deliver To</p>
@@ -97,7 +93,7 @@ function ReviewOrder(props) {
                 titleStyle={`bg-[#f1f2f3] py-5 px-8`}
                 title={
                     <div className='text-xl mb-2'>
-                        Review Order - <span className='text-base font-500'>{dataStore.orderSummary.cart && Object.keys(dataStore.orderSummary.cart).length} item in bag</span>
+                        Review Order - <span className='text-base font-500'>{props.orderSummary.cart && Object.keys(props.orderSummary.cart).length} item in bag</span>
                     </div>
                 }
                 bodyStyle={`bg-[#f1f2f3] px-8 grid grid-cols-2 gap-10`}
@@ -107,7 +103,15 @@ function ReviewOrder(props) {
         </Fragment>
     );
 
-    return dataStore.mobile ? mobileView : browserView;
+    return props.appConfig.isMobile ? mobileView : browserView;
 }
 
-export default ReviewOrder;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        userConfig: state.userConfig,
+        orderSummary:state.orderData.orderSummary
+    }
+}
+
+export default connect(mapStateToProps)(ReviewOrder);

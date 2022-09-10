@@ -29,7 +29,6 @@ const actualData = [
  */
 
 function InstagramStoriesSwiper(props) {
-    //<InstagramStoriesSwiper isMobile={dataStore.mobile} apiToken={dataStore.apiToken}/>
 
     const instaGramUrl = "https://graph.instagram.com/me/media"
     const [actualData, setActualData] = useState([])

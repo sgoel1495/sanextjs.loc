@@ -1,5 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
-import AppWideContext from "../../../store/AppWideContext";
+import React, {Fragment, useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
@@ -8,49 +7,52 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
 import MyOrderProductCard from "../../../components/user/mobile/MyOrderProductCard";
 import {apiCall} from "../../../helpers/apiCall";
+import {connect} from "react-redux";
+import {setOrderHistory} from "../../../ReduxStore/reducers/orderSlice";
 
-function UsersOrderHistoryPage() {
+function UsersOrderHistoryPage({appConfig, userData, orderHistory,...props}) {
 
     const [mobile, setMobile] = useState(false);
     const router = useRouter();
-    const {dataStore} = useContext(AppWideContext);
-    const [productData, setProductData] = useState({});
 
-    const getOrderHistory = () =>{
-        apiCall("userOrderHistory", dataStore.apiToken,{user:{token:dataStore.apiToken ,contact:dataStore.userData.contact}})
-            .then(pData=>{
-                if (pData.status === 200 && pData.response){
-                    setProductData(pData.response);
+    const getOrderHistory = () => {
+        apiCall("userOrderHistory", appConfig.apiToken, {user: {token: appConfig.apiToken, contact: userData.userServe.email}})
+            .then(pData => {
+                if (pData.status === 200 && pData.response) {
+                    props.setOrderHistory(pData.response);
                 }
             })
-            .catch(e=>console.log(e.message))
+            .catch(e => console.log(e.message))
     }
 
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (!userData.userServe.email)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
+    }, [userData.userServe.email, router])
+
     useEffect(() => {
         setMobile(isMobile)
     }, [])
-    useEffect(()=>{
+
+    useEffect(() => {
         getOrderHistory()
-    },[dataStore.userData.contact, dataStore.apiToken])
+    }, [userData.userServe.email])
 
     const MyOrderProducts = () => {
-            let returnValue = null;
-            productData && Object.keys(productData).forEach((key, productIndex) => {
-                productData[key].item.forEach((item, itemIndex)=>{
+        let returnValue = null;
+        orderHistory && Object.keys(orderHistory).forEach((key, productIndex) => {
+            orderHistory[key].item.forEach((item, itemIndex) => {
                     returnValue = (
                         <Fragment>
                             {returnValue}
-                            <MyOrderProductCard key={productIndex} product={productData[key]} itemIndex={itemIndex} isMobile={mobile} getOrderHistory={getOrderHistory}/>
+                            <MyOrderProductCard key={productIndex} product={orderHistory[key]} itemIndex={itemIndex} isMobile={mobile} getOrderHistory={getOrderHistory}/>
                         </Fragment>
                     );
-                }          
-            )});
-            return returnValue;
-        };
+                }
+            )
+        });
+        return returnValue;
+    };
 
     const mobileView = (
         <UserPageTemplate mobile={true}>
@@ -74,4 +76,12 @@ function UsersOrderHistoryPage() {
     )
 }
 
-export default UsersOrderHistoryPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        orderHistory: state.orderData.orderHistory
+    }
+}
+
+export default connect(mapStateToProps, {setOrderHistory})(UsersOrderHistoryPage);

@@ -4,10 +4,11 @@ import AppWideContext from "../../../store/AppWideContext";
 import {removeFromCart, updateCart} from "../../../helpers/addTocart";
 import Toast from "../Toast";
 import MeasurementModal from "./MeasurementModal";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 
-function ProductCartView({isMobile}) {
+function ProductCartView({isMobile,userData,appConfig,shoppingCart,userConfig,...props}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [toastMsg, setToastMsg] = useState(null)
     const [showMeasure, setShowMeasure] = useState({
         edit: false,
@@ -20,12 +21,12 @@ function ProductCartView({isMobile}) {
             return
         }
         let item = {...product, qty: updatedQty}
-        await updateCart(dataStore, updateDataStore, item)
+        await updateCart(userData, appConfig.apiToken, props.setCart, item)
     }
 
     const productCartView = () => {
         let returnValues = null;
-        dataStore.userCart.forEach((p, index) => {
+        shoppingCart.cart.forEach((p, index) => {
             returnValues = (
                 <>
                     {returnValues}
@@ -40,7 +41,7 @@ function ProductCartView({isMobile}) {
                             </div>
                         </div>
                         <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                            <button className="absolute top-0 right-0" onClick={() => removeFromCart(dataStore, updateDataStore, p)}>X
+                            <button className="absolute top-0 right-0" onClick={() => removeFromCart(userData, appConfig.apiToken, props.setCart, p)}>X
                             </button>
                             <div>
                                 <p className="font-600 text-sm leading-none">{p.name}</p>
@@ -72,7 +73,7 @@ function ProductCartView({isMobile}) {
                                 <div className="text-[#555]" onClick={() => changeQty(p, p.qty + 1)}>+</div>
                             </div>
                             <p className="text-right text-[#777] text-xs">
-                                {dataStore.currSymbol} {(dataStore.currCurrency == "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
+                                {userConfig.currSymbol} {(userConfig.currCurrency == "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
                             </p>
                         </div>
                     </div>
@@ -85,7 +86,7 @@ function ProductCartView({isMobile}) {
 
     const mobileProductCartView = () => {
         let returnValues = null;
-        dataStore.userCart.forEach((p, index) => {
+        shoppingCart.cart.forEach((p, index) => {
             returnValues = (
                 <>
                     {returnValues}
@@ -99,7 +100,7 @@ function ProductCartView({isMobile}) {
                         </div>
                         <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
                             <p className="text-[#777] text-xs">
-                                {dataStore.currSymbol} {(dataStore.currCurrency === "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
+                                {userConfig.currSymbol} {(userConfig.currCurrency === "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
                             </p>
                             <div>
                                 <p className="font-600 text-sm leading-none">{p.name}</p>
@@ -137,7 +138,7 @@ function ProductCartView({isMobile}) {
                         <div className={"flex items-center"}>
                             <Image height={"16px"} width={"16px"} src={WEBASSETS + "/assets/images/cart_delete.png"}
                                    alt="cancel"
-                                   onClick={() => removeFromCart(dataStore, updateDataStore, p)}
+                                   onClick={() => removeFromCart(userData, appConfig.apiToken, props.setCart, p)}
                             />
                         </div>
                     </div>
@@ -168,4 +169,13 @@ function ProductCartView({isMobile}) {
     </>
 }
 
-export default ProductCartView
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        shoppingCart: state.shoppingCart,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps,{setCart})(ProductCartView)

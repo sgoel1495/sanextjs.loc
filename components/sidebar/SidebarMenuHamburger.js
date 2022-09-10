@@ -10,6 +10,8 @@ import SearchMenu from "../search/SearchMenu";
 import CurrencySwitcher from "../navbar/CurrencySwitcher";
 import UserLogin from "../user/login/UserLogin";
 import useApiCall from "../../hooks/useApiCall";
+import {connect} from "react-redux";
+import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
 
 /**
  * @todo account signin pending
@@ -280,13 +282,11 @@ function HamburgerModal(props) {
 
 
 function SidebarMenuHamburger(props) {
-    const {dataStore} = useContext(AppWideContext);
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [navigationData, setNavigationData] = useState([]);
     const [showSidebarMenu, setShowSidebarMenu] = useState(false);
-    const [showLogin, setShowLogin] = useState(false)
     const [mobile, setMobile] = useState(false)
-    const navMenu = useApiCall("getHomePageMenu", dataStore.apiToken);
+    const navMenu = useApiCall("getHomePageMenu", props.appConfig.apiToken);
     const navData = useMemo(() => {
         if (!navMenu || navMenu.status !== 200) {
             return []
@@ -306,14 +306,14 @@ function SidebarMenuHamburger(props) {
                         temp["child"] = item.sub_menu.map((subItem) => {
                             return {
                                 title: subItem.name,
-                                link:subItem.url
+                                link: subItem.url
                             }
                         })
                     }
                     return temp
                 }
             }),
-        ].filter(item=>item!==undefined)
+        ].filter(item => item !== undefined)
         if (mobile) {
             nav = nav.concat(mobileNavigationDataInit)
         } else {
@@ -332,14 +332,14 @@ function SidebarMenuHamburger(props) {
 
     useEffect(() => {
         if (mobile) {
-            if (dataStore.userData.contact != null) {
+            if (props.userData.userServe.email) {
                 let navigation = navData.map(item => {
                     if (item.id !== "login") {
                         return item
                     } else {
                         return {
                             title: "My Account",
-                            description: dataStore.userServe.user_name,
+                            description: props.userData.userServe.user_name,
                             link: `#`,
                             centered: true,
                             style: "!mt-12",
@@ -384,10 +384,10 @@ function SidebarMenuHamburger(props) {
             } else {
                 setNavigationData(navData)
             }
-        } else if (dataStore.userData.contact != null) {
+        } else if (props.userData.userServe.email) {
             setNavigationData([
                 {
-                    title: dataStore.userServe.user_name,
+                    title: props.userData.userServe.user_name,
                     description: ``,
                     link: `#`,
                     child: [
@@ -430,10 +430,10 @@ function SidebarMenuHamburger(props) {
                 {
                     title: `ACCOUNT`,
                     description: `Login/Signup`,
-                    onClick: () => setShowLogin(true)
+                    onClick: () => props.setShowLogin(true)
                 }, ...navData]);
         }
-    }, [dataStore.userData.contact, dataStore.userServe.user_name, navData]);
+    }, [props.userData.userServe.user_name, props.userData.userServe.email, navData]);
 
     const closeModal = () => {
         setShowSidebarMenu(false);
@@ -464,12 +464,16 @@ function SidebarMenuHamburger(props) {
                     </div>
                 }
                 <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu} isMobile={mobile}/>
-                {showLogin && ReactDom.createPortal(
-                    <UserLogin closeModal={() => setShowLogin(false)} setShowSidebarMenuUser={() => setShowLogin(false)}/>,
-                    document.getElementById("userband"))}
             </span>
             : <Fragment/>}
     </Fragment>;
 }
 
-export default SidebarMenuHamburger;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps,{setShowLogin})(SidebarMenuHamburger);

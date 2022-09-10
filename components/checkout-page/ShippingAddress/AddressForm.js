@@ -11,9 +11,13 @@ import MeasurementForm from "./MeasurementForm";
 import {getUserObject} from "../../../helpers/addTocart";
 import {updateAddressForOrder} from "../functions";
 import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
+import {setUserAddresses, setUserServe, setUserState} from "../../../ReduxStore/reducers/userSlice";
+import {setOrderHistory, setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
 
-const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, setReview, setActive}) => {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
+const AddressForm = (props) => {
+    const {isMobile, selectedAddressIndex, setSelectedAddressIndex, setReview, setActive, appConfig, userData, shoppingCart, userConfig, currentOrderId, orderSummary} = props;
     const [createAccount, setCreateAccount] = useReducer((state, e) => {
         if (e.target.name === "create") {
             return {...state, create: !state.create};
@@ -41,15 +45,15 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
     const [impDates, setImpDates] = useReducer((state, e) => {
         return {...state, [e.target.name]: e.target.value}
     }, {
-        birthday: dataStore.userServe.birthday,
-        anniversary: dataStore.userServe.anniversary,
+        birthday: userData.userServe.birthday,
+        anniversary: userData.userServe.anniversary,
     });
 
     const emptyAddress = {
-        name: dataStore.userServe.user_name,
-        lastname: dataStore.userServe.last_name,
-        email: dataStore.userServe.email,
-        phone: dataStore.userServe.phone_number,
+        name: userData.userServe.user_name,
+        lastname: userData.userServe.last_name,
+        email: userData.userServe.email,
+        phone: userData.userServe.phone_number,
         address: "",
         landmark: "",
         country: "India",
@@ -57,14 +61,14 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
         state: "",
         city: "",
     };
-    const [address, setAddress] = useState(selectedAddressIndex >= 0 ? dataStore.userAddresses[selectedAddressIndex] : emptyAddress);
+    const [address, setAddress] = useState(selectedAddressIndex >= 0 ? userData.userAddresses[selectedAddressIndex] : emptyAddress);
     const updateAddressValue = (e) => {
         setAddress({...address, [e.target.name]: e.target.value});
     };
     const updateZipcode = async (e) => {
         let zip = e.target.value;
-        if (dataStore.currCurrency === "inr" && zip.length === 6) {
-            const zipCall = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode: zip});
+        if (userConfig.currCurrency === "inr" && zip.length === 6) {
+            const zipCall = await apiCall("cityByZipcode", appConfig.apiToken, {zipcode: zip});
             if (
                 zipCall.hasOwnProperty("response_data") &&
                 zipCall.response_data.hasOwnProperty("city") &&
@@ -81,9 +85,9 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
     };
 
     const updateAddressBook = async (isCreate) => {
-        const resp = await apiCall(isCreate ? "addAddressBook" : "updateAddressBook", dataStore.apiToken, {
+        const resp = await apiCall(isCreate ? "addAddressBook" : "updateAddressBook", appConfig.apiToken, {
             "user": {
-                email: dataStore.userData.contact
+                email: userData.userServe.email
             },
             "address": isCreate ? address : {...address, "index": selectedAddressIndex}
         });
@@ -91,44 +95,44 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
             setMessage("Something went wrong. Please try again or contact administrator");
             setShow(true);
         } else {
-            const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
+            const addressCall = await apiCall("userAddresses", appConfig.apiToken, {
                 "user": {
-                    email: dataStore.userData.contact
+                    email: userData.userServe.email
                 }
             });
             if (addressCall.hasOwnProperty("response") && addressCall.response) {
-                updateDataStore("userAddresses", [...addressCall.response]);
+                props.setUserAddresses([...addressCall.response]);
             }
         }
     }
     const updateUserProfile = async () => {
-        await apiCall("updateUserDetails", dataStore.apiToken, {
+        await apiCall("updateUserDetails", appConfig.apiToken, {
             "user": {
-                "contact": dataStore.userServe.email,
-                "user_name": dataStore.userServe.user_name,
-                "last_name": dataStore.userServe.last_name,
+                "contact": userData.userServe.email,
+                "user_name": userData.userServe.user_name,
+                "last_name": userData.userServe.last_name,
                 "birthday": impDates.birthday ? impDates.birthday : "",
                 "anniversary": impDates.anniversary ? impDates.anniversary : "",
-                "bust": dataStore.userServe.bust,
-                "waist": dataStore.userServe.waist,
-                "hip": dataStore.userServe.hip,
-                "anyother": dataStore.userServe.anyother,
+                "bust": userData.userServe.bust,
+                "waist": userData.userServe.waist,
+                "hip": userData.userServe.hip,
+                "anyother": userData.userServe.anyother,
                 "account": {
                     "change_password": false,
                     "password": ""
                 }
             },
         });
-        const serveCall = await apiCall("userServe", dataStore.apiToken, {contact: dataStore.userServe.email});
+        const serveCall = await apiCall("userServe", appConfig.apiToken, {contact: userData.userServe.email});
         if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email) {
-            updateDataStore("userServe", {...serveCall.response});
+            props.setUserServe(serveCall.response)
         }
     }
     const updateMeasurements = async () => {
-        await apiCall("measurmentForReview", dataStore.apiToken, {
-            "user": getUserObject(dataStore, updateDataStore),
+        await apiCall("measurmentForReview", appConfig.apiToken, {
+            "user": getUserObject(userData),
             "order": {
-                "order_id": dataStore.currentOrderId
+                "order_id": currentOrderId
             },
             "measurements": {
                 "tops_brand": extraMeasure.tops_brand || extraMeasure.tops_brand_other,
@@ -139,11 +143,10 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
     }
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        const updateData = await updateUserDataAfterLogin(username, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
-        Object.keys(updateData).forEach((key) => {
-            updateDataStore(key, updateData[key]);
-        })
-        localStorage.setItem("userData", JSON.stringify(updateData["userData"]));
+        const updateData = await updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, userData.measurements, shoppingCart.cart);
+        props.setCart(updateData.shoppingCart)
+        props.setUserState(updateData.userState);
+        props.setOrderHistory(updateData.orderHistory);
     }
 
     const checkAndSave = async () => {
@@ -151,28 +154,31 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
             return
         }
         if (addressCompleteness()) {
-            if (dataStore.userServe && dataStore.userServe.email) {
+            if (userData.userServe && userData.userServe.email) {
                 await updateAddressBook(selectedAddressIndex === -1)
                 if (!isMobile) {
-                    if (dataStore.userServe.anniversary !== impDates.anniversary || dataStore.userServe.birthday !== impDates.birthday) {
+                    if (userData.userServe.anniversary !== impDates.anniversary || userData.userServe.birthday !== impDates.birthday) {
                         await updateUserProfile()
                     }
                     await updateMeasurements()
                 }
             } else {
                 if (selectedAddressIndex === -1) {
-                    updateDataStore("userAddresses", [...dataStore.userAddresses, address])
+                    props.setUserAddresses([...userData.userAddresses, address])
                 } else {
-                    let userAddresses = [...dataStore.userAddresses]
+                    let userAddresses = [...userData.userAddresses]
                     userAddresses[selectedAddressIndex] = address
-                    updateDataStore("userAddresses", userAddresses)
+                    props.setUserAddresses(userAddresses)
                 }
-                let resp = await updateAddressForOrder(0, dataStore, updateDataStore, {"create_account": createAccount.create, "password": createAccount.password})
+                let resp = await updateAddressForOrder(0, userData, {orderSummary, currentOrderId}, appConfig.apiToken, props.setOrderSummary, {
+                    "create_account": createAccount.create,
+                    "password": createAccount.password
+                })
                 if (createAccount.create && !resp.user.is_guest) {
                     await saveUserDataAfterSuccessfulLogin(resp.user.contact)
                 }
             }
-            if (isMobile && !dataStore.userServe.email) {
+            if (isMobile && !userData.userServe.email) {
                 setReview(true);
                 setSelectedAddressIndex(0);
             } else {
@@ -201,7 +207,7 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
         } else if (allFilled && !validator.isEmail(address.email)) {
             setMessage("Email is incorrect");
             completeness = false;
-        } else if (dataStore.currCurrency === "inr" && address.zip_code.length !== 6) {
+        } else if (userConfig.currCurrency === "inr" && address.zip_code.length !== 6) {
             setMessage("Incorrect Zipcode");
             completeness = false;
         }
@@ -397,7 +403,7 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
                     </select>
                     {error && !address['city'] && <div className={"text-red-500 mb-2"}>This is a required field.</div>}
                 </div>
-                {dataStore.userData.contact || selectedAddressIndex !== -1 ? null : (
+                {userData.userServe.email || selectedAddressIndex !== -1 ? null : (
                     <div className='col-span-full'>
                         <CreateMyAccount createAccount={createAccount} updateCreateAccount={setCreateAccount.bind(this)} error={error} isMobile={isMobile}/>
                     </div>
@@ -405,7 +411,7 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
                 {
                     isMobile || <div className='col-span-full flex justify-center gap-10 text-sm'>
                         <button className='border border-black px-4 py-1.5' onClick={() => {
-                            if (dataStore.userAddresses && dataStore.userAddresses.length)
+                            if (userData.userAddresses && userData.userAddresses.length)
                                 setSelectedAddressIndex(null)
                         }}>Cancel
                         </button>
@@ -418,8 +424,8 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
             {
                 isMobile && <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
                     <div onClick={() => {
-                        if (dataStore.userServe.email) {
-                            if (dataStore.userAddresses && dataStore.userAddresses.length)
+                        if (userData.userServe.email) {
+                            if (userData.userAddresses && userData.userAddresses.length)
                                 setSelectedAddressIndex(null)
                         } else
                             setActive(1)
@@ -439,4 +445,15 @@ const AddressForm = ({isMobile, selectedAddressIndex, setSelectedAddressIndex, s
     );
 };
 
-export default AddressForm;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig: state.userConfig,
+        currentOrderId: state.orderData.currentOrderId,
+        orderSummary: state.orderData.orderSummary
+    }
+}
+
+export default connect(mapStateToProps, {setCart, setUserState, setUserServe, setUserAddresses, setOrderSummary, setOrderHistory})(AddressForm);

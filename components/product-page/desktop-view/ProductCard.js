@@ -4,6 +4,7 @@ import Image from "next/image";
 import AppWideContext from "../../../store/AppWideContext";
 import appSettings from "../../../store/appSettings";
 import WishListButton from "../../common/WishListButton";
+import {connect} from "react-redux";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -11,14 +12,12 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, isMobile, wide, portrait}) => {
+const ProductCard = ({prod, isMobile, wide, portrait, userConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
 
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const currCurrency = userConfig.currCurrency;
+    const currencySymbol = userConfig.currSymbol;
 
 
     return (
@@ -59,4 +58,10 @@ const ProductCard = ({prod, isMobile, wide, portrait}) => {
     );
 };
 
-export default ProductCard;
+const mapStateToProps = (state) => {
+    return {
+        userConfig: state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(ProductCard);

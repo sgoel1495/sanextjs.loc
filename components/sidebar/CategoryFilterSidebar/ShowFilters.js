@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import {connect} from "react-redux";
+import {setFilterCheckbox} from "../../../ReduxStore/reducers/filterSlice";
 
 function Checkbox(props) {
     const [isChecked, setIsChecked] = useState(false)
@@ -6,7 +8,7 @@ function Checkbox(props) {
         const result = !!(props.checkBoxes[props.item.name] && props.checkBoxes[props.item.name].includes(props.filter))
         if (result !== isChecked)
             setIsChecked(result)
-    }, [props.checkBoxes, props.refresh])
+    }, [props.checkBoxes])
 
     const handleCheckboxChange = (e) => {
         const newVal = !isChecked
@@ -23,7 +25,7 @@ function Checkbox(props) {
                 checked={isChecked}
                 onChange={(e) => handleCheckboxChange(e)}
                 type="checkbox"
-                className={props.isMobile?inputMobileClass:inputClass}
+                className={props.isMobile ? inputMobileClass : inputClass}
                 id={props.item.name + props.filter}
                 name={props.item.name + props.filter}
             />
@@ -33,30 +35,47 @@ function Checkbox(props) {
     );
 }
 
-const ShowFilters = ({originalData, filterData, checkedBoxes, setCheckedBoxes, refresh,isMobile}) => {
+const ShowFilters = ({allFilters, checkedBoxes, setCheckedBoxes, filterCheckboxes, setFilterCheckbox, isMobile}) => {
     const [filterExpand, setFilterExpand] = useState({});
+
     const resetFilterCategory = (cat) => {
-        checkedBoxes[cat] = []
-        setCheckedBoxes(checkedBoxes)
+        let temp = JSON.parse(JSON.stringify(filterCheckboxes))
+        if (isMobile)
+            temp = JSON.parse(JSON.stringify(checkedBoxes))
+
+        temp[cat] = []
+
+        if (isMobile)
+            setCheckedBoxes(temp)
+        else
+            setFilterCheckbox(temp)
     }
 
     const handleCheckboxChange = (name, item, isTrue) => {
-        //it is a toggle
-        const index = checkedBoxes[name].indexOf(item)
+
+        let temp = JSON.parse(JSON.stringify(filterCheckboxes))
+        if (isMobile) {
+            temp = JSON.parse(JSON.stringify(checkedBoxes))
+        }
+
+        const index = temp[name].indexOf(item)
         if (isTrue && index === -1)
-            checkedBoxes[name].push(item)
+            temp[name].push(item)
         else if (!isTrue && index !== -1)
-            checkedBoxes[name].splice(index, 1);
-        // once another box is clicked, the reset gets reset
-        setCheckedBoxes(checkedBoxes)
+            temp[name].splice(index, 1);
+
+        if (isMobile)
+            setCheckedBoxes(temp)
+        else
+            setFilterCheckbox(temp)
     }
 
     React.useEffect(() => {
-        let filters = filterData.map(item => ({[item.name]: false}))
+        let filters = allFilters.map(item => ({[item.name]: false}))
         setFilterExpand(filters)
-    }, [filterData])
+    }, [allFilters])
 
-    return filterData.map((item, index) => {
+    return allFilters.map((item, index) => {
         return (
             <div key={index}>
                 <div className="flex gap-x-2 font-500 items-center mb-2">
@@ -74,10 +93,8 @@ const ShowFilters = ({originalData, filterData, checkedBoxes, setCheckedBoxes, r
                         return (
                             <Checkbox
                                 handleCheckboxChange={handleCheckboxChange}
-                                filter={filter} item={item} count={originalData[item.key[i]]}
-                                checkBoxes={checkedBoxes} refresh={refresh}
-                                key={i}
-                                isMobile={isMobile}
+                                filter={filter} item={item} count={item.count[i]}
+                                checkBoxes={isMobile ? checkedBoxes : filterCheckboxes} key={i} isMobile={isMobile}
                             />
                         )
                     })}
@@ -95,4 +112,10 @@ const ShowFilters = ({originalData, filterData, checkedBoxes, setCheckedBoxes, r
     })
 }
 
-export default ShowFilters
+const mapStateToProps = (state) => {
+    return {
+        filterCheckboxes: state.filters.filterCheckboxes,
+    }
+}
+
+export default connect(mapStateToProps, {setFilterCheckbox})(ShowFilters)

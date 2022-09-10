@@ -4,12 +4,12 @@ import NotifyMeModal from "../../../common/NotifyMeModal";
 import AppWideContext from "../../../../store/AppWideContext";
 import Toast from "../../../common/Toast";
 import {getUserObject} from "../../../../helpers/addTocart";
+import {connect} from "react-redux";
 
 const NotifyMe = (props) => {
     const [showNotify, setShowNotify] = useState(false)
     const [error, setError] = useState(null)
 
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     return (
         <>
             <button className={"bg-white py-2 px-8 mt-4 rounded-full font-500"} onClick={() => setShowNotify(true)}>
@@ -24,7 +24,7 @@ const NotifyMe = (props) => {
                     setError={setError}
                     closeModal={setShowNotify}
                     isMobile={true}
-                    userO={getUserObject(dataStore, updateDataStore)}
+                    userO={getUserObject(props.userData)}
                     product={props.prod}
                 />,
                 document.getElementById("measurementmodal"))
@@ -33,4 +33,10 @@ const NotifyMe = (props) => {
     );
 };
 
-export default NotifyMe;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData
+    }
+}
+
+export default connect(mapStateToProps)(NotifyMe);

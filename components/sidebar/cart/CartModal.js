@@ -11,6 +11,8 @@ import Testimonials from "./Testimonials";
 import 'swiper/css';
 import {useRouter} from "next/router";
 import {refreshCart} from "../../../helpers/addTocart";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 
 const BareHeading = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -32,29 +34,28 @@ const BareHeading = () => {
 
 function CartModal(props) {
     const router = useRouter();
-    const {dataStore, updateDataStore} = React.useContext(AppWideContext);
     const {closeModal} = props;
 
     useEffect(() => {
-        refreshCart(dataStore, updateDataStore);
-    }, [dataStore.userServe])
+        refreshCart(props.userData, props.appConfig.apiToken, props.setCart);
+    }, [props.userData.userServe])
 
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     let total = 0;
-    dataStore.userCart.forEach((item) => {
-        total += item.qty * (dataStore.currCurrency === "inr" ? item.price : item.usd_price)
+    props.shoppingCart.cart.forEach((item) => {
+        total += item.qty * (props.userConfig.currCurrency === "inr" ? item.price : item.usd_price)
     })
     const mobileView = () => {
         let returnValue =
             <div className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden m-1 p-2">
                 <div className={`text-center font-600 tracking-wider px-1 border-2 border-solid relative`}>
                     {
-                        dataStore.userCart.length > 0
+                        props.shoppingCart.cart.length > 0
                             ? <>
                                     <span className={"flex justify-between items-center"}>
                                         <span className={" pt-1"}> YOUR CART: </span>
-                                        <span className={" pt-1"}>{dataStore.currSymbol} {total}</span>
+                                        <span className={" pt-1"}>{props.userConfig.currSymbol} {total}</span>
                                         <span className={`w-5 h-5 relative`} onClick={() => router.back()}>
                                             <Image src={WEBASSETS + "/assets/images/cancel.png"} layout="fill" objectFit="contain" alt={""}/>
                                         </span>
@@ -72,7 +73,7 @@ function CartModal(props) {
                                         objectFit="contain"
                                     />
                                 </span>
-                                <p className={`px-1 text-sm mt-3 mb-6 text-center`}>YOUR CART {qtyInCart(dataStore)}</p>
+                                <p className={`px-1 text-sm mt-3 mb-6 text-center`}>YOUR CART {qtyInCart(props.shoppingCart.cart)}</p>
 
                                 <span className={`block relative w-16 h-16 mx-auto mb-4`}>
                                                 <Image
@@ -95,7 +96,7 @@ function CartModal(props) {
                     }
 
                 </div>
-                {dataStore.userCart.length > 0 ?
+                {props.shoppingCart.cart.length > 0 ?
                     <div className={"inline-flex w-full text-center m-auto my-6"}>
                         <Link href="/new-arrivals/all">
                             <a className="flex-1 w-full px-1 py-1 text-xs">
@@ -133,10 +134,10 @@ function CartModal(props) {
             >
 
                 <div className={`text-center font-600 tracking-wider mb-10`}>
-                    <p className={`text-sm mb-6`}>YOUR CART {qtyInCart(dataStore)}</p>
-                    {(dataStore.userCart.length > 0)
+                    <p className={`text-sm mb-6`}>YOUR CART {qtyInCart(props.shoppingCart.cart)}</p>
+                    {(props.shoppingCart.cart.length > 0)
                         ? <>
-                            <Link href={dataStore.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
+                            <Link href={props.userData.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
                                 <a className="inline-flex mb-5 text-white bg-black px-5 py-3">CHECKOUT</a>
                             </Link>
                             <ProductCartView/>
@@ -161,8 +162,8 @@ function CartModal(props) {
                         </>
                     }
 
-                    {(dataStore.userCart.length > 0)
-                        ? <Link href={dataStore.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
+                    {(props.shoppingCart.cart.length > 0)
+                        ? <Link href={props.userData.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
                             <a className="inline-flex my-5 text-white bg-black px-5 py-3">CHECKOUT</a>
                         </Link>
                         : null
@@ -178,4 +179,13 @@ function CartModal(props) {
     return props.isMobile ? mobileView() : browserView()
 }
 
-export default CartModal;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps,{setCart})(CartModal);

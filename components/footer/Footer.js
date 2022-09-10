@@ -9,9 +9,9 @@ import isValidEmail from "../../helpers/isValidEmail";
 import {apiCall} from "../../helpers/apiCall";
 import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
+import {connect} from "react-redux";
 
 function Footer(props) {
-    const {dataStore} = useContext(AppWideContext);
     const newsletterRef = createRef();
 
     const [toastMessage, setToastMessage] = useState(null);
@@ -23,7 +23,7 @@ function Footer(props) {
     const newsletterSignup = async () => {
         const newEmail = newsletterRef.current.value;
         if (isValidEmail(newEmail)) {
-            const resp = await apiCall("addExclusiveUser", dataStore.apiToken, {email: newEmail});
+            const resp = await apiCall("addExclusiveUser", props.appConfig.apiToken, {email: newEmail});
             if (resp.hasOwnProperty("msg"))
                 setToastMessage({
                     title: "Signup Status",
@@ -336,4 +336,10 @@ function Footer(props) {
 
 }
 
-export default Footer;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Footer);

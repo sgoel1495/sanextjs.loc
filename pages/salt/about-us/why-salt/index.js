@@ -14,8 +14,6 @@ import Header from "../../../../components/navbar/Header";
 import {isMobile} from "react-device-detect";
 
 function SaltWhySalt() {
-    const {dataStore} = useContext(AppWideContext);
-
     useEffect(() => {
         document.getElementById("why_salt").focus()
     });

@@ -4,6 +4,7 @@ import BlockHeader from "../common/blockHeader";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
 import Image from "next/image";
+import {connect} from "react-redux";
 
 const LookDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -11,13 +12,11 @@ const LookDataBlockImage = (props) => (
     </span>
 )
 
-const ExpandedLook = ({ expandLook, setExpandLook, data, isMobile }) => {
+const ExpandedLook = ({ expandLook, setExpandLook, data, isMobile,userConfig }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
     const expandedRef = useRef(null);
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const currCurrency = userConfig.currCurrency;
+    const currencySymbol = userConfig.currSymbol;
 
     useEffect(() => {
         if (expandedRef.current) {
@@ -130,4 +129,10 @@ const ExpandedLook = ({ expandLook, setExpandLook, data, isMobile }) => {
 
 };
 
-export default ExpandedLook;
+const mapStateToProps = (state) => {
+    return {
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(ExpandedLook);

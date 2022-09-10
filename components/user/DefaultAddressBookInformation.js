@@ -1,24 +1,23 @@
 import Link from "next/link";
 import {useRouter} from 'next/router';
-import React, {useContext,useEffect,useState} from "react";
-import AppWideContext from "../../store/AppWideContext";
+import React, {useEffect,useState} from "react";
 import {apiCall} from "../../helpers/apiCall";
+import {connect} from "react-redux";
 
 function DefaultAddressBookInformation(props) {
     const router = useRouter();
     const isProfilePage = router.asPath == '/users/profile'
-    const {dataStore} = useContext(AppWideContext);
     const [defaultAddress,setDefaultAddress] =useState(null);
 
     useEffect(()=>{
-        apiCall("getDefaultAddress", dataStore.apiToken,{user:{email:dataStore.userServe.email}})
+        apiCall("getDefaultAddress", props.appConfig.apiToken,{user:{email:props.userData.userServe.email}})
             .then(pData=>{
                 if (pData.status === 200 && pData.response){
                     setDefaultAddress(pData.response)
                 }
             })
             .catch(e=>console.log(e.message))
-    },[dataStore.userServe.email, dataStore.apiToken]);
+    },[props.userData.userServe.email, props.appConfig.apiToken]);
 
     const mobileView = <div className={"p-8 bg-[#f1f2f3] flex flex-col items-start "+[isProfilePage || "mx-3"]}>
         {isProfilePage && <p className="text-xl font-500 mb-2 mt-1">Address Book</p>}
@@ -86,4 +85,11 @@ function DefaultAddressBookInformation(props) {
     return (props.mobile) ? mobileView : browserView;
 }
 
-export default DefaultAddressBookInformation;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(DefaultAddressBookInformation);

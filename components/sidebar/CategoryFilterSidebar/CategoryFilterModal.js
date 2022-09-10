@@ -1,134 +1,48 @@
 import {useRouter} from "next/router";
-import React, {Fragment, useContext, useEffect, useState} from "react";
-import AppWideContext from "../../../store/AppWideContext";
+import React, {Fragment, useState} from "react";
 import {apiCall} from "../../../helpers/apiCall";
 import DrawerSort from "./DrawerSort";
 import ShowFilters from "./ShowFilters";
+import {connect} from "react-redux";
+import {applyFilters, setFilter, setFilterCheckbox, setSortBy} from "../../../ReduxStore/reducers/filterSlice";
 
 
-export default function CategoryFilterModal(props) {
+function CategoryFilterModal(props) {
     const router = useRouter()
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
-    const [tempCheckboxes, setTempCheckboxes] = useState(dataStore.filterCheckboxes);
-    const [route, setRoute] = useState(router.route)
-    const [refresh, setRefresh] = useState(false);
-    const [checkedBoxes, setCheckedBoxes] = useState(dataStore.filterCheckboxes);
-    const [sortBy, setSortBy] = useState(dataStore.sortBy);
+
+    const [checkedBoxes, setCheckedBoxes] = useState(props.filterCheckboxes);
+
+    const closeModalAndApplyFilter = () => {
+        props.closeModal()
+        if (props.isMobile) {
+            props.setFilterCheckbox(checkedBoxes)
+        }
+        props.applyFilters()
+    }
 
     const initArray = () => {
         const initArray = {}
-        props.filterData.forEach(item => {
+        props.allFilters.forEach(item => {
             initArray[item.name] = []
         })
         setCheckedBoxes(initArray)
-        setTempCheckboxes(initArray)
+        props.setFilterCheckbox(initArray)
     }
 
-    React.useEffect(() => {
-        if (router.query.sorted_by) {
-            setSorting(router.query.sorted_by)
-        }
-    }, [router.query])
+
+
+
 
     React.useEffect(() => {
-        if (router.route !== route) {
-            setSorting("")
-            updateDataStore("filterCheckboxes", {})
-            setRoute(router.route)
-        }
-    }, [router.route])
-
-    useEffect(() => {
         if (Object.keys(checkedBoxes).length === 0)
             initArray()
-    }, [props.filterData])
-
-    const getCategory = () => {
-        let returnValue = ""
-        Object.keys(props.originalData).forEach(key => {
-            if (key.includes("category-"))
-                returnValue = key.substring(9)
-        })
-        return returnValue
-    }
-
-    useEffect(() => {
-        const keys = Object.keys(checkedBoxes)
-        const newFilter = {}
-
-        // case before init
-        if (keys.length === 0)
-            return
-
-        // case after init
-        let haveData = false
-        const queryObject = {
-            category: getCategory(),
-            skip: 0,
-            limit: 10000,
-            filter_by: {}
-        }
-
-        for (let x = 0; x < keys.length; x++) {
-            if (checkedBoxes[keys[x]].length > 0) {
-                haveData = true
-                queryObject.filter_by[keys[x]] = checkedBoxes[keys[x]]
-            }
-        }
-        if (sortBy) {
-            queryObject['sorted_by'] = sortBy;
-        }
-        if (sortBy !== dataStore.sortBy) {
-            haveData = true
-        }
-        let isChanged = false
-        if (haveData) {
-            apiCall("getProducts", dataStore.apiToken, queryObject)
-                .then(resp => {
-                    const limitProducts = []
-                    if (resp.response && resp.response.data) {
-                        resp.response.data.forEach(p => {
-                            limitProducts.push(p.asset_id)
-                            if (!dataStore.filter.includes(p.asset_id))
-                                isChanged = true
-                        })
-                    }
-                    if (limitProducts.length !== dataStore.filter.length || sortBy !== dataStore.sortBy) {
-                        updateDataStore("sortBy", sortBy);
-                        isChanged = true
-                    }
-                    if (isChanged) {
-                        updateDataStore("filter", limitProducts)
-                        updateDataStore("refreshFilter", !dataStore.refreshFilter)
-                    }
-                })
-                .catch(e => console.log(e.message))
-        } else {
-            if (dataStore.filter.length !== 0 && !dataStore.sortBy) {
-                updateDataStore("filter", [])
-                updateDataStore("refreshFilter", !dataStore.refreshFilter)
-            }
-        }
-
-    }, [refresh, checkedBoxes, sortBy])
-
-
-    const setSorting = (value) => {
-        setSortBy(value);
-        setRefresh(!refresh);
-    }
-
-
-    const applyFilters = () => {
-        setCheckedBoxes(tempCheckboxes)
-        updateDataStore("filterCheckboxes", checkedBoxes)
-    }
+    }, [props.allFilters])
 
     const browserView = <Fragment>
-        <div className={`bg-theme-900/50 fixed inset-0 z-50`}>
-            <div className="max-w-[400px] h-full bg-white overflow-x-hidden flex flex-col">
+        <div className={`bg-theme-900/50 fixed inset-0 z-50`} onClick={closeModalAndApplyFilter}>
+            <div className="max-w-[400px] h-full bg-white overflow-x-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
                 <div className="self-end p-4">
-                    <button className={`w-6 h-6 float-right`} onClick={() => props.setShowSidebarMenu(false)}>
+                    <button className={`w-6 h-6 float-right`} onClick={closeModalAndApplyFilter}>
                         <svg xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6`} viewBox="0 0 24 24">
                             <path
                                 d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"/>
@@ -138,8 +52,7 @@ export default function CategoryFilterModal(props) {
                 <div className="flex-1 overflow-y-auto px-10 flex flex-col gap-y-4">
                     <h5 className={`text-h5 font-500 uppercase`}>Filter By</h5>
                     <div className={`flex flex-col gap-y-8 pb-16`}>
-                        <ShowFilters originalData={props.originalData} filterData={props.filterData} checkedBoxes={checkedBoxes} setCheckedBoxes={setCheckedBoxes}
-                                     refresh={refresh}/>
+                        <ShowFilters allFilters={props.allFilters}/>
                     </div>
                 </div>
             </div>
@@ -165,17 +78,16 @@ export default function CategoryFilterModal(props) {
             {
                 props.showSort
                     ?
-                    <DrawerSort setSorting={setSorting} sortBy={sortBy}/>
+                    <DrawerSort closeModal={props.closeModal}/>
                     :
                     <>
                         <div className="flex-1 overflow-y-auto px-10 flex flex-col gap-y-4">
                             <div className={`flex flex-col gap-y-8 pb-16`}>
-                                <ShowFilters originalData={props.originalData} filterData={props.filterData} checkedBoxes={tempCheckboxes} setCheckedBoxes={setTempCheckboxes}
-                                             refresh={refresh} isMobile={true}/>
+                                <ShowFilters allFilters={props.allFilters} checkedBoxes={checkedBoxes} setCheckedBoxes={setCheckedBoxes} isMobile={true}/>
                             </div>
                         </div>
                         <div className={"border-t border-[#997756] text-center py-3 -mx-4"}>
-                            <button className="px-10 py-2 border-4 border-white rounded-full font-900 uppercase shadow-lg" onClick={applyFilters}>Apply</button>
+                            <button className="px-10 py-2 border-4 border-white rounded-full font-900 uppercase shadow-lg" onClick={closeModalAndApplyFilter}>Apply</button>
                         </div>
                     </>
             }
@@ -184,3 +96,14 @@ export default function CategoryFilterModal(props) {
 
     return props.isMobile ? mobileView : browserView
 }
+
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        refreshFilter: state.filters.refreshFilter,
+        filterCheckboxes: state.filters.filterCheckboxes,
+        sortBy: state.filters.sortBy
+    }
+}
+
+export default connect(mapStateToProps, {applyFilters, setFilter, setSortBy, setFilterCheckbox})(CategoryFilterModal)

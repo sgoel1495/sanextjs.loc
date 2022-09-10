@@ -6,6 +6,8 @@ import Toast from "../common/Toast";
 import {apiCall} from "../../helpers/apiCall";
 import StatesAndCitiesOptions from "../../helpers/StatesAndCitiesOptions"
 import {isMobile} from "react-device-detect";
+import {connect} from "react-redux";
+import {setUserAddresses} from "../../ReduxStore/reducers/userSlice";
 
 /**
  * there is no processing for default or company at present
@@ -16,7 +18,6 @@ import {isMobile} from "react-device-detect";
 
 
 function AddressForm(props) {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [address, setAddress] = useState(props.address);
     const [company, setCompany] = useState("");
     const [isDefault, setIsDefault] = useState(false);
@@ -48,17 +49,17 @@ function AddressForm(props) {
         }
         let resp;
         if (props.index === -1) {
-            resp = await apiCall("addAddressBook", dataStore.apiToken, {
+            resp = await apiCall("addAddressBook", props.appConfig.apiToken, {
                 "user": {
-                    email: dataStore.userData.contact
+                    email: props.userData.userServe.email
                 },
                 "address": address
             });
 
         } else {
-            resp = await apiCall("updateAddressBook", dataStore.apiToken, {
+            resp = await apiCall("updateAddressBook", props.appConfig.apiToken, {
                 "user": {
-                    email: dataStore.userData.contact
+                    email: props.userData.userServe.email
                 },
                 "address": {...address, "index": props.index}
             });
@@ -67,13 +68,13 @@ function AddressForm(props) {
             setMessage("Something went wrong. Please try again or contact administrator");
             setShow(true);
         } else {
-            const addressCall = await apiCall("userAddresses", dataStore.apiToken, {
+            const addressCall = await apiCall("userAddresses", props.appConfig.apiToken, {
                 "user": {
-                    email: dataStore.userData.contact
+                    email: props.userData.userServe.email
                 }
             });
             if (addressCall.hasOwnProperty("response") && addressCall.response) {
-                updateDataStore("userAddresses", [...addressCall.response]);
+                props.setUserAddresses([...addressCall.response]);
                 props.setEdit(null)
             }
         }
@@ -301,4 +302,11 @@ function AddressForm(props) {
     return (mobile) ? mobileView : browserView
 }
 
-export default AddressForm;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps,{setUserAddresses})(AddressForm);

@@ -13,12 +13,13 @@ import {useRouter} from "next/router";
 import Toast from "../../../common/Toast";
 import NotifyMe from "./NotifyMe";
 import emptyMeasurement from "../../../../store/emptyMeasurement.json";
+import {connect} from "react-redux";
+import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 
-const ProductDetails = ({data, hpid}) => {
+const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const router = useRouter();
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [pincode, setPinCode] = useState(null)
     const [showShare, setShowShare] = useState(false)
     const [deliveryAvailable, setDeliveryAvailable] = useState(null)
@@ -26,9 +27,8 @@ const ProductDetails = ({data, hpid}) => {
     const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     const [error, setError] = useState(false)
     const sizeAvail = JSON.parse(data.size_avail.replace(/=>/g, ":"))
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings('currency_data');
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const currCurrency = props.userConfig.currCurrency;
+    const currencySymbol = props.userConfig.currSymbol;
 
     let feature_icons = {};
     data.icon_assets.forEach((icon) => {
@@ -69,7 +69,7 @@ const ProductDetails = ({data, hpid}) => {
             cart["measurment_id"] = (new Date()).getTime().toString() + "_m"
             measurements = {...currentMeasurement}
         }
-        addToCart(dataStore, updateDataStore, {cart: cart, measurments: measurements}).then(r => {
+        addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart, measurments: measurements}).then(r => {
         })
         router.push("/homepage/cart")
     }
@@ -77,7 +77,7 @@ const ProductDetails = ({data, hpid}) => {
     const checkDelivery = async () => {
         if (pincode == null)
             return;
-        const resp = await apiCall("cityByZipcode", dataStore.apiToken, {zipcode: pincode});
+        const resp = await apiCall("cityByZipcode", appConfig.apiToken, {zipcode: pincode});
         setDeliveryAvailable(!!(resp.response_data && resp.response_data.city))
     }
     const shareOnTwitter = () => {
@@ -292,4 +292,13 @@ const ProductDetails = ({data, hpid}) => {
     );
 };
 
-export default ProductDetails;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps,{setCart})(ProductDetails);

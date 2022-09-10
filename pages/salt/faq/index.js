@@ -7,6 +7,7 @@ import Accordion from "../../../components/common/accordion";
 import LinkParser from "../../../components/common/LinkParser";
 import faqData from "../../../store/faqData.json";
 import Header from "../../../components/navbar/Header";
+import {connect} from "react-redux";
 
 /**
  * @todo Pincode check
@@ -33,8 +34,7 @@ const AnswerBlock = ({ item }) => {
     return item.check ? check : main;
 }
 
-function SaltFaqPage() {
-    const { dataStore } = useContext(AppWideContext);
+function SaltFaqPage({appConfig}) {
 
     const category = "FAQ";
 
@@ -91,17 +91,21 @@ function SaltFaqPage() {
     )
     return (
         <>
-            <PageHead url="/salt/faq" id="faq" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            <PageHead url="/salt/faq" id="faq" isMobile={appConfig.isMobile} />
+            <Header type={appConfig.isMobile ? "minimal" : "shopMenu"} isMobile={appConfig.isMobile} />
             <CategoryHeaderImage category={category} />
             <section >
-                {(dataStore.mobile) ? mobileView : browserView}
+                {(appConfig.isMobile) ? mobileView : browserView}
             </section>
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />
+            <Footer isMobile={appConfig.isMobile} minimal={true} color={"#f5f5f5"} />
         </>
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
 
-
-export default SaltFaqPage;
+export default connect(mapStateToProps)(SaltFaqPage);

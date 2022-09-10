@@ -5,17 +5,17 @@ import {apiDictionary} from "../../helpers/apiDictionary";
 import AppWideContext from "../../store/AppWideContext";
 import appSettings from "../../store/appSettings";
 import currencyFormatter from "../../helpers/currencyFormatter";
+import {connect} from "react-redux";
 
-const ProductCard = ({product}) => {
-    const {dataStore} = React.useContext(AppWideContext);
+const ProductCard = ({product, appConfig, userConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [data, setData] = React.useState({})
-    const currCurrency = dataStore.currCurrency;
+    const currCurrency = userConfig.currCurrency;
     const curr = currCurrency.toUpperCase();
     React.useEffect(() => {
         if (product) {
 
-            const callObject = apiDictionary("getProduct", dataStore.apiToken, {product_id: product});
+            const callObject = apiDictionary("getProduct", appConfig.apiToken, {product_id: product});
 
             fetch(callObject.url, callObject.fetcher)
                 .then(response => {
@@ -26,7 +26,7 @@ const ProductCard = ({product}) => {
                         setData(json.response);
                 })
         }
-    }, [dataStore.apiToken, product])
+    }, [appConfig.apiToken, product])
 
     return (
         <Link href={product}>
@@ -46,4 +46,11 @@ const ProductCard = ({product}) => {
     );
 };
 
-export default ProductCard;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        userConfig: state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(ProductCard);

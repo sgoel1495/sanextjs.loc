@@ -9,13 +9,13 @@ import 'swiper/css/effect-fade';
 import "swiper/css/pagination"
 import "swiper/css/navigation"
 import SwiperCore, {Pagination, Navigation, Autoplay, EffectFade} from 'swiper';
+import {connect} from "react-redux";
 
 SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay]);
 
-const ExploreNewArrivals = () => {
+const ExploreNewArrivals = ({appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
-    const resp = useApiCall("exploreNewArrivals", dataStore.apiToken);
+    const resp = useApiCall("exploreNewArrivals", appConfig.apiToken);
     const [activeIndex, setActive] = React.useState(0)
 
     const sliderDuration = 3000;
@@ -84,4 +84,10 @@ const ExploreNewArrivals = () => {
         return <></>
 };
 
-export default ExploreNewArrivals;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(ExploreNewArrivals);

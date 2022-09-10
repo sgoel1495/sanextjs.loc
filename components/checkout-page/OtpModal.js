@@ -7,10 +7,13 @@ import {getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
 import {updateUserDataAfterLogin} from "../../helpers/updateUserDataAfterLogin";
 import {saveCartMeasurements} from "../../helpers/measurementHelper";
+import {connect} from "react-redux";
+import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
+import {setUserState} from "../../ReduxStore/reducers/userSlice";
+import {setOrderHistory} from "../../ReduxStore/reducers/orderSlice";
 
 function OtpModal(props) {
     const router = useRouter()
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [otp, setOtp] = useState("")
     const [startCounter, setStartCounter] = useState(false)
     const [placing, setPlacing] = useState(false)
@@ -41,15 +44,15 @@ function OtpModal(props) {
 
     const requestOTP = useCallback(async () => {
         setCounter(30)
-        const otpCall = await apiCall("codOtp", dataStore.apiToken, {
-            user: getUserObject(dataStore, updateDataStore),
-            order: {order_id: dataStore.currentOrderId}
+        const otpCall = await apiCall("codOtp", props.appConfig.apiToken, {
+            user: getUserObject(props.userData),
+            order: {order_id: props.currentOrderId}
         })
         if (otpCall.hasOwnProperty("status") && otpCall.status === 200) {
             setStartCounter(true)
         }
 
-    }, [dataStore])
+    }, [props.currentOrderId, props.userData])
 
     useEffect(() => {
         requestOTP()
@@ -60,23 +63,23 @@ function OtpModal(props) {
 
         setPlacing(true)
         const queryObject = {
-            "user": getUserObject(dataStore, updateDataStore),
+            "user": getUserObject(props.userData),
             "order": {
-                "order_id": dataStore.currentOrderId,
+                "order_id": props.currentOrderId,
                 "otp": otp
             }
         }
-        const verifyCall = await apiCall("verifyOtp", dataStore.apiToken, queryObject)
+        const verifyCall = await apiCall("verifyOtp", props.appConfig.apiToken, queryObject)
         if (verifyCall.message
             && verifyCall.message === "OTP Verification Successful for COD Order and Order placed successfully") {
             setShow(true)
             setMessage("OTP Verified")
-            saveCartMeasurements(dataStore, updateDataStore,dataStore.userCart)
-            if (dataStore.userServe.email) {
-                let updateData = await updateUserDataAfterLogin(dataStore.userServe.email, dataStore.apiToken, dataStore.userMeasurements, dataStore.userCart);
-                Object.keys(updateData).forEach((key) => {
-                    updateDataStore(key, updateData[key]);
-                })
+            saveCartMeasurements(props.userData, props.appConfig.apiToken, props.shoppingCart.cart)
+            if (props.userData.userServe.email) {
+                let updateData = await updateUserDataAfterLogin(props.userData.userServe.email, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
+                props.setCart(updateData.shoppingCart)
+                props.setUserState(updateData.userState);
+                props.setOrderHistory(updateData.orderHistory);
             }
 
             await router.push("/salt/Thankyou?id=" + verifyCall.thank_you_order.order_id)
@@ -99,11 +102,11 @@ function OtpModal(props) {
                     <p className="text-[#777] mb-8">We have sent an OTP for COD verification on your below<br/>mentioned details:</p>
                     <div className="inline-flex gap-2 items-center self-start text-[#777]">
                         <span>Email:</span>
-                        <span>{dataStore.orderSummary.address.email}</span>
+                        <span>{props.orderSummary.address.email}</span>
                     </div>
                     <div className="inline-flex gap-2 items-center self-start text-[#777]">
                         <span>Phone:</span>
-                        <span>{dataStore.orderSummary.address.phone}</span>
+                        <span>{props.orderSummary.address.phone}</span>
                     </div>
                     {
                         placing ?
@@ -131,4 +134,14 @@ function OtpModal(props) {
     )
 }
 
-export default OtpModal
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        currentOrderId: state.orderData.currentOrderId,
+        orderSummary: state.orderData.orderSummary
+    }
+}
+
+export default connect(mapStateToProps, {setCart, setUserState,setOrderHistory})(OtpModal)

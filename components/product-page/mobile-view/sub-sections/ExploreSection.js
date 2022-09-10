@@ -5,19 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import appSettings from "../../../../store/appSettings";
 import {Swiper, SwiperSlide} from "swiper/react";
+import {connect} from "react-redux";
 
 const ExploreSection = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState([])
 
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const currCurrency = props.userConfig.currCurrency;
+    const currencySymbol = props.userConfig.currSymbol;
 
     const fetchData = useCallback(() => {
-        const callObject = apiDictionary(props.api, dataStore.apiToken, props.query);
+        const callObject = apiDictionary(props.api, props.appConfig.apiToken, props.query);
         fetch(callObject.url, callObject.fetcher)
             .then(response => {
                 return response.json();
@@ -25,14 +24,9 @@ const ExploreSection = (props) => {
             .then(json => {
                 if (json && json.status === 200) {
                     setData(json.response.data);
-
-/*
-                    if (props.title === "Same Color") {
-                    }
-*/
                 }
             })
-    },[dataStore.apiToken, props.api, props.query])
+    }, [props.appConfig.apiToken, props.api, props.query])
 
     useEffect(() => {
         fetchData()
@@ -53,7 +47,7 @@ const ExploreSection = (props) => {
                                 objectFit="cover"
                                 alt={product["old_product_id"]}
                             />
-                            { !props.minimal && product.is_prod_new &&
+                            {!props.minimal && product.is_prod_new &&
                             <span className={"absolute left-0 top-[50%] translate-y-[-50%] text-[10px] text-white px-1.5 bg-[#c69565] tracking-wider"}>NEW</span>}
 
                         </div>
@@ -119,4 +113,11 @@ const ExploreSection = (props) => {
 
 };
 
-export default ExploreSection;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        userConfig: state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(ExploreSection);

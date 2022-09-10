@@ -1,9 +1,9 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-import AppWideContext from "../../../store/AppWideContext";
+import React, { Fragment} from 'react';
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Header from "../../../components/navbar/Header";
+import {connect} from "react-redux";
 
 /**
  * @todo @Sambhav css
@@ -11,8 +11,7 @@ import Header from "../../../components/navbar/Header";
  */
 
 
-function SaltPrivacyPolicyPage() {
-    const { dataStore } = useContext(AppWideContext);
+function SaltPrivacyPolicyPage({appConfig}) {
 
     const category = "Privacy Policy";
 
@@ -95,13 +94,19 @@ function SaltPrivacyPolicyPage() {
 
     return (
         <Fragment>
-            <PageHead url="/salt/privacy-policy" id="privacypolicy" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
+            <PageHead url="/salt/privacy-policy" id="privacypolicy" isMobile={appConfig.isMobile} />
+            <Header type={appConfig.isMobile ? "minimal" : "shopMenu"} isMobile={appConfig.isMobile} />
             <CategoryHeaderImage category={category} />
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile} minimal={true} color={"#f5f5f5"} />
+            {(appConfig.isMobile) ? mobileView : browserView}
+            <Footer isMobile={appConfig.isMobile} minimal={true} color={"#f5f5f5"} />
         </Fragment>
     );
 }
 
-export default SaltPrivacyPolicyPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(SaltPrivacyPolicyPage);

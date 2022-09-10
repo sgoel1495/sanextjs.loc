@@ -11,6 +11,8 @@ import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
 import currencyFormatter from "../../helpers/currencyFormatter";
+import {connect} from "react-redux";
+import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -18,14 +20,11 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
+const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCart, appConfig,userConfig, ...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
-    const currCurrency = dataStore.currCurrency;
-    const currencyData = appSettings("currency_data");
-    const currencySymbol = currencyData[currCurrency].curr_symbol;
+    const currCurrency = userConfig.currCurrency;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
@@ -46,7 +45,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
                 sleeve_length: "",
                 dress_length: ""
             }
-            addToCart(dataStore, updateDataStore, {cart: cart}).then(r => {
+            addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
                 setToastMsg(`${prod.name}: Size ${currSize} added to your Bag!`)
                 setShowToast(true)
             })
@@ -202,8 +201,8 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
             ReactDom.createPortal(
                 <NotifyMeModal
                     closeModal={closeModal.bind(this)}
-                    isMobile={dataStore.isMobile}
-                    userO={getUserObject(dataStore, updateDataStore)}
+                    isMobile={appConfig.isMobile}
+                    userO={getUserObject(userData)}
                     product={prod}
                 />,
                 document.getElementById("measurementmodal"))
@@ -213,4 +212,13 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait}) => {
     );
 };
 
-export default MimotoProductCard;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        shoppingCart: state.shoppingCart,
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps, {setCart})(MimotoProductCard);

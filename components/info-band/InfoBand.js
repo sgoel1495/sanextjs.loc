@@ -2,16 +2,16 @@ import Link from "next/link";
 import React, {useContext} from "react";
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
+import {connect} from "react-redux";
 
 /**
  * This is a band just above the nav
  * @params none at this time
  */
 
-function InfoBand() {
+function InfoBand({appConfig}) {
 
-    const {dataStore} = useContext(AppWideContext);
-    const resp = useApiCall("getTopStrip", dataStore.apiToken);
+    const resp = useApiCall("getTopStrip", appConfig.apiToken);
 
     if (resp && resp['homepage_top_strip'] && (resp['homepage_top_strip'].length > 0) && (resp['homepage_top_strip'][0]['strips'].length > 0))
         return (
@@ -28,4 +28,10 @@ function InfoBand() {
 
 }
 
-export default InfoBand;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(InfoBand);

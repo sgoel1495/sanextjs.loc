@@ -7,18 +7,14 @@ import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage"
 import Link from "next/link";
 import Image from "next/image";
 import {isMobile} from "react-device-detect";
+import {connect} from "react-redux";
 
-function BlogAboutSaltPage() {
+function BlogAboutSaltPage({appConfig}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
-    const [mobile, setMobile] = useState(false);
     const category = "About Salt";
 
     const data = require("../../../store/blogData.json");
 
-    useEffect(() => {
-        setMobile(isMobile);
-    }, []);
     const showBlogPosts = () => {
         let sbp = null;
         data.forEach(blog => {
@@ -66,15 +62,21 @@ function BlogAboutSaltPage() {
 
     return (
         <Fragment>
-            <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={dataStore.mobile} />
-            <Header type={mobile ? "minimal" : ""} isMobile={dataStore.mobile} />
+            <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={appConfig.isMobile} />
+            <Header type={appConfig.isMobile ? "minimal" : ""} isMobile={appConfig.isMobile} />
             <div className=" overflow-hidden">
             <CategoryHeaderImage category={category} />
             </div>
-            {(mobile) ? mobileView : browserView}
-            <Footer isMobile={mobile} />
+            {(appConfig.isMobile) ? mobileView : browserView}
+            <Footer isMobile={appConfig.isMobile} />
         </Fragment>);
 
 }
 
-export default BlogAboutSaltPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(BlogAboutSaltPage);

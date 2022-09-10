@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
+import {connect} from "react-redux";
 
-const Index = () => {
+const Index = ({appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
-    const resp = useApiCall("getMediaBuzz", dataStore.apiToken);
+    const resp = useApiCall("getMediaBuzz", appConfig.apiToken);
     if (resp && resp.status === 200) {
         return (
             <div className={"bg-[#fffaf7] pt-5 pb-10"}>
@@ -33,4 +33,10 @@ const Index = () => {
     }
 };
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Index);

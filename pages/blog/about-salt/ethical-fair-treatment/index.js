@@ -1,8 +1,7 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment} from "react";
 import PageHead from "../../../../components/PageHead";
 import Header from "../../../../components/navbar/Header";
 import Footer from "../../../../components/footer/Footer";
-import AppWideContext from "../../../../store/AppWideContext";
 import StylingServices from "../../../../components/blog/StylingServices";
 import FreeAlterations from "../../../../components/blog/FreeAlterations";
 import PremiumFabricQuality from "../../../../components/blog/PremiumFabricQuality";
@@ -10,9 +9,9 @@ import NoInventoryNoMassProduction from "../../../../components/blog/NoInventory
 import EthicalFairTreatment from "../../../../components/blog/EthicalFairTreatment";
 import Link from "next/link";
 import WhyCustomTailoredClothing from "../../../../components/blog/WhyCustomTailoredClothing";
+import {connect} from "react-redux";
 
-function BlogEthicalFairTreatmentPage(){
-    const {dataStore} = useContext(AppWideContext);
+function BlogEthicalFairTreatmentPage({appConfig}){
 
     const mobileView =  (
         <section className={`container `}>
@@ -50,12 +49,18 @@ function BlogEthicalFairTreatmentPage(){
 
     return (
         <Fragment>
-            <PageHead url="/blog/about-salt/ethical-fair-treatment" id="ethical-fair-treatment" isMobile={dataStore.mobile}/>
-                <Header type={dataStore.mobile?"minimal":""} isMobile={dataStore.mobile}/>
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url="/blog/about-salt/ethical-fair-treatment" id="ethical-fair-treatment" isMobile={appConfig.isMobile}/>
+                <Header type={appConfig.isMobile?"minimal":""} isMobile={appConfig.isMobile}/>
+            {(appConfig.isMobile) ? mobileView : browserView}
+            <Footer isMobile={appConfig.isMobile}/>
         </Fragment>);
 
 }
 
-export default BlogEthicalFairTreatmentPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(BlogEthicalFairTreatmentPage);

@@ -11,11 +11,10 @@ import {apiCall} from "../../../helpers/apiCall";
 import {useRouter} from "next/router";
 import MobileProductCard from "../../../components/shop-page/ProductCard"
 import {isMobile} from "react-device-detect";
+import {connect} from "react-redux";
 
 function NewArrivalsIdPage(props) {
-    const category = "new-arrivals"
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
     const [data, setData] = useState([]);
     const [carousal, setCarousal] = useState(props.carousal);
     const [mobile, setMobile] = useState(false);
@@ -40,14 +39,14 @@ function NewArrivalsIdPage(props) {
                 .then(resp => {
                 })
 
-            apiCall("datedNewArrivals", dataStore.apiToken, {home: {date: router.query.id}})
+            apiCall("datedNewArrivals", props.appConfig.apiToken, {home: {date: router.query.id}})
                 .then(resp => {
                     if (resp.msg && resp.msg === "Successfully Get" && resp.new_items)
                         setData(resp.new_items)
                 })
                 .catch(e => console.log(e.msg))
         }
-    }, [dataStore.apiToken, router.query.id])
+    }, [props.appConfig.apiToken, router.query.id])
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
                             <span className={"block relative w-14 aspect-square"}>
@@ -113,4 +112,10 @@ function NewArrivalsIdPage(props) {
     </>
 }
 
-export default NewArrivalsIdPage
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(NewArrivalsIdPage)

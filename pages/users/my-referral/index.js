@@ -8,22 +8,17 @@ import UserPageTemplate from "../../../components/user/UserPageTemplate";
 import {isMobile} from "react-device-detect";
 import Image from "next/image";
 import Toast from "../../../components/common/Toast";
+import {connect} from "react-redux";
 
 
-function UsersMyReferralsPage() {
+function UsersMyReferralsPage({appConfig,userData}) {
     const router = useRouter();
-    const {dataStore} = useContext(AppWideContext);
-    const [mobile, setMobile] = useState(false);
     const [showToaster, setShowToaster] = useState(false)
 
     useEffect(() => {
-        if (dataStore.userData.contact == null)
+        if (!userData.userServe.email)
             router.replace("/"); //illegal direct access
-    }, [dataStore.userData.contact, router])
-
-    useEffect(() => {
-        setMobile(isMobile)
-    }, [])
+    }, [userData.userServe.email, router])
 
     const mobileView = (
         <UserPageTemplate mobile={true}>
@@ -39,10 +34,10 @@ function UsersMyReferralsPage() {
     )
     return (
         <Fragment>
-            <PageHead url={"/users/my-referral"} id={"profile"} isMobile={dataStore.mobile}/>
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile}/>
-            {mobile ? mobileView : browserView}
-            <Footer isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/my-referral"} id={"profile"} isMobile={appConfig.isMobile}/>
+            <Header type={appConfig.isMobile ? "minimal" : "shopMenu"} isMobile={appConfig.isMobile}/>
+            {appConfig.isMobile ? mobileView : browserView}
+            <Footer isMobile={appConfig.isMobile}/>
             <Toast show={showToaster} hideToast={() => setShowToaster(false)}>
                 <span>Referral Code copied to share</span>
             </Toast>
@@ -51,4 +46,11 @@ function UsersMyReferralsPage() {
     )
 }
 
-export default UsersMyReferralsPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(UsersMyReferralsPage);

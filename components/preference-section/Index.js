@@ -1,29 +1,30 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import AppWideContext from "../../store/AppWideContext";
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import Link from 'next/link'
+import {connect} from "react-redux";
 
-const Index = (props) => {
+const Index = ({appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const { dataStore } = useContext(AppWideContext);
-    const resp = useApiCall("getPreferencesData", dataStore.apiToken);
+    const resp = useApiCall("getPreferencesData", appConfig.apiToken);
 
     if (resp && resp.response)
         return (
             <section title='Shop By Preferences'>
                 {resp.response.filter(item => item.home_visible).map((item, index) => {
                     return (
-                        <div style={{ background: item['bg_color'].replace(";", "") }} key={index}>
+                        <div style={{background: item['bg_color'].replace(";", "")}} key={index}>
                             {index === 0 && (
                                 <>
-                                    <h3 className={"text-h3 font-900 uppercase tracking-widest mx-4"} style={{ color: "var(--very-light-brown)" }}>SHOP</h3>
-                                    <h3 className={"text-h3 font-600 font-cursive italic mx-4 leading-none sentence mb-6"} style={{ color: "var(--very-light-brown)" }}>by preferences</h3>
+                                    <h3 className={"text-h3 font-900 uppercase tracking-widest mx-4"} style={{color: "var(--very-light-brown)"}}>SHOP</h3>
+                                    <h3 className={"text-h3 font-600 font-cursive italic mx-4 leading-none sentence mb-6"} style={{color: "var(--very-light-brown)"}}>by
+                                        preferences</h3>
                                 </>
                             )}
                             <div className='py-3 mx-4'>
                                 <Link href={item['home_url']}>
-                                    <a className={"block text-sm uppercase font-900 uppercase tracking-widest mb-2"} style={{ color: item['title_color'].replace(";", "") }} >
+                                    <a className={"block text-sm uppercase font-900 uppercase tracking-widest mb-2"} style={{color: item['title_color'].replace(";", "")}}>
                                         {item['display_name']}
                                     </a>
                                 </Link>
@@ -47,7 +48,8 @@ const Index = (props) => {
                                     }
                                     <Link key={index} href={item['home_url']}>
                                         <a className={"block"}>
-                                            <div className={"h-full aspect-square border-2 border-white rounded-[35%] shadow-sm grid place-items-center text-center content-center tracking-widest uppercase text-[9px]"}>
+                                            <div
+                                                className={"h-full aspect-square border-2 border-white rounded-[35%] shadow-sm grid place-items-center text-center content-center tracking-widest uppercase text-[9px]"}>
                                                 <span>tap here</span>
                                                 <span>to see more</span>
                                             </div>
@@ -65,4 +67,10 @@ const Index = (props) => {
         return <></>
 };
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(Index);

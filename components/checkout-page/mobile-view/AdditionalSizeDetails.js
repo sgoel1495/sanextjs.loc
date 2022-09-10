@@ -3,9 +3,10 @@ import AppWideContext from "../../../store/AppWideContext";
 import MeasurementForm from "../ShippingAddress/MeasurementForm";
 import {apiCall} from "../../../helpers/apiCall";
 import {getUserObject} from "../../../helpers/addTocart";
+import {connect} from "react-redux";
+import {setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
 
 function AdditionalSizeDetail(props) {
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const [extraMeasure, setExtraMeasure] = useReducer((state, e) => {
             return {...state, [e.target.name]: e.target.value}
         }, {
@@ -24,14 +25,14 @@ function AdditionalSizeDetail(props) {
             "tops_size": extraMeasure.tops_size || extraMeasure.tops_size_other,
             "jeans_pants_size": extraMeasure.jeans_pants_size || extraMeasure.jeans_pants_size_other,
         }
-        apiCall("measurmentForReview", dataStore.apiToken, {
-            "user": getUserObject(dataStore, updateDataStore),
+        apiCall("measurmentForReview", props.appConfig.apiToken, {
+            "user": getUserObject(props.userData),
             "order": {
-                "order_id": dataStore.currentOrderId
+                "order_id": props.currentOrderId
             },
             "measurements": measurements,
         })
-        updateDataStore("orderSummary", {...dataStore.orderSummary, "measurements": measurements})
+        props.setOrderSummary({...props.orderSummary, "measurements": measurements})
         props.setActive(4);
     }
 
@@ -63,4 +64,13 @@ function AdditionalSizeDetail(props) {
     </section>;
 }
 
-export default AdditionalSizeDetail;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        currentOrderId: state.orderData.currentOrderId,
+        orderSummary: state.orderData.orderSummary
+    }
+}
+
+export default connect(mapStateToProps, {setOrderSummary})(AdditionalSizeDetail);

@@ -14,34 +14,37 @@ import AdditionalSizeDetail from "../../../components/checkout-page/mobile-view/
 import OrderDetails from "../../../components/checkout-page/mobile-view/OrderDetails";
 import {useRouter} from "next/router";
 import {getUserObject, refreshCart} from "../../../helpers/addTocart";
+import {connect} from "react-redux";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
+import {setCurrentOrderID, setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
 
-function UsersCheckoutPage() {
+function UsersCheckoutPage({appConfig, userData, currentOrderId, orderSummary, ...props}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
     const router = useRouter();
     const [active, setActive] = useState(1);
 
     useEffect(() => {
-        if (dataStore && (!dataStore.currentOrderId || dataStore.currentOrderId === "")) updateDataStore("currentOrderId", Date.now().toString());
-    }, [dataStore.currentOrderId]);
+        if (!currentOrderId || currentOrderId === "")
+            props.setCurrentOrderID(Date.now().toString());
+    }, [currentOrderId]);
 
     useEffect(() => {
         let order = async () => {
-            if(dataStore.userServe.email || dataStore.userServe.temp_user_id) {
-                let user = getUserObject(dataStore, updateDataStore)
-                const gotOrderSummaryCall = await apiCall("getOrderSummary", dataStore.apiToken, {user: user});
+            if (userData.userServe.email || userData.userServe.temp_user_id) {
+                let user = getUserObject(userData)
+                const gotOrderSummaryCall = await apiCall("getOrderSummary", appConfig.apiToken, {user: user});
                 if (gotOrderSummaryCall.status === 200) {
-                    updateDataStore("orderSummary", {
+                    props.setOrderSummary({
                         ...gotOrderSummaryCall,
                     });
                 } else {
                     router.push("/new-arrivals/all")
                 }
-                await refreshCart(dataStore, updateDataStore)
+                await refreshCart(userData, appConfig.apiToken, props.setCart)
             }
         }
         order()
-    }, [dataStore.userServe.email,dataStore.userServe.temp_user_id])
+    }, [userData.userServe.email, userData.userServe.temp_user_id])
 
 
     const goBack = () => {
@@ -92,7 +95,7 @@ function UsersCheckoutPage() {
     );
     const browserView = (
         <Fragment>
-            <PageHead url={"/users/profile"} id={"profile"} isMobile={dataStore.mobile}/>
+            <PageHead url={"/users/profile"} id={"profile"} isMobile={false}/>
             <Header type={"shopMenu"}/>
             <div className='w-[970px] xl:w-[1170px] mx-auto my-28 flex gap-6'>
                 <div className='flex-[8]'>
@@ -111,9 +114,18 @@ function UsersCheckoutPage() {
 
     return (
         <Fragment>
-            {dataStore.orderSummary && (dataStore.mobile ? mobileView : browserView)}
+            {orderSummary && (appConfig.isMobile ? mobileView : browserView)}
         </Fragment>
     );
 }
 
-export default UsersCheckoutPage;
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData,
+        appConfig: state.appConfig,
+        currentOrderId: state.orderData.currentOrderId,
+        orderSummary: state.orderData.orderSummary
+    }
+}
+
+export default connect(mapStateToProps, {setCart, setCurrentOrderID, setOrderSummary})(UsersCheckoutPage);

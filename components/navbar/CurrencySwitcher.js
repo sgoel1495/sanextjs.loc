@@ -6,12 +6,12 @@
 import appSettings from "../../store/appSettings";
 import React, {Fragment, useContext} from "react";
 import AppWideContext from "../../store/AppWideContext";
+import {connect} from "react-redux";
+import {setCurrency, setCurrencySymbol} from "../../ReduxStore/reducers/userConfigSlice";
 
 
 function CurrencySwitcher(props) {
-
-    const {dataStore, updateDataStore} = useContext(AppWideContext);
-    const currCurrency = dataStore.currCurrency;
+    const currCurrency = props.userConfig.currCurrency;
     const currencies = appSettings("currencies");
     const currencyData = appSettings("currency_data");
     const [show, setShow] = React.useReducer((state) => !state, false)
@@ -29,8 +29,8 @@ function CurrencySwitcher(props) {
     })
 
     const updateCurrency = (c) => {
-        updateDataStore("currCurrency", c)
-        updateDataStore("currSymbol", currencyData[c].curr_symbol)
+        props.setCurrency(c);
+        props.setCurrencySymbol(currencyData[c].curr_symbol)
     }
 
     let height;
@@ -84,4 +84,10 @@ function CurrencySwitcher(props) {
     return props.isMobile ? mobileView : browserView
 }
 
-export default CurrencySwitcher;
+const mapStateToProps = (state) => {
+    return {
+        userConfig: state.userConfig
+    }
+}
+
+export default connect(mapStateToProps, {setCurrency, setCurrencySymbol})(CurrencySwitcher);

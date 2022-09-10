@@ -1,3 +1,4 @@
+
 export default function returnSizes(prod) {
     if (["sweaters", "scarves", "belts", "masks", "jewellery"].includes(prod.category))
         return Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0).map((item) => item.toUpperCase());

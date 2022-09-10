@@ -1,9 +1,9 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-import AppWideContext from "../../../store/AppWideContext";
+import React, {Fragment, useEffect, useState} from 'react';
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Header from "../../../components/navbar/Header";
+import {connect} from "react-redux";
 
 /**
  * @todo @Sambhav css
@@ -11,8 +11,7 @@ import Header from "../../../components/navbar/Header";
  */
 
 
-function SaltTermsAndConditionPage() {
-    const { dataStore } = useContext(AppWideContext);
+function SaltTermsAndConditionPage({appConfig}) {
 
     const category = "Terms & Conditions";
     const blockStyle = `flex flex-col gap-y-4`;
@@ -517,21 +516,27 @@ function SaltTermsAndConditionPage() {
         </section>
     );
 
-    const [forceRefresh,setForceRefresh] = useState(false)
-    useEffect(()=>{
-        if(!forceRefresh)
+    const [forceRefresh, setForceRefresh] = useState(false)
+    useEffect(() => {
+        if (!forceRefresh)
             setForceRefresh(true)
-    },[forceRefresh])
+    }, [forceRefresh])
 
     return forceRefresh
-        ?<Fragment>
-            <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={dataStore.mobile} />
-            <Header type={dataStore.mobile ? "minimal" : "shopMenu"} isMobile={dataStore.mobile} />
-            <CategoryHeaderImage category={category} />
-            {(dataStore.mobile) ? mobileView : browserView}
-            <Footer minimal={true} color={"#f5f5f5"} />
+        ? <Fragment>
+            <PageHead url="/salt/terms-and-condition" id="termsandcondition" isMobile={appConfig.isMobile}/>
+            <Header type={appConfig.isMobile ? "minimal" : "shopMenu"} isMobile={appConfig.isMobile}/>
+            <CategoryHeaderImage category={category}/>
+            {(appConfig.isMobile) ? mobileView : browserView}
+            <Footer minimal={true} color={"#f5f5f5"}/>
         </Fragment>
         : null
 }
 
-export default SaltTermsAndConditionPage;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig
+    }
+}
+
+export default connect(mapStateToProps)(SaltTermsAndConditionPage);

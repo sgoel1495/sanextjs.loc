@@ -4,12 +4,12 @@ import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import Link from 'next/link'
+import {connect} from "react-redux";
 
-const Index = () => {
+const Index = ({appConfig,userConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const {dataStore} = useContext(AppWideContext);
-    const resp = useApiCall("getMarketingData", dataStore.apiToken);
-    const currCurrency = dataStore.currCurrency;
+    const resp = useApiCall("getMarketingData", appConfig.apiToken);
+    const currCurrency = userConfig.currCurrency;
 
     if (resp && resp.response) {
         let data = Object.keys(resp.response).map((key) => {
@@ -82,4 +82,11 @@ const Index = () => {
 
 }
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+        userConfig:state.userConfig
+    }
+}
+
+export default connect(mapStateToProps)(Index);
