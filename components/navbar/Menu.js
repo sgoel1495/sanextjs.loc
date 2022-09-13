@@ -200,7 +200,7 @@ function Menu(props) {
             break;
         default:
             browserView = (
-                <div className={`relative container`}>
+                <div className={`relative container flex`}>
                     <ul className={"flex flex-wrap justify-center items-end uppercase font-600"}>
                         <Fragment>
                             {

@@ -57,7 +57,7 @@ function BestSellingPage(props) {
 export default BestSellingPage
 
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const fetchData = async () => {
         let gotData = false;
         const callObject = await apiCall("getProducts", process.env.API_TOKEN, {
@@ -76,7 +76,6 @@ export async function getStaticProps() {
         props: {
             data: newData.response,
             carousal: newData.new_arr_carousal
-        },
-        revalidate: 3600,
+        }
     }
 }

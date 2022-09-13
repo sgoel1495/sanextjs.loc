@@ -23,7 +23,6 @@ function HomePageHeaderSwiper(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     let imgs = [], links, transition_time;
     let overlay = null;
-    let apiToken;
     if (props.page === "newArrival" || props.page === "best-selling") {
         if (props.slides) {
             imgs = props.slides.imgs.map((img) => props.isMobile ? img.replace("web", "mob") : img.replace("mob", "web"))
@@ -44,13 +43,9 @@ function HomePageHeaderSwiper(props) {
             </span>
         }
     } else {
-        apiToken = props.appConfig.apiToken
-    }
-    const resp = useApiCall("getHomePageCarousal", apiToken);
-    if (resp && resp.status === 200) {
-        imgs = resp.response.data.web.imgs
-        links = resp.response.data.web.links
-        transition_time = resp.response.data.web.transition_time
+        imgs = props.imgs
+        links = props.links
+        transition_time = props.transition_time
     }
 
     if (imgs.length)

@@ -1,12 +1,11 @@
-import React, {Fragment, useContext, useEffect, useReducer, useState} from "react";
-import AppWideContext from "../../../store/AppWideContext";
+import React, {Fragment, useEffect, useReducer, useState} from "react";
 import DisplayAddress from "./DisplayAddress";
 import AddressForm from "./AddressForm";
 import Toast from "../../common/Toast";
-import ReactDom from "react-dom";
-import UserLogin from "../../user/login/UserLogin";
 import {connect} from "react-redux";
 import {setShowLogin} from "../../../ReduxStore/reducers/userConfigSlice";
+import ReactDom from "react-dom";
+import UserLogin from "../../user/login/UserLogin";
 
 function ShippingAddress({setActive, appConfig, userData, orderSummary, showLogin, ...props}) {
     const [selectedAddressIndex, setSelectedAddressIndex] = useReducer((state, payload) => {
@@ -22,6 +21,7 @@ function ShippingAddress({setActive, appConfig, userData, orderSummary, showLogi
     const openModal = () => {
         props.setShowLogin(true);
     }
+
     const closeModal = () => {
         props.setShowLogin(false);
     }
@@ -67,7 +67,6 @@ function ShippingAddress({setActive, appConfig, userData, orderSummary, showLogi
 
         }
     }, [userData.userServe.email, userData.userServe.temp_user_id, appConfig.isMobile])
-
     const mobileView = (
         <Fragment>
             {userData.userServe.email ? null : (
@@ -121,6 +120,9 @@ function ShippingAddress({setActive, appConfig, userData, orderSummary, showLogi
             ) : <AddressForm isMobile={true} selectedAddressIndex={selectedAddressIndex} setSelectedAddressIndex={setSelectedAddressIndex} setReview={setReview}
                              setActive={setActive}/>
             }
+            {showLogin && ReactDom.createPortal(
+                <UserLogin setShowLogin={setShowLogin} closeModal={closeModal} isMobile={true}/>,
+                document.getElementById("userband"))}
         </Fragment>
     );
     const browserView = <Fragment>
@@ -149,6 +151,7 @@ function ShippingAddress({setActive, appConfig, userData, orderSummary, showLogi
         <Toast show={show} hideToast={() => setShow(false)} bottom={'50px'}>
             <span>Please Select an Address</span>
         </Toast>
+
     </>
 }
 

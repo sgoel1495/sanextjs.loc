@@ -1,5 +1,4 @@
-import React, {Fragment, useCallback, useContext, useEffect, useReducer, useState} from "react";
-import AppWideContext from "../../store/AppWideContext";
+import React, {Fragment, useCallback, useEffect, useState} from "react";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../common/Toast";
 import Loader from "../common/Loader";

@@ -23,16 +23,17 @@ import OurStores from '../components/our-stores/Index'
 import Media from "../components/media/Index"
 import Reviews from "../components/review-section/Index"
 import {connect} from "react-redux";
+import {fetchCategoryCircle, fetchHomePageSwiper} from "../helpers/fetchHomePageData";
 
 /**
  * @returns {JSX.Element}
  * @constructor
  */
 
-function RootPage({appConfig}) {
+function RootPage({appConfig, homePageSwiper, categoryCircle}) {
 
     const mobileView = <Fragment>
-        <CategorySection/>
+        <CategorySection homePageSwiper={homePageSwiper.mob} categoryCircle={categoryCircle}/>
         <NewArrivalsSection/>
         <OurShop/>
         <LooksSection/>
@@ -45,7 +46,7 @@ function RootPage({appConfig}) {
     </Fragment>;
 
     const browserView = <Fragment>
-        <HomePageHeaderSwiper isMobile={false}/>
+        <HomePageHeaderSwiper isMobile={false} homePageSwiper={homePageSwiper.web}/>
         <SafetyBlock isMobile={false}/>
         <NewArrivalsSwiper isMobile={false}/>
         <WhySalt isMobile={false}/>
@@ -81,3 +82,26 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(RootPage);
+
+
+export async function getServerSideProps() {
+    const homePageSwiper = await fetchHomePageSwiper();
+    const categoryCircle = await fetchCategoryCircle();
+    return {
+        props: {
+            homePageSwiper: {
+                web:{
+                    imgs: homePageSwiper.data.web.imgs,
+                    links: homePageSwiper.data.web.links,
+                    transition_time: homePageSwiper.data.web.transition_time
+                },
+                mob:{
+                    imgs: homePageSwiper.data.mob.imgs,
+                    links: homePageSwiper.data.mob.links,
+                    transition_time: homePageSwiper.data.mob.transition_time
+                }
+            },
+            categoryCircle: categoryCircle
+        }, // will be passed to the page component as props
+    }
+}

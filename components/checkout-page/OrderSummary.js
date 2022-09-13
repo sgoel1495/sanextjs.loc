@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
+import appSettings from "../../store/appSettings";
 
 function OrderSummary({appConfig, userData, userConfig, orderSummary, ...props}) {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -13,6 +14,7 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary, ...props})
     secondDate.setDate(secondDate.getDate() + 12);
     const currCurrency = userConfig.currCurrency;
     const currencySymbol = userConfig.currSymbol;
+    const orderShipping = appSettings("currency_data")[currCurrency]
 
     useEffect(() => {
         let tempGross = 0;
@@ -87,7 +89,7 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary, ...props})
                 <tr>
                     <td>Shipping Charges</td>
                     <td>
-                        <span className={"text-[#00A478]"}>FREE</span>
+                        <span className={"text-[#00A478]"}>{bagTotal >= orderShipping["offer_shipping"] ? "FREE" : orderShipping["shipping_int"]}</span>
                     </td>
                 </tr>
                 <tr>
@@ -139,7 +141,7 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary, ...props})
 
                 <tr>
                     <td>Shipping Charges</td>
-                    <td>FREE</td>
+                    <td>{bagTotal >= orderShipping["offer_shipping"] ? "FREE" : orderShipping["shipping_int"]}</td>
                 </tr>
                 <tr id={"codCharges"}/>
                 </tbody>

@@ -6,7 +6,7 @@ function ShopTailoredSkirtsPage(props){
     return <ShopPage  category={"skirts"} hpid={"shop-skirts"} data={props.data}/>
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     return {
         props: {
             data:await fetchShopData("skirts")

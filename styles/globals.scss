@@ -220,3 +220,35 @@ body.scroll-overflow .navigator {
     right: 0;
     top: 0.375rem;
 }
+
+.loader-bg{
+    background: #000;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-circle{
+    height: 40px;
+    width: 40px;
+    background: #fff;
+    border-radius: 50%;
+    animation: scale 1s ease infinite;
+}
+
+@keyframes scale{
+    0%{
+        opacity: 1;
+        scale: 1;
+    }
+    50%{
+        opacity: .5;
+        scale: 1.5;
+    }
+    100%{
+        opacity: 1;
+        scale:1
+    }
+}

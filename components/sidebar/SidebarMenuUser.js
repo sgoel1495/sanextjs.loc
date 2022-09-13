@@ -1,8 +1,7 @@
 import Image from "next/image";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import ReactDom from "react-dom";
 import UserLogin from "../user/login/UserLogin";
-import AppWideContext from "../../store/AppWideContext";
 import AccountMenu from "../user/AccountMenu";
 import {connect} from "react-redux";
 import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
