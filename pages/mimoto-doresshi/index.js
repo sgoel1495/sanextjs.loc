@@ -7,7 +7,7 @@ function MimotoDoresshiPage(props){
     return <MimotoPage  category={"doresshi"} hpid={"mimoto-doresshi"} data={props.data}/>
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     return {
         props: {
             data:await fetchMimotoData("doresshi")

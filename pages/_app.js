@@ -10,6 +10,7 @@ import {PersistGate} from "redux-persist/integration/react";
 import Script from 'next/script'
 import {persistor, store} from "../ReduxStore/store";
 import AppWrapper from "../components/AppWrapper";
+import AppLoading from "../components/common/AppLoading";
 
 
 function MyApp({Component, pageProps}) {
@@ -25,7 +26,7 @@ function MyApp({Component, pageProps}) {
 
     return <Fragment>
         <Provider store={store}>
-            <PersistGate loading={<></>} persistor={persistor}>
+            <PersistGate loading={<AppLoading/>} persistor={persistor}>
                 <AppWrapper>
                     <Component {...pageProps} />
                 </AppWrapper>

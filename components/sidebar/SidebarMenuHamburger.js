@@ -241,11 +241,7 @@ function HamburgerModal(props) {
                     <div className={`flex-1 overflow-y-auto font-500 pb-40`}>
                         {
                             props.isMobile && <>
-                                <SearchMenu type={"hamMenu"} mobile={true} closeModal={closeModal}/>
-                                <div className={"px-4 py-3 flex justify-start items-center"}>
-                                    <span className={"italic normal-case text-xs text-gray-400 font-600"}>Shipping Outside India ?</span>
-                                    <CurrencySwitcher isMobile={true} type={"hamMenu"} className={"text-[0.6rem] py-0 h-5"}/>
-                                </div>
+                                <SearchMenu type={"hamMenu"} isMobile={true} closeModal={closeModal}/>
                             </>
                         }
                         {props.data.map((item, index) => item.child

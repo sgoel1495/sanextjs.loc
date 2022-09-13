@@ -22,9 +22,8 @@ import {connect} from "react-redux";
 function MimotoPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     //all paths start with shop-
-    const {category, hpid, appConfig} = props
+    const {category, hpid, appConfig, data} = props
 
-    const [data, setData] = useState(props.data);
     const [visibleData, setVisibleData] = useState([])
     const initVisibleData = useCallback(() => {
         const filterActive = props.filter.length > 0
@@ -144,7 +143,7 @@ function MimotoPage(props) {
 const mapStateToProps = (state) => {
     return {
         appConfig: state.appConfig,
-        filter:state.filters.filter,
+        filter: state.filters.filter,
         refreshFilter: state.filters.refreshFilter
     }
 }

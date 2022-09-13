@@ -3,15 +3,15 @@ import MimotoPage from "../../components/mimoto-page/MimotoPage";
 import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 
 
-function MimotoKapaasPage(props){
-    return <MimotoPage  category={"kapaas"} hpid={"mimoto-kapaas"} data={props.data}/>
+function MimotoKouyouPage(props){
+    return <MimotoPage  category={"kouyou"} hpid={"mimoto-kouyou"} data={props.data}/>
 }
 export async function getServerSideProps() {
     return {
         props: {
-            data:await fetchMimotoData("kapaas")
+            data:await fetchMimotoData("kouyou")
         }
     }
 }
 
-export default MimotoKapaasPage
+export default MimotoKouyouPage

@@ -6,7 +6,7 @@ import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 function MimotoOriPage(props){
     return <MimotoPage  category={"ori"} hpid={"mimoto-ori"} data={props.data}/>
 }
-export async function getStaticProps() {
+export async function getServerSideProps() {
     return {
         props: {
             data:await fetchMimotoData("ori")

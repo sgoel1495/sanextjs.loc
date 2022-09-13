@@ -102,7 +102,7 @@ function EndOfSeasonSale(props) {
 
 export default EndOfSeasonSale;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const fetchData = async () => {
         let gotData = false;
         const callObject = await apiCall("getSaleItems", process.env.API_TOKEN, {"sale_name": "end of season sale"})
@@ -116,7 +116,6 @@ export async function getStaticProps() {
     return {
         props: {
             data: await fetchData()
-        },
-        revalidate: 50
+        }
     }
 }

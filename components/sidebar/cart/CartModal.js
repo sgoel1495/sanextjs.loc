@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import Image from "next/image";
 import ProductCartView from "../../common/ProductCartView/ProductCartView";
@@ -104,7 +103,7 @@ function CartModal(props) {
                                 Shopping
                             </a>
                         </Link>
-                        <Link href="/users/checkoutpage">
+                        <Link href={props.userData.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
                             <a className="flex-1 text-white bg-black w-full px-1 py-1 text-xs">
                                 PROCEED&nbsp;TO<br/>
                                 CHECKOUT

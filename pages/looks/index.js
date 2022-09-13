@@ -83,7 +83,7 @@ function LooksPage(props) {
 
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const fetchData = async () => {
         let gotData = false;
         const callObject = await apiCall("getLooksData", process.env.API_TOKEN, { look_id: "", limit: 10000, skip: 0 })

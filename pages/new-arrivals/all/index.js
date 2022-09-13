@@ -88,7 +88,7 @@ function NewArrivalsAllPage(props) {
     </>
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const fetchData = async () => {
         let gotData = false;
         const callObject = await apiCall("getProducts", process.env.API_TOKEN, {

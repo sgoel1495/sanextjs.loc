@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import Image from "next/image";
 import ReactDom from "react-dom";
 import SearchModal from "./SearchModal";
-import CurrencySwitcher from "../navbar/CurrencySwitcher";
 
 /**
  * @params {isMobile} props
@@ -37,7 +36,10 @@ function SearchMenu(props) {
             {
                 props.type === "hamMenu" ?
                     <div className={"px-4 py-3 flex"}>
-                        <div className={"border-b-2 p-1 w-full text-xs border-gray-600"} onClick={() => setShowMenuSearch(true)}>
+                        <div className={"border-b-2 p-1 w-full text-xs border-gray-600"} onClick={() => {
+                            setShowMenuSearch(true)
+                            props.closeModal()
+                        }}>
                             search
                         </div>
                         <button onClick={props.closeModal} className={"float-right ml-8"}>
@@ -63,7 +65,7 @@ function SearchMenu(props) {
                     </span>
             }
             {showMenuSearch && ReactDom.createPortal(
-                <SearchModal closeModal={closeModal.bind(this)} isMobile={props.isMobile}/>,
+                <SearchModal closeModal={closeModal} isMobile={props.isMobile}/>,
                 document.getElementById("searchmenu"))
             }
         </>

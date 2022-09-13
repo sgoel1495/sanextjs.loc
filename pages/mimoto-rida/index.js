@@ -6,7 +6,7 @@ import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 function MimotoRidaPage(props){
     return <MimotoPage  category={"rida"} hpid={"mimoto-rida"} data={props.data}/>
 }
-export async function getStaticProps() {
+export async function getServerSideProps() {
     return {
         props: {
             data:await fetchMimotoData("rida")

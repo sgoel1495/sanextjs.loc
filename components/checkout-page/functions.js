@@ -50,11 +50,12 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
         index = 0;
         await updateAddressForOrder(0, userData, orderData, apiToken, setOrderSummary);
     }
-    await apiCall("savePayment", apiToken, payload)
+    let resp = await apiCall("savePayment", apiToken, payload)
     setOrderSummary({
         ...orderData.orderSummary,
         "address": userData.userAddresses[index],
         "address_index": index,
         "payment": payload.order
     });
+    return resp
 }

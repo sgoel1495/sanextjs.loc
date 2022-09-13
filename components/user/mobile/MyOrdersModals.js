@@ -11,7 +11,8 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
     const [comment, setComment] = React.useState("")
     const [userAddresses, setUserAddresses] = React.useState([])
     const [address, setAddress] = React.useState("-1")
-    const [reason,setReason] = React.useState("")
+    const [reason, setReason] = React.useState("")
+    const [trackingData, setTrackingData] = React.useState({})
 
     useEffect(() => {
         apiCall("userAddresses", appConfig.apiToken, {user: {email: userData.userServe.email}})
@@ -41,6 +42,20 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                     setFabric(resp.review.fabric_rating)
                     setService(resp.review.service_rating)
                     setComment(resp.review.review)
+                }
+            })
+        }
+        if (index === 4) {
+            body = {
+                "tracking_params": {
+                    "order_id": data.order_id,
+                    "item_index": itemIndex
+                }
+            }
+            apiCall("getTrackingInfo", appConfig.apiToken, body).then(resp => {
+                console.log(resp)
+                if (resp.status === 200) {
+                    setTrackingData(resp.track_info)
                 }
             })
         }
@@ -218,7 +233,7 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                             type="text"
                             placeholder={"Any specific reason you want to cancel your order?*"}
                             className={" mt-10 placeholder:text-black bg-[#F1F2F3] text-sm"}
-                            onChange={(e)=>setReason(e.target.value)}
+                            onChange={(e) => setReason(e.target.value)}
                             value={reason}
                         />
                         <div className={"grid grid-cols-2 place-items-start"}>
@@ -252,29 +267,40 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                         X
                     </span>
                     <div className={"flex flex-col "}>
-                        <div className={"mt-10 uppercase items-center justify-center flex text-lg text-[#333] font-600 px-10"}>
+                        <div className={"mt-10 uppercase items-center justify-center flex text-lg text-[#333] font-600 px-10 text-center mb-5"}>
                             Track your order (#{data.order_id})
                         </div>
-                        <span className="text-xs mt-1">
-                            {data.date}
-                        </span>
-                        <div className="flex gap-2 mt-4">
-                            <span className="text-gray-800 text-xs">
-                                01:30:47&nbsp;AM
-                            </span>
-                            <span className="border-r-[1px] border-black"/>
-                            <span>
-                                <h6>Order Confirmed</h6>
-                                <p className="text-gray-800 text-xs">Thank you! We are excited to serve you!</p>
-                            </span>
-                        </div>
+                        {
+                            Object.keys(trackingData).map((date, index) => {
+                                return <div key={index}>
+                                    <span className="text-xs mt-1">
+                                        {date}
+                                    </span>
+                                    {
+                                        Object.keys(trackingData[date]).map((time, index) => {
+                                            return <div className="flex gap-2 mt-4" key={index}>
+                                                <span className="text-gray-800 text-xs">
+                                                    {time}
+                                                </span>
+                                                <span className="border-r-[1px] border-black"/>
+                                                <span>
+                                                    <h6>{trackingData[date][time].split("@")[0]}</h6>
+                                                    <p className="text-gray-800 text-xs">{trackingData[date][time].split("@")[1]}</p>
+                                                </span>
+                                            </div>
+                                        })
+                                    }
+
+                                </div>
+                            })
+                        }
                     </div>
                 </>
             ),
             style: "p-3 h-[60vh]"
         }
     ]
-    console.log(data)
+
     return (
         <div className={"bg-black/60 h-full w-full fixed inset-0 z-50 grid place-items-center"}>
             <div

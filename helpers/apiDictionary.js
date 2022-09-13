@@ -687,6 +687,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+        case  "getTrackingInfo":
+            url += "/get_tracking_info"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
 
         default:
             url = null;

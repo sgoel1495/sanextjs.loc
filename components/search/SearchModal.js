@@ -5,6 +5,7 @@ import Image from "next/image";
 import AppWideContext from "../../store/AppWideContext";
 import Link from "next/link";
 import {connect} from "react-redux";
+import currencyFormatter from "../../helpers/currencyFormatter";
 
 function SearchModal(props) {
     const {closeModal} = props;
@@ -14,6 +15,8 @@ function SearchModal(props) {
     const [refresh, setRefresh] = useState(false)
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
+    const currCurrency = props.userConfig.currCurrency;
+    const curr = currCurrency.toUpperCase();
 
     const searchExecution = async () => {
         if (searchTerm.length < 3) {
@@ -44,8 +47,7 @@ function SearchModal(props) {
                         </div>
                         <p className="text-xs font-600">{product.name}</p>
                         <p className={`text-xs`}>
-                            {props.userConfig.currSymbol}
-                            {(props.userConfig.currCurrency === "inr") ? product.price : product.usd_price}
+                            {currencyFormatter(curr).format((currCurrency === "inr") ? product.price : product.usd_price).split(".")[0]}
                         </p>
                     </a>
                 </Link>
@@ -57,7 +59,7 @@ function SearchModal(props) {
     const mobileView = (
         <div className={`fixed inset-0 z-50 bg-white/90`}>
             <div className="container">
-                <div onClick={searchExecution} className={`mt-12 flex mx-3`}>
+                <div className={`mt-12 flex mx-3`}>
                     <input
                         type="text"
                         name="searchInput"
@@ -66,7 +68,7 @@ function SearchModal(props) {
                         className={`flex-1 text-sm border-0 border-b border-black focus:border-black bg-transparent focus:ring-offset-0 focus:ring-0 focus:ring-offset-transparent focus:shadow-none`}
                         onChange={e => setSearchTerm(e.target.value)}
                     />
-                    <button className={`bg-black text-sm text-white px-4 py-2`}>
+                    <button className={`bg-black text-sm text-white px-4 py-2`} onClick={searchExecution}>
                         SEARCH
                     </button>
                 </div>
@@ -85,9 +87,9 @@ function SearchModal(props) {
         </div>);
 
     const browserView = (
-        <div className={`fixed inset-0 z-50 bg-white/90 overflow-y-scroll`}>
+        <div className={`fixed inset-0 z-50 bg-white/90`}>
             <div className="w-10/12 mx-auto">
-                <div onClick={searchExecution} className={`mt-10 flex`}>
+                <div className={`mt-10 flex`}>
                     <input
                         type="text"
                         name="searchInput"
@@ -96,7 +98,7 @@ function SearchModal(props) {
                         className={`flex-1 text-xl border-0 border-b border-black focus:border-black bg-transparent focus:ring-offset-0 focus:ring-0 focus:ring-offset-transparent focus:shadow-none`}
                         onChange={e => setSearchTerm(e.target.value)}
                     />
-                    <button className={`bg-black text-white px-8`}>
+                    <button className={`bg-black text-white px-8`} onClick={searchExecution}>
                         SEARCH
                     </button>
                 </div>
@@ -108,9 +110,12 @@ function SearchModal(props) {
                 </button>
             </div>
             <p className="text-lg font-500 text-black/60 text-center my-3">{data.length} results found</p>
-            <div className="px-16 pb-16 grid grid-cols-6 gap-x-10 gap-y-4">
-                {showResult()}
+            <div className={"overflow-auto h-full"}>
+                <div className="px-16 pb-16 grid grid-cols-6 gap-x-10 gap-y-4">
+                    {showResult()}
+                </div>
             </div>
+
         </div>);
 
     return <Fragment>

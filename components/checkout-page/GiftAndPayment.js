@@ -1,15 +1,16 @@
 import Link from "next/link";
 import Toast from "../common/Toast";
 import ReactDOM from "react-dom";
-import React, {Fragment,  useEffect, useReducer, useState} from "react";
+import React, {Fragment, useEffect, useReducer, useState} from "react";
 import {savePayment, updateAddressForOrder} from "./functions";
 import OtpModal from "./OtpModal";
 import {connect} from "react-redux";
 import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
+import {useRouter} from "next/router";
 
 function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummary, currentOrderId, ...props}) {
     const currencySymbol = userConfig.currSymbol;
-
+    const router = useRouter();
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
     const [isGift, setIsGift] = useReducer((state) => {
@@ -70,16 +71,26 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 return
             }
         }
-        await savePayment(isGift, giftData, payMode, useWallet, userData, {orderSummary, currentOrderId}, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary)
-        if (payMode === "COD") {
-            setShowOTPModal(true)
+        let resp = await savePayment(isGift, giftData, payMode, useWallet, userData, {
+            orderSummary,
+            currentOrderId
+        }, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary)
+        if (resp.status === 200) {
+            if (payMode === "COD") {
+                setShowOTPModal(true)
+            } else {
+                router.push({
+                    pathname: "/order/CCportal",
+                    query: {token: resp.encrypted_data}
+                }, "/order/CCportal")
+            }
         }
     }
 
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
-    console.log(appConfig.isMobile)
+
     const mobileView = (
         <Fragment>
             <p className='text-l text-center font-bold mb-2'>How do you want to pay ?</p>
@@ -212,7 +223,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             </div>
             {
                 !appConfig.isMobile && payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase'
-                                                      onClick={placeOrder}>
+                                                                             onClick={placeOrder}>
                     {payMode === "COD" ? "verify otp for cod" : "Place order & pay"}
                 </div>, document.getElementById("paymentButton"))
             }

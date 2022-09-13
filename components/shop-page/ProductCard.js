@@ -137,7 +137,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
                         <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={true}
-                                            outOfStock={!isInStock(prod)}/>
+                                            outOfStock={!isInStock(prod)} />
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
