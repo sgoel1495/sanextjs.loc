@@ -272,7 +272,7 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                         </div>
                         {
                             Object.keys(trackingData).map((date, index) => {
-                                return <>
+                                return <div key={index}>
                                     <span className="text-xs mt-1">
                                         {date}
                                     </span>
@@ -291,7 +291,7 @@ const MyOrdersModals = ({data, index, itemIndex, setShowModal, setToastMsg, isMo
                                         })
                                     }
 
-                                </>
+                                </div>
                             })
                         }
                     </div>
