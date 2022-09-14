@@ -6,11 +6,12 @@ import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 function MimotoNatsuPage(props){
     return <MimotoPage  category={"natsu"} hpid={"mimoto-natsu"} data={props.data}/>
 }
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data:await fetchMimotoData("natsu")
-        }
+        },
+        revalidate: 3600,
     }
 }
 

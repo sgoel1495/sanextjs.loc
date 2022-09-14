@@ -7,11 +7,12 @@ function ShopTunicsPage(props){
     return <ShopPage  category={"tunics"} hpid={"shop-tunics"} data={props.data}/>
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data:await fetchShopData("tunics")
-        }
+        },
+        revalidate: 3600,
     }
 }
 export default ShopTunicsPage

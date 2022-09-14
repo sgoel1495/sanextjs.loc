@@ -6,11 +6,12 @@ import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 function MimotoKapaasPage(props){
     return <MimotoPage  category={"kapaas"} hpid={"mimoto-kapaas"} data={props.data}/>
 }
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data:await fetchMimotoData("kapaas")
-        }
+        },
+        revalidate: 3600,
     }
 }
 

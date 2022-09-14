@@ -88,7 +88,7 @@ function NewArrivalsAllPage(props) {
     </>
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     const fetchData = async () => {
         let gotData = false;
         const callObject = await apiCall("getProducts", process.env.API_TOKEN, {
@@ -107,7 +107,8 @@ export async function getServerSideProps() {
         props: {
             data: newData.response,
             carousal: newData.new_arr_carousal
-        }
+        },
+        revalidate: 3600,
     }
 }
 

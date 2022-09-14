@@ -6,11 +6,12 @@ function ShopDresses(props){
     return <ShopPage  category={"dresses"} hpid={"shop-dresses"} data={props.data}/>
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data:await fetchShopData("dresses")
-        }
+        },
+        revalidate: 3600,
     }
 }
 
