@@ -46,7 +46,7 @@ function RootPage({appConfig, homePageSwiper, categoryCircle}) {
     </Fragment>;
 
     const browserView = <Fragment>
-        <HomePageHeaderSwiper isMobile={false} homePageSwiper={homePageSwiper.web}/>
+        <HomePageHeaderSwiper isMobile={false} {...homePageSwiper.web}/>
         <SafetyBlock isMobile={false}/>
         <NewArrivalsSwiper isMobile={false}/>
         <WhySalt isMobile={false}/>
