@@ -6,11 +6,12 @@ import fetchMimotoData from "../../components/mimoto-page/fetchMimotoData";
 function MimotoNoorPage(props){
     return <MimotoPage  category={"noor"} hpid={"mimoto-noor"} data={props.data}/>
 }
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data:await fetchMimotoData("noor")
-        }
+        },
+        revalidate: 3600,
     }
 }
 

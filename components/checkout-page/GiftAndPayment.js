@@ -222,7 +222,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 </label>
             </div>
             {
-                !appConfig.isMobile && payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase'
+                !appConfig.isMobile && payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
                                                                              onClick={placeOrder}>
                     {payMode === "COD" ? "verify otp for cod" : "Place order & pay"}
                 </div>, document.getElementById("paymentButton"))

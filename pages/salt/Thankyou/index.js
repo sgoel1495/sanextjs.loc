@@ -3,7 +3,6 @@ import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import {isMobile} from "react-device-detect";
 import SaltIcon from "../../../components/navbar/SaltIcon";
-import AppWideContext from "../../../store/AppWideContext";
 import Link from "next/link";
 import Footer from "../../../components/footer/Footer";
 import {useRouter} from "next/router";

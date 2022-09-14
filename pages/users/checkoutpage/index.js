@@ -22,6 +22,11 @@ function UsersCheckoutPage({appConfig, userData, currentOrderId, orderSummary, .
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
     const [active, setActive] = useState(1);
+    const [show, setShow] = useState(false)
+
+    useEffect(() => {
+        setShow(true)
+    }, [])
 
     useEffect(() => {
         if (!currentOrderId || currentOrderId === "")
@@ -101,7 +106,9 @@ function UsersCheckoutPage({appConfig, userData, currentOrderId, orderSummary, .
                 <div className='flex-[8]'>
                     <ShippingAddress/>
                     <PromoCode/>
-                    <GiftAndPayment/>
+                    {
+                        show && <GiftAndPayment/>
+                    }
                     <ReviewOrder/>
                 </div>
                 <div className='flex-[4]'>

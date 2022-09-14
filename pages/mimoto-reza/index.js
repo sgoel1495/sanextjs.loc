@@ -7,11 +7,12 @@ function MimotoRidaPage(props) {
     return <MimotoPage category={"reza"} hpid={"mimoto-reza"} data={props.data}/>
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data: await fetchMimotoData("reza")
-        }
+        },
+        revalidate: 3600,
     }
 }
 

@@ -7,11 +7,12 @@ function MimotoChanderiPage(props){
     return <MimotoPage  category={"chanderi"} hpid={"mimoto-chanderi"} data={props.data}/>
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data:await fetchMimotoData("chanderi")
-        }
+        },
+        revalidate: 3600,
     }
 }
 

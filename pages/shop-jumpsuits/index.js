@@ -6,11 +6,12 @@ function ShopJumpsuitsPage(props){
     return <ShopPage  category={"jumpsuits"} hpid={"shop-jumpsuits"} data={props.data}/>
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             data:await fetchShopData("jumpsuits")
-        }
+        },
+        revalidate: 3600,
     }
 }
 
