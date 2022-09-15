@@ -1,9 +1,7 @@
-import AppWideContext from "../../store/AppWideContext";
-import React, {Fragment, useContext, useEffect, useState, useCallback} from "react";
+import React from "react";
 import PageHead from "../PageHead";
 import Header from "../navbar/Header";
 import DesktopView from "./desktop-view/DesktopView";
-import {apiDictionary} from "../../helpers/apiDictionary";
 import MobileView from "./mobile-view/MobileView";
 import useNavControl from "../../hooks/useNavControl";
 import {connect} from "react-redux";
