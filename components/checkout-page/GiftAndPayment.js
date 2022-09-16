@@ -81,7 +81,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             } else {
                 router.push({
                     pathname: "/order/CCportal",
-                    query: {token: resp.encrypted_data}
+                    query: {token: resp.encrypted_data,access_code:resp.access_code}
                 }, "/order/CCportal")
             }
         }
@@ -113,7 +113,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            checked={(payMode === "COD")}
+                            checked={payMode === "COD"}
                             onChange={() => setPayMode("COD")}
                         />
                         <span className='text-[#777] font-600'>Cash on Delivery</span>
@@ -123,7 +123,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            checked={(payMode === "CC")}
+                            checked={payMode === "CC"}
                             onChange={() => setPayMode("CC")}
                         />
                         <span className='text-[#777] font-600'>Cards</span>
@@ -133,8 +133,8 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            // checked={!!(payMode === "DC")}
-                            // onChange={() => updatePayMode("DC")}
+                            checked={payMode === "DC"}
+                            onChange={() => setPayMode("DC")}
                         />
                         <span className='text-[#777] font-600'>Netbanking</span>
                     </label>
@@ -143,8 +143,8 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            // checked={!!(payMode === "DC")}
-                            // onChange={() => updatePayMode("DC")}
+                            checked={payMode === "UPI"}
+                            onChange={() => setPayMode("UPI")}
                         />
                         <span className='text-[#777] font-600'>UPI</span>
                     </label>
@@ -153,8 +153,8 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             type='radio'
                             name='paymentMode'
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            // checked={!!(payMode === "DC")}
-                            // onChange={() => updatePayMode("DC")}
+                            checked={payMode === "Paytm"}
+                            onChange={() => setPayMode("Paytm")}
                         />
                         <span className='text-[#777] font-600'>Paytm</span>
                     </label>
@@ -195,7 +195,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                     />
                     <span className='text-[#777] font-600'>
                         Cash on Delivery
-                        <Link href='/salt/shipping-returns'>
+                        <Link href={'/salt/shipping-returns'}>
                             <a className='block text-[10px] text-black underline ml-3'>COD Refund Policy</a>
                         </Link>
                     </span>
