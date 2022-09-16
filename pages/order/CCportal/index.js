@@ -15,7 +15,7 @@ const Index = () => {
                 <Image src={WEBASSETS + "/assets/SALT_logo.png"} alt='fav' width={150} height={60}/>
             </div>
             <iframe width={"100%"} style={{height: "90vh"}} frameBorder="0" id="paymentFrame"
-                    src={"https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=130447&encRequest=" + router.query.token + "&access_code=AVNT04JE31CN09TNNC"}>
+                    src={"https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=130447&encRequest=" + router.query.token + "&access_code="+router.query.access_code}>
             </iframe>
         </div>
     );
