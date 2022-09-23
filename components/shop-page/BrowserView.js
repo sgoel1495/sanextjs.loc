@@ -58,5 +58,6 @@ const BrowserView = React.forwardRef(({hpid, category, visibleData, data, total,
         </>
     );
 });
+BrowserView.displayName = 'BrowserView';
 
 export default BrowserView;

@@ -7,6 +7,7 @@ import CategoryHeaderMobile from "./CategoryHeaderMobile";
 import Loader from "../common/Loader";
 import Footer from "../footer/Footer";
 import {useRouter} from "next/router";
+import BrowserView from "./BrowserView";
 
 const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, skip}, ref) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -87,5 +88,7 @@ const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, 
         <Footer isMobile={true}/>
     </div>
 });
+
+MobileView.displayName = 'MobileView';
 
 export default MobileView;
