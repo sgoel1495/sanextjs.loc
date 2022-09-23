@@ -4,7 +4,7 @@ import ShopPage from "../../components/shop-page/ShopPage";
 
 import fetchShopData from "../../components/shop-page/fetchShopData";
 function ShopOuterwearPage(props){
-    return <ShopPage  category={"outerwear"} hpid={"shop-pants"} data={props.data}/>
+    return <ShopPage  category={"tailored-pants"} hpid={"shop-tailored-pants"} data={props.data}/>
 }
 
 export async function getStaticProps() {

@@ -7,7 +7,7 @@
 
 export default function getHeaderData(url, id) {
     const headerObject = {
-        "webTitle": "Luxury Business Casuals &amp; Formals - Dresses,Tops,Pants | Salt Attire",
+        "webTitle": "Luxury Business Casuals & Formals - Dresses,Tops,Pants | Salt Attire",
         "webDescription": "SALT Attire brings to you the sharpest assortment of 9to9 clothing, formals and business casuals for women. We offer standard sizes &amp; tailored fits. The most loved brand by women, we offer premium quality, finish &amp; flattering fits.",
         "webKeywords": "Workwear For Women, Ladies Office-Wear, Ladies Workwear, Business Suits For Women, Formal Western Clothing For Women, Office Wear For Women, Business Attire For Women, Business Casual Clothes For Women, Women Formal Wear, Casual Clothes For Women, Formal Outfits For Women, Work Clothes For Women",
         "webCanonical": "https://saltattire.com",

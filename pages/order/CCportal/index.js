@@ -5,7 +5,11 @@ import {useRouter} from "next/router";
 const Index = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
-
+    const onRedirect = (e) => {
+        if (e.target.src.includes("saltattire")) {
+            router.replace(e.target.src)
+        }
+    }
     return (
         <div>
             <div className='relative mt-5 mx-3 text-center'>
@@ -15,7 +19,8 @@ const Index = () => {
                 <Image src={WEBASSETS + "/assets/SALT_logo.png"} alt='fav' width={150} height={60}/>
             </div>
             <iframe width={"100%"} style={{height: "90vh"}} frameBorder="0" id="paymentFrame"
-                    src={"https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=130447&encRequest=" + router.query.token + "&access_code="+router.query.access_code}>
+                    onLoad={onRedirect}
+                    src={"https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=130447&encRequest=" + router.query.token + "&access_code=" + router.query.access_code}>
             </iframe>
         </div>
     );

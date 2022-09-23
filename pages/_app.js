@@ -32,6 +32,7 @@ function MyApp({Component, pageProps}) {
                 </AppWrapper>
             </PersistGate>
         </Provider>
+        <Script src={"https://checkout.razorpay.com/v1/checkout.js"}/>
         <Script type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({

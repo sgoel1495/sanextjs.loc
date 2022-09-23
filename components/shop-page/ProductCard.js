@@ -18,6 +18,9 @@ const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
         <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
         {
+            props.extraUrl && <Image src={props.extraUrl} alt={props.name} layout={`fill`} objectFit={`cover`} className={props.expandShop?"":"!hidden"}/>
+        }
+        {
             props.outOfStock && <span className={"absolute bg-white text-xs text-[#C69565] left-[50%] top-[50%] px-2 translate-y-[-50%] translate-x-[-50%]"}>
                     SOLD OUT
             </span>
@@ -137,7 +140,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
                         <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={true}
-                                            outOfStock={!isInStock(prod)} />
+                                            outOfStock={!isInStock(prod)}/>
                     </div>
                     <div className={`leading-none py-2`}>
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
@@ -181,8 +184,10 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <Link href={"/" + prod.asset_id}>
                         <a>
                             <ShopDataBlockImage
-                                src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.new.jpg" : "/new.jpg")}
-                                alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={portrait}/>
+                                src={WEBASSETS + "/assets/" + prod.asset_id + "/new.jpg"}
+                                alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={portrait} expandShop={expandShop}
+                                extraUrl={WEBASSETS + "/assets/" + prod.asset_id + "/mo.new.jpg"}
+                            />
                         </a>
                     </Link>
                     {(showSize)

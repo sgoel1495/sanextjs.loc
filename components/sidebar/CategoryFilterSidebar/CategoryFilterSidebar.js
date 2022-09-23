@@ -102,7 +102,7 @@ function CategoryFilterSidebar(props) {
     const browserView = (
         <>
             <button onClick={() => setShowFilterModal(true)}
-                    className={`absolute inset-y-0 right-0 py-2 text-sm font-500 uppercase leading-none flex items-center gap-x-1`}>
+                    className={`inset-y-0 right-0 py-2 text-sm font-500 uppercase leading-none flex items-center gap-x-1`}>
                 Filters
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-3 h-3" viewBox="0 0 16 16">
                     <path fillRule="evenodd"

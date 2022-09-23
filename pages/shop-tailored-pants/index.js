@@ -3,7 +3,7 @@ import React from "react";
 import ShopPage from "../../components/shop-page/ShopPage";
 import fetchShopData from "../../components/shop-page/fetchShopData";
 function ShopTailoredPantsPage(props){
-    return <ShopPage  category={"pants"} hpid={"shop-tailored-pants"} data={props.data}/>
+    return <ShopPage  category={"tailored-pants"} hpid={"shop-tailored-pants"} data={props.data}/>
 }
 
 export async function getStaticProps() {

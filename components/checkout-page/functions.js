@@ -13,7 +13,7 @@ export const updateAddressForOrder = async (index, userData, orderData, apiToken
     return await apiCall("deliveryAddress", apiToken, queryObject);
 };
 
-export const savePayment = async (isGift, giftData, payMode, useWallet, userData, orderData, apiToken, currCurrency, setOrderSummary) => {
+export const savePayment = async (isGift, giftData, payMode, useWallet, userData, orderData, apiToken, currCurrency, setOrderSummary, payWith = "") => {
     let payload = {
         "user": getUserObject(userData),
         "order": {
@@ -29,6 +29,7 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
             "curr_currency": currCurrency,
             "ex_rate": 1
         },
+        "payment_with": payWith
     }
     let gross = orderData.orderSummary.gross;
     if (payMode === "COD") {
@@ -58,4 +59,16 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
         "payment": payload.order
     });
     return resp
+}
+
+export const saveFinalPayment = async (userData, order_id, razorpayResp, apiToken) => {
+    let payload = {
+        "user": getUserObject(userData),
+        "order": {
+            "order_id": order_id,
+            "razorpay_response": razorpayResp
+        },
+        "payment_with": "razorpay",
+    }
+    return await apiCall("saveFinalPayment", apiToken, payload)
 }
