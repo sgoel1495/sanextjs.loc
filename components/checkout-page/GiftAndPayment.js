@@ -2,14 +2,18 @@ import Link from "next/link";
 import Toast from "../common/Toast";
 import ReactDOM from "react-dom";
 import React, {Fragment, useEffect, useReducer, useState} from "react";
-import {savePayment, updateAddressForOrder} from "./functions";
+import {saveFinalPayment, savePayment, updateAddressForOrder} from "./functions";
 import OtpModal from "./OtpModal";
 import {connect} from "react-redux";
 import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
 import {useRouter} from "next/router";
+import razorpayLogo from "../../public/assets/images/razorpay_logo.svg"
+import ccavenue from "../../public/assets/images/ccavenue.png"
+import Image from "next/image";
 
 function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummary, currentOrderId, ...props}) {
     const currencySymbol = userConfig.currSymbol;
+    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
     const [message, setMessage] = useState(null);
     const [show, setShow] = useState(false);
@@ -26,7 +30,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         gift_msg_to: orderSummary.payment ? orderSummary.payment.gift_msg_to : "",
         gift_msg_from: orderSummary.payment ? orderSummary.payment.gift_msg_from : ""
     });
-
+    const [loading, setLoading] = useState(false)
     const [payMode, setPayMode] = useState(orderSummary.payment ? orderSummary.payment.payment_mode : false);
     const [useWallet, setUseWallet] = useReducer((state) => {
         return !state
@@ -62,8 +66,47 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         setActive(5);
     }
 
+    const payRazorPay = (order_id, amount) => {
+        let options = {
+            "key": process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+            "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": userConfig.currCurrency.toUpperCase(),
+            "name": "Saltattire",
+            "description": "Bespoke & Custom Clothing",
+            "image": WEBASSETS + `/assets/images/SALT_attire_logo.png`,
+            "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                saveFinalPayment(userData, currentOrderId, response, appConfig.apiToken).then((resp) => {
+                    if (resp.status === 200) {
+                        router.push("/salt/Thankyou?id=" + resp.order_id)
+                    } else {
+                        setLoading(false)
+                    }
+                })
+            },
+            "modal": {
+                "ondismiss": function () {
+                    setLoading(false)
+                }
+            },
+            "prefill": {
+                "name": userData.userServe.user_name,
+                "email": userData.userServe.email,
+                "contact": userData.userServe.phone_number
+            },
+            "theme": {
+                "color": "#fffaf7"
+            }
+        };
+        let rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            setLoading(false)
+        });
+        rzp1.open()
+    }
+
     //forBrowser
-    const placeOrder = async () => {
+    const placeOrder = async (payWith) => {
         if (isGift) {
             if (!giftData.gift_msg) {
                 setShow(true)
@@ -71,19 +114,25 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 return
             }
         }
+        setLoading(true)
         let resp = await savePayment(isGift, giftData, payMode, useWallet, userData, {
             orderSummary,
             currentOrderId
-        }, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary)
-        if (resp.status === 200) {
+        }, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary, payWith)
+        if (resp.status === 200 || resp.msg === "Order Placed") {
             if (payMode === "COD") {
                 setShowOTPModal(true)
             } else {
-                router.push({
-                    pathname: "/order/CCportal",
-                    query: {token: resp.encrypted_data,access_code:resp.access_code}
-                }, "/order/CCportal")
+                if (payWith === "razorpay")
+                    payRazorPay(resp.razorpay_data.attributes.id, resp.razorpay_data.attributes.amount_due)
+                else
+                    router.push({
+                        pathname: "/order/CCportal",
+                        query: {token: resp.encrypted_data, access_code: resp.access_code}
+                    }, "/order/CCportal")
             }
+        } else {
+            setLoading(false)
         }
     }
 
@@ -222,10 +271,26 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 </label>
             </div>
             {
-                !appConfig.isMobile && payMode && ReactDOM.createPortal(<div className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
-                                                                             onClick={placeOrder}>
-                    {payMode === "COD" ? "verify otp for cod" : "Place order & pay"}
-                </div>, document.getElementById("paymentButton"))
+                !appConfig.isMobile && payMode && ReactDOM.createPortal(<>
+                    {payMode === "COD" ?
+                        <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
+                                onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                            verify otp for cod
+                        </button>
+                        :
+                        <>
+                            <button className='flex my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center'
+                                    onClick={() => placeOrder("razorpay")} disabled={loading}>
+                                <span className={"mr-2"}>Place order with</span><Image src={razorpayLogo} width={95} height={20}/>
+                            </button>
+                            <button className='flex mb-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center'
+                                    onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                                <span className={"mr-2"}>Place order with</span><Image src={ccavenue} width={96} height={15}/>
+                            </button>
+                        </>
+                    }
+
+                </>, document.getElementById("paymentButton"))
             }
             {
                 !appConfig.isMobile && payMode === "COD" && ReactDOM.createPortal(<>
