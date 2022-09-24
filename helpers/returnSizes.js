@@ -1,7 +1,8 @@
 export default function returnSizes(prod) {
     let sizeSymbols = []
     if (["sweaters", "scarves", "belts", "masks", "jewellery"].includes(prod.category)) {
-        sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0).map((item) => item.toUpperCase());
+        console.log(prod)
+        sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0 && !prod.hide_sizes.includes(key)).map((item) => item.toUpperCase());
         if (["sweaters", "belts"].includes(prod.category)) {
             let index = sizeSymbols.indexOf("F")
             if (index > -1) {
@@ -33,8 +34,8 @@ export function isTailored(prod) {
     return !["sweaters", "scarves", "belts", "masks", "jewellery"].includes(prod.category)
 }
 
-function checkInventoryWithoutF(prod){
-    let inventory = Object.keys(prod.inventory).filter(key => prod.inventory[key] > 0)
+function checkInventoryWithoutF(prod) {
+    let inventory = Object.keys(prod.inventory).filter(key => prod.inventory[key] > 0 && !prod.hide_sizes.includes(key))
     let index = inventory.indexOf("f")
     if (index > -1) {
         inventory.splice(index, 1)
@@ -52,12 +53,12 @@ export function isInStock(prod) {
             return false
         }
     } else if (["sweaters", "belts"].includes(prod.category)) {
-       if(checkInventoryWithoutF(prod)){
-           return false
-       }
+        if (checkInventoryWithoutF(prod)) {
+            return false
+        }
     } else {
         if (prod.is_sale) {
-            if(checkInventoryWithoutF(prod)){
+            if (checkInventoryWithoutF(prod)) {
                 return false
             }
         } else if (!prod.size_avail) {
