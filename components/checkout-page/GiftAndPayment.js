@@ -62,7 +62,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             setMessage("Please select a payment mode")
             return
         }
-        savePayment(isGift, giftData, payMode, useWallet, userData, {orderSummary, currentOrderId}, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary)
+        savePayment(isGift, giftData, payMode, useWallet, userData, {orderSummary, currentOrderId}, appConfig.apiToken, userConfig.currCurrency, props.setOrderSummary, "razorpay")
         setActive(5);
     }
 
