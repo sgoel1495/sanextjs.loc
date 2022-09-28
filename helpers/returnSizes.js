@@ -61,13 +61,8 @@ export function isInStock(prod) {
             if (checkInventoryWithoutF(prod)) {
                 return false
             }
-        } else if (!prod.size_avail) {
+        } else if (prod.in_stock !== "true") {
             return false
-        } else {
-            let sizes = JSON.parse(prod.size_avail.replace(/=>/g, ":"))
-            if (sizes.filter((item) => item["AvailQty"] > 0).length === 0) {
-                return false
-            }
         }
     }
     return true
