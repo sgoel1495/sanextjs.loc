@@ -50,7 +50,7 @@ function SidebarMenuUser(props) {
                         </div>
                         :
                         (props.userData.userServe.user_name !== "") ?
-                            <div className="rounded-full bg-slate-400 text-center cursor-pointer">
+                            <div className="rounded-full bg-slate-400 text-center cursor-pointer w-6 h-6">
                                 <span className="text-sm text-white font-600 text-center">{props.userData.userServe.user_name[0].toUpperCase()}</span>
                             </div>
                             :

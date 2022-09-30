@@ -36,7 +36,7 @@ function NewArrivalsAllPage(props) {
     </span>
 
     const mobileView = <section className={"bg-[#faf4f0] pb-20"}>
-        <div className="flex tracking-widest text-h4 items-center justify-center">
+        <div className="flex tracking-widest text-h4 items-center justify-center italic font-cursive font-600 pt-4">
             <span>~</span>
             <span className="text-center p-2">Newly Launched<br />Products</span>
             <span>~</span>

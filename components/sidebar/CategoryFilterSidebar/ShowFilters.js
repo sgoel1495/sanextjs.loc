@@ -79,7 +79,7 @@ const ShowFilters = ({allFilters, checkedBoxes, setCheckedBoxes, filterCheckboxe
         return (
             <div key={index}>
                 <div className="flex gap-x-2 font-500 items-center mb-2">
-                    <h6 className="text-h6 uppercase flex-1">{item.name}</h6>
+                    <h6 className="text-h6 font-800 tracking-wide uppercase flex-1">{item.name}</h6>
                     <button
                         type="button"
                         className="text-sm underline underline-offset-2 leading-none"

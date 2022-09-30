@@ -19,7 +19,7 @@ import {isMobile} from "react-device-detect";
 
 const AnswerBlock = ({item}) => {
     const main = (
-        <div className={`${item.check ? 'flex-1' : null}`}>
+        <div className={`${item.check ? 'flex-1' : null} text-[13px] font-300`}>
             <LinkParser para={item.para}/>
         </div>
     );
@@ -64,7 +64,7 @@ function SaltShippingNReturnsPage() {
                         title={ele.question}
                         titleIcon={<Image src={WEBASSETS + ele.icon} alt="question" layout={`fill`} objectFit={`cover`}/>}
                         titleStyle={"bg-black/10 py-4 px-6"}
-                        titleTextStyle={`text-[#777] font-400 uppercase ` + [mobile ? 'text-sm font-bold tracking-wider' : 'text-h6']}
+                        titleTextStyle={`text-black font-500 uppercase tracking-wider ` + [mobile ? 'text-sm' : 'text-[13px]']}
                         bodyStyle={"bg-black/5"}
                     >
                         <div className="px-6 py-4">
@@ -83,7 +83,7 @@ function SaltShippingNReturnsPage() {
             <Header type={mobile ? "minimal" : "shopMenu"} isMobile={mobile}/>
             <CategoryHeaderImage category={category} isMobile={mobile}/>
             <section className={"container my-20" + [mobile ? " px-4" : " grid gap-x-20 grid-cols-2"]}>
-                {mobile && <span className={"block text-center text-2xl font-bold capitalize"}>Shipping & returns</span>}
+                {mobile && <span className={"block text-center text-2xl font-500 capitalize"}>Shipping & returns</span>}
                 <div className={`flex flex-col gap-y-2`}>
                     <p className={`text-xl text-center mt-5 mb-2`}>Shipping Policy</p>
                     {showSR(shippingData)}

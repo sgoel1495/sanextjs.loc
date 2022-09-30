@@ -19,6 +19,7 @@ const Index = ({appConfig,userConfig}) => {
         })
         data.sort((a, b) => a.display_serial_no - b.display_serial_no)
         if (data.length > 0)
+
             return (
                 <section title='Collections'>
                     {data.map((item, index) => {
@@ -40,7 +41,8 @@ const Index = ({appConfig,userConfig}) => {
                                         </span>
                                     </Link>
                                     <p className='font-cursive italic leading-none text-3xl text-black/80 block text-center sentence'>{item['title']}</p>
-                                    <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-500 tracking-widest'>{item['subtitle'][currCurrency]}</p>
+                                    <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-500 tracking-widest'>{item['subtitle'][currCurrency].split(" ").slice(0,2).join(" ")}</p>
+                                    <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-500 tracking-widest'>{item['subtitle'][currCurrency].split(" ").slice(2)}</p>
                                     <div className={`py-5 zoomInSwiper`}>
                                         <Swiper
                                             slidesPerView={2}

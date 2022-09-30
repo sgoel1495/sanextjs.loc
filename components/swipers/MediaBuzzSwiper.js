@@ -53,15 +53,12 @@ function MediaBuzzSwiper(props) {
     const mobileView = null;
 
     const browserView = (
-        <section className={"mediaBuzz"}>
-            <BlockHeader
-                line
-                blockHeaderStyle={"bg-white"}
-                space={"py-10"}
-                titleStyle={"text-h2 uppercase"}
-            >
-                Media Buzz
-            </BlockHeader>
+        <section className={"mediaBuzz text-center"}>
+            <div className={"inline-flex items-center py-10"}>
+                <hr className={"w-28 border-[#222] mr-8"}/>
+                <span className={"uppercase text-[20px] text-[#222] font-200"}>Media Buzz</span>
+                <hr className={"w-28 border-[#222] ml-8"}/>
+            </div>
             <Swiper
                 slidesPerView={4}
                 pagination={{

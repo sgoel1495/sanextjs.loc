@@ -29,7 +29,7 @@ const WishListButton = (props) => {
 
     const addRemoveFav = async () => {
         if (props.userData.userServe.email) {
-            const oldUserServe = props.userData.userServe;
+            const oldUserServe = JSON.parse(JSON.stringify(props.userData.userServe));
             if (pidChecked) {
                 //remove
                 oldUserServe.favorites = props.userData.userServe.favorites.filter((value, index, arr) => {

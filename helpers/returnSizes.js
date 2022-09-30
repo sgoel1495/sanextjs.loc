@@ -1,7 +1,6 @@
 export default function returnSizes(prod) {
     let sizeSymbols = []
     if (["sweaters", "scarves", "belts", "masks", "jewellery"].includes(prod.category)) {
-        console.log(prod)
         sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0 && !prod.hide_sizes.includes(key)).map((item) => item.toUpperCase());
         if (["sweaters", "belts"].includes(prod.category)) {
             let index = sizeSymbols.indexOf("F")
@@ -13,18 +12,17 @@ export default function returnSizes(prod) {
         }
 
     } else {
-        if (prod.size_avail) {
-            if (prod.is_sale) {
+
+        if (prod.is_sale) {
+            if (prod.size_avail) {
                 sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0).map((item) => item.toUpperCase());
                 let index = sizeSymbols.indexOf("F")
                 if (index > -1) {
                     sizeSymbols.splice(index, 1)
                 }
-            } else {
-                let sizes = JSON.parse(prod.size_avail.replace(/=>/g, ":"))
-                sizeSymbols = sizes.filter((item) => item["AvailQty"] > 0).map((item) => item[Object.keys(sizes[0])[0]].toUpperCase())
-                sizeSymbols.push("T")
             }
+        } else {
+            sizeSymbols = ["XS", "S", "M", "L", "XL", "XXL", "T"]
         }
     }
     return sizeSymbols
@@ -61,13 +59,8 @@ export function isInStock(prod) {
             if (checkInventoryWithoutF(prod)) {
                 return false
             }
-        } else if (!prod.size_avail) {
+        } else if (prod.in_stock !== "true") {
             return false
-        } else {
-            let sizes = JSON.parse(prod.size_avail.replace(/=>/g, ":"))
-            if (sizes.filter((item) => item["AvailQty"] > 0).length === 0) {
-                return false
-            }
         }
     }
     return true

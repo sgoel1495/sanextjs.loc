@@ -50,15 +50,12 @@ function InstagramStoriesSwiper(props) {
     }, [props.apiToken])
     const mobileView = null;
     const browserView = (
-        <section className={"saltAttireStories"}>
-            <BlockHeader
-                line
-                blockHeaderStyle={"bg-white"}
-                space={"py-10"}
-                titleStyle={"text-h4 capitalize"}
-            >
-                Share your instagram stories with us #SALTATTIRESTORIES
-            </BlockHeader>
+        <section className={"saltAttireStories text-center"}>
+            <div className={"inline-flex items-center py-10"}>
+                <hr className={"w-14 border-[#222] mr-12"}/>
+                <span className={"uppercase text-[20px] text-[#222] font-200"}>Share your instagram stories with us #SALTATTIRESTORIES</span>
+                <hr className={"w-14 border-[#222] ml-12"}/>
+            </div>
             {(actualData.length = 0)
                 ? <div>INSTAGRAM ACCESS REQUIRED</div>
                 : <Swiper
