@@ -49,15 +49,12 @@ function ShopByLooksSwiper(props) {
     const mobileView = null;
 
     const browserView = (
-        <section className={"shopByLooks"}>
-            <BlockHeader
-                line
-                blockHeaderStyle={"bg-white"}
-                space={"py-10"}
-                titleStyle={"text-h2 uppercase"}
-            >
-                Shop By Looks
-            </BlockHeader>
+        <section className={"shopByLooks text-center"}>
+            <div className={"inline-flex items-center py-10"}>
+                <hr className={"w-28 border-[#222] mr-8"}/>
+                <span className={"uppercase text-[20px] text-[#222] font-200"}>Shop By Looks</span>
+                <hr className={"w-28 border-[#222] ml-8"}/>
+            </div>
             <Swiper
                 slidesPerView={2.1}
                 autoplay={{
@@ -70,7 +67,7 @@ function ShopByLooksSwiper(props) {
                 {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            <a href={item.url} className={"flex flex-col gap-5 items-center"}>
+                            <a href={item.url.includes("#")?item.url:("/"+item.url.split("/")[1]+"/#"+item.url.split("/")[2])} className={"flex flex-col gap-5 items-center"}>
                                 <span className={"relative h-[806px] w-full"}>
                                     <Image
                                         src={item.image}

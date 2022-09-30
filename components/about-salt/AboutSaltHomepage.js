@@ -58,15 +58,12 @@ function AboutSaltHomepage(props) {
 
     const browserView = (
         <section className={"aboutSalt"}>
-            <div className={"max-w-[50vw] mx-auto pb-20"}>
-                <BlockHeader
-                    line
-                    blockHeaderStyle={"bg-white"}
-                    space={"py-10"}
-                    titleStyle={"text-h2"}
-                >
-                    About SALT
-                </BlockHeader>
+            <div className={"max-w-[50vw] mx-auto pb-20 text-center"}>
+                <div className={"inline-flex items-center py-20"}>
+                    <hr className={"w-28 border-[#222] mr-8"}/>
+                    <span className={"uppercase text-[20px] text-[#222] font-200"}>About SALT</span>
+                    <hr className={"w-28 border-[#222] ml-8"}/>
+                </div>
                 <div id="about-salt-features" className={"grid grid-cols-3 gap-x-5 gap-y-16 items-center"}>
                     {actualData.map((item, index) => {
                         return (
@@ -86,7 +83,7 @@ function AboutSaltHomepage(props) {
                             </Link>
                         )
                     })}
-                    <Link href="/get-appointment">
+                    <Link href={"/get-appointment"}>
                         <a className={blockStyle + " col-start-1 col-end-4"}>
                             <span className="block relative h-[650px] w-full">
                                 <Image

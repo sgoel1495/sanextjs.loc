@@ -15,7 +15,6 @@ export function getUserObject(userData) {
     let tempId;
     if (userData.userServe && (!userData.userServe.temp_user_id || userData.userServe.temp_user_id === "")) {
         tempId = Date.now()
-        userData.userServe.temp_user_id = tempId
     } else
         tempId = userData.userServe.temp_user_id
 

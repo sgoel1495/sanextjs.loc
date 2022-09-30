@@ -3,13 +3,13 @@
  * @constructor
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import BlockHeader from "../common/blockHeader";
-import { Swiper, SwiperSlide } from "swiper/react";
+import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination"
 import "swiper/css/navigation"
-import SwiperCore, { Pagination, Navigation, Autoplay } from 'swiper';
+import SwiperCore, {Pagination, Navigation, Autoplay} from 'swiper';
 import Image from "next/image";
 import useApiCall from "../../hooks/useApiCall";
 import AppWideContext from "../../store/AppWideContext";
@@ -62,7 +62,7 @@ function NewArrivalsSwiper(props) {
                 {actualData.map((item, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            <Link href={item.link} >
+                            <Link href={item.link}>
                                 <a className={"block rounded-3xl overflow-hidden mx-4"}>
                                     <span className="block relative aspect-square w-full">
                                         <Image
@@ -93,12 +93,16 @@ function NewArrivalsSwiper(props) {
             <BlockHeader
                 blockHeaderStyle="bg-[#f9f9f9]"
                 space={"py-10"}
-                titleStyle={"text-[#b5ddf5] font-600 flex justify-center items-center gap-3 leading-none"}
             >
-                <span className={"text-h1"}>~</span>
-                <span className={'font-cursive italic text-h1 mt-[6px]'}>new</span>
-                <span className={"tracking-widest text-h4 uppercase"}>Arrivals</span>
-                <span className={"text-h1"}>~</span>
+                <Link href={"/new-arrivals"}>
+                    <a className={"text-[#b5ddf5] font-600 flex justify-center items-center gap-3 leading-none"}>
+                        <span className={"text-h1"}>~</span>
+                        <span className={'font-cursive italic text-h1 mt-[6px]'}>new</span>
+                        <span className={"tracking-widest text-h4 uppercase"}>Arrivals</span>
+                        <span className={"text-h1"}>~</span>
+                    </a>
+                </Link>
+
             </BlockHeader>
             <Swiper
                 slidesPerView={3.1}
@@ -145,7 +149,7 @@ function NewArrivalsSwiper(props) {
 const mapStateToProps = (state) => {
     return {
         appConfig: state.appConfig,
-        userConfig:state.userConfig
+        userConfig: state.userConfig
     }
 }
 
