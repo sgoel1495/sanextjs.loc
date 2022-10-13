@@ -89,7 +89,7 @@ function GetVirtualAppointmentPage({appConfig, userData}) {
                 "l_name": formData.lastname,
                 "email": formData.email,
                 "phone": formData.phonenumber,
-                "apt_type": "physical",
+                "apt_type": "virtual",
                 "is_custome": (userData.userServe.email) ? "yes" : "no",
                 "is_fitting": "Message: " + formData.message + " Specific: " + formData.somethingspecific
             }

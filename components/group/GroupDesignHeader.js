@@ -18,7 +18,11 @@ const GroupDesignHeader = (props) => {
             space={"py-5"}
             titleStyle={"text-center"}
         >
-            <h3 className={`text-h4 font-600 mb-4 uppercase`}>{props.category}</h3>
+            <div className={"flex items-center justify-center gap-2 mb-4"}>
+                <hr className={"w-24 h-[1.2px] bg-[#707070]"}/>
+                <h3 className={`text-xl uppercase`}>{props.category?props.category.replace("-"," "):""}</h3>
+                <hr className={"w-24 h-[1.2px] bg-[#707070]"}/>
+            </div>
         </BlockHeader>
     </>
 }
