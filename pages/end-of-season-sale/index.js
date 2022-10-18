@@ -109,6 +109,7 @@ export async function getServerSideProps() {
         if (callObject.msg === "Successfully Get") {
             gotData = true
         }
+        console.log(callObject)
 
         return (gotData) ? callObject.new_items.filter(item => item.is_visible) : []
     }

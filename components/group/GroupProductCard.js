@@ -1,23 +1,23 @@
-import React, {Fragment, useState} from 'react';
-import WishListButton from "../common/WishListButton";
-import Link from "next/link";
 import Image from "next/image";
+import {useRouter} from "next/router";
+import React, {Fragment, useState} from "react";
 import appSettings from "../../store/appSettings";
-import Toast from "../common/Toast";
 import returnSizes, {isInStock} from "../../helpers/returnSizes";
+import {addToCart, getUserObject} from "../../helpers/addTocart";
+import Link from "next/link";
+import currencyFormatter from "../../helpers/currencyFormatter";
+import WishListButton from "../common/WishListButton";
+import Toast from "../common/Toast";
 import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
-import {addToCart, getUserObject} from "../../helpers/addTocart";
-import {useRouter} from "next/router";
-import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 
 const ShopDataBlockImage = (props) => (
-    <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
+    <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[26/43]" : "aspect-square"]}>
         <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
         {
-            props.extraUrl && <Image src={props.extraUrl} alt={props.name} layout={`fill`} objectFit={`cover`} className={props.expandShop?"":"!hidden"}/>
+            props.extraUrl && <Image src={props.extraUrl} alt={props.name} layout={`fill`} objectFit={`cover`} className={props.expandShop ? "" : "!hidden"}/>
         }
         {
             props.outOfStock && <span className={"absolute bg-white text-xs text-[#C69565] left-[50%] top-[50%] px-2 translate-y-[-50%] translate-x-[-50%]"}>
@@ -27,16 +27,13 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, userConfig, ...props}) => {
+const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, userConfig, ...props}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
     const currCurrency = userConfig.currCurrency;
     const curr = currCurrency.toUpperCase();
-    const currencyData = appSettings("currency_data");
-    const inr = currencyData["inr"].curr_symbol;
-    const usd = currencyData["usd"].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
@@ -106,69 +103,69 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
             setShowToast(true)
         })
     }
-    if (isMobile) {
-        if (wide) {
-            return <div className={"relative rounded-3xl bg-white overflow-hidden mx-10 my-6 shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]"}>
-                {prod.is_prod_new && <span
-                    className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
-                <Link href={"/" + prod.asset_id}>
-                    <a className={`block z-0`} id={prod.asset_id}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} outOfStock={!isInStock(prod)}/>
-                        <div className={`flex px-5 items-center leading-none py-3`}>
-                            <div className='flex-1'>
-                                <p className={`font-600 font-cursive italic`}>{prod.name}</p>
-                                <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
-                            </div>
-                            <div className='inline-flex flex-col items-center'>
-                                <p className={`text-xs`}>
-                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
-                                </p>
-                                <WishListButton pid={prod.asset_id} isMobile={true}/>
-                            </div>
-                        </div>
-                    </a>
-                </Link>
-            </div>
-        }
-        return <div className={"relative"}>
-            <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true}/>
-            {prod.is_prod_new && <span
-                className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 -left-2 font-bold"}>NEW</span>}
-            <Link href={"/" + prod.asset_id}>
-                <a className={`block text-center z-0`} id={prod.asset_id}>
-                    <div
-                        className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
-                        <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={true}
-                                            outOfStock={!isInStock(prod)}/>
-                    </div>
-                    <div className={`leading-none py-2`}>
-                        <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
-                        {prod.sale_price ? "" : <p className={`text-[10px] font-500`}>{prod.tag_line}</p>}
-                        <p className={`text-xs`}>
-                            <span>
-                                {
-                                    (currCurrency === "inr" || !prod.usd_price) ?
-                                        <>
-                                            <span className={prod.sale_price ? "line-through" : ""}>{currencyFormatter(curr).format(prod.price).split(".")[0]}</span>
-                                            {
-                                                prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
-                                            }
-                                        </>
-                                        :
-                                        <>{usd} {prod.usd_price}</>
-                                }
-                            </span>
-                        </p>
-                    </div>
-                </a>
-            </Link>
-        </div>
-
-    }
+    // if (isMobile) {
+    //     if (wide) {
+    //         return <div className={"relative rounded-3xl bg-white overflow-hidden mx-10 my-6 shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]"}>
+    //             {prod.is_prod_new && <span
+    //                 className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
+    //             <Link href={"/" + prod.asset_id}>
+    //                 <a className={`block z-0`} id={prod.asset_id}>
+    //                     <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} outOfStock={!isInStock(prod)}/>
+    //                     <div className={`flex px-5 items-center leading-none py-3`}>
+    //                         <div className='flex-1'>
+    //                             <p className={`font-600 font-cursive italic`}>{prod.name}</p>
+    //                             <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
+    //                         </div>
+    //                         <div className='inline-flex flex-col items-center'>
+    //                             <p className={`text-xs`}>
+    //                                 {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+    //                             </p>
+    {/*                            <WishListButton pid={prod.asset_id} isMobile={true}/>*/}
+    {/*                        </div>*/}
+    {/*                    </div>*/}
+    {/*                </a>*/}
+    {/*            </Link>*/}
+    {/*        </div>*/}
+    //     }
+    //     return <div className={"relative"}>
+    //         <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true}/>
+    {/*        {prod.is_prod_new && <span*/}
+    //             className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 -left-2 font-bold"}>NEW</span>}
+    //         <Link href={"/" + prod.asset_id}>
+    //             <a className={`block text-center z-0`} id={prod.asset_id}>
+    //                 <div
+    //                     className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
+    //                     <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={true}
+    //                                         outOfStock={!isInStock(prod)}/>
+    //                 </div>
+    //                 <div className={`leading-none py-2`}>
+    //                     <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
+    //                     {prod.sale_price ? "" : <p className={`text-[10px] font-500`}>{prod.tag_line}</p>}
+    //                     <p className={`text-xs`}>
+    //                         <span>
+    //                             {
+    //                                 (currCurrency === "inr" || !prod.usd_price) ?
+    //                                     <>
+    //                                         <span className={prod.sale_price ? "line-through" : ""}>{currencyFormatter(curr).format(prod.price).split(".")[0]}</span>
+    //                                         {
+    //                                             prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
+    {/*                                        }*/}
+    {/*                                    </>*/}
+    {/*                                    :*/}
+    //                                     <>{usd} {prod.usd_price}</>
+    //                             }
+    //                         </span>
+    //                     </p>
+    //                 </div>
+    //             </a>
+    //         </Link>
+    //     </div>
+    //
+    // }
 
     return (
         <>
-            <div className={`block bg-white text-center relative z-0`} id={prod.asset_id}>
+            <div className={`block bg-white text-center relative z-0 border-8 border-white`} id={prod.asset_id}>
                 <div
                     onMouseEnter={() => {
                         setExpandShop(true)
@@ -183,9 +180,9 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <Link href={"/" + prod.asset_id}>
                         <a>
                             <ShopDataBlockImage
-                                src={WEBASSETS + "/assets/" + prod.asset_id + "/new.jpg"}
+                                src={WEBASSETS + "/assets/" + prod.asset_id + "/thumb.jpg"}
                                 alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={portrait} expandShop={expandShop}
-                                extraUrl={WEBASSETS + "/assets/" + prod.asset_id + "/mo.new.jpg"}
+                                extraUrl={WEBASSETS + "/assets/" + prod.asset_id + "/mo.thumb.jpg"}
                             />
                         </a>
                     </Link>
@@ -193,7 +190,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                         ? whatSizes()
                         : null
                     }
-                    <div className="grid grid-cols-2 items-center h-16">
+                    <div className="grid grid-cols-2 items-center h-16 absolute bottom-0 bg-white/80 w-full">
                         {(expandShop)
                             ? <Fragment>
                                 {
@@ -236,14 +233,14 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                 <p>{toastMsg}</p>
             </Toast>
             {showNotifyMe &&
-            ReactDom.createPortal(
-                <NotifyMeModal
-                    closeModal={closeModal.bind(this)}
-                    isMobile={appConfig.isMobile}
-                    userO={getUserObject(userData)}
-                    product={prod}
-                />,
-                document.getElementById("measurementmodal"))
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={closeModal.bind(this)}
+                        isMobile={appConfig.isMobile}
+                        userO={getUserObject(userData)}
+                        product={prod}
+                    />,
+                    document.getElementById("measurementmodal"))
             }
 
         </>
@@ -259,4 +256,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(ProductCard);
+export default connect(mapStateToProps, {setCart})(GroupProductCard);

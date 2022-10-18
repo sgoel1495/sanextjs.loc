@@ -38,7 +38,7 @@ const ExploreSections = (props) => {
                 })}
             </div>
             {props.more && <div className='flex justify-center mb-12'>
-                <Link href={""}><a className='p-2 text-sm uppercase bg-black/70 text-white'>&gt;&nbsp;&nbsp;click here to load more&nbsp;&nbsp;&lt;</a></Link>
+                <Link href={props.href}><a className='p-2 text-sm uppercase bg-black/70 text-white'>&gt;&nbsp;&nbsp;click here to load more&nbsp;&nbsp;&lt;</a></Link>
             </div>
             }
         </div>

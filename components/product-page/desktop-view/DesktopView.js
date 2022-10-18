@@ -46,7 +46,7 @@ const DesktopView = ({ hpid, data }) => {
                     <span>&gt;</span>
                     {data.name}
                 </div>
-                <div className={"absolute top-[15%] right-[12.5%] w-60"}>
+                <div className={"absolute top-[15%] right-[12.5%] w-60 z-10"}>
                     <DetailsCard data={data} hpid={hpid} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
                 </div>
             </div>
@@ -125,6 +125,7 @@ const DesktopView = ({ hpid, data }) => {
                     "limit": 3,
                 }}
                 more={true}
+                href={"/shop-"+data.category}
             />
             {data.fabric_code &&
                 <ExploreSections
@@ -138,7 +139,6 @@ const DesktopView = ({ hpid, data }) => {
                         "category-name": data.fabric_code,
                         "curr-product-id": data.asset_id
                     }}
-                    more={true}
                 />
             }
             <ExploreSections
@@ -151,6 +151,7 @@ const DesktopView = ({ hpid, data }) => {
                     "limit": 3,
                 }}
                 more={true}
+                href={"/new-arrivals/all"}
             />
             <Footer />
         </div>

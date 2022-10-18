@@ -1,14 +1,13 @@
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
-import CategoryHeaderImage from "../../components/common/CategoryHeaderImage";
 import Footer from "../../components/footer/Footer";
-import AppWideContext from "../../store/AppWideContext";
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import Toast from "../../components/common/Toast";
 import {apiCall} from "../../helpers/apiCall";
 import {isMobile} from "react-device-detect";
 import Image from "next/image";
 import {connect} from "react-redux";
+import {useRouter} from "next/router";
 
 
 /**
@@ -17,20 +16,17 @@ import {connect} from "react-redux";
  * @constructor
  */
 
-function GetAppointmentPage({appConfig,userData}) {
+function GetAppointmentPage({appConfig, userData}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [mobile, setMobile] = useState(false);
+    const router = useRouter();
+    const mobile = appConfig.isMobile;
     const [show, setShow] = useState(false)
     const [msg, setMsg] = useState(null);
     const [formData, setFormData] = useState({
         date: "", time: "", lastname: "", phonenumber: "", message: "", storelocation: "dlfmegamall",
         firstname: "", shoppedbefore: "", somethingspecific: "", email: ""
     })
-    const [refresh, setRefresh]=useState(false)
-
-    useEffect(() => {
-        setMobile(isMobile)
-    }, [])
+    const [refresh, setRefresh] = useState(false)
 
     const focusStyle = "focus:ring-offset-0 focus:ring-0"
     const labelStyle = "block mb-1 font-500";
@@ -98,8 +94,7 @@ function GetAppointmentPage({appConfig,userData}) {
             const resp = await apiCall("bookAppointmentMob", appConfig.apiToken, query);
 
             if (resp.response && resp.response == "Done") {
-                setMsg("Appointment done")
-                setShow(true);
+                router.push("/appointment/thank_you?loc=")
             } else {
                 setMsg("Something went wrong")
                 setShow(true);
@@ -211,42 +206,47 @@ function GetAppointmentPage({appConfig,userData}) {
     </div>;
     const browserView = (
         <>
-            <section className={`relative`}>
-                <span className={`block relative w-full h-[70vh]`}>
-                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v1.jpg"} alt={"DLF MEGA MALL"} layout={`fill`} objectFit={`cover`}/>
+            <section className={`relative mb-8`}>
+                <span className={`block relative w-full aspect-[3/1]`}>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v1.jpg"} alt={"DLF MEGA MALL"} layout={`fill`} objectFit={`contain`}/>
                 </span>
-                DLF MEGA MALL
-                LG-51, DLF MEGA MALL, GOLF COURSE ROAD, GURUGRAM, HARYANA 122002
-                CONTACT: +91 124 4116917
-                STORE TIMINGS:
-                11:00 AM - 08:00 PM, OPEN ALL 7 DAYS
+                <div className={"text-center grid text-[#595756] text-sm tracking-widest mt-2"}>
+                    <span className={"font-900 text-lg"}>DLF MEGA MALL</span>
+                    <span>LG-51, DLF MEGA MALL, GOLF COURSE ROAD, GURUGRAM, HARYANA 122002</span>
+                    <span>CONTACT: +91 124 4116917</span>
+                    <span className={"font-900 mt-3"}>STORE TIMINGS:</span>
+                    <span>11:00 AM - 08:00 PM, OPEN ALL 7 DAYS</span>
+                </div>
+            </section>
+            <section className={`relative mb-8`}>
+                <span className={`block relative w-full aspect-[3/1]`}>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v3.jpg"} alt={"PHOENIX PALLADIUM"} layout={`fill`} objectFit={`contain`}/>
+                </span>
+                <div className={"text-center grid text-[#595756] text-sm tracking-widest mt-2"}>
+                    <span className={"font-900 text-lg"}>PHOENIX PALLADIUM</span>
+                    <span>5A, THIRD FLOOR, EAST ZONE, PHOENIX PALLADIUM</span>
+                    <span>SENAPATI BAPAT ROAD, MUMBAI, MAHARASHTRA</span>
+                    <span>CONTACT: +91 8976892272</span>
+                    <span className={"font-900 mt-3"}>STORE TIMINGS:</span>
+                    <span>11:00 AM - 10:00 PM, OPEN ALL 7 DAYS</span>
+                </div>
             </section>
             <section className={`relative`}>
-                <span className={`block relative w-full h-[70vh]`}>
-                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v3.jpg"} alt={"PHOENIX PALLADIUM"} layout={`fill`} objectFit={`cover`}/>
+                <span className={`block relative w-full aspect-[3/1]`}>
+                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v2.jpg"} alt={"INFINITI MALAD"} layout={`fill`} objectFit={`contain`}/>
                 </span>
-                PHOENIX PALLADIUM
-                5A, THIRD FLOOR, EAST ZONE, PHOENIX PALLADIUMSENAPATI BAPAT ROAD, MUMBAI, MAHARASHTRA
-                CONTACT: +91 8976892272
-
-                STORE TIMINGS:
-                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
+                <div className={"text-center grid text-[#595756] text-sm tracking-widest mt-2"}>
+                    <span className={"font-900 text-lg"}>INFINITI MALAD</span>
+                    <span>123, FIRST FLOOR, INFINITI MALAD, MUMBAI, MAHARASHTRA</span>
+                    <span>CONTACT: +91 8976892273</span>
+                    <span className={"font-900 mt-3"}>STORE TIMINGS:</span>
+                    <span>11:00 AM - 10:00 PM, OPEN ALL 7 DAYS</span>
+                </div>
             </section>
-            <section className={`relative`}>
-                <span className={`block relative w-full h-[70vh]`}>
-                    <Image src={WEBASSETS + "/assets/images/ContactUs.2_v2.jpg"} alt={"INFINITI MALAD"} layout={`fill`} objectFit={`cover`}/>
-                </span>
-                INFINITI MALAD
-                123, FIRST FLOOR, INFINITI MALAD, MUMBAI, MAHARASHTRA
-                CONTACT: +91 8976892273
-
-                STORE TIMINGS:
-                11:00 AM - 10:00 PM, OPEN ALL 7 DAYS
-
+            <div className={"text-[#DB8B7D] text-center font-900 text-2xl my-10"}>
                 OUR STORE IS OPEN!
-
-            </section>
-            <div className={`border-b border-black/30 col-span-2 text-center pb-8 mb-16`}>
+            </div>
+            <div className={`col-span-2 text-center mb-12 mt-6`}>
                 <div className={`text-2xl font-600 mb-8`}>Book An Appointment In Store</div>
             </div>
             <form className={`grid grid-cols-2 gap-x-20 gap-y-5`}>
@@ -318,8 +318,8 @@ function GetAppointmentPage({appConfig,userData}) {
         <Fragment>
             <PageHead url="/salt/get-appointment" id="getappointment" isMobile={mobile}/>
             <Header type={"shopMenu"} isMobile={mobile}/>
-            {(mobile)?mobile:null}
-            <section className={"select-none" + [mobile ? " px-4 pb-20 pt-5 bg-[#f3e9e3]" : " mx-auto w-3/5 my-20"]}>
+            {(mobile) ? mobile : null}
+            <section className={"select-none" + [mobile ? " px-4 pb-20 pt-5 bg-[#f3e9e3]" : " mx-auto w-8/12 my-20"]}>
                 {(mobile) ? mobileView : browserView}
             </section>
             <Footer isMobile={mobile}/>

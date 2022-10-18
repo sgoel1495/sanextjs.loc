@@ -61,13 +61,13 @@ function NewArrivalsAllPage(props) {
     </section>;
     const browserView = (
         <section className={`bg-[#E6E1DB] pb-20`}>
-            <BlockHeader
-                line
-                space={"py-12"}
-                titleStyle={"font-600 flex justify-center items-center gap-3 leading-none"}
-            >
-                <span className={"tracking-widest text-h4 uppercase"}>New Arrivals</span>
-            </BlockHeader>
+            <div className={"container flex items-center justify-center gap-10 py-12"}>
+                <hr className={"w-44 h-0.5 bg-[#888] "}/>
+                <div className={"text-center leading-none flex justify-center items-center gap-3 leading-none"}>
+                    <span className={"tracking-wide text-h4 uppercase"}>New Arrivals</span>
+                </div>
+                <hr className={"w-44 h-0.5 bg-[#888] "}/>
+            </div>
             {(data)
                 ? <main className={`px-10 grid grid-cols-3 gap-10`}>
                     {data.data && data.data.filter(prod => prod.is_visible).map((prod, index) => {
