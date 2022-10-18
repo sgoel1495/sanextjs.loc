@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 import ReactDom from "react-dom";
 import NotifyMeModal from "../../../common/NotifyMeModal";
+import SizeGuide from "../../SizeGuide";
 
 const DetailsSection = ({theme, data, selectedSize, setSelectedSize, ...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -21,6 +22,7 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, ...props}) 
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showNotifyMe, setShowNotifyMe] = useState(false)
+    const [sizeModal, setSizeModal] = useState(false)
     let description
     switch (selected) {
         case 0:
@@ -104,7 +106,7 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, ...props}) 
                             <div className={"my-5 flex items-center justify-center gap-10"}>
                                 {whatSizes()}
                             </div>
-                            <p className={"uppercase font-500 mb-4"}>size guide</p>
+                            <p className={"uppercase font-500 mb-4 cursor-pointer"} onClick={() => setSizeModal(true)}>size guide</p>
                         </>
 
                 }
@@ -187,6 +189,11 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, ...props}) 
             }}>
                 <p>{toastMsg}</p>
             </Toast>
+            {sizeModal &&
+                ReactDom.createPortal(
+                    <SizeGuide closeModal={() => setSizeModal(false)} isMobile={props.appConfig.isMobile}/>,
+                    document.getElementById("measurementmodal"))
+            }
             {showNotifyMe &&
             ReactDom.createPortal(
                 <NotifyMeModal
