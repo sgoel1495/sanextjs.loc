@@ -28,7 +28,7 @@ const DesktopView = ({ hpid, data }) => {
     return (
         <div>
             <div className={"relative w-full h-screen"}>
-                <video autoPlay muted className={`w-full h-fit`} loop style={{ background: `no-repeat url("${WEBASSETS}/assets/${hpid}/Macro_.jpg")` }} ref={videoRef}>
+                <video autoPlay muted className={`w-full h-fit`} loop style={{ background: `no-repeat url("${WEBASSETS}/assets/${hpid}/Macro_.jpg")`, backgroundSize:"cover" }} ref={videoRef}>
                     <source
                         src={WEBASSETS + "/assets/" + hpid + "/ProductLoop.mp4"}
                         type="video/mp4"
