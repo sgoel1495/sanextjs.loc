@@ -87,9 +87,50 @@ function EndOfSeasonSale(props) {
             {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={true}/>)}
         </div>
     </section>
-
+    console.log(data[0])
     const browserView = (
-        <></>
+        <section className={"bg-[#faf4f0] pb-10"}>
+        <span className={"block relative w-full aspect-[8/3]"}>
+            <Image src={"https://saltattire.com/assets/videos/sale_v17.jpg"} layout={`fill`} objectFit={`cover`}
+                   alt={"loader"}/>
+        </span>
+            <div className={"flex flex-col items-center"}>
+                <h4 className={"text-m font-600"}>Filter By Size: </h4>
+                <span className={"flex gap-3"}>
+                <div className={"flex-inline gap-1"}>
+                    <input type="checkbox" name={"XS"} onChange={setSelected}/>
+                    <label className={"mx-1"}>XS</label>
+                </div>
+                <div className={"flex-inline gap-1"}>
+                    <input type="checkbox" name={"S"} onChange={setSelected}/>
+                    <label className={"mx-1"}>S</label>
+                </div>
+                <div className={"flex-inline gap-1"}>
+                    <input type="checkbox" name={"M"} onChange={setSelected}/>
+                    <label className={"mx-1"}>M</label>
+                </div>
+                <div className={"flex-inline gap-1"}>
+                    <input type="checkbox" name={"L"} onChange={setSelected}/>
+                    <label className={"mx-1"}>L</label>
+                </div>
+                <div className={"flex-inline gap-1"}>
+                    <input type="checkbox" name={"XL"} onChange={setSelected}/>
+                    <label className={"mx-1"}>XL</label>
+                </div>
+                <div className={"flex-inline gap-1"}>
+                    <input type="checkbox" name={"XXL"} onChange={setSelected}/>
+                    <label className={"mx-1"}>XXL</label>
+                </div>
+            </span>
+                <span className={"text-[#ff0000] text-xs font-700 opacity-75"}>NOT VALID FOR RETURN / EXCHANGE</span>
+                <span className={"my-2 text-xl font-800"}>STEAL THE DEAL</span>
+                <span className={"font-700 text-[#a76b2c]"}>READY <i>to</i> SHIP</span>
+            </div>
+
+            <div className={"grid grid-cols-3 gap-5 container py-5 px-5 "}>
+                {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={false}/>)}
+            </div>
+        </section>
     );
     return <>
         <PageHead url="/end-of-season-sale" id="sale" isMobile={mobile}/>
@@ -109,7 +150,6 @@ export async function getServerSideProps() {
         if (callObject.msg === "Successfully Get") {
             gotData = true
         }
-        console.log(callObject)
 
         return (gotData) ? callObject.new_items.filter(item => item.is_visible) : []
     }

@@ -1,5 +1,4 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
-import AppWideContext from "../../../store/AppWideContext";
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
@@ -8,7 +7,6 @@ import MeasurementBlock from "../../../components/user/MeasurementBlock";
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
 import {apiCall} from "../../../helpers/apiCall";
 import UserPageTemplate from "../../../components/user/UserPageTemplate";
-import {isMobile} from "react-device-detect";
 import {getUserObject} from "../../../helpers/addTocart";
 import TailoredSize from "../../../components/product-page/TailoredSize";
 import {connect} from "react-redux";
@@ -55,18 +53,21 @@ function UsersMeasurementsPage({appConfig, userData}) {
             return (
                 <MeasurementBlock
                     measurement={userMeasurements[key]}
-                    // showModal={showModal.bind(this)}
                     deleteMeasurement={deleteMeasurement}
                     refresh={getMeasurements}
                     index={index}
                     key={index}
-                    mobile={mobile}
+                    mobile={appConfig.isMobile}
                 />
             )
         });
     };
 
     const deleteMeasurement = async (m) => {
+        let flag = window.confirm("Are you sure?")
+        if(flag===false){
+            return
+        }
         let temp = JSON.parse(JSON.stringify(userMeasurements));
         delete temp[m]
         await apiCall("removeMeasurements", appConfig.apiToken, {

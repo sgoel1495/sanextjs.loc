@@ -72,22 +72,18 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
             router.push("/" + prod.asset_id);
             return
         }
-        if (!size) {
-            setAddToCartClick(true)
-        }
-        if (!selectedSize && !size) {
-            setShowSize(true)
-            return
-        } else if (size) {
+        if(size){
             setSelectedSize(size)
+            if (!addToCartClick) {
+                return
+            }
         }
-        if (!showSize) {
-            setShowSize(true)
-            setSelectedSize("")
-            return
-        }
-        if (!addToCartClick) {
-            return
+        else{
+            setAddToCartClick(true)
+            if (!selectedSize) {
+                setShowSize(true)
+                return
+            }
         }
         const cart = {
             "product_id": prod.asset_id,
@@ -171,6 +167,7 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
                         setExpandShop(true)
                     }}
                     onMouseLeave={() => {
+                        setSelectedSize("")
                         setExpandShop(false)
                         setShowSize(false)
                     }}
@@ -196,7 +193,7 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
                                 {
                                     isInStock(prod)
                                         ? <Fragment>
-                                            <button className={`font-800`} onClick={() => {
+                                            <button className={`font-800 h-full`} onClick={() => {
                                                 setShowSize(true)
                                                 setAddToCartClick(false)
                                             }}>SIZE

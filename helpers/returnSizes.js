@@ -1,7 +1,9 @@
 export default function returnSizes(prod) {
+    if (typeof prod.inventory === typeof "")
+        prod.inventory = JSON.parse(prod.inventory.replace(/=>/g, ":"))
     let sizeSymbols = []
     if (["sweaters", "scarves", "belts", "masks", "jewellery"].includes(prod.category)) {
-        sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0 && !prod.hide_sizes.includes(key)).map((item) => item.toUpperCase());
+        sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0 && (prod.hide_sizes ? !prod.hide_sizes.includes(key) : true)).map((item) => item.toUpperCase());
         if (["sweaters", "belts"].includes(prod.category)) {
             let index = sizeSymbols.indexOf("F")
             if (index > -1) {
@@ -14,12 +16,10 @@ export default function returnSizes(prod) {
     } else {
 
         if (prod.is_sale) {
-            if (prod.size_avail) {
-                sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0).map((item) => item.toUpperCase());
-                let index = sizeSymbols.indexOf("F")
-                if (index > -1) {
-                    sizeSymbols.splice(index, 1)
-                }
+            sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0).map((item) => item.toUpperCase());
+            let index = sizeSymbols.indexOf("F")
+            if (index > -1) {
+                sizeSymbols.splice(index, 1)
             }
         } else {
             sizeSymbols = ["XS", "S", "M", "L", "XL", "XXL", "T"]
@@ -33,7 +33,9 @@ export function isTailored(prod) {
 }
 
 function checkInventoryWithoutF(prod) {
-    let inventory = Object.keys(prod.inventory).filter(key => prod.inventory[key] > 0 && !prod.hide_sizes.includes(key))
+    if (typeof prod.inventory === typeof "")
+        prod.inventory = JSON.parse(prod.inventory.replace(/=>/g, ":"))
+    let inventory = Object.keys(prod.inventory).filter(key => prod.inventory[key] > 0 && (prod.hide_sizes ? !prod.hide_sizes.includes(key) : true))
     let index = inventory.indexOf("f")
     if (index > -1) {
         inventory.splice(index, 1)
@@ -64,4 +66,14 @@ export function isInStock(prod) {
         }
     }
     return true
+}
+
+export function getQty(prod) {
+    if (typeof prod.inventory === typeof "")
+        prod.inventory = JSON.parse(prod.inventory.replace(/=>/g, ":"))
+    let total = 0;
+    prod.inv_sizes.forEach((size)=>{
+        total+=prod.inventory[size.toLowerCase()]
+    })
+    return total;
 }

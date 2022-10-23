@@ -109,14 +109,15 @@ function LooksPage(props) {
                 </span>
             </div>
             {(data)
-                ? <main className={`grid grid-cols-2`}>
+                ? <div className={`grid grid-cols-2`}>
+
                     <LooksItem data={data} isMobile={true}/>
                     {
-                        total <= (page * 18) || <div className={"flex justify-center col-span-3"} ref={loaderRef}>
+                        total <= (page * 18) || <div className={"flex justify-center col-span-2"} ref={loaderRef}>
                             <Loader/>
                         </div>
                     }
-                </main>
+                </div>
                 : loader
             }
         </section>
@@ -148,10 +149,10 @@ function LooksPage(props) {
     </Fragment>
 
     return <>
-        <PageHead url="/looks" id="looks" isMobile={props.appConfig.mobile}/>
-        <Header type={"shopMenu"} isMobile={props.appConfig.mobile}/>
-        {props.appConfig.mobile ? mobileView : browserView}
-        <Footer isMobile={props.appConfig.mobile}/>
+        <PageHead url="/looks" id="looks" isMobile={props.appConfig.isMobile}/>
+        <Header type={"shopMenu"} isMobile={props.appConfig.isMobile}/>
+        {props.appConfig.isMobile ? mobileView : browserView}
+        <Footer isMobile={props.appConfig.isMobile}/>
     </>
 
 }

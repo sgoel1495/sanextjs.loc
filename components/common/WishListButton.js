@@ -22,12 +22,14 @@ const WishListButton = (props) => {
     const [pidChecked, setPidChecked] = useState(false);
     const [show, setShow] = useState(false);
 
+
     useEffect(() => {
         if (props.userData.userServe.favorites.includes(props.pid))
             setPidChecked(true);
     }, [props.userData.userServe.email, props.userData.userServe.favorites, props.pid])
 
     const addRemoveFav = async () => {
+        console.log(props)
         if (props.userData.userServe.email) {
             const oldUserServe = JSON.parse(JSON.stringify(props.userData.userServe));
             if (pidChecked) {
@@ -51,6 +53,9 @@ const WishListButton = (props) => {
                 });
                 setPidChecked(true);
             }
+            setTimeout(()=>{
+                setShow(true)
+            },100)
         } else {
             if (props.isMobile) {
                 setShow(true)
@@ -73,7 +78,7 @@ const WishListButton = (props) => {
             </svg>
         }
         <Toast show={show} hideToast={() => setShow(false)}>
-            <span>Please login first.</span>
+            <span>{props.userData.userServe.email?pidChecked?props.pid.split("-")[1]+" added to your Favourites.":props.pid.split("-")[1]+" removed from your Favourites.":"Please login first."}</span>
         </Toast>
     </button>;
 }

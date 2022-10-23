@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import appSettings from "../../store/appSettings";
 import AppWideContext from "../../store/AppWideContext";
-import returnSizes, {isInStock} from "../../helpers/returnSizes";
+import returnSizes, {getQty, isInStock} from "../../helpers/returnSizes";
 import ReactDom from "react-dom";
 import WishListButton from "../common/WishListButton";
 import NotifyMeModal from "../common/NotifyMeModal";
@@ -54,12 +54,17 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
     }
 
     const whatSizes = () => {
-        const sizeData = returnSizes(prod);
+        let sizeData = returnSizes(prod);
         let returnValue = null
+        if (prod.is_sale) {
+            sizeData = ["XS", "S", "M", "L", "XL", "XXL"]
+        }
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => saveToCart(size)}>
+                <button
+                    className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"} ${prod.is_sale ? prod.inv_sizes.includes(size) ? "" : "line-through" : ""}`}
+                    onClick={() => prod.is_sale ? prod.inv_sizes.includes(size) ? saveToCart(size) : {} : saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -74,23 +79,20 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
             router.push("/" + prod.asset_id);
             return
         }
-        if (!size) {
-            setAddToCartClick(true)
-        }
-        if (!selectedSize && !size) {
-            setShowSize(true)
-            return
-        } else if (size) {
+
+        if (size) {
             setSelectedSize(size)
+            if (!addToCartClick) {
+                return
+            }
+        } else {
+            setAddToCartClick(true)
+            if (!selectedSize) {
+                setShowSize(true)
+                return
+            }
         }
-        if (!showSize) {
-            setShowSize(true)
-            setSelectedSize("")
-            return
-        }
-        if (!addToCartClick) {
-            return
-        }
+
         const cart = {
             "product_id": prod.asset_id,
             "size": size ? size : selectedSize,
@@ -122,8 +124,8 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                                 {
                                     (currCurrency === "inr" || !prod.usd_price) ?
                                         <>
-                                            {inr}
-                                            <span className={prod.is_sale ? "line-through" : ""}>{currencyFormatter(curr).format(prod.price).split(".")[0]}</span>
+                                            <span
+                                                className={prod.is_sale ? "line-through" : ""}>{currencyFormatter(curr).format(parseInt(prod.price.replace(",", ""))).split(".")[0]}</span>
                                             {
                                                 prod.is_sale && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
                                             }
@@ -142,23 +144,22 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
         </div>
 
     }
-
-
     return (
         <>
-            <div className={`block bg-white text-center relative z-0`} id={prod.asset_id}>
+            <div className={`block bg-white text-center relative z-0 p-3`} id={prod.asset_id}>
                 <div
                     onMouseEnter={() => {
                         setExpandShop(true)
                     }}
                     onMouseLeave={() => {
+                        setSelectedSize("")
                         setExpandShop(false)
                         setShowSize(false)
                     }}
                     className={`group relative`}
                 >
                     <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id} isMobile={false}/>
-                    <Link href={"/" + prod.asset_id}>
+                    <Link href={"/" + prod.product_id}>
                         <a>
                             <ShopDataBlockImage
                                 src={WEBASSETS + (expandShop ? prod.look_mo_thumb : prod.look_thumb)}
@@ -172,29 +173,34 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div className="grid grid-cols-2 items-center h-16">
                         {(expandShop)
                             ? <Fragment>
-                                {(isInStock(prod))
-                                    ? <Fragment>
-                                        <button className={`font-800`} onClick={() => {
-                                            setShowSize(true)
-                                            setAddToCartClick(false)
-                                        }}>SIZE
-                                        </button>
-                                        <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                             onClick={() => saveToCart()}>
-                                            <span className={`uppercase`}>Add to bag</span>
-                                            <p className={`text-xs`}>
-                                                {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
-                                            </p>
-                                        </div>
-                                    </Fragment>
-                                    : <Fragment>
-                                        <button className={`font-800`}>SOLD OUT</button>
-                                        <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                             onClick={() => setShowNotifyMe(true)}>
-                                            <span className={`uppercase`}>NOTIFY ME</span>
-                                        </div>
-                                    </Fragment>
-                                }
+                                <button className={`font-800 bg-black text-white flex flex-col justify-center items-center h-full`} onClick={() => {
+                                    setShowSize(true)
+                                    setAddToCartClick(false)
+                                }}>
+                                    <span>SIZE</span>
+                                    <span>
+                                            <span className={"font-600 text-[#008000] text-[13px]"}>only {getQty(prod)} left</span>
+                                            <span className={"font-600 text-[13px] tracking-wide"}> ({prod.inv_sizes.join(', ')})</span>
+                                        </span>
+                                </button>
+                                <div className={`font-800 cursor-pointer flex flex-col gap-2 justify-center leading-none`}
+                                     onClick={() => saveToCart()}>
+                                    <span className={`uppercase`}>Add to bag</span>
+                                    <p className={`text-xs`}>
+                                        {
+                                            (currCurrency === "inr" || !prod.usd_price) ?
+                                                <>
+                                                        <span className={"line-through"}>
+                                                            {currencyFormatter(curr).format(parseInt(prod.price.replace(",", ""))).split(".")[0]}
+                                                        </span>
+                                                    <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
+
+                                                </>
+                                                :
+                                                <>{usd} {prod.usd_price}</>
+                                        }
+                                    </p>
+                                </div>
                             </Fragment>
 
                             : <div className={`col-span-2`}>
@@ -211,18 +217,19 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                 <p>{toastMsg}</p>
             </Toast>
             {showNotifyMe &&
-            ReactDom.createPortal(
-                <NotifyMeModal
-                    closeModal={closeModal.bind(this)}
-                    isMobile={appConfig.isMobile}
-                    userO={getUserObject(userData)}
-                    product={prod}
-                />,
-                document.getElementById("measurementmodal"))
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={closeModal.bind(this)}
+                        isMobile={appConfig.isMobile}
+                        userO={getUserObject(userData)}
+                        product={prod}
+                    />,
+                    document.getElementById("measurementmodal"))
             }
 
         </>
     );
+
 };
 
 const mapStateToProps = (state) => {

@@ -4,9 +4,9 @@ import Image from "next/image";
 import ExpandedLook from "./ExpandedLook";
 
 const LookDataBlockImage = (props) => (
-    <span className={`block relative w-full h-full aspect-square`}>
+    <div className={`relative w-full h-full aspect-square`}>
         <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`} />
-    </span>
+    </div>
 )
 
 const LooksItem = ({ data, isMobile }) => {
