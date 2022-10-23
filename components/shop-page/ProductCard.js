@@ -17,7 +17,7 @@ const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
         <Image src={props.src} alt={props.name} layout={`fill`} objectFit={`cover`}/>
         {
-            props.extraUrl && <Image src={props.extraUrl} alt={props.name} layout={`fill`} objectFit={`cover`} className={props.expandShop?"":"!hidden"}/>
+            props.extraUrl && <Image src={props.extraUrl} alt={props.name} layout={`fill`} objectFit={`cover`} className={props.expandShop ? "" : "!hidden"}/>
         }
         {
             props.outOfStock && <span className={"absolute bg-white text-xs text-[#C69565] left-[50%] top-[50%] px-2 translate-y-[-50%] translate-x-[-50%]"}>
@@ -75,22 +75,17 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
             router.push("/" + prod.asset_id);
             return
         }
-        if (!size) {
-            setAddToCartClick(true)
-        }
-        if (!selectedSize && !size) {
-            setShowSize(true)
-            return
-        } else if (size) {
+        if (size) {
             setSelectedSize(size)
-        }
-        if (!showSize) {
-            setShowSize(true)
-            setSelectedSize("")
-            return
-        }
-        if (!addToCartClick) {
-            return
+            if (!addToCartClick) {
+                return
+            }
+        } else {
+            setAddToCartClick(true)
+            if (!selectedSize) {
+                setShowSize(true)
+                return
+            }
         }
         const cart = {
             "product_id": prod.asset_id,
@@ -174,6 +169,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                         setExpandShop(true)
                     }}
                     onMouseLeave={() => {
+                        setSelectedSize("")
                         setExpandShop(false)
                         setShowSize(false)
                     }}
@@ -195,33 +191,29 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     }
                     <div className="grid grid-cols-2 items-center h-16">
                         {(expandShop)
-                            ? <Fragment>
-                                {
-                                    isInStock(prod)
-                                        ? <Fragment>
-                                            <button className={`font-800`} onClick={() => {
-                                                setShowSize(true)
-                                                setAddToCartClick(false)
-                                            }}>SIZE
-                                            </button>
-                                            <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                                 onClick={() => saveToCart()}>
-                                                <span className={`uppercase`}>Add to bag</span>
-                                                <p className={`text-xs`}>
-                                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
-                                                </p>
-                                            </div>
-                                        </Fragment>
-                                        : <Fragment>
-                                            <button className={`font-800`}>SOLD OUT</button>
-                                            <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
-                                                 onClick={() => setShowNotifyMe(true)}>
-                                                <span className={`uppercase`}>NOTIFY ME</span>
-                                            </div>
-                                        </Fragment>
-                                }
-                            </Fragment>
-
+                            ?
+                            isInStock(prod)
+                                ? <Fragment>
+                                    <button className={`font-800 h-full`} onClick={() => {
+                                        setShowSize(true)
+                                        setAddToCartClick(false)
+                                    }}>SIZE
+                                    </button>
+                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
+                                         onClick={() => saveToCart()}>
+                                        <span className={`uppercase`}>Add to bag</span>
+                                        <p className={`text-xs`}>
+                                            {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+                                        </p>
+                                    </div>
+                                </Fragment>
+                                : <Fragment>
+                                    <button className={`font-800`}>SOLD OUT</button>
+                                    <div className={`font-800 cursor-pointer bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}
+                                         onClick={() => setShowNotifyMe(true)}>
+                                        <span className={`uppercase`}>NOTIFY ME</span>
+                                    </div>
+                                </Fragment>
                             : <div className={`col-span-2`}>
                                 <p className={`text-h5 font-500`}>{prod.name}</p>
                                 <p className={`text-sm font-500`}>{prod.tag_line}</p>
@@ -236,14 +228,14 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                 <p>{toastMsg}</p>
             </Toast>
             {showNotifyMe &&
-            ReactDom.createPortal(
-                <NotifyMeModal
-                    closeModal={closeModal.bind(this)}
-                    isMobile={appConfig.isMobile}
-                    userO={getUserObject(userData)}
-                    product={prod}
-                />,
-                document.getElementById("measurementmodal"))
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={closeModal.bind(this)}
+                        isMobile={appConfig.isMobile}
+                        userO={getUserObject(userData)}
+                        product={prod}
+                    />,
+                    document.getElementById("measurementmodal"))
             }
 
         </>
