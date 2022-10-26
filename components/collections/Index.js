@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import AppWideContext from "../../store/AppWideContext";
+import React from 'react';
 import useApiCall from "../../hooks/useApiCall";
 import Image from "next/image";
 import {Swiper, SwiperSlide} from "swiper/react";

@@ -3,16 +3,16 @@ import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../components/swipers/HomePageHeaderSwiper";
 import Footer from "../../components/footer/Footer";
-import {isMobile} from "react-device-detect";
 import {apiCall} from "../../helpers/apiCall";
 import Image from "next/image";
 import ProductCard from "../../components/sale/ProductCard";
+import {connect} from "react-redux";
 
 function EndOfSeasonSale(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [mobile, setMobile] = useState(false)
+    const mobile = props.mobile;
     const [carousal] = useState(props.carousal);
-    const [data,setData] = useState(props.data);
+    const [data, setData] = useState(props.data);
     const [selected, setSelected] = useReducer((state, e) => {
         if (e.target.checked) {
             return Array.from(new Set([...state, e.target.name]))
@@ -21,29 +21,15 @@ function EndOfSeasonSale(props) {
         }
     }, [])
 
-    useEffect(() => {
-        setMobile(isMobile)
-    }, [])
 
     useEffect(() => {
-        if(selected.length){
+        if (selected.length) {
             setData(props.data.filter(item => item.inv_sizes.some(s => selected.includes(s))))
-        }
-        else{
+        } else {
             setData(props.data)
         }
-    },[selected])
+    }, [selected])
 
-
-    const checkBox_and_label_style = "flex-inline m-1 gap-1"
-
-
-    const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
-        <span className={"block relative w-14 aspect-square"}>
-            <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                   alt={"loader"}/>
-        </span>
-    </span>
 
     const mobileView = <section className={"bg-[#faf4f0] pb-10"}>
         <span className={"block relative w-full aspect-square"}>
@@ -141,7 +127,13 @@ function EndOfSeasonSale(props) {
     </>
 }
 
-export default EndOfSeasonSale;
+const mapStateToProps = (state) => {
+    return {
+        mobile: state.appConfig.isMobile
+    }
+}
+
+export default connect(mapStateToProps)(EndOfSeasonSale);
 
 export async function getServerSideProps() {
     const fetchData = async () => {

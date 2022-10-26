@@ -40,7 +40,7 @@ const navigationDataInit = [
     {
         title: `SITEMAP`,
         description: ``,
-        link: `#`
+        link: `/salt/sitemap`
     },
     {
         title: `CONTACT US`,
@@ -95,7 +95,7 @@ const mobileNavigationDataInit = [
         title: `SITEMAP`,
         description: ``,
         centered: true,
-        link: `#`
+        link: `/salt/sitemap`
     },
     {
         title: `CONTACT US`,
