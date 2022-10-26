@@ -32,6 +32,9 @@ function CategoryHeaderImage(props) {
             imageClass = "ml-[-72vw]";
             objectPosition = "74% 0";
             break;
+        case "Site Map":
+            imageSource = imageSource + "images/TnC.2.jpg";
+            break;
         case "Cancellation & Modifications":
             imageSource = imageSource + "images/TnC.2.jpg";
             objectPosition = "45% 0";

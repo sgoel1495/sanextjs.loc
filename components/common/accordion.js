@@ -9,7 +9,7 @@ const Accordion = props => {
     function toggleAccordion() {
         setActiveState(!setActive);
         setHeightState(
-            setActive ? "0px" : `${content.current.scrollHeight}px`
+            setActive ? "0px" : props.auto?"1000vh":`${content.current.scrollHeight}px`
         );
     }
 
