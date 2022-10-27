@@ -4,7 +4,7 @@ import {apiCall} from "../../helpers/apiCall";
 import Toast from "./Toast";
 import Loader from "./Loader";
 
-function NotifyMeModal({closeModal, isMobile, userO, product, setError}) {
+function NotifyMeModal({closeModal, isMobile, userO, product, setError, setErrorShow}) {
     const [name, setName] = useState("")
     const [email, setEmail] = useState(userO.email)
     const [phone, setPhone] = useState("")
@@ -16,14 +16,23 @@ function NotifyMeModal({closeModal, isMobile, userO, product, setError}) {
     const validateAndNotify = () => {
         if (!name) {
             setError("Please enter valid name.");
+            if (setErrorShow) {
+                setErrorShow(true)
+            }
             return;
         }
         if (!isValidEmail(email)) {
             setError("Please enter valid email.");
+            if (setErrorShow) {
+                setErrorShow(true)
+            }
             return;
         }
         if (!isNaN(parseInt(phone)) && phone.length < 10) {
             setError("Please enter valid phone.");
+            if (setErrorShow) {
+                setErrorShow(true)
+            }
             return;
         }
         setLoading(true)
@@ -31,27 +40,19 @@ function NotifyMeModal({closeModal, isMobile, userO, product, setError}) {
     }
 
     const notifyMe = async () => {
-        if (isValidEmail(email)) {
-            const formData = new FormData()
-            formData.append("product[notify_data][name]", name)
-            formData.append("product[notify_data][phone]", phone)
-            formData.append("product[notify_data][email]", email)
-            formData.append("product[notify_data][size]", size)
-            formData.append("product[notify_data][message]", msg)
-            formData.append("product[notify_data][product_id]", (product.product_id) ? product.product_id : product.asset_id)
-            const resp = await apiCall("notifyMe", "noapitokenrequried", formData)
-            if (resp.msg && resp.msg === "successfully submit") {
-                if(isMobile){
-                    setError("Thank you, we will notify you shortly!")
-                    closeModal(false)
-                }
-                else{
-                    closeModal(true)
-                }
-            } else
-                closeModal(null)
-        } else {
-            closeModal(null)
+        const formData = new FormData()
+        formData.append("product[notify_data][name]", name)
+        formData.append("product[notify_data][phone]", phone)
+        formData.append("product[notify_data][email]", email)
+        formData.append("product[notify_data][size]", size)
+        formData.append("product[notify_data][message]", msg)
+        formData.append("product[notify_data][product_id]", (product.product_id) ? product.product_id : product.asset_id)
+        const resp = await apiCall("notifyMe", "noapitokenrequried", formData)
+        if (resp.msg && resp.msg === "successfully submit") {
+            if (isMobile) {
+                setError("Thank you, we will notify you shortly!")
+            }
+            closeModal(false)
         }
     }
 
@@ -75,10 +76,10 @@ function NotifyMeModal({closeModal, isMobile, userO, product, setError}) {
                 {
                     loading ?
                         <Loader className={"mt-4"}/>
-                        :
-                        <button className={`font-500 px-4 py-2 bg-[#e5d5c5] text-[#997756] text-sm mt-2 tracking-wider leading-none`} onClick={validateAndNotify}>
-                            <span className={`uppercase`}>NOTIFY ME</span>
-                        </button>
+                    :
+                    <button className={`font-500 px-4 py-2 bg-[#e5d5c5] text-[#997756] text-sm mt-2 tracking-wider leading-none`} onClick={validateAndNotify}>
+                    <span className={`uppercase`}>NOTIFY ME</span>
+                    </button>
                 }
             </div>
         </div>
@@ -99,9 +100,13 @@ function NotifyMeModal({closeModal, isMobile, userO, product, setError}) {
                     <input className={inputClass} type="text" id="phone" name="phone" value={phone} placeholder="Phone Number" onChange={e => setPhone(e.target.value)}/>
                     <input className={inputClass} type="text" id="size" name="size" value={size} placeholder="Size" onChange={e => setSize(e.target.value)}/>
                     <textarea className={inputClass + " mt-2"} type="text" id="msg" name="msg" value={msg} placeholder="Message" onChange={e => setMsg(e.target.value)}/>
-                    <button className={`font-500 px-4 py-2 bg-black text-white text-sm mt-2 tracking-wider leading-none`} onClick={() => notifyMe()}>
-                        <span className={`uppercase`}>NOTIFY ME</span>
-                    </button>
+                    {
+                        loading ?
+                            <Loader className={"mt-4"}/>
+                            : <button className={`font-500 px-4 py-2 bg-black text-white text-sm mt-2 tracking-wider leading-none`} onClick={validateAndNotify}>
+                                <span className={`uppercase`}>NOTIFY ME</span>
+                            </button>
+                    }
                 </div>
             </div>
         )

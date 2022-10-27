@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import AppWideContext from '../../../store/AppWideContext';
+import React from 'react';
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
 
 function StandardSizeModal({currentMeasurement, closeModal, sizeAvail, standardSizes, setSizeModal, selected, setSelected, setCurrentMeasurement}) {
@@ -13,52 +12,55 @@ function StandardSizeModal({currentMeasurement, closeModal, sizeAvail, standardS
                     <h6 className='text-base font-semibold pt-16 pb-5'>PLEASE SELECT A SIZE</h6>
                     <div className='px-4 pt-[5%] pb-[20%] text-center'>
                         <span className='text-sm pb-2'>Measurements in inches</span>
-                        <table className="w-full text-[#997756] text-[15px] tracking-wide uppercase mb-4">
-                            <thead>
-                            <tr>
+                        {
+                            standardSizes.length &&
+                            <table className="w-full text-[#997756] text-[15px] tracking-wide uppercase mb-4">
+                                <thead>
+                                <tr>
+                                    {
+                                        Object.keys(standardSizes[0]).map((item, index) => {
+                                            if (item !== "AvailQty")
+                                                return <td key={index}><span
+                                                    className={"font-500 " + [index !== 0 ? "border-l-2 border-[#997756] text-center block my-1" : ""]}>{item}</span></td>
+                                        })
+                                    }
+                                </tr>
+                                </thead>
+                                <tbody>
                                 {
-                                    Object.keys(standardSizes[0]).map((item, index) => {
-                                        if (item !== "AvailQty")
-                                            return <td key={index}><span
-                                                className={"font-500 " + [index !== 0 ? "border-l-2 border-[#997756] text-center block my-1" : ""]}>{item}</span></td>
+                                    standardSizes.slice(1).map((item, index) => {
+                                        if (!sizeAvail.includes(item[Object.keys(item)[0]])) {
+                                            return null
+                                        }
+                                        return <tr key={index} className={"bg-[#F3E9E3]"} onClick={() => {
+                                            setSelected(item[Object.keys(item)[0]])
+                                            let temp = {}
+                                            Object.keys(item).forEach(key => {
+                                                temp[key.toLowerCase()] = item[key]
+                                            })
+                                            setCurrentMeasurement({
+                                                ...emptyMeasurement, ...temp,
+                                                "selected_length": currentMeasurement.selected_length,
+                                                "selected_sleeve": currentMeasurement.selected_sleeve
+                                            })
+                                        }}>
+                                            {
+                                                Object.keys(item).map((key, index) => {
+                                                    if (key !== "AvailQty")
+                                                        return <td
+                                                            className={"border-y-[10px] border-white " + [index === 0 ? "font-600 border-0 " : ""] + [selected === item[Object.keys(item)[0]] ? "bg-[#e5d5c5]" : ""]}
+                                                            key={index}
+                                                        >
+                                                            <span className={index !== 0 ? "border-l-2 border-[#997756] text-center block my-1" : ""}>{item[key]}</span>
+                                                        </td>
+                                                })
+                                            }
+                                        </tr>
                                     })
                                 }
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                standardSizes.slice(1).map((item, index) => {
-                                    if (!sizeAvail.includes(item[Object.keys(item)[0]])) {
-                                        return null
-                                    }
-                                    return <tr key={index} className={"bg-[#F3E9E3]"} onClick={() => {
-                                        setSelected(item[Object.keys(item)[0]])
-                                        let temp = {}
-                                        Object.keys(item).forEach(key => {
-                                            temp[key.toLowerCase()] = item[key]
-                                        })
-                                        setCurrentMeasurement({
-                                            ...emptyMeasurement, ...temp,
-                                            "selected_length": currentMeasurement.selected_length,
-                                            "selected_sleeve": currentMeasurement.selected_sleeve
-                                        })
-                                    }}>
-                                        {
-                                            Object.keys(item).map((key, index) => {
-                                                if (key !== "AvailQty")
-                                                    return <td
-                                                        className={"border-y-[10px] border-white " + [index === 0 ? "font-600 border-0 " : ""] + [selected === item[Object.keys(item)[0]] ? "bg-[#e5d5c5]" : ""]}
-                                                        key={index}
-                                                    >
-                                                        <span className={index !== 0 ? "border-l-2 border-[#997756] text-center block my-1" : ""}>{item[key]}</span>
-                                                    </td>
-                                            })
-                                        }
-                                    </tr>
-                                })
-                            }
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        }
                         <span onClick={() => {
                             setSizeModal(true)
                         }} className='uppercase tracking-widest text-sm'>whats my size ?</span>

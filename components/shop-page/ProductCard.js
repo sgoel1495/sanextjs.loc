@@ -42,20 +42,10 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
     const [showSize, setShowSize] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null)
     const [addToCartClick, setAddToCartClick] = useState(false)
-    const closeModal = (sent = null) => {
-        if (sent === true) {
-            setToastMsg("We will notify you when the product is back in stock")
-            setShowToast(true)
-            setShowNotifyMe(false)
-        } else if (sent === null) {
-            setToastMsg("Please complete form and try again")
-            setShowToast(true)
-        } else
-            setShowNotifyMe(false)
-    }
+    const sizeData = returnSizes(prod);
 
     const whatSizes = () => {
-        const sizeData = returnSizes(prod);
+
         let returnValue = null
         sizeData.forEach(size => {
             returnValue = <Fragment>
@@ -71,21 +61,26 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
     }
 
     const saveToCart = (size = "") => {
-        if (size === "T") {
-            router.push("/" + prod.asset_id);
-            return
+        if(!(sizeData.length===1 && sizeData[0]==="F")){
+            if (size === "T") {
+                router.push("/" + prod.asset_id);
+                return
+            }
+            if (size) {
+                setSelectedSize(size)
+                if (!addToCartClick) {
+                    return
+                }
+            } else {
+                setAddToCartClick(true)
+                if (!selectedSize) {
+                    setShowSize(true)
+                    return
+                }
+            }
         }
-        if (size) {
-            setSelectedSize(size)
-            if (!addToCartClick) {
-                return
-            }
-        } else {
-            setAddToCartClick(true)
-            if (!selectedSize) {
-                setShowSize(true)
-                return
-            }
+        else{
+            size = "F"
         }
         const cart = {
             "product_id": prod.asset_id,
@@ -192,7 +187,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div className="grid grid-cols-2 items-center h-16">
                         {(expandShop)
                             ?
-                            isInStock(prod)
+                            !isInStock(prod)
                                 ? <Fragment>
                                     <button className={`font-800 h-full`} onClick={() => {
                                         setShowSize(true)
@@ -230,10 +225,12 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
             {showNotifyMe &&
                 ReactDom.createPortal(
                     <NotifyMeModal
-                        closeModal={closeModal.bind(this)}
+                        closeModal={setShowNotifyMe}
                         isMobile={appConfig.isMobile}
                         userO={getUserObject(userData)}
                         product={prod}
+                        setError={setToastMsg}
+                        setErrorShow={setShowToast}
                     />,
                     document.getElementById("measurementmodal"))
             }

@@ -120,7 +120,7 @@ const GiftReceiverModal = (props) => {
             router.push("/homepage/cart")
         } else {
             props.setShowCart(true)
-            props.setShowModal(true)
+            props.setShowModal(false)
         }
     }
 
