@@ -139,7 +139,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
-
+    const codEnabled = orderSummary.cart ? orderSummary.cart.filter((item) => item.product_id.includes("Giftcard")).length === 0 : true
     const mobileView = (
         <Fragment>
             <p className='text-l text-center font-bold mb-2'>How do you want to pay ?</p>
@@ -154,19 +154,24 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
 
             <div className='border border-solid border-[#f1f2f3] mb-4 py-5 mx-5'>
                 <div className='flex flex-col mx-5 text-[#777]'>
-                    <Link href='/salt/shipping-returns' passHref>
-                        <a target={"_blank"} className='block text-[10px] font-semibold text-black underline ml-3'>COD Refund Policy</a>
-                    </Link>
-                    <label className='flex items-center gap-2'>
-                        <input
-                            type='radio'
-                            name='paymentMode'
-                            className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                            checked={payMode === "COD"}
-                            onChange={() => setPayMode("COD")}
-                        />
-                        <span className='text-[#777] font-600'>Cash on Delivery</span>
-                    </label>
+                    {
+                        codEnabled &&
+                        <>
+                            <Link href='/salt/shipping-returns' passHref>
+                                <a target={"_blank"} className='block text-[10px] font-semibold text-black underline ml-3'>COD Refund Policy</a>
+                            </Link>
+                            <label className='flex items-center gap-2'>
+                                <input
+                                    type='radio'
+                                    name='paymentMode'
+                                    className='text-[#777] focus:ring-transparent focus:ring-offset-0'
+                                    checked={payMode === "COD"}
+                                    onChange={() => setPayMode("COD")}
+                                />
+                                <span className='text-[#777] font-600'>Cash on Delivery</span>
+                            </label>
+                        </>
+                    }
                     <label className='flex items-center gap-2'>
                         <input
                             type='radio'
@@ -234,21 +239,24 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 </label>
             ) : null}
             <div className='bg-[#f1f2f3] py-5 px-8 grid grid-cols-3'>
-                <label className='flex items-center gap-2'>
-                    <input
-                        type='radio'
-                        name='paymentMode'
-                        className='text-[#777] focus:ring-transparent focus:ring-offset-0'
-                        checked={(payMode === "COD")}
-                        onChange={() => setPayMode("COD")}
-                    />
-                    <span className='text-[#777] font-600'>
+                {
+                    codEnabled &&
+                    <label className='flex items-center gap-2'>
+                        <input
+                            type='radio'
+                            name='paymentMode'
+                            className='text-[#777] focus:ring-transparent focus:ring-offset-0'
+                            checked={(payMode === "COD")}
+                            onChange={() => setPayMode("COD")}
+                        />
+                        <span className='text-[#777] font-600'>
                         Cash on Delivery
                         <Link href={'/salt/shipping-returns'}>
                             <a className='block text-[10px] text-black underline ml-3'>COD Refund Policy</a>
                         </Link>
                     </span>
-                </label>
+                    </label>
+                }
                 <label className='flex items-center gap-2'>
                     <input
                         type='radio'
