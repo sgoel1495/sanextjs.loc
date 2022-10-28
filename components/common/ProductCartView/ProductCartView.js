@@ -1,13 +1,14 @@
 import Image from "next/image";
-import React, {useContext, useState} from "react";
-import AppWideContext from "../../../store/AppWideContext";
-import {removeFromCart, updateCart} from "../../../helpers/addTocart";
+import React, {useState} from "react";
+import {getUserObject, removeFromCart, updateCart} from "../../../helpers/addTocart";
 import Toast from "../Toast";
 import MeasurementModal from "./MeasurementModal";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
+import {apiCall} from "../../../helpers/apiCall";
+import {setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
 
-function ProductCartView({isMobile,userData,appConfig,shoppingCart,userConfig,...props}) {
+function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfig, ...props}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [toastMsg, setToastMsg] = useState(null)
     const [showMeasure, setShowMeasure] = useState({
@@ -22,6 +23,19 @@ function ProductCartView({isMobile,userData,appConfig,shoppingCart,userConfig,..
         }
         let item = {...product, qty: updatedQty}
         await updateCart(userData, appConfig.apiToken, props.setCart, item)
+        if (!isMobile) {
+            await refreshSummary()
+        }
+    }
+
+    const refreshSummary = async () => {
+        let user = getUserObject(userData)
+        const gotOrderSummaryCall = await apiCall("getOrderSummary", appConfig.apiToken, {user: user});
+        if (gotOrderSummaryCall.status === 200) {
+            props.setOrderSummary({
+                ...gotOrderSummaryCall,
+            });
+        }
     }
 
     const productCartView = () => {
@@ -41,7 +55,10 @@ function ProductCartView({isMobile,userData,appConfig,shoppingCart,userConfig,..
                             </div>
                         </div>
                         <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
-                            <button className="absolute top-0 right-0" onClick={() => removeFromCart(userData, appConfig.apiToken, props.setCart, p)}>X
+                            <button className="absolute top-0 right-0" onClick={async () => {
+                                await removeFromCart(userData, appConfig.apiToken, props.setCart, p)
+                                await refreshSummary()
+                            }}>X
                             </button>
                             <div>
                                 <p className="font-600 text-sm leading-none">{p.name}</p>
@@ -174,8 +191,8 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         appConfig: state.appConfig,
         shoppingCart: state.shoppingCart,
-        userConfig:state.userConfig
+        userConfig: state.userConfig
     }
 }
 
-export default connect(mapStateToProps,{setCart})(ProductCartView)
+export default connect(mapStateToProps, {setCart, setOrderSummary})(ProductCartView)

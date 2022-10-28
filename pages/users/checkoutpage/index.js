@@ -18,7 +18,7 @@ import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import {setCurrentOrderID, setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
 
-function UsersCheckoutPage({appConfig, userData, currentOrderId, orderSummary, ...props}) {
+function UsersCheckoutPage({appConfig, userData, currentOrderId, orderSummary, shoppingCart, ...props}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
     const [active, setActive] = useState(1);
@@ -131,7 +131,8 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         appConfig: state.appConfig,
         currentOrderId: state.orderData.currentOrderId,
-        orderSummary: state.orderData.orderSummary
+        orderSummary: state.orderData.orderSummary,
+        shoppingCart: state.shoppingCart.cart
     }
 }
 

@@ -7,7 +7,7 @@ import TailoredSize from "../../TailoredSize";
 const SizeSelect = ({data, sizeAvail, size, setSize, currentMeasurement, setCurrentMeasurement}) => {
     const [showStandardSize, setShowStandardSize] = useState(false);
     const [sizeGuideModal, setSizeGuideModal] = useState(false);
-    console.log(data)
+
     return (
         <>
             <div className={'inline-flex items-center gap-6 mb-5 text-[#5a5958] tracking-widest'}>

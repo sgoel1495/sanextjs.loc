@@ -1,11 +1,12 @@
 import React from 'react';
 import ProductCard from "../ProductCard";
+import BlockHeader from "../../../common/blockHeader";
 
 const CompleteLook = ({ data }) => {
     return (
-        <div>
-            <span className={"block"}>Complete The LOOK</span>
-            <div className={"flex justify-center"}>
+        <div id={"complete-the-look"}>
+            <BlockHeader space={'pt-16'} titleStyle="text-h4 font-500">Complete The LOOK</BlockHeader>
+            <div className={"flex gap-8 justify-center my-12"}>
                 {data.paired_products.map((look, index) => {
                     return look.products.map((product, i) => {
                         if (data.asset_id === product['old_product_id'])
