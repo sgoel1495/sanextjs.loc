@@ -188,9 +188,10 @@ function ReviewOrder(props) {
                         Review Order - <span className='text-base font-500'>{props.orderSummary.cart && Object.keys(props.orderSummary.cart).length} item in bag</span>
                     </div>
                 }
-                bodyStyle={`bg-[#f1f2f3] px-8 grid grid-cols-2 gap-10`}
             >
-                <ProductCartView/>
+                <div className={"pb-8 bg-[#f1f2f3] px-8 grid grid-cols-2 gap-10"}>
+                    <ProductCartView/>
+                </div>
             </Accordion>
         </>
     );
