@@ -46,7 +46,7 @@ const AskStylist = ({product}) => {
                                 Ask Our Stylist.
                             </div>
                             <div className={"text-[#777] my-8"}>
-                                What size should you buy? What color shoes should you wear? We're always here to help.
+                                What size should you buy? What color shoes should you wear? We&apos;re always here to help.
                             </div>
                             <div className={"text-xl font-600"}>
                                 {product.name}, {product.tag_line}
@@ -55,7 +55,7 @@ const AskStylist = ({product}) => {
                                 <input className={inputClass} type="email" name="email" value={data["email"]} placeholder="Email Id" onChange={setData}/>
                                 <input className={inputClass} type="tel" name="phone" value={data["phone"]} placeholder="Phone Number" onChange={setData}/>
                                 <div className={"text-[#777] my-3"}>
-                                    Your privacy is important to us. See our <a className={"underline"} href={"/salt/privacy-policy"} target={"_blank"}>Privacy Policy</a>.
+                                    Your privacy is important to us. See our <a className={"underline"} href={"/salt/privacy-policy"} rel="noreferrer" target={"_blank"}>Privacy Policy</a>.
                                 </div>
                                 <textarea className={inputClass} name="message" value={data["message"]} placeholder="Message" onChange={setData} rows={5}/>
                                 <button className={"text-white bg-black px-4 py-1 text-sm"} type="submit">SEND</button>
