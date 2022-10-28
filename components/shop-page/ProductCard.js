@@ -187,7 +187,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     <div className="grid grid-cols-2 items-center h-16">
                         {(expandShop)
                             ?
-                            !isInStock(prod)
+                            isInStock(prod)
                                 ? <Fragment>
                                     <button className={`font-800 h-full`} onClick={() => {
                                         setShowSize(true)

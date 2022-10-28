@@ -10,6 +10,7 @@ import {useRouter} from "next/router";
 import razorpayLogo from "../../public/assets/images/razorpay_logo.svg"
 import ccavenue from "../../public/assets/images/ccavenue.png"
 import Image from "next/image";
+import Loader from "../common/Loader";
 
 function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummary, currentOrderId, ...props}) {
     const currencySymbol = userConfig.currSymbol;
@@ -283,16 +284,25 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                     {payMode === "COD" ?
                         <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
                                 onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                            {
+                                loading && <Loader className={"mr-2"}/>
+                            }
                             verify otp for cod
                         </button>
                         :
                         <>
                             <button className='flex my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center'
                                     onClick={() => placeOrder("razorpay")} disabled={loading}>
+                                {
+                                    loading && <Loader className={"mr-2"}/>
+                                }
                                 <span className={"mr-2"}>Place order with</span><Image src={razorpayLogo} width={95} height={20}/>
                             </button>
                             <button className='flex mb-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center'
                                     onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                                {
+                                    loading && <Loader className={"mr-2"}/>
+                                }
                                 <span className={"mr-2"}>Place order with</span><Image src={ccavenue} width={96} height={15}/>
                             </button>
                         </>

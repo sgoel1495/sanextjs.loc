@@ -11,8 +11,9 @@ import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 import ReactDom from "react-dom";
 import NotifyMeModal from "../../../common/NotifyMeModal";
 import SizeGuide from "../../SizeGuide";
+import AskStylist from "../AskStylist";
 
-const DetailsSection = ({theme, data, selectedSize, setSelectedSize, ...props}) => {
+const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, ...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
     const currCurrency = props.userConfig.currCurrency;
@@ -181,8 +182,10 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, ...props}) 
                 </div>
             </div>
             <div className={"flex justify-between items-center text-sm"}>
-                <button className={"uppercase font-500 hover:underline"}>ask your stylist</button>
-                <button className={"uppercase font-500 hover:underline"}>complete the look</button>
+                <AskStylist product={data}/>
+                {
+                    hasLooks && <a className={"uppercase font-500 hover:underline"} href={"#complete-the-look"}>complete the look</a>
+                }
             </div>
             <Toast show={showToast} hideToast={() => {
                 setShowToast(false)
@@ -195,14 +198,14 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, ...props}) 
                     document.getElementById("measurementmodal"))
             }
             {showNotifyMe &&
-            ReactDom.createPortal(
-                <NotifyMeModal
-                    closeModal={() => setShowNotifyMe(false)}
-                    isMobile={props.appConfig.isMobile}
-                    userO={getUserObject(props.userData)}
-                    product={data}
-                />,
-                document.getElementById("measurementmodal"))
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={() => setShowNotifyMe(false)}
+                        isMobile={props.appConfig.isMobile}
+                        userO={getUserObject(props.userData)}
+                        product={data}
+                    />,
+                    document.getElementById("measurementmodal"))
             }
         </div>
     );

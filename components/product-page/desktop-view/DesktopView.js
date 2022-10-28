@@ -25,6 +25,8 @@ const DesktopView = ({ hpid, data }) => {
     useEffect(() => {
         videoRef.current?.load();
     }, [hpid]);
+
+    const hasLooks = data.paired_products && data.paired_products.length > 0 && data.paired_products[0].products && data.paired_products[0].products.length > 0
     return (
         <div>
             <div className={"relative w-full h-screen"}>
@@ -60,7 +62,7 @@ const DesktopView = ({ hpid, data }) => {
                 <div className={"flex-[7]"}>
                     <ImageSwitcher images={data.images} />
                 </div>
-                <DetailsSection theme={theme} data={data} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
+                <DetailsSection theme={theme} data={data} selectedSize={selectedSize} setSelectedSize={setSelectedSize} hasLooks={hasLooks} />
             </div>
             <div className={"grid grid-cols-2"}>
                 <div className='py-10'>
@@ -100,7 +102,7 @@ const DesktopView = ({ hpid, data }) => {
                     <Image src={WEBASSETS + "/assets/images/why_shop_with_us.jpg"} alt='' layout={`fill`} objectFit={`cover`} />
                 </div>
             </div>
-            {data.paired_products && data.paired_products.length > 0 && data.paired_products.products && data.paired_products.products.length > 0 && <CompleteLook data={data} />}
+            {hasLooks && <CompleteLook data={data} />}
             {data.pattern_no &&
                 <ExploreSections
                     id={data.asset_id}

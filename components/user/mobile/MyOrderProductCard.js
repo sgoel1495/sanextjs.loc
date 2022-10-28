@@ -92,7 +92,7 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
                     width="174" height="282"
                 />
                 <div className={"absolute inset-x-0 bottom-0 bg-white/90 flex items-start p-3 text-xs"}>
-                    <div className='flex-1'>{product.item[itemIndex].tagline} Name</div>
+                    <div className='flex-1'>{product.item[itemIndex].tagline}</div>
                     <div className='text-right'>
                         <p>{product.item[itemIndex].qty}</p>
                         <p>{product.item[itemIndex].size}</p>

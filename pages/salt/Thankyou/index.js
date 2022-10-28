@@ -7,6 +7,8 @@ import Link from "next/link";
 import Footer from "../../../components/footer/Footer";
 import {useRouter} from "next/router";
 import {connect} from "react-redux";
+import {apiCall} from "../../../helpers/apiCall";
+import {setOrderHistory} from "../../../ReduxStore/reducers/orderSlice";
 
 const Thankyou = (props) => {
     const router = useRouter();
@@ -15,11 +17,21 @@ const Thankyou = (props) => {
     const [mobile, setMobile] = useState(false)
     const [order, setOrder] = useState({})
 
+    const getOrderHistory = () => {
+        apiCall("userOrderHistory", props.appConfig.apiToken, {user: {token: props.appConfig.apiToken, contact: props.userData.userServe.email}})
+            .then(pData => {
+                if (pData.status === 200 && pData.response) {
+                    props.setOrderHistory(pData.response);
+                }
+            })
+            .catch(e => console.log(e.message))
+    }
+
     useEffect(() => {
         if (props.orderHistory[orderID]) {
             setOrder(props.orderHistory[orderID])
         } else {
-
+            getOrderHistory();
         }
     }, [props.orderHistory])
 
@@ -174,8 +186,10 @@ const Thankyou = (props) => {
 const mapStateToProps = (state) => {
     return {
         userConfig: state.userConfig,
+        appConfig: state.appConfig,
+        userData: state.userData,
         orderHistory: state.orderData.orderHistory
     }
 }
 
-export default connect(mapStateToProps)(Thankyou);
+export default connect(mapStateToProps,{setOrderHistory})(Thankyou);
