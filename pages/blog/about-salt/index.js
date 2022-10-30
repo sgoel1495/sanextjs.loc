@@ -1,12 +1,10 @@
 import PageHead from "../../../components/PageHead";
-import AppWideContext from "../../../store/AppWideContext";
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import Header from "../../../components/navbar/Header";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
 import Link from "next/link";
 import Image from "next/image";
-import {isMobile} from "react-device-detect";
 import {connect} from "react-redux";
 
 function BlogAboutSaltPage({appConfig}) {
@@ -25,6 +23,11 @@ function BlogAboutSaltPage({appConfig}) {
                         <a className={`block`}>
                             <span className="block relative w-full aspect-square">
                                 <Image src={WEBASSETS + blog.img} alt={blog.title} layout={`fill`} objectFit={`contain`} />
+                                <span className={"absolute bottom-0 right-12 translate-y-1/2 "}>
+                                    <span className={"block relative h-12 aspect-square"}>
+                                        <Image src={WEBASSETS + "/assets/images/black_arrow.svg"} layout={"fill"} objectFit={`cover`}/>
+                                    </span>
+                                </span>
                             </span>
                             <div className="px-4 py-2">
                                 <p className={`text-sm font-500 mb-2 tracking-widest`}>{blog.category}</p>
@@ -68,7 +71,9 @@ function BlogAboutSaltPage({appConfig}) {
             <CategoryHeaderImage category={category} />
             </div>
             {(appConfig.isMobile) ? mobileView : browserView}
-            <Footer isMobile={appConfig.isMobile} />
+            {
+                appConfig.isMobile && <Footer isMobile={true} />
+            }
         </Fragment>);
 
 }
