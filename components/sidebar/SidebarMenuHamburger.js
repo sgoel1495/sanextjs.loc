@@ -1,14 +1,10 @@
 import Image from "next/image";
-import React, {Fragment, useContext, useEffect, useMemo, useState} from "react";
-import ReactDom from "react-dom";
+import React, {Fragment, useEffect, useMemo, useState} from "react";
 import Link from "next/link";
 import {NewTag} from "../common/Tags";
 import Accordion from "../common/accordion";
-import AppWideContext from "../../store/AppWideContext";
 import {isMobile} from "react-device-detect";
 import SearchMenu from "../search/SearchMenu";
-import CurrencySwitcher from "../navbar/CurrencySwitcher";
-import UserLogin from "../user/login/UserLogin";
 import useApiCall from "../../hooks/useApiCall";
 import {connect} from "react-redux";
 import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
@@ -108,12 +104,12 @@ const mobileNavigationDataInit = [
 const SelfLink = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
 
-    const mobileView = <a className={`block px-4 py-3 text-black tracking-[-0.5px] capitalize ` + [props.style ? props.style : ""]}>
+    const mobileView = <a className={`block px-4 py-3 text-black tracking-[-0.5px] capitalize ml-4 ` + [props.style ? props.style : ""]}>
                 <span className={`block leading-none font-900 capitalize`}>
                     {props.title.toLowerCase()}
                     {props.new && <sup><NewTag white={true}/></sup>}
                 </span>
-        {props.description && <span className="text-xs block leading-none">{props.description}</span>}
+        {props.description && <span className="text-sm font-500 block leading-none italic text-[#777] font-cursive mt-1">{props.description}</span>}
     </a>;
     const mobileCenteredView = <a className={`block px-4 py-3 text-black tracking-[-0.5px] text-center mt-2 flex flex-col items-center ` + [props.style ? props.style : ""]}>
         {
@@ -169,7 +165,7 @@ const ChildLink = props => {
     let mobileTitle = <div className={props.centered && " text-center mr-[-3rem]"}>
         <div className={`text-black leading-none font-900 capitalize tracking-[-0.5px]`}>
             {props.title.toLowerCase()}
-            {props.new && <sup><NewTag white={true}/></sup>}
+            {props.new && <sup className={"uppercase"}><NewTag white={true}/></sup>}
         </div>
         {props.description && <span className="text-xs block leading-none capitalize">{props.description}</span>}
     </div>;
@@ -180,7 +176,7 @@ const ChildLink = props => {
             style={"relative group text-black/70 pb-2 " + [viewState ? 'bg-[#f7f7f7] ' : ""] + props.style}
             animationDuration={"duration-200"}
             title={props.isMobile ? mobileTitle : browserTitle}
-            titleStyle={`px-4 py-3 `}
+            titleStyle={`px-4 py-3 ml-4`}
             accordionIconOpen={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
                     <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
@@ -194,20 +190,20 @@ const ChildLink = props => {
             bodyStyle={`ml-2 ${viewState ? 'my-2' : ''}`}
         >
             {props.child &&
-            <ul>
-                {props.child.map((item, index) => {
-                    return (
-                        <li key={index}>
-                            <Link href={item.link} key={index}>
-                                <a className={props.isMobile ? props.centered ? "block text-center py-2 text-xs capitalize font-600 text-black/80" : `block pl-8 py-2 text-xs capitalize font-600 text-black/80` : `block px-4 py-1 hover:bg-black/5 text-sm`}>
-                                    {item.title.toLowerCase()}
-                                    {item.new && <NewTag/>}
-                                </a>
-                            </Link>
-                        </li>
-                    )
-                })}
-            </ul>
+                <ul>
+                    {props.child.map((item, index) => {
+                        return (
+                            <li key={index}>
+                                <Link href={item.link} key={index}>
+                                    <a className={props.isMobile ? props.centered ? "block text-center py-2 text-xs capitalize font-600 text-black/80" : `block pl-8 py-2 text-xs capitalize font-600 text-black/80 ml-4` : `block px-4 py-1 hover:bg-black/5 text-sm`}>
+                                        {item.title.toLowerCase()}
+                                        {item.new && <NewTag/>}
+                                    </a>
+                                </Link>
+                            </li>
+                        )
+                    })}
+                </ul>
             }
         </Accordion>
     )
@@ -472,4 +468,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps,{setShowLogin})(SidebarMenuHamburger);
+export default connect(mapStateToProps, {setShowLogin})(SidebarMenuHamburger);

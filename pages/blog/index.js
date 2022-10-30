@@ -67,9 +67,9 @@ function BlogPage({isMobile}) {
                                     </span>
                                 </span>
                             </span>
-                            <div className={"mx-3"}>
-                                <div className={"text-xs text-[#222] uppercase my-4"}>{item.label}</div>
-                                <div className={"font-600 capitalize font-cursive tracking-wide "+[isMobile?"text-lg":"text-[28px]"]}>{item.title}</div>
+                            <div className={isMobile?"mx-12":"mx-3"}>
+                                <div className={"text-[10px] text-[#222] uppercase my-4 tracking-widest"+[isMobile?" mb-1 font-800":""]}>{item.label}</div>
+                                <div className={"font-600 capitalize font-cursive tracking-wide "+[isMobile?"text-lg font-900":"text-[28px]"]}>{item.title}</div>
                             </div>
                         </a>
                     </Link>
