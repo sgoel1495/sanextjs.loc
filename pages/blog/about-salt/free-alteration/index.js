@@ -14,7 +14,7 @@ const Index = ({isMobile}) => {
     const content = [
         {
             img: "/assets/images/free_alteration_800.jpg",
-            text: <>Received your garments but need some alterations for a better fit? We're here for you!<br/>Whether you want to adjust by 0.5" or
+            text: <>Received your garments but need some alterations for a better fit? We&apos;re here for you!<br/>Whether you want to adjust by 0.5&quot; or
                 alter further, we will get it done for you! We offer upto two free alterations until the garment fits you perfectly. The reverse pickup and re-shipping of the
                 garment will be done by us. So sit back, relax and get your garment altered hassle-free.</>,
         },
@@ -43,15 +43,15 @@ const Index = ({isMobile}) => {
         }, {
             heading: "Styling Services",
             img: "/assets/images/styling_service_800.jpg",
-            text: <>Need a Wardrobe Refresh or Need to decide what to wear for an event that's coming up?<br/>Not sure about the silhouette that will flatter you? or the color you
-                should pick?<br/>Well, we've got your back!</>,
+            text: <>Need a Wardrobe Refresh or Need to decide what to wear for an event that&apos;s coming up?<br/>Not sure about the silhouette that will flatter you? or the color you
+                should pick?<br/>Well, we&apos;ve got your back!</>,
         }, {
             text: <>We provide Styling Services too!<br/>Whether you need to pick for an event, your everyday clothing, or if you have any questions based on what style, color, or
                 silhouette would suit you best, we have in-house stylists to answer your queries.</>,
             className: "-mt-3 pb-2 ",
             onlyText: true
         }, {
-            text: <><a target="_blank" rel="noreferrer" href="/get-appointment"><u><b>Book Your Free Styling Appointment</b></u></a> in Store Now, or Contact Us, email
+            text: <><Link  href="/get-appointment" passHref><a target="_blank" rel="noreferrer"><u><b>Book Your Free Styling Appointment</b></u></a></Link> in Store Now, or Contact Us, email
                 care@saltattire.com, call or whatsapp +91 9015904904 for a Virtual Styling Session!</>,
             className: "py-2",
             onlyText: true
@@ -89,7 +89,7 @@ const Index = ({isMobile}) => {
             onlyText: true
         },{
             text: <>This is also the reason why your items take 7-10 days for delivery, Since your garments are made only once the order is
-                received and hence the time taken to make.<br/>A 7 day shipping v/s a 2 day shipping, a small price to pay for the environment, isn't it?</>,
+                received and hence the time taken to make.<br/>A 7 day shipping v/s a 2 day shipping, a small price to pay for the environment, isn&apos;t it?</>,
             className: "py-2",
             onlyText: true
         },{

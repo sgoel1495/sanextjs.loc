@@ -36,22 +36,22 @@ const Index = ({isMobile}) => {
         }, {
             heading: "Styling Services",
             img: "/assets/images/styling_service_800.jpg",
-            text: <>Need a Wardrobe Refresh or Need to decide what to wear for an event that's coming up?<br/>Not sure about the silhouette that will flatter you? or the color you
-                should pick?<br/>Well, we've got your back!</>,
+            text: <>Need a Wardrobe Refresh or Need to decide what to wear for an event that&apos;s coming up?<br/>Not sure about the silhouette that will flatter you? or the color
+                you should pick?<br/>Well, we&apos;ve got your back!</>,
         }, {
             text: <>We provide Styling Services too!<br/>Whether you need to pick for an event, your everyday clothing, or if you have any questions based on what style, color, or
                 silhouette would suit you best, we have in-house stylists to answer your queries.</>,
             className: "-mt-3 pb-2 ",
             onlyText: true
         }, {
-            text: <><a target="_blank" rel="noreferrer" href="/get-appointment"><u><b>Book Your Free Styling Appointment</b></u></a> in Store Now, or Contact Us, email
-                care@saltattire.com, call or whatsapp +91 9015904904 for a Virtual Styling Session!</>,
+            text: <><Link href={"/get-appointment"} passHref><a target="_blank" rel="noreferrer"><u><b>Book Your Free Styling Appointment</b></u></a></Link> in Store Now, or
+                Contact Us, email care@saltattire.com, call or whatsapp +91 9015904904 for a Virtual Styling Session!</>,
             className: "py-2",
             onlyText: true
         }, {
             heading: "Free Alterations",
             img: "/assets/images/free_alteration_800.jpg",
-            text: <>Received your garments but need some alterations for a better fit? We're here for you!<br/>Whether you want to adjust by 0.5" or
+            text: <>Received your garments but need some alterations for a better fit? We&apos;re here for you!<br/>Whether you want to adjust by 0.5&quot; or
                 alter further, we will get it done for you! We offer upto two free alterations until the garment fits you perfectly. The reverse pickup and re-shipping of the
                 garment will be done by us. So sit back, relax and get your garment altered hassle-free.</>,
         }, {
@@ -86,12 +86,12 @@ const Index = ({isMobile}) => {
                 absolutely No Inventory and this helps us create a sustainable manufacturing process</>,
             className: "py-2",
             onlyText: true
-        },{
+        }, {
             text: <>This is also the reason why your items take 7-10 days for delivery, Since your garments are made only once the order is
-                received and hence the time taken to make.<br/>A 7 day shipping v/s a 2 day shipping, a small price to pay for the environment, isn't it?</>,
+                received and hence the time taken to make.<br/>A 7 day shipping v/s a 2 day shipping, a small price to pay for the environment, isn&apos;t it?</>,
             className: "py-2",
             onlyText: true
-        },{
+        }, {
             heading: "Ethical & Fair Treatment",
             img: "/assets/images/ethical-fair_800.jpg",
             text: "We know that it is our duty to not only serve our customers but also our people who craft pieces for you. The people who make the clothes are as important as the people who wear them. The craftsmen tirelessly cutting, sewing, stitching your clothes are the real heroes behind the scenes.",
@@ -99,15 +99,15 @@ const Index = ({isMobile}) => {
             text: "All our garments are made in-house in our workshop. These garments are carefully cut, stitched and finished by our in-house team of tailors. All our tailors are given monthly wages, healthcare benefits, and work in good working conditions.  For example, the entire workshop is fully air-conditioned. The conditions our entire team works in is the same as that we would like to keep for ourselves.",
             className: "-mt-3 pb-2 ",
             onlyText: true
-        },{
+        }, {
             text: "All our garments are made in-house in our workshop. These garments are carefully cut, stitched and finished by our in-house team of tailors. All our tailors are given monthly wages, healthcare benefits, and work in good working conditions.  For example, the entire workshop is fully air-conditioned. The conditions our entire team works in is the same as that we would like to keep for ourselves.",
             className: "py-2",
             onlyText: true
-        },{
+        }, {
             text: "We believe in Ethical & Fair trade Clothing and have an answer to the popular movement #WhoMadeMyClothes.",
             className: "py-2",
             onlyText: true
-        },{
+        }, {
             text: "So the next time you are in a mall or tempted to buy something from an e-commerce site, ask yourself, why buy a garment which is probably made in a sweatshop when you can buy better quality, in-turn supporting your local community and being aware of #WhoMadeMyClothes?",
             className: "py-2",
             onlyText: true
@@ -144,11 +144,11 @@ const Index = ({isMobile}) => {
     const body = content.map((item, index) =>
         <div key={index}>
             {
-                item.heading && <div className={"font-cursive text-center mx-8 capitalize my-4 "+[isMobile?"text-3xl":"text-4xl"]}>
+                item.heading && <div className={"font-cursive text-center mx-8 capitalize my-4 " + [isMobile ? "text-3xl" : "text-4xl"]}>
                     {item.heading}
                 </div>
             }
-            <div className={isMobile?"":"px-20"}>
+            <div className={isMobile ? "" : "px-20"}>
                 {
                     item.img ?
                         item.link ?
