@@ -135,7 +135,7 @@ function Menu(props) {
             )
         })}
     </>;
-    console.log(props.type)
+
     let browserView;
 
     switch (props.type) {

@@ -21,7 +21,8 @@ function ShopPage(props) {
     const router = useRouter();
     const [route, setRoute] = useState("")
     //all paths start with shop-
-    const {category, hpid, appConfig, data} = props
+    const {category, hpid, appConfig} = props
+    const [data,setData] = useState(props.data)
     const [loading, setLoading] = useState(false)
 
     const [query, setQuery] = useState({
@@ -51,6 +52,7 @@ function ShopPage(props) {
             .then(resp => {
                 if (resp.response && resp.response.data) {
                     setVisibleData([...visibleData, ...resp.response.data.filter(item => item.is_visible)])
+                    setData(resp.response)
                     setQuery({...query, skip: page * 18})
                     setPage(page + 1)
                 }
@@ -79,7 +81,7 @@ function ShopPage(props) {
 
     useEffect(() => {
         if (route) {
-            fetchQueryData(props, data, setLoading, query, setQuery, setVisibleData, setTotal, setPage)
+            fetchQueryData(props, data, setLoading, query, setQuery, setVisibleData, setTotal, setPage,setData)
         }
     }, [props.refreshFilter])
 
@@ -98,6 +100,10 @@ function ShopPage(props) {
 
         }
     }, [router.route])
+
+    React.useEffect(()=>{
+        console.log(data)
+    },[data])
 
     React.useEffect(() => {
         if (router.query.sorted_by) {
