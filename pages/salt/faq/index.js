@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import AppWideContext from "../../../store/AppWideContext";
+import React, {useState} from 'react';
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import CategoryHeaderImage from "../../../components/common/CategoryHeaderImage";
@@ -8,6 +7,8 @@ import LinkParser from "../../../components/common/LinkParser";
 import faqData from "../../../store/faqData.json";
 import Header from "../../../components/navbar/Header";
 import {connect} from "react-redux";
+import Link from "next/link";
+import {apiCall} from "../../../helpers/apiCall";
 
 /**
  * @todo Pincode check
@@ -37,6 +38,14 @@ const AnswerBlock = ({ item }) => {
 function SaltFaqPage({appConfig}) {
 
     const category = "FAQ";
+    const [pincode, setPinCode] = useState(null)
+    const [deliveryAvailable, setDeliveryAvailable] = useState(null)
+    const checkDelivery = async () => {
+        if (pincode == null)
+            return;
+        const resp = await apiCall("cityByZipcode", appConfig.apiToken, {zipcode: pincode});
+        setDeliveryAvailable(!!(resp.response_data && resp.response_data.city))
+    }
 
     const showFaq = (col) => {
         let showFaqData = null;
@@ -62,6 +71,36 @@ function SaltFaqPage({appConfig}) {
                         >
                             <div className="px-6 py-4">
                                 {answersData}
+                                {
+                                    ele.id === 22 &&
+                                    <div className={"bg-white mt-2 border-4 border-black/10 p-1"}>
+                                        <p className={"text-[10px] tracking-tight font-600 mb-1"}> Please enter PIN to check delivery availability.</p>
+                                        <div className={"inline-flex justify-between w-full gap-2 p-2"}>
+                                            <input placeholder={"Enter pincode"} type="number"
+                                                   className='border border-black text-sm w-full placeholder:text-black font-500'
+                                                   onChange={e => setPinCode(e.target.value)}
+                                            />
+                                            <button
+                                                className={"bg-black text-white uppercase text-sm px-2"}
+                                                onClick={checkDelivery}
+                                            >Submit
+                                            </button>
+                                        </div>
+                                        {(deliveryAvailable == null)
+                                            ? null
+                                            : (deliveryAvailable)
+                                                ? <div>Delivery Available!</div>
+                                                : <div>
+                                                    Sorry! Delivery not available to this location.
+                                                    <Link href="/salt/contact-us" key="contact">
+                                                        <a> Contact Us </a>
+                                                    </Link>
+                                                    if you do not see your pincode.
+                                                </div>
+                                        }
+                                    </div>
+                                }
+
                             </div>
                         </Accordion>
                     </>

@@ -28,22 +28,22 @@ const keywordReplace = (keyword)=>{
     switch (keyword){
         case "contactus":
             returnValue=<Link href="/salt/contact-us">
-                <a>Contact Us</a>
+                <a className={"underline"}>Contact Us</a>
             </Link>;
             break;
         case "signin":
             returnValue=<Link href="/homepage/signin">
-                <a>My Account</a>
+                <a className={"underline"}>My Account</a>
             </Link>;
             break;
         case "shippingreturns":
             returnValue=<Link href="/salt/shipping-returns">
-                <a>Shipping & Returns Policy</a>
+                <a className={"underline"}>Shipping & Returns Policy</a>
             </Link>;
             break;
         case "giftcards":
             returnValue=<Link href="/giftcards">
-                <a>Gift Cards</a>
+                <a className={"underline"}>Gift Cards</a>
             </Link>;
             break;
         case "br":

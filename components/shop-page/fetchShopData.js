@@ -16,7 +16,7 @@ export default async function fetchShopData(category) {
     return (gotData) ? callObject.response : null
 }
 
-export function fetchQueryData(props, data, setLoading, query, setQuery, setVisibleData, setTotal,setPage) {
+export function fetchQueryData(props, data, setLoading, query, setQuery, setVisibleData, setTotal,setPage,setData) {
     const filterCategories = Object.keys(props.filterCheckboxes)
 
     //case before init
@@ -41,7 +41,7 @@ export function fetchQueryData(props, data, setLoading, query, setQuery, setVisi
 
     //set original data is not filter or sort is applied
     if (queryObject['sorted_by'] === "" && Object.keys(queryObject.filter_by).length === 0) {
-        fetchQueryData(data.data)
+        setVisibleData([...props.data.filter(item => item.is_visible)])
         return
     }
 
@@ -57,6 +57,7 @@ export function fetchQueryData(props, data, setLoading, query, setQuery, setVisi
             if (resp.response && resp.response.data) {
                 setVisibleData([...resp.response.data.filter(item => item.is_visible)])
                 setQuery(queryObject)
+                setData(resp.response)
                 setTotal(resp.response.total_products_exist)
                 setPage(1)
             }
