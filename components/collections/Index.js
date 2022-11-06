@@ -5,7 +5,7 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import Link from 'next/link'
 import {connect} from "react-redux";
 
-const Index = ({appConfig,userConfig}) => {
+const Index = ({appConfig, userConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const resp = useApiCall("getMarketingData", appConfig.apiToken);
     const currCurrency = userConfig.currCurrency;
@@ -40,7 +40,7 @@ const Index = ({appConfig,userConfig}) => {
                                         </span>
                                     </Link>
                                     <p className='font-cursive italic leading-none text-3xl text-black/80 block text-center sentence'>{item['title']}</p>
-                                    <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-500 tracking-widest'>{item['subtitle'][currCurrency].split(" ").slice(0,2).join(" ")}</p>
+                                    <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-500 tracking-widest'>{item['subtitle'][currCurrency].split(" ").slice(0, 2).join(" ")}</p>
                                     <p className='text-[7.5px] text-[#b3aeab] text-center uppercase font-500 tracking-widest'>{item['subtitle'][currCurrency].split(" ").slice(2)}</p>
                                     <div className={`py-5 zoomInSwiper`}>
                                         <Swiper
@@ -53,7 +53,9 @@ const Index = ({appConfig,userConfig}) => {
                                             {item.products_imgs.map((product, i) => {
                                                 return (
                                                     <SwiperSlide key={i}>
-                                                        <Link href={item.products_links[i]} passHref>
+                                                        {
+                                                            item.products_links[i] ?
+                                                                <Link href={item.products_links[i]} passHref>
                                                             <span className={"flex flex-col items-center gap-y-2"}>
                                                                 <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
                                                                     <Image
@@ -65,7 +67,20 @@ const Index = ({appConfig,userConfig}) => {
                                                                 </span>
                                                                 <span className={"text-[10px] text-[#8c8987] uppercase"}>{item.products_name[i]}</span>
                                                             </span>
-                                                        </Link>
+                                                                </Link>
+                                                                :
+                                                                <span className={"flex flex-col items-center gap-y-2"}>
+                                                                <span className={"block relative h-64 w-full border-4 border-white rounded-[8vw] shadow-md bg-[#fffaf7]"}>
+                                                                    <Image
+                                                                        src={WEBASSETS + product}
+                                                                        layout="fill"
+                                                                        objectFit="cover"
+                                                                        alt={item.products_name[i]}
+                                                                    />
+                                                                </span>
+                                                                <span className={"text-[10px] text-[#8c8987] uppercase"}>{item.products_name[i]}</span>
+                                                            </span>
+                                                        }
                                                     </SwiperSlide>
                                                 )
                                             })}
@@ -86,7 +101,7 @@ const Index = ({appConfig,userConfig}) => {
 const mapStateToProps = (state) => {
     return {
         appConfig: state.appConfig,
-        userConfig:state.userConfig
+        userConfig: state.userConfig
     }
 }
 

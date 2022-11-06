@@ -7,7 +7,6 @@ import CategoryHeaderMobile from "./CategoryHeaderMobile";
 import Loader from "../common/Loader";
 import Footer from "../footer/Footer";
 import {useRouter} from "next/router";
-import BrowserView from "./BrowserView";
 
 const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, skip}, ref) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -20,6 +19,21 @@ const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, 
 
     if (visibleData) {
         visibleData.forEach((prod, index) => {
+            if (index === 0) {
+                returnValue = <Fragment>
+                    {returnValue}
+                    <div className={"col-span-2 text-center text-lg uppercase font-600 my-3"}>
+                        {prod.belong_to}
+                    </div>
+                </Fragment>
+            } else if(prod.belong_to!==visibleData[index-1].belong_to) {
+                returnValue = <Fragment>
+                    {returnValue}
+                    <div className={"col-span-2 text-center text-lg uppercase font-600 my-3"}>
+                        {prod.belong_to}
+                    </div>
+                </Fragment>
+            }
             if (index % 8 === 7) {
                 let keyIndex = ((index + 1) / 8) - 1
                 let breakSpeed = null
