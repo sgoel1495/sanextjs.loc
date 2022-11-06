@@ -12,6 +12,15 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [showModal, setShowModal] = useState(0)
     const [toastMsg, setToastMsg] = React.useState(false)
+    let status = {
+        status_user: "",
+        status_code: 0
+    }
+    Object.keys(product.item[itemIndex].item_status).forEach((key) => {
+        if (product.item[itemIndex].item_status[key].status_code > status.status_code) {
+            status = product.item[itemIndex].item_status[key]
+        }
+    })
 
     const mobile = <div className={"flex flex-col bg-[#f7f7f7] mx-2 py-3"}>
         <div className={"flex justify-between gap-4"}>
@@ -37,18 +46,21 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
                     <span className={"text-xs"}>{product.delivery_address.address}</span>
                     <span className={"text-xs"}>{product.delivery_address.country}, {product.delivery_address.state}</span>
                     <span className={"text-xs"}>{product.delivery_address.city},{product.delivery_address.zip_code}</span>
-                    <span
-                        onClick={() => {
-                            setShowModal(1)
-                        }}
-                        className={"text-xs"}
-                    >
+                    {
+                        status.status_code === 1 && <span
+                            onClick={() => {
+                                setShowModal(1)
+                            }}
+                            className={"text-xs"}
+                        >
                         Change Shipping Address
                     </span>
+                    }
+
                 </div>
                 <div className={"flex flex-col gap-1 mb-5"}>
-                    <strong>
-                        ORDER CONFIRMED
+                    <strong className={"uppercase"}>
+                        {status.status_user.replace("order_params", "order")}
                     </strong>
                     <span
                         onClick={() => {
@@ -113,22 +125,20 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
                     <span className={"text-[13px] font-500"}>{product.delivery_address.country}, {product.delivery_address.state}</span>
                     <span className={"text-[13px] font-500"}>{product.delivery_address.city},{product.delivery_address.zip_code}</span>
                     {
-                        Object.keys(product.item[itemIndex].item_status).length <= 1 ?
-                            <span
-                                onClick={() => {
-                                    setShowModal(1)
-                                }}
-                                className={"text-[11px] font-600 hover:underline cursor-pointer"}
-                            >
+                        status.status_code === 1 &&
+                        <span
+                            onClick={() => {
+                                setShowModal(1)
+                            }}
+                            className={"text-[11px] font-600 hover:underline cursor-pointer"}
+                        >
                                 Change Shipping Address
                             </span>
-                            :
-                            null
                     }
                 </div>
                 <div className={"flex flex-col gap-1 mb-5 mt-1 text-sm"}>
-                    <strong>
-                        ORDER CONFIRMED
+                    <strong className={"uppercase"}>
+                        {status.status_user.replace("order_params", "order")}
                     </strong>
                     <span
                         onClick={() => {
