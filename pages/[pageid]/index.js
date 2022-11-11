@@ -31,6 +31,9 @@ function PageById(props) {
 
     React.useEffect(() => {
         setLoading(true)
+        if(!idParts[0]){
+            return
+        }
         switch (idParts[0]) {
             case "shop":
                 fetchShopData(idParts[1]).then((resp) => {
@@ -40,7 +43,7 @@ function PageById(props) {
                 })
                 break
             case "mimoto":
-                fetchMimotoData(idParts[1]).then((resp) => {
+                fetchMimotoData(idParts.slice(1).join("-")).then((resp) => {
                     setData(resp)
                 }).finally(() => {
                     setLoading(false)
@@ -56,7 +59,7 @@ function PageById(props) {
     },[router.query])
 
     const whereToGo = () => {
-        if (!router || !router.query || !router.query.pageid)
+        if (!router || !router.query || !router.query.pageid || !idParts[0])
             return <AppLoading/>
         switch (idParts[0]) {
             case "shop":

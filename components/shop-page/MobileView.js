@@ -16,23 +16,24 @@ const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, 
     let breakSpeedKeys = []
     if (data && data.break_speed)
         breakSpeedKeys = Object.keys(data.break_speed)
-
     if (visibleData) {
         visibleData.forEach((prod, index) => {
-            if (index === 0) {
-                returnValue = <Fragment>
-                    {returnValue}
-                    <div className={"col-span-2 text-center text-lg uppercase font-600 my-3"}>
-                        {prod.belong_to}
-                    </div>
-                </Fragment>
-            } else if(prod.belong_to!==visibleData[index-1].belong_to) {
-                returnValue = <Fragment>
-                    {returnValue}
-                    <div className={"col-span-2 text-center text-lg uppercase font-600 my-3"}>
-                        {prod.belong_to}
-                    </div>
-                </Fragment>
+            if (category === "jewellery") {
+                if (index === 0) {
+                    returnValue = <Fragment>
+                        {returnValue}
+                        <div className={`col-span-${activeLayout} text-center text-lg uppercase font-600 my-3`}>
+                            {prod.belong_to}
+                        </div>
+                    </Fragment>
+                } else if (prod.belong_to !== visibleData[index - 1].belong_to) {
+                    returnValue = <Fragment>
+                        {returnValue}
+                        <div className={`col-span-${activeLayout} text-center text-lg uppercase font-600 my-3`}>
+                            {prod.belong_to}
+                        </div>
+                    </Fragment>
+                }
             }
             if (index % 8 === 7) {
                 let keyIndex = ((index + 1) / 8) - 1

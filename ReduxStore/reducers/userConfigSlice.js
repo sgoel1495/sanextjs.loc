@@ -13,8 +13,11 @@ const userConfigSlice = createSlice({
         },
         setShowLogin: (state, action) => {
             state.showLogin = action.payload
+        },
+        setShowSidebarMenu: (state, action) => {
+            state.showSidebarMenu = action.payload
         }
     }
 })
-export const {setCurrency, setCurrencySymbol, setShowLogin} = userConfigSlice.actions;
+export const {setCurrency, setCurrencySymbol, setShowLogin, setShowSidebarMenu} = userConfigSlice.actions;
 export default userConfigSlice.reducer;

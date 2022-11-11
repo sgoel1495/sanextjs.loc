@@ -2,7 +2,7 @@
  * @params {isMobile} props
  * @constructor
  */
-import React, {Fragment, useCallback,useEffect, useRef, useState} from 'react';
+import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import SaltIcon from "./SaltIcon";
@@ -13,6 +13,7 @@ import Menu from "./Menu";
 import SidebarMenuCart from "../sidebar/cart/SidebarMenuCart";
 import SidebarMenuUser from "../sidebar/SidebarMenuUser";
 import {connect} from "react-redux";
+import {setShowSidebarMenu} from "../../ReduxStore/reducers/userConfigSlice";
 
 function Navbar(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -119,7 +120,7 @@ function Navbar(props) {
                     <div className={"inline-flex items-center gap-x-5"}>
                         {
                             (props.userData.userServe.user_name !== "") ?
-                                <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"}>
+                                <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"} onClick={() => props.setShowSidebarMenu(true)}>
                                     {props.userData.userServe.user_name[0].toUpperCase()}
                                 </div>
                                 :
@@ -171,7 +172,7 @@ function Navbar(props) {
                         <li>
                             {
                                 (props.userData.userServe.user_name !== "") ?
-                                    <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"}>
+                                    <div className={"grid place-items-center h-7 w-7 rounded-full bg-slate-400 text-white"} onClick={() => props.setShowSidebarMenu(true)}>
                                         {props.userData.userServe.user_name[0].toUpperCase()}
                                     </div>
                                     :
@@ -192,7 +193,7 @@ function Navbar(props) {
                             </Link>
                         </li>
                         <li>
-                            <Link href={"/homepage/signin"}>
+                            <Link href={props.userData.userServe.user_name !== "" ? "/users/favourites" : "/homepage/signin"}>
                                 <a>
                                     <Image src={WEBASSETS + "/assets/images/fav_icon.svg"} alt="fav"
                                            width={iconHeightWeight} height={iconHeightWeight}/>
@@ -222,4 +223,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps,{setShowSidebarMenu})(Navbar);

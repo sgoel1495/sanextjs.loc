@@ -6,10 +6,16 @@ import {setUserServe, setUserState} from "../ReduxStore/reducers/userSlice";
 import {setCart} from "../ReduxStore/reducers/shoppingCartSlice";
 import {setIsMobile} from "../ReduxStore/reducers/appConfigSlice";
 import {setOrderHistory} from "../ReduxStore/reducers/orderSlice";
+import {useRouter} from "next/router";
+import {setShowSidebarMenu} from "../ReduxStore/reducers/userConfigSlice";
 
 const AppWrapper = (props) => {
     const {userData, shoppingCart, appConfig} = props
+    const router = useRouter()
     useEffect(() => {
+        router.events.on('routeChangeStart', (url, {shallow}) => {
+            props.setShowSidebarMenu(false)
+        })
         let flag = true;
         if (userData) {
             if (userData.userServe.email) {
@@ -49,4 +55,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setUserServe, setUserState, setCart, setIsMobile,setOrderHistory})(AppWrapper);
+export default connect(mapStateToProps, {setUserServe, setUserState, setCart, setIsMobile, setOrderHistory, setShowSidebarMenu})(AppWrapper);

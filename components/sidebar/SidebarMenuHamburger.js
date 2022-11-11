@@ -7,7 +7,7 @@ import {isMobile} from "react-device-detect";
 import SearchMenu from "../search/SearchMenu";
 import useApiCall from "../../hooks/useApiCall";
 import {connect} from "react-redux";
-import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
+import {setShowLogin, setShowSidebarMenu} from "../../ReduxStore/reducers/userConfigSlice";
 
 /**
  * @todo account signin pending
@@ -176,7 +176,7 @@ const ChildLink = props => {
             style={"relative group text-black/70 pb-2 " + [viewState ? 'bg-[#f7f7f7] ' : ""] + props.style}
             animationDuration={"duration-200"}
             title={props.isMobile ? mobileTitle : browserTitle}
-            titleStyle={`px-4 py-3 ml-4`}
+            titleStyle={`px-4 py-3 `+[props.isMobile && "ml-4"]}
             accordionIconOpen={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
                     <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
@@ -276,7 +276,6 @@ function HamburgerModal(props) {
 function SidebarMenuHamburger(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [navigationData, setNavigationData] = useState([]);
-    const [showSidebarMenu, setShowSidebarMenu] = useState(false);
     const [mobile, setMobile] = useState(false)
     const navMenu = useApiCall("getHomePageMenu", props.appConfig.apiToken);
     const navData = useMemo(() => {
@@ -318,9 +317,9 @@ function SidebarMenuHamburger(props) {
         setMobile(isMobile)
     }, [])
     useEffect(() => {
-        if (showSidebarMenu) document.body.classList.add("scroll-overflow");
+        if (props.showSidebarMenu) document.body.classList.add("scroll-overflow");
         return () => document.body.classList.remove("scroll-overflow");
-    }, [showSidebarMenu]);
+    }, [props.showSidebarMenu]);
 
     useEffect(() => {
         if (mobile) {
@@ -428,7 +427,7 @@ function SidebarMenuHamburger(props) {
     }, [props.userData.userServe.user_name, props.userData.userServe.email, navData]);
 
     const closeModal = () => {
-        setShowSidebarMenu(false);
+        props.setShowSidebarMenu(false);
     }
 
     let iconHeight;
@@ -444,7 +443,7 @@ function SidebarMenuHamburger(props) {
         {(navigationData.length > 0)
             ? <span className={`relative w-6 ${iconHeight}`}>
                 {
-                    props.type !== "menu" && <div onClick={() => setShowSidebarMenu(true)}
+                    props.type !== "menu" && <div onClick={() =>  props.setShowSidebarMenu(true)}
                                                   className={`relative cursor-pointer w-6 ${iconHeight}`}>
                         <Image
                             src={WEBASSETS + "/assets/images/menuicon_v1.png"}
@@ -455,7 +454,7 @@ function SidebarMenuHamburger(props) {
 
                     </div>
                 }
-                <HamburgerModal data={navigationData} closeModal={closeModal.bind(this)} visible={showSidebarMenu} isMobile={mobile}/>
+                <HamburgerModal data={navigationData} closeModal={closeModal} visible={props.showSidebarMenu} isMobile={mobile}/>
             </span>
             : <Fragment/>}
     </Fragment>;
@@ -464,8 +463,9 @@ function SidebarMenuHamburger(props) {
 const mapStateToProps = (state) => {
     return {
         userData: state.userData,
-        appConfig: state.appConfig
+        appConfig: state.appConfig,
+        showSidebarMenu: state.userConfig.showSidebarMenu
     }
 }
 
-export default connect(mapStateToProps, {setShowLogin})(SidebarMenuHamburger);
+export default connect(mapStateToProps, {setShowLogin,setShowSidebarMenu})(SidebarMenuHamburger);
