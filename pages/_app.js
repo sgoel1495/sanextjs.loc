@@ -11,6 +11,7 @@ import Script from 'next/script'
 import {persistor, store} from "../ReduxStore/store";
 import AppWrapper from "../components/AppWrapper";
 import AppLoading from "../components/common/AppLoading";
+import {useRouter} from "next/router";
 
 
 function MyApp({Component, pageProps}) {

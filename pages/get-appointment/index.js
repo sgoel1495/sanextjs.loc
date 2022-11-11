@@ -1,10 +1,9 @@
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import Footer from "../../components/footer/Footer";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useState} from "react";
 import Toast from "../../components/common/Toast";
 import {apiCall} from "../../helpers/apiCall";
-import {isMobile} from "react-device-detect";
 import Image from "next/image";
 import {connect} from "react-redux";
 import {useRouter} from "next/router";

@@ -16,7 +16,7 @@ const CustomizeLength = ({closeModal, data, selected, setSelected, defaultValue}
                                 <div className={"w-full border-4 rounded-3xl overflow-hidden text-center pb-3 " + [selected.selected_length === item ? "border-[#997756]" : "border-[#b3aeab]"]}
                                      onClick={() => setSelected({...selected,"selected_length": item})}>
                                     <span className={"relative block w-full aspect-[123/160]"}>
-                                        <Image src={WEBASSETS + `/assets/dresses-length/cap-${item.toLowerCase().replace(" ","_")}.jpg`} layout={`fill`} objectFit={`cover`} alt={""}/>
+                                        <Image src={WEBASSETS + `/assets/dresses-length/cap-${item.toLowerCase().replace(" ","_").replace("-","_")}.jpg`} layout={`fill`} objectFit={`cover`} alt={""}/>
                                         <span className={"absolute bottom-0 left-[50%] translate-x-[-50%] capitalize"}>{item}</span>
                                     </span>
                                 </div>

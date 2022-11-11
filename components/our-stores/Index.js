@@ -1,8 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import Image from "next/image";
 import {DateTime, Interval} from "luxon";
 import {apiDictionary} from "../../helpers/apiDictionary";
-import AppWideContext from "../../store/AppWideContext";
 import Toast from "../common/Toast";
 import {connect} from "react-redux";
 

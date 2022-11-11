@@ -28,7 +28,8 @@ export const filterState = {
 export const userConfigState = {
     currCurrency: "inr",
     currSymbol: "₹",
-    showLogin: false
+    showLogin: false,
+    showSidebarMenu: false
 }
 
 export const appConfigState = {
