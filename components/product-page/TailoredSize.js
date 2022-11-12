@@ -21,7 +21,9 @@ import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
 
 const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit, saveMeasurement, addNew, appConfig, userData, ...props}) => {
     const router = useRouter();
-    const [showModal, setShowModal] = useState(false);
+    const [showModalTemp, setShowModalTemp] = useState(false);
+    const showModal = props.setShowModal ? props.showModal : showModalTemp
+    const setShowModal = props.setShowModal ? props.setShowModal : setShowModalTemp
     const [active, setActive] = useState(0)
     const [pastOrders, setPastOrders] = useState([])
     const [showOrderModal, setShowOrderModal] = useState(false)
@@ -233,9 +235,9 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
             }
 
             {showModal &&
-            ReactDom.createPortal(<>{activeModalScreen}</>,
-                document.getElementById('measurementmodal')
-            )}
+                ReactDom.createPortal(<>{activeModalScreen}</>,
+                    document.getElementById('measurementmodal')
+                )}
             {showOrderModal && ReactDom.createPortal(
                 <PastOrders pastOrders={pastOrders} closeModal={() => setShowOrderModal(false)} isMobile={isMobile} setCurrentMeasurementProduct={setCurrentMeasurementProduct}
                             setCurrentMeasurement={setCurrentMeasurement}/>,

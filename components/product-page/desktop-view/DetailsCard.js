@@ -19,6 +19,7 @@ import currencyFormatter from "../../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import NotifyMeModal from "../../common/NotifyMeModal";
+import {useRouter} from "next/router";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -36,7 +37,7 @@ import NotifyMeModal from "../../common/NotifyMeModal";
  */
 
 const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, userData, shoppingCart, userConfig, ...props}) => {
-
+    const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const currCurrency = userConfig.currCurrency
     const curr = currCurrency.toUpperCase();
@@ -45,12 +46,19 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
     const [sizeModal, setSizeModal] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [showNotifyMe, setShowNotifyMe] = useState(false)
+    const [showModal,setShowModal] = useState(false)
     const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     //for toast
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
 
     const sizeAvail = returnSizes(data)
+
+    React.useEffect(() => {
+       if(router.query.tailor){
+           setShowModal(true)
+       }
+    },[])
 
     const checkDelivery = async () => {
         if (pincode == null)
@@ -60,10 +68,13 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
     }
 
     const saveToCart = (currMeasurement = {...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length}) => {
-
         if ((selectedSize == null || selectedSize === "") && !currMeasurement.measure_id && !(sizeAvail.length === 1 && sizeAvail[0] === "F")) {
             setToastMsg("Please select a size first")
             setShowToast(true)
+            return
+        }
+        if (!currMeasurement.measure_id && selectedSize === "T") {
+            setShowModal(true)
             return
         }
         let cart = {
@@ -165,11 +176,10 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
                             </p>
                         </>
                 }
-
                 {
                     sizeAvail.includes("T") &&
                     <TailoredSize data={data} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={setSelectedSize} isMobile={false}
-                                  saveToCart={saveToCart}/>
+                                  saveToCart={saveToCart} showModal={showModal} setShowModal={setShowModal}/>
                 }
                 {
                     isInStock(data) ||
@@ -241,9 +251,9 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
                 }
             </div>
             {sizeModal &&
-            ReactDom.createPortal(
-                <SizeGuide closeModal={() => setSizeModal(false)} isMobile={appConfig.isMobile}/>,
-                document.getElementById("measurementmodal"))
+                ReactDom.createPortal(
+                    <SizeGuide closeModal={() => setSizeModal(false)} isMobile={appConfig.isMobile}/>,
+                    document.getElementById("measurementmodal"))
             }
             <Toast show={showToast} hideToast={() => {
                 setShowToast(false)
@@ -251,14 +261,14 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
                 <p>{toastMsg}</p>
             </Toast>
             {showNotifyMe &&
-            ReactDom.createPortal(
-                <NotifyMeModal
-                    closeModal={() => setShowNotifyMe(false)}
-                    isMobile={appConfig.isMobile}
-                    userO={getUserObject(userData)}
-                    product={data}
-                />,
-                document.getElementById("measurementmodal"))
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={() => setShowNotifyMe(false)}
+                        isMobile={appConfig.isMobile}
+                        userO={getUserObject(userData)}
+                        product={data}
+                    />,
+                    document.getElementById("measurementmodal"))
             }
         </div>
     );
