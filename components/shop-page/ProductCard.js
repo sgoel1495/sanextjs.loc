@@ -61,9 +61,12 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
     }
 
     const saveToCart = (size = "") => {
-        if(!(sizeData.length===1 && sizeData[0]==="F")){
+        if (!(sizeData.length === 1 && sizeData[0] === "F")) {
             if (size === "T") {
-                router.push("/" + prod.asset_id);
+                router.push({
+                    pathname: '/' + prod.asset_id,
+                    query: {tailor: true}
+                }, "/" + prod.asset_id);
                 return
             }
             if (size) {
@@ -78,8 +81,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                     return
                 }
             }
-        }
-        else{
+        } else {
             size = "F"
         }
         const cart = {

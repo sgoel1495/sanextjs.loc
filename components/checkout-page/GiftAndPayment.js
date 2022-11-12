@@ -33,6 +33,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
     });
     const [loading, setLoading] = useState(false)
     const [payMode, setPayMode] = useState(orderSummary.payment ? orderSummary.payment.payment_mode : false);
+    const [payOption, setPayOption] = useState()
     const [useWallet, setUseWallet] = useReducer((state) => {
         return !state
     }, orderSummary.payment ? orderSummary.payment.is_wallet : false);
@@ -82,12 +83,14 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                         router.push("/salt/Thankyou?id=" + resp.order_id)
                     } else {
                         setLoading(false)
+                        setPayOption(null)
                     }
                 })
             },
             "modal": {
                 "ondismiss": function () {
                     setLoading(false)
+                    setPayOption(null)
                 }
             },
             "prefill": {
@@ -102,6 +105,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         let rzp1 = new Razorpay(options);
         rzp1.on('payment.failed', function (response) {
             setLoading(false)
+            setPayOption(null)
         });
         rzp1.open()
     }
@@ -115,6 +119,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 return
             }
         }
+        setPayOption(payWith)
         setLoading(true)
         let resp = await savePayment(isGift, giftData, payMode, useWallet, userData, {
             orderSummary,
@@ -134,6 +139,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             }
         } else {
             setLoading(false)
+            setPayOption(null)
         }
     }
 
@@ -291,19 +297,19 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                         </button>
                         :
                         <>
-                            <button className='flex my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center'
+                            <button className={'flex my-5 text-white px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center '+[payOption==="ccavenue"?"bg-gray-300":"bg-black"]}
                                     onClick={() => placeOrder("razorpay")} disabled={loading}>
                                 {
-                                    loading && <Loader className={"mr-2"}/>
+                                    payOption==="razorpay" && <Loader className={"mr-2"}/>
                                 }
-                                <span className={"mr-2"}>Place order with</span><Image src={razorpayLogo} width={95} height={20}/>
+                                <span className={"mr-2 text-sm"}>Place order with</span><Image src={razorpayLogo} width={95} height={20}/>
                             </button>
-                            <button className='flex mb-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center'
+                            <button className={'flex mb-5 text-white px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center '+[payOption==="razorpay"?"bg-gray-300":"bg-black"]}
                                     onClick={() => placeOrder("ccavenue")} disabled={loading}>
                                 {
-                                    loading && <Loader className={"mr-2"}/>
+                                    payOption==="ccavenue" && <Loader className={"mr-2"}/>
                                 }
-                                <span className={"mr-2"}>Place order with</span><Image src={ccavenue} width={96} height={15}/>
+                                <span className={"mr-2 text-sm"}>Place order with</span><Image src={ccavenue} width={96} height={15}/>
                             </button>
                         </>
                     }
