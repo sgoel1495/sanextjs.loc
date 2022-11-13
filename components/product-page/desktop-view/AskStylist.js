@@ -2,15 +2,16 @@ import React from 'react';
 import ReactDom from "react-dom";
 import isValidEmail from "../../../helpers/isValidEmail";
 import Toast from "../../common/Toast";
+import {apiCall} from "../../../helpers/apiCall";
+import {connect} from "react-redux";
 
-const AskStylist = ({product}) => {
+const AskStylist = ({product, apiToken}) => {
     const [error, setError] = React.useState("")
     const [errorShow, setErrorShow] = React.useState(false)
     const [data, setData] = React.useReducer((state, e) => {
-        state[e.target.name] = e.target.value;
+        return {...state, [e.target.name]: e.target.value}
     }, {})
     const [show, setShow] = React.useReducer((state) => !state, false)
-
     const save = (e) => {
         e.preventDefault()
         if (!isValidEmail(data['email'])) {
@@ -28,7 +29,23 @@ const AskStylist = ({product}) => {
             setErrorShow(true)
             return;
         }
-    //    add api call
+        apiCall("saveFinalPayment", apiToken, {
+            "product": {
+                ...data,
+                "ProductName": product.name,
+                "ProductId": product.product_id
+            }
+        }).then((response) => {
+            if(response.status === 200) {
+                setError("Thank you!");
+                setErrorShow(true)
+                setShow(false)
+            }
+            else{
+                setError("Please try again");
+                setErrorShow(true)
+            }
+        })
     }
 
     const inputClass = "w-full border border-[#777]] placeholder:font-500 placeholder:text-black focus:bg-white focus:ring-transparent focus:border-black text-[15px] p-[5px] my-3"
@@ -55,7 +72,8 @@ const AskStylist = ({product}) => {
                                 <input className={inputClass} type="email" name="email" value={data["email"]} placeholder="Email Id" onChange={setData}/>
                                 <input className={inputClass} type="tel" name="phone" value={data["phone"]} placeholder="Phone Number" onChange={setData}/>
                                 <div className={"text-[#777] my-3"}>
-                                    Your privacy is important to us. See our <a className={"underline"} href={"/salt/privacy-policy"} rel="noreferrer" target={"_blank"}>Privacy Policy</a>.
+                                    Your privacy is important to us. See our <a className={"underline"} href={"/salt/privacy-policy"} rel="noreferrer" target={"_blank"}>Privacy
+                                    Policy</a>.
                                 </div>
                                 <textarea className={inputClass} name="message" value={data["message"]} placeholder="Message" onChange={setData} rows={5}/>
                                 <button className={"text-white bg-black px-4 py-1 text-sm"} type="submit">SEND</button>
@@ -73,4 +91,10 @@ const AskStylist = ({product}) => {
     );
 };
 
-export default AskStylist;
+const mapStateToProps = (state) => {
+    return {
+        apiToken: state.appConfig.apiToken,
+    }
+}
+
+export default connect(mapStateToProps)(AskStylist);
