@@ -8,6 +8,8 @@ import SearchMenu from "../search/SearchMenu";
 import useApiCall from "../../hooks/useApiCall";
 import {connect} from "react-redux";
 import {setShowLogin, setShowSidebarMenu} from "../../ReduxStore/reducers/userConfigSlice";
+import CurrencySwitcher from "../navbar/CurrencySwitcher";
+import {useRouter} from "next/router";
 
 /**
  * @todo account signin pending
@@ -176,7 +178,7 @@ const ChildLink = props => {
             style={"relative group text-black/70 pb-2 " + [viewState ? 'bg-[#f7f7f7] ' : ""] + props.style}
             animationDuration={"duration-200"}
             title={props.isMobile ? mobileTitle : browserTitle}
-            titleStyle={`px-4 py-3 `+[props.isMobile && "ml-4"]}
+            titleStyle={`px-4 py-3 ` + [props.isMobile && "ml-4"]}
             accordionIconOpen={
                 <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5`} fill={`currentColor`} fillOpacity={0.5} viewBox="0 0 24 24">
                     <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"/>
@@ -211,8 +213,7 @@ const ChildLink = props => {
 
 function HamburgerModal(props) {
     const {closeModal} = props;
-
-
+    const router = useRouter();
     return <Fragment>
         {(props.data && props.data.length > 0)
             ? <>
@@ -238,6 +239,15 @@ function HamburgerModal(props) {
                         {
                             props.isMobile && <>
                                 <SearchMenu type={"hamMenu"} isMobile={true} closeModal={closeModal}/>
+                                {
+                                    router.pathname !== "/" && !router.pathname.includes("blog") && !router.pathname.includes("review") ?
+                                        <div className={"px-4 py-3 flex justify-start items-center"}>
+                                            <span className={"italic normal-case text-xs text-gray-400 font-600"}>Shipping Outside India ?</span>
+                                            <CurrencySwitcher isMobile={true} type={"hamMenu"} className={"text-[0.6rem] py-0 h-5"}/>
+                                        </div>
+                                        :
+                                        null
+                                }
                             </>
                         }
                         {props.data.map((item, index) => item.child
@@ -443,7 +453,7 @@ function SidebarMenuHamburger(props) {
         {(navigationData.length > 0)
             ? <span className={`relative w-6 ${iconHeight}`}>
                 {
-                    props.type !== "menu" && <div onClick={() =>  props.setShowSidebarMenu(true)}
+                    props.type !== "menu" && <div onClick={() => props.setShowSidebarMenu(true)}
                                                   className={`relative cursor-pointer w-6 ${iconHeight}`}>
                         <Image
                             src={WEBASSETS + "/assets/images/menuicon_v1.png"}
@@ -468,4 +478,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setShowLogin,setShowSidebarMenu})(SidebarMenuHamburger);
+export default connect(mapStateToProps, {setShowLogin, setShowSidebarMenu})(SidebarMenuHamburger);

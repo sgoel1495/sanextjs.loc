@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
 import appSettings from "../../store/appSettings";
 
-function OrderSummary({appConfig, userData, userConfig, orderSummary, ...props}) {
+function OrderSummary({appConfig, userData, userConfig, orderSummary,payMode, ...props}) {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const [gross, setGross] = useState(0)
     const [bagTotal, setBagTotal] = useState(0)
@@ -44,8 +44,8 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary, ...props})
         if (orderSummary.gross !== tempGross)
             props.setOrderSummary({...orderSummary, "gross": tempGross})
     }, [orderSummary])
-
     let total = gross;
+    console.log(payMode)
     if (orderSummary.payMode === "COD") {
         total += 80;
     }
@@ -163,6 +163,7 @@ const mapStateToProps = (state) => {
         appConfig: state.appConfig,
         userConfig: state.userConfig,
         orderSummary: state.orderData.orderSummary,
+        payMode: state.orderData.orderSummary.payMode,
     }
 }
 

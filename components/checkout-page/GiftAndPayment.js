@@ -42,7 +42,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         props.setOrderSummary({...orderSummary, "payMode": payMode})
         if (orderSummary.address_index >= 0 && orderSummary.address_index < userData.userAddresses.length) {
         } else {
-            updateAddressForOrder(0, userData, {orderSummary, currentOrderId}, appConfig.apiToken, props.setOrderSummary);
+            updateAddressForOrder(0, userData, {orderSummary:{...orderSummary, "payMode": payMode}, currentOrderId}, appConfig.apiToken, props.setOrderSummary);
         }
     }, [payMode])
 
@@ -146,7 +146,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
-    const codEnabled = orderSummary.cart ? orderSummary.cart.filter((item) => item.product_id.includes("Giftcard")).length === 0 : true
+    const codEnabled = orderSummary.cart ? Object.keys(orderSummary.cart).filter((item) => orderSummary.cart[item].product_id.includes("Giftcard")).length === 0 : true
     const mobileView = (
         <Fragment>
             <p className='text-l text-center font-bold mb-2'>How do you want to pay ?</p>
@@ -313,7 +313,6 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             </button>
                         </>
                     }
-
                 </>, document.getElementById("paymentButton"))
             }
             {

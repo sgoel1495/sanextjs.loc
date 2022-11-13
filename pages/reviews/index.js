@@ -118,7 +118,7 @@ function ReviewsPage({appConfig}) {
     return (
         <Fragment>
             <PageHead url="/reviews" id="reviews" isMobile={mobile}/>
-            <Header type={mobile ? "minimal" : ""} isMobile={mobile}/>
+            <Header type={mobile ? "minimal" : ""} isMobile={mobile} currSwitch={true}/>
             <div className={"grid place-items-center mb-10 " + [mobile ? "mt-36" : "mt-8"]}>
                 <div className={"border-[5px] border-black/10 w-[170px] py-3 uppercase tracking-wide"}>
                     <h4 className={`text-h4 font-600 text-center`}>Reviews</h4>

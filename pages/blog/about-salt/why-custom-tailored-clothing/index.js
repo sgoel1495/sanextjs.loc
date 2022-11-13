@@ -271,7 +271,7 @@ const Index = ({isMobile}) => {
     return (
         <>
             <PageHead url="/bolg/about-salt/why-custom-tailored-clothing" id="why-custom-tailored-clothing" isMobile={isMobile}/>
-            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile}/>
+            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile} currSwitch={true}/>
             {isMobile ? mobileView : browserView}
             {
                 isMobile && <Footer isMobile={true}/>

@@ -66,7 +66,7 @@ function BlogAboutSaltPage({appConfig}) {
     return (
         <Fragment>
             <PageHead url="/blog/about-salt" id="aboutsalt" isMobile={appConfig.isMobile} />
-            <Header type={appConfig.isMobile ? "minimal" : ""} isMobile={appConfig.isMobile} />
+            <Header type={appConfig.isMobile ? "minimal" : ""} isMobile={appConfig.isMobile} currSwitch={true} />
             <div className=" overflow-hidden">
             <CategoryHeaderImage category={category} />
             </div>
