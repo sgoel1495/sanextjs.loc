@@ -225,7 +225,7 @@ const Index = ({isMobile}) => {
     return (
         <>
             <PageHead url="/bolg/decoding-the-best-looks-in-linen/decoding-the-best-looks-in-linen" id="decoding-the-best-looks-in-linen" isMobile={isMobile}/>
-            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile}/>
+            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile} currSwitch={true}/>
             {isMobile ? mobileView : browserView}
             {
                 isMobile && <Footer isMobile={true}/>

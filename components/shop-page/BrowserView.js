@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PageHead from "../PageHead";
 import CategoryHeaderVideo from "../common/CategoryHeaderVideo";
 import Header from "../navbar/Header";
@@ -41,8 +41,35 @@ const BrowserView = React.forwardRef(({hpid, category, visibleData, data, total,
             {(data)
                 ? <main className={`grid grid-cols-3 gap-5 container pb-20`}>
                     {visibleData && visibleData.map((prod, index) => {
-                        return <ProductCard prod={prod} key={index}
-                                            isAccessory={(category === "scarves" || category === "jewellery")}/>
+                        if (category.includes("pants") || category.includes("skirts") || category.includes("jewellery")) {
+                            if (index === 0) {
+                                return <Fragment>
+                                    <div className={`col-span-3 text-center text-[15px] uppercase text-[#333] my-3 flex justify-center items-center`}>
+                                        <hr className={"w-16 border-[#333]"}/>
+                                        <span className={"mx-6"}>{prod.belong_to}{prod.belong_to.includes(prod.category) ? "" : " "+prod.category}</span>
+                                        <hr className={"w-16 border-[#333]"}/>
+                                    </div>
+                                    <ProductCard prod={prod} key={index}
+                                                 isAccessory={(category === "scarves" || category === "jewellery")}/>
+                                </Fragment>
+                            } else if (prod.belong_to !== visibleData[index - 1].belong_to) {
+                                return <Fragment>
+                                    <div className={`col-span-3 text-center text-[15px] uppercase text-[#333] my-3 flex justify-center items-center`}>
+                                        <hr className={"w-16 border-[#333]"}/>
+                                        <span className={"mx-6"}>{prod.belong_to}{prod.belong_to.includes("pants") ? "" : " pants"}</span>
+                                        <hr className={"w-16 border-[#333]"}/>
+                                    </div>
+                                    <ProductCard prod={prod} key={index}
+                                                 isAccessory={(category === "scarves" || category === "jewellery")}/>
+                                </Fragment>
+                            } else {
+                                return <ProductCard prod={prod} key={index}
+                                                    isAccessory={(category === "scarves" || category === "jewellery")}/>
+                            }
+                        } else {
+                            return <ProductCard prod={prod} key={index}
+                                                isAccessory={(category === "scarves" || category === "jewellery")}/>
+                        }
                     })}
                     {
                         total <= skip || <div className={"flex justify-center col-span-3"} ref={ref}>

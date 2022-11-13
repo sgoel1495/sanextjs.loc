@@ -11,7 +11,7 @@ const Index = ({isMobile}) => {
     return (
         <>
             <PageHead url="/bolg/ace-waist-up" id="ace-waist-up" isMobile={isMobile}/>
-            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile}/>
+            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile} currSwitch={true}/>
             <div className={"relative w-full aspect-[12/5]"}>
                 <Image src={WEBASSETS + "/assets/images/Ace-Waist-Up_banner.jpg"} layout={`fill`} objectFit={`cover`}/>
             </div>

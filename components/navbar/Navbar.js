@@ -137,6 +137,12 @@ function Navbar(props) {
                         <SaltIcon type={props.type} isMobile={true}/>
                     </div>
                     <div className={"inline-flex items-center gap-x-5"}>
+                        {
+                            props.currSwitch &&
+                            <div className={"relative"}>
+                                <CurrencySwitcher isMobile={true} type={"hamMenu"}/>
+                            </div>
+                        }
                         <SidebarMenuCart isMobile={true}/>
                         <SidebarMenuHamburger isMobile={false}/>
                     </div>

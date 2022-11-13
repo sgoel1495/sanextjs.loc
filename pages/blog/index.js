@@ -53,7 +53,7 @@ function BlogPage({isMobile}) {
     ]
     return <>
         <PageHead url="/blog" id="blog" isMobile={isMobile}/>
-        <Header type={isMobile ? "minimal" : ""} isMobile={isMobile}/>
+        <Header type={isMobile ? "minimal" : ""} isMobile={isMobile} currSwitch={true}/>
         <div className={"grid " + [isMobile ? "grid-cols-1 gap-10 mt-24" : "grid-cols-3 container mt-24 gap-32"]}>
             {
                 items.map((item, index) =>

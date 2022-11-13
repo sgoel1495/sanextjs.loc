@@ -273,7 +273,7 @@ const Index = ({isMobile}) => {
     return (
         <>
             <PageHead url="/bolg/about-salt/no-inventory-no-mass-production" id="no-inventory-no-mass-production" isMobile={isMobile}/>
-            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile}/>
+            <Header type={isMobile ? "minimal" : ""} isMobile={isMobile} currSwitch={true}/>
             {isMobile ? mobileView : browserView}
             {
                 isMobile && <Footer isMobile={true}/>

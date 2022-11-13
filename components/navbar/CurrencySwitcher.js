@@ -61,7 +61,7 @@ function CurrencySwitcher(props) {
         <div className={`${height} flex items-center pr-2 ` + [props.type === "hamMenu" ? "ml-2" : "right-0 absolute"]}>
             <div className={"relative"}>
                 <span className={`border-0 border-b py-0 px-1 text-sm bg-transparent ${props.className} ${focusStyle} `} onClick={setShow}>
-                    {currencyData[currCurrency].curr_symbol}{currCurrency} <span className={"pl-4 down-arrow"}/>
+                    {currencyData[currCurrency].curr_symbol}{currCurrency.toUpperCase()} <span className={"pl-4 down-arrow"}/>
                 </span>
                 <div className={show ? "block absolute right-0 top-[101%]" : "hidden"}>
                     {
