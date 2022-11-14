@@ -29,7 +29,7 @@ const AskStylist = ({product, apiToken}) => {
             setErrorShow(true)
             return;
         }
-        apiCall("saveFinalPayment", apiToken, {
+        apiCall("askStylist", apiToken, {
             "product": {
                 ...data,
                 "ProductName": product.name,

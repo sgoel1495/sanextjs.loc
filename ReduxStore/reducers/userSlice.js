@@ -13,9 +13,12 @@ const userSlice = createSlice({
         },
         setUserAddresses: (state, action) => {
             state.userAddresses = action.payload
+        },
+        setPrivilegedUser: (state, action) => {
+            state.privilegedUser = action.payload
         }
     }
 })
 
-export const {setUserServe, setUserState, setUserAddresses} = userSlice.actions;
+export const {setUserServe, setUserState, setUserAddresses, setPrivilegedUser} = userSlice.actions;
 export default userSlice.reducer;

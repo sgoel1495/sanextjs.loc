@@ -11,7 +11,8 @@ export const userState = {
     defaultAddress: {},
     userAddresses: [],
     wallet: {},
-    measurements: {}
+    measurements: {},
+    privilegedUser:{}
 }
 
 export const shoppingCartState = {
