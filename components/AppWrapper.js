@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import {updateUserDataAfterLogin} from "../helpers/updateUserDataAfterLogin";
 import {isMobile} from "react-device-detect";
-import {setUserServe, setUserState} from "../ReduxStore/reducers/userSlice";
+import {setPrivilegedUser, setUserServe, setUserState} from "../ReduxStore/reducers/userSlice";
 import {setCart} from "../ReduxStore/reducers/shoppingCartSlice";
 import {setIsMobile} from "../ReduxStore/reducers/appConfigSlice";
 import {setOrderHistory} from "../ReduxStore/reducers/orderSlice";
@@ -23,6 +23,7 @@ const AppWrapper = (props) => {
                     props.setCart(updateData.shoppingCart)
                     props.setUserState(updateData.userState);
                     props.setOrderHistory(updateData.orderHistory);
+                    props.setPrivilegedUser(updateData.privilegedUser)
                 })
                 flag = false
             }
@@ -55,4 +56,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setUserServe, setUserState, setCart, setIsMobile, setOrderHistory, setShowSidebarMenu})(AppWrapper);
+export default connect(mapStateToProps, {setUserServe, setUserState, setCart, setIsMobile, setOrderHistory, setShowSidebarMenu, setPrivilegedUser})(AppWrapper);

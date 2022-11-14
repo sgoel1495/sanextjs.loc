@@ -126,6 +126,11 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     if (orderHistoryCall.status === 200) {
         orderHistory = orderHistoryCall.response
     }
+
+    let privilegedUser = await apiCall("privilegedUser", apiToken, {user_email_id: userServe.email})
+    if (privilegedUser.status === 200) {
+        privilegedUser = privilegedUser.response
+    }
     return {
         "userState": {
             "userServe": userServe,
@@ -135,6 +140,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
             "measurements": userMeasurements,
         },
         "shoppingCart": userCart,
-        "orderHistory": orderHistory
+        "orderHistory": orderHistory,
+        "privilegedUser": privilegedUser
     }
 }
