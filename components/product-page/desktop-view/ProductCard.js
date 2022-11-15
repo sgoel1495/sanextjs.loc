@@ -5,6 +5,7 @@ import AppWideContext from "../../../store/AppWideContext";
 import appSettings from "../../../store/appSettings";
 import WishListButton from "../../common/WishListButton";
 import {connect} from "react-redux";
+import PriceDisplay from "../../common/PriceDisplay";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -12,12 +13,9 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, isMobile, wide, portrait, userConfig}) => {
+const ProductCard = ({prod,portrait}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [expandShop, setExpandShop] = useState(null);
-
-    const currCurrency = userConfig.currCurrency;
-    const currencySymbol = userConfig.currSymbol;
 
 
     return (
@@ -41,8 +39,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, userConfig}) => {
                                 <div className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
                                     <span className={`uppercase`}>Add to bag</span>
                                     <p className={`text-xs`}>
-                                        {currencySymbol}
-                                        {(currCurrency === "inr") ? prod.price : prod.usd_price}
+                                        <PriceDisplay prod={prod}/>
                                     </p>
                                 </div>
                             </>
@@ -58,10 +55,4 @@ const ProductCard = ({prod, isMobile, wide, portrait, userConfig}) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        userConfig: state.userConfig
-    }
-}
-
-export default connect(mapStateToProps)(ProductCard);
+export default ProductCard;

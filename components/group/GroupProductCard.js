@@ -12,6 +12,7 @@ import ReactDom from "react-dom";
 import NotifyMeModal from "../common/NotifyMeModal";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
+import PriceDisplay from "../common/PriceDisplay";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[26/43]" : "aspect-square"]}>
@@ -27,13 +28,11 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, userConfig, ...props}) => {
+const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, ...props}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
-    const currCurrency = userConfig.currCurrency;
-    const curr = currCurrency.toUpperCase();
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
@@ -202,7 +201,7 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
                                                  onClick={() => saveToCart()}>
                                                 <span className={`uppercase`}>Add to bag</span>
                                                 <p className={`text-xs`}>
-                                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+                                                    <PriceDisplay prod={prod}/>
                                                 </p>
                                             </div>
                                         </Fragment>
@@ -248,8 +247,7 @@ const mapStateToProps = (state) => {
     return {
         userData: state.userData,
         shoppingCart: state.shoppingCart,
-        appConfig: state.appConfig,
-        userConfig: state.userConfig
+        appConfig: state.appConfig
     }
 }
 

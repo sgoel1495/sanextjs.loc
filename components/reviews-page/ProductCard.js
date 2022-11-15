@@ -6,12 +6,11 @@ import AppWideContext from "../../store/AppWideContext";
 import appSettings from "../../store/appSettings";
 import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
+import PriceDisplay from "../common/PriceDisplay";
 
-const ProductCard = ({product, appConfig, userConfig}) => {
+const ProductCard = ({product, appConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [data, setData] = React.useState({})
-    const currCurrency = userConfig.currCurrency;
-    const curr = currCurrency.toUpperCase();
     React.useEffect(() => {
         if (product) {
 
@@ -39,7 +38,7 @@ const ProductCard = ({product, appConfig, userConfig}) => {
                 <div className={"w-40 flex flex-col justify-center items-center"}>
                     <div className={"text-base font-600"}>{data.name}</div>
                     <div className={"text-xs font-200"}>{data.tag_line}</div>
-                    <div className={"text-xs font-900"}>{currencyFormatter(curr).format((currCurrency === "inr") ? data.price : data.usd_price).split(".")[0]}</div>
+                    <div className={"text-xs font-900"}><PriceDisplay prod={data}/></div>
                 </div>
             </div>
         </Link>
@@ -48,8 +47,7 @@ const ProductCard = ({product, appConfig, userConfig}) => {
 
 const mapStateToProps = (state) => {
     return {
-        appConfig: state.appConfig,
-        userConfig: state.userConfig
+        appConfig: state.appConfig
     }
 }
 

@@ -73,7 +73,7 @@ function EndOfSeasonSale(props) {
             {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={true}/>)}
         </div>
     </section>
-    console.log(data[0])
+
     const browserView = (
         <section className={"bg-[#faf4f0] pb-10"}>
         <span className={"block relative w-full aspect-[8/3]"}>
@@ -138,7 +138,7 @@ export default connect(mapStateToProps)(EndOfSeasonSale);
 export async function getServerSideProps() {
     const fetchData = async () => {
         let gotData = false;
-        const callObject = await apiCall("getSaleItems", process.env.API_TOKEN, {"sale_name": "end of season sale"})
+        const callObject = await apiCall("getSaleItems", process.env.API_TOKEN, {sale_name: "end of season sale", limit: 18, skip: 0})
         if (callObject.msg === "Successfully Get") {
             gotData = true
         }

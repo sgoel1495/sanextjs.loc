@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
-import AppWideContext from "../../../../store/AppWideContext";
+import React, { useEffect, useState, useCallback } from 'react';
 import ProductCard from "../../../shop-page/ProductCard";
 import Link from "next/link";
 import { apiDictionary } from "../../../../helpers/apiDictionary";

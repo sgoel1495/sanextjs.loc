@@ -33,7 +33,7 @@ const MeasurementModal = ({data, closeModal, edit, isMobile, userData, appConfig
     return (
         <div className={'bg-white h-screen fixed inset-y-0 z-modal p-4' + [isMobile ? " inset-x-0" : " right-0 max-w-[400px] w-full"]}>
             <div className={"font-cursive text-3xl italic text-center font-500 relative"}>
-                <span>Edit</span>
+                <span>{edit ? "Edit" : "View"}</span>
                 <span className="top-0 right-0 absolute" onClick={closeModal}>
                     <Image src={WEBASSETS + "/assets/images/cancel.png"} height={"20px"} width={"20px"} alt={""}/>
                 </span>
@@ -84,7 +84,7 @@ const MeasurementModal = ({data, closeModal, edit, isMobile, userData, appConfig
     );
 };
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
         userData: state.userData,
         appConfig: state.appConfig,
@@ -92,4 +92,4 @@ const mapStateToProps = (state) =>{
     }
 }
 
-export default connect(mapStateToProps,{setCart})(MeasurementModal);
+export default connect(mapStateToProps, {setCart})(MeasurementModal);

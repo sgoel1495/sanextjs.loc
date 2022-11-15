@@ -4,9 +4,11 @@ import isValidEmail from "../../../helpers/isValidEmail";
 import Toast from "../../common/Toast";
 import {apiCall} from "../../../helpers/apiCall";
 import {connect} from "react-redux";
+import Loader from "../../common/Loader";
 
 const AskStylist = ({product, apiToken}) => {
     const [error, setError] = React.useState("")
+    const [loading, setLoading] = React.useState(false)
     const [errorShow, setErrorShow] = React.useState(false)
     const [data, setData] = React.useReducer((state, e) => {
         return {...state, [e.target.name]: e.target.value}
@@ -29,22 +31,26 @@ const AskStylist = ({product, apiToken}) => {
             setErrorShow(true)
             return;
         }
+        setLoading(true)
         apiCall("askStylist", apiToken, {
             "product": {
-                ...data,
+                "Email": data['email'],
+                "Phone": data["phone"],
+                "Message": data["message"],
                 "ProductName": product.name,
                 "ProductId": product.product_id
             }
         }).then((response) => {
-            if(response.status === 200) {
+            if (response.status === 200) {
                 setError("Thank you!");
                 setErrorShow(true)
                 setShow(false)
-            }
-            else{
+            } else {
                 setError("Please try again");
                 setErrorShow(true)
             }
+        }).finally(() => {
+            setLoading(false)
         })
     }
 
@@ -76,7 +82,14 @@ const AskStylist = ({product, apiToken}) => {
                                     Policy</a>.
                                 </div>
                                 <textarea className={inputClass} name="message" value={data["message"]} placeholder="Message" onChange={setData} rows={5}/>
-                                <button className={"text-white bg-black px-4 py-1 text-sm"} type="submit">SEND</button>
+                                <button className={"text-white bg-black px-4 py-1 text-sm"} type="submit" disabled={loading}>
+                                    {
+                                        loading ?
+                                            <Loader/>
+                                            :
+                                            "SEND"
+                                    }
+                                </button>
                             </form>
                         </div>
                     </div>,

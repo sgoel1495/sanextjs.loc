@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import {apiCall} from "../../../helpers/apiCall";
 import {setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
+import Link from "next/link";
 
 function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfig, ...props}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -108,13 +109,15 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                 <>
                     {returnValues}
                     <div className="flex gap-x-2 items-center bg-white p-3">
-                        <div className="relative h-40 aspect-[9/16]">
-                            <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
-                                   id={p.cart_id + index.toString()}
-                                   layout="fill"
-                                   objectFit="cover"
-                            />
-                        </div>
+                        <Link href={"/"+p.product_id}>
+                            <div className="relative h-40 aspect-[9/16]">
+                                <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
+                                       id={p.cart_id + index.toString()}
+                                       layout="fill"
+                                       objectFit="cover"
+                                />
+                            </div>
+                        </Link>
                         <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
                             <p className="text-[#777] text-xs">
                                 {userConfig.currSymbol} {(userConfig.currCurrency === "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
