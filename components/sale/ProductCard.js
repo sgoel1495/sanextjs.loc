@@ -117,7 +117,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
                         <p className={`text-xs`}>
                             <span>
-                                <PriceDisplay prod={prod}/>
+                                <PriceDisplay prod={prod} isSale={true}/>
                             </span>
                         </p>
                         <p className={"text-xs"}>
@@ -172,7 +172,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                                      onClick={() => saveToCart()}>
                                     <span className={`uppercase`}>Add to bag</span>
                                     <p className={`text-xs`}>
-                                        <PriceDisplay prod={prod}/>
+                                        <PriceDisplay prod={prod} isSale={true}/>
                                     </p>
                                 </div>
                             </Fragment>

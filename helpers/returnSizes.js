@@ -15,7 +15,7 @@ export default function returnSizes(prod) {
 
     } else {
 
-        if (prod.is_sale) {
+        if (prod.show_sale_price) {
             sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0).map((item) => item.toUpperCase());
             let index = sizeSymbols.indexOf("F")
             if (index > -1) {
@@ -57,7 +57,7 @@ export function isInStock(prod) {
             return false
         }
     } else {
-        if (prod.is_sale) {
+        if (prod.show_sale_price) {
             if (checkInventoryWithoutF(prod)) {
                 return false
             }

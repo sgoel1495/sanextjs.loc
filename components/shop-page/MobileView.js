@@ -16,7 +16,7 @@ const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, 
     let breakSpeedKeys = []
     if (data && data.break_speed)
         breakSpeedKeys = Object.keys(data.break_speed)
-    console.log(visibleData[0])
+
     if (visibleData) {
         visibleData.forEach((prod, index) => {
             if (category === "jewellery") {

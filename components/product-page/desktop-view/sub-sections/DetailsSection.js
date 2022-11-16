@@ -12,6 +12,7 @@ import ReactDom from "react-dom";
 import NotifyMeModal from "../../../common/NotifyMeModal";
 import SizeGuide from "../../SizeGuide";
 import AskStylist from "../AskStylist";
+import PriceDisplay from "../../../common/PriceDisplay";
 
 const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, ...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -93,7 +94,7 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, .
     return (
         <div className={[`flex-[5] p-4 text-${theme}`]}>
             <div className={"flex justify-between px-10"}>
-                <span className={"block"}>{currencyFormatter(curr).format(currCurrency === "inr" ? data.price : data.usd_price).split(".")[0]}</span>
+                <span className={"block"}><PriceDisplay prod={data}/></span>
                 <span className={"block"}>SHARE</span>
             </div>
             <div className="flex flex-col items-center text-center mt-20">

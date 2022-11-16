@@ -20,6 +20,7 @@ import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import NotifyMeModal from "../../common/NotifyMeModal";
 import {useRouter} from "next/router";
+import PriceDisplay from "../../common/PriceDisplay";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -138,7 +139,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
         <div>
             <div className={"bg-white p-4 shadow-xl"}>
                 <div className={"flex items-center justify-between text-black/60 text-sm font-500 mb-4"}>
-                    <span>{currencyFormatter(curr).format(currCurrency === "inr" ? data.price : data.usd_price).split(".")[0]}</span>
+                    <span><PriceDisplay prod={data}/></span>
                     <div className='flex items-center gap-2 relative'>
                         <WishlistButton pid={hpid}/>
                         <button className={"relative block h-4 w-4"} onClick={() => setShowShare(!showShare)}>

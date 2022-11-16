@@ -30,7 +30,7 @@ function EndOfSeasonSale(props) {
         }
     }, [selected])
 
-
+    console.log(data[0])
     const mobileView = <section className={"bg-[#faf4f0] pb-10"}>
         <span className={"block relative w-full aspect-square"}>
             <Image src={"https://saltattire.com/assets/images/mob/sale_v15.jpg"} layout={`fill`} objectFit={`cover`}

@@ -17,6 +17,7 @@ import {connect} from "react-redux";
 import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 import returnSizes, {isInStock} from "../../../../helpers/returnSizes";
 import currencyFormatter from "../../../../helpers/currencyFormatter";
+import PriceDisplay from "../../../common/PriceDisplay";
 
 const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -97,7 +98,7 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
         <div>
             <div className='px-5 pt-5'>
                 {
-                    data.is_sale && <div className={"text-center mb-3"}>
+                    data.show_sale_price && <div className={"text-center mb-3"}>
                         <p className={"text-[#4eb16d] text-xs font-500"}>({Object.keys(data.inventory).filter(key => data.inventory[key] > 0).join(', ').toUpperCase()})</p>
                         <p className="text-[#f05c74] text-sm font-500">NOT VALID FOR RETURN / EXCHANGE</p>
                     </div>
@@ -132,7 +133,7 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
                     <div className={'text-right leading-none'}>
                         <WishListButton pid={hpid} isMobile={true}/>
                         <p className={'text-lg'}>
-                            {currencyFormatter(curr).format(currCurrency === "inr" ? data.price : data.usd_price).split(".")[0]}
+                            <PriceDisplay prod={data}/>
                         </p>
                         <p className={'text-[8px]'}>INCLUSIVE OF TAXES</p>
                     </div>
