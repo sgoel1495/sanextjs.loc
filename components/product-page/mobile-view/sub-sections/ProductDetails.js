@@ -16,7 +16,6 @@ import emptyMeasurement from "../../../../store/emptyMeasurement.json";
 import {connect} from "react-redux";
 import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 import returnSizes, {isInStock} from "../../../../helpers/returnSizes";
-import currencyFormatter from "../../../../helpers/currencyFormatter";
 import PriceDisplay from "../../../common/PriceDisplay";
 
 const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) => {
@@ -30,8 +29,6 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
     const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     const [error, setError] = useState(false)
     const sizeAvail = returnSizes(data)
-    const currCurrency = props.userConfig.currCurrency;
-    const curr = currCurrency.toUpperCase();
 
     let feature_icons = {};
     data.icon_assets.forEach((icon) => {
@@ -98,8 +95,9 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
         <div>
             <div className='px-5 pt-5'>
                 {
-                    data.show_sale_price && <div className={"text-center mb-3"}>
-                        <p className={"text-[#4eb16d] text-xs font-500"}>({Object.keys(data.inventory).filter(key => data.inventory[key] > 0).join(', ').toUpperCase()})</p>
+                    data.show_sale_price === "true" || data.product_id.split("-")[1] === "Sale" && <div className={"text-center mb-3"}>
+                        {data.product_id.split("-")[1] === "Sale" &&
+                            <p className={"text-[#4eb16d] text-xs font-500"}>({Object.keys(data.inventory).filter(key => data.inventory[key] > 0).join(', ').toUpperCase()})</p>}
                         <p className="text-[#f05c74] text-sm font-500">NOT VALID FOR RETURN / EXCHANGE</p>
                     </div>
                 }
@@ -133,7 +131,7 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
                     <div className={'text-right leading-none'}>
                         <WishListButton pid={hpid} isMobile={true}/>
                         <p className={'text-lg'}>
-                            <PriceDisplay prod={data}/>
+                            <PriceDisplay prod={data} isSale={data.product_id.split("-")[1]==="Sale"}/>
                         </p>
                         <p className={'text-[8px]'}>INCLUSIVE OF TAXES</p>
                     </div>

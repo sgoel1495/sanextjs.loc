@@ -46,7 +46,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => saveToCart(size)}>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"} ${prod.hide_sizes.includes(size.toLowerCase()) ? " line-through" : ""}`}  onClick={() => prod.hide_sizes.includes(size.toLowerCase())?{}:saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -81,7 +81,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
             size = "F"
         }
         const cart = {
-            "product_id": prod.asset_id,
+            "product_id": prod.product_id,
             "size": size ? size : selectedSize,
             "qty": 1,
             "is_sale": false,

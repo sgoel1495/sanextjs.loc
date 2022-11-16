@@ -5,7 +5,6 @@ import appSettings from "../../store/appSettings";
 import returnSizes, {isInStock} from "../../helpers/returnSizes";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
 import Link from "next/link";
-import currencyFormatter from "../../helpers/currencyFormatter";
 import WishListButton from "../common/WishListButton";
 import Toast from "../common/Toast";
 import ReactDom from "react-dom";
@@ -56,7 +55,7 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => saveToCart(size)}>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}  ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`} onClick={() => prod.hide_sizes.includes(size.toLowerCase())?{}:saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -85,7 +84,7 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
             }
         }
         const cart = {
-            "product_id": prod.asset_id,
+            "product_id": prod.product_id,
             "size": size ? size : selectedSize,
             "qty": 1,
             "is_sale": false,

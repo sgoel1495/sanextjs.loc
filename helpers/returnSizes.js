@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function returnSizes(prod) {
     if (typeof prod.inventory === typeof "")
         prod.inventory = JSON.parse(prod.inventory.replace(/=>/g, ":"))
@@ -15,14 +17,19 @@ export default function returnSizes(prod) {
 
     } else {
 
-        if (prod.show_sale_price) {
+        if (prod.is_sale) {
             sizeSymbols = Object.keys(prod.inventory).filter((key) => prod.inventory[key] > 0).map((item) => item.toUpperCase());
             let index = sizeSymbols.indexOf("F")
             if (index > -1) {
                 sizeSymbols.splice(index, 1)
             }
         } else {
-            sizeSymbols = ["XS", "S", "M", "L", "XL", "XXL", "T"]
+            if(prod.category.includes("pants") || prod.category.includes("skirts") || prod.category.includes("shorts")){
+                sizeSymbols = ["26", "28", "30", "32", "34", "36", "T"]
+            }
+            else{
+                sizeSymbols = ["XS", "S", "M", "L", "XL", "XXL", "T"]
+            }
         }
     }
     return sizeSymbols
@@ -57,7 +64,7 @@ export function isInStock(prod) {
             return false
         }
     } else {
-        if (prod.show_sale_price) {
+        if (prod.is_sale) {
             if (checkInventoryWithoutF(prod)) {
                 return false
             }

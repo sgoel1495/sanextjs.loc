@@ -1,7 +1,9 @@
 import React from 'react';
 import emptyMeasurement from "../../../store/emptyMeasurement.json";
+import getStandardSizes from "../../../helpers/standardSizes";
 
-function StandardSizeModal({currentMeasurement, closeModal, sizeAvail, standardSizes, setSizeModal, selected, setSelected, setCurrentMeasurement}) {
+function StandardSizeModal({currentMeasurement, closeModal, sizeAvail, setSizeModal, selected, setSelected, setCurrentMeasurement, prod}) {
+    const standardSizes = getStandardSizes(prod)
     return (
         <div className={['h-screen fixed inset-0 z-modal grid place-items-center p-[2.5%] py-[5%]']} onClick={closeModal}>
             <div className='bg-white border-[1.2vw] border-[#b3aeab] text-[#997756] rounded-[10vw] h-full w-full relative flex flex-col' onClick={(e) => e.stopPropagation()}>
@@ -18,10 +20,9 @@ function StandardSizeModal({currentMeasurement, closeModal, sizeAvail, standardS
                                 <thead>
                                 <tr>
                                     {
-                                        Object.keys(standardSizes[0]).map((item, index) => {
-                                            if (item !== "AvailQty")
-                                                return <td key={index}><span
-                                                    className={"font-500 " + [index !== 0 ? "border-l-2 border-[#997756] text-center block my-1" : ""]}>{item}</span></td>
+                                        standardSizes[0].map((item, index) => {
+                                            return <td key={index}><span
+                                                className={"font-500 " + [index !== 0 ? "border-l-2 border-[#997756] text-center block my-1" : ""]}>{item}</span></td>
                                         })
                                     }
                                 </tr>
@@ -29,7 +30,7 @@ function StandardSizeModal({currentMeasurement, closeModal, sizeAvail, standardS
                                 <tbody>
                                 {
                                     standardSizes.slice(1).map((item, index) => {
-                                        if (!sizeAvail.includes(item[Object.keys(item)[0]])) {
+                                        if (!sizeAvail.includes(item[Object.keys(item)[0]].toUpperCase())) {
                                             return null
                                         }
                                         return <tr key={index} className={"bg-[#F3E9E3]"} onClick={() => {

@@ -52,9 +52,6 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
     const whatSizes = () => {
         let sizeData = returnSizes(prod);
         let returnValue = null
-        if (prod.is_sale) {
-            sizeData = ["XS", "S", "M", "L", "XL", "XXL"]
-        }
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
@@ -90,7 +87,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
         }
 
         const cart = {
-            "product_id": prod.asset_id,
+            "product_id": prod.product_id,
             "size": size ? size : selectedSize,
             "qty": 1,
             "is_sale": false,

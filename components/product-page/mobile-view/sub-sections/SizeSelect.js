@@ -52,6 +52,7 @@ const SizeSelect = ({data, sizeAvail, size, setSize, currentMeasurement, setCurr
             {showStandardSize &&
             ReactDom.createPortal(
                 <StandardSizeModal
+                    prod={data}
                     closeModal={() => setShowStandardSize(false)}
                     setSizeModal={setSizeGuideModal}
                     standardSizes={data.size_avail ? JSON.parse(data.size_avail.replace(/=>/g, ":")) : []}

@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import PageHead from "../../components/PageHead";
 import Header from "../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../components/swipers/HomePageHeaderSwiper";
@@ -7,9 +7,10 @@ import {apiCall} from "../../helpers/apiCall";
 import Image from "next/image";
 import ProductCard from "../../components/sale/ProductCard";
 import {connect} from "react-redux";
+import Loader from "../../components/common/Loader";
 
 function EndOfSeasonSale(props) {
-    const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const loaderRef = React.useRef()
     const mobile = props.mobile;
     const [carousal] = useState(props.carousal);
     const [data, setData] = useState(props.data);
@@ -21,16 +22,60 @@ function EndOfSeasonSale(props) {
         }
     }, [])
 
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(props.data.product_count)
+    const [visibleData, setVisibleData] = useState(props.data.new_items.filter(item => item.is_visible))
+    const [loading, setLoading] = useState(false)
+
+    const fetchData = useCallback((io) => {
+        if (total <= page * 18) {
+            return
+        }
+        if (io) {
+            if (!io.isIntersecting) {
+                return;
+            }
+        }
+        if (loading) {
+            return;
+        }
+        setLoading(true);
+        apiCall("getSaleItems", props.apiToken, {sale_name: "end of season sale", limit: 18,  skip: page * 18})
+            .then(resp => {
+                if (resp.new_items) {
+                    setData({...resp, new_items:[...data.new_items,...resp.new_items]})
+                    setPage(page + 1)
+                }
+            })
+            .catch(e => console.log(e.message))
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [visibleData, loading, page, total])
+    useEffect(() => {
+        const observer = new IntersectionObserver((io) => fetchData(io[0]), {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.1
+        });
+        if (loaderRef && loaderRef.current) {
+            observer.observe(loaderRef.current);
+        }
+        return () => {
+            if (loaderRef && loaderRef.current) {
+                observer.unobserve(loaderRef.current);
+            }
+        };
+    }, [loaderRef, fetchData]);
 
     useEffect(() => {
         if (selected.length) {
-            setData(props.data.filter(item => item.inv_sizes.some(s => selected.includes(s))))
+            setVisibleData(data.new_items.filter(item => item.is_visible && item.inv_sizes.some(s => selected.includes(s))))
         } else {
-            setData(props.data)
+            setVisibleData(data.new_items.filter(item => item.is_visible))
         }
-    }, [selected])
+    }, [selected,data])
 
-    console.log(data[0])
     const mobileView = <section className={"bg-[#faf4f0] pb-10"}>
         <span className={"block relative w-full aspect-square"}>
             <Image src={"https://saltattire.com/assets/images/mob/sale_v15.jpg"} layout={`fill`} objectFit={`cover`}
@@ -70,7 +115,7 @@ function EndOfSeasonSale(props) {
         </div>
 
         <div className={"grid grid-cols-2 gap-5 container py-5 px-5 "}>
-            {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={true}/>)}
+            {visibleData.map((item, index) => <ProductCard prod={item} key={index} isMobile={true}/>)}
         </div>
     </section>
 
@@ -114,8 +159,13 @@ function EndOfSeasonSale(props) {
             </div>
 
             <div className={"grid grid-cols-3 gap-5 container py-5 px-5 "}>
-                {data.map((item, index) => <ProductCard prod={item} key={index} isMobile={false}/>)}
+                {visibleData.map((item, index) => <ProductCard prod={item} key={index} isMobile={false}/>)}
             </div>
+            {
+                total <= page*18 || <div className={`flex justify-center bg-[#faf4f0]`} ref={loaderRef}>
+                    <Loader/>
+                </div>
+            }
         </section>
     );
     return <>
@@ -129,7 +179,8 @@ function EndOfSeasonSale(props) {
 
 const mapStateToProps = (state) => {
     return {
-        mobile: state.appConfig.isMobile
+        mobile: state.appConfig.isMobile,
+        apiToken: state.appConfig.apiToken,
     }
 }
 
@@ -142,8 +193,10 @@ export async function getServerSideProps() {
         if (callObject.msg === "Successfully Get") {
             gotData = true
         }
-
-        return (gotData) ? callObject.new_items.filter(item => item.is_visible) : []
+        return (gotData) ? callObject : {
+            product_count:0,
+            new_items:[]
+        }
     }
 
     return {

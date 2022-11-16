@@ -40,14 +40,12 @@ import PriceDisplay from "../../common/PriceDisplay";
 const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, userData, shoppingCart, userConfig, ...props}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const currCurrency = userConfig.currCurrency
-    const curr = currCurrency.toUpperCase();
     const [deliveryAvailable, setDeliveryAvailable] = useState(null)
     const [pincode, setPinCode] = useState(null)
     const [sizeModal, setSizeModal] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [showNotifyMe, setShowNotifyMe] = useState(false)
-    const [showModal,setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false)
     const [currentMeasurement, setCurrentMeasurement] = useState({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length});
     //for toast
     const [toastMsg, setToastMsg] = useState(null)
@@ -56,10 +54,10 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
     const sizeAvail = returnSizes(data)
 
     React.useEffect(() => {
-       if(router.query.tailor){
-           setShowModal(true)
-       }
-    },[])
+        if (router.query.tailor) {
+            setShowModal(true)
+        }
+    }, [])
 
     const checkDelivery = async () => {
         if (pincode == null)
@@ -113,13 +111,14 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
             returnValue = <Fragment>
                 {returnValue}
                 <span key={"sdsda" + index}
-                      className={(selectedSize == size) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"}
-                      onClick={() => setSelectedSize(size)}>
+                      className={`${(selectedSize == size) ? "border-t border-b border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"}  ${data.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`}
+                      onClick={() => data.hide_sizes.includes(size.toLowerCase()) ? {} : setSelectedSize(size)}
+                >
                     {size}
                 </span>
             </Fragment>
         })
-        return <div className={"flex justify-between font-600 mb-4 text-black/60"}>
+        return <div className={"flex justify-evenly font-600 mb-4 text-black/60"}>
             {returnValue}
         </div>
     }
@@ -139,7 +138,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
         <div>
             <div className={"bg-white p-4 shadow-xl"}>
                 <div className={"flex items-center justify-between text-black/60 text-sm font-500 mb-4"}>
-                    <span><PriceDisplay prod={data}/></span>
+                    <span><PriceDisplay prod={data} isSale={data.product_id.split("-")[1]==="Sale"}/></span>
                     <div className='flex items-center gap-2 relative'>
                         <WishlistButton pid={hpid}/>
                         <button className={"relative block h-4 w-4"} onClick={() => setShowShare(!showShare)}>
@@ -176,6 +175,11 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
                                 size guide
                             </p>
                         </>
+                }
+                {
+                    data.show_sale_price === "true" || data.product_id.split("-")[1] === "Sale" && <div className={"text-center mb-3"}>
+                        <p className="text-[#f05c74] text-[10px] font-500">NOT VALID FOR RETURN / EXCHANGE</p>
+                    </div>
                 }
                 {
                     sizeAvail.includes("T") &&
