@@ -56,7 +56,7 @@ const BrowserView = React.forwardRef(({hpid, category, visibleData, data, total,
                                 return <Fragment>
                                     <div className={`col-span-3 text-center text-[15px] uppercase text-[#333] my-3 flex justify-center items-center`}>
                                         <hr className={"w-16 border-[#333]"}/>
-                                        <span className={"mx-6"}>{prod.belong_to}{prod.belong_to.includes("pants") ? "" : " pants"}</span>
+                                        <span className={"mx-6"}>{prod.belong_to}{prod.belong_to.includes("pants") ? "" : " "+prod.category}</span>
                                         <hr className={"w-16 border-[#333]"}/>
                                     </div>
                                     <ProductCard prod={prod} key={index}

@@ -101,10 +101,6 @@ function ShopPage(props) {
         }
     }, [router.route])
 
-    React.useEffect(()=>{
-        console.log(data)
-    },[data])
-
     React.useEffect(() => {
         if (router.query.sorted_by) {
             props.setSortBy(router.query.sorted_by)

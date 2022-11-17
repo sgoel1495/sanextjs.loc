@@ -13,6 +13,7 @@ import {useRouter} from "next/router";
 import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
+import PriceDisplay from "../common/PriceDisplay";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -25,16 +26,11 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, userConfig, ...props}) => {
+const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, shoppingCart, appConfig, ...props}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
-    const currCurrency = userConfig.currCurrency;
-    const curr = currCurrency.toUpperCase();
-    const currencyData = appSettings("currency_data");
-    const inr = currencyData["inr"].curr_symbol;
-    const usd = currencyData["usd"].curr_symbol;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
@@ -56,9 +52,6 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
     const whatSizes = () => {
         let sizeData = returnSizes(prod);
         let returnValue = null
-        if (prod.is_sale) {
-            sizeData = ["XS", "S", "M", "L", "XL", "XXL"]
-        }
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
@@ -94,7 +87,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
         }
 
         const cart = {
-            "product_id": prod.asset_id,
+            "product_id": prod.product_id,
             "size": size ? size : selectedSize,
             "qty": 1,
             "is_sale": false,
@@ -121,18 +114,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
                         <p className={`text-xs`}>
                             <span>
-                                {
-                                    (currCurrency === "inr" || !prod.usd_price) ?
-                                        <>
-                                            <span
-                                                className={prod.is_sale ? "line-through" : ""}>{currencyFormatter(curr).format(parseInt(prod.price.replace(",", ""))).split(".")[0]}</span>
-                                            {
-                                                prod.is_sale && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
-                                            }
-                                        </>
-                                        :
-                                        <>{usd} {prod.usd_price}</>
-                                }
+                                <PriceDisplay prod={prod} isSale={true}/>
                             </span>
                         </p>
                         <p className={"text-xs"}>
@@ -187,18 +169,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                                      onClick={() => saveToCart()}>
                                     <span className={`uppercase`}>Add to bag</span>
                                     <p className={`text-xs`}>
-                                        {
-                                            (currCurrency === "inr" || !prod.usd_price) ?
-                                                <>
-                                                        <span className={"line-through"}>
-                                                            {currencyFormatter(curr).format(parseInt(prod.price.replace(",", ""))).split(".")[0]}
-                                                        </span>
-                                                    <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
-
-                                                </>
-                                                :
-                                                <>{usd} {prod.usd_price}</>
-                                        }
+                                        <PriceDisplay prod={prod} isSale={true}/>
                                     </p>
                                 </div>
                             </Fragment>
@@ -237,7 +208,6 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         shoppingCart: state.shoppingCart,
         appConfig: state.appConfig,
-        userConfig: state.userConfig,
     }
 }
 

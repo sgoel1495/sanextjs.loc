@@ -5,6 +5,8 @@ const ParallaxBlock = props => {
     return (
         <Parallax
             bgImage={props.bgImage}
+            bgClassName={"max-w-none"}
+            bgStyle={{maxWidth:"auto"}}
             strength={200}
         >
             <div className="h-screen">

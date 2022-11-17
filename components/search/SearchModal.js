@@ -2,10 +2,9 @@ import React, {Fragment, useContext, useRef, useState} from "react";
 import Toast from "../common/Toast";
 import {apiCall} from "../../helpers/apiCall";
 import Image from "next/image";
-import AppWideContext from "../../store/AppWideContext";
 import Link from "next/link";
 import {connect} from "react-redux";
-import currencyFormatter from "../../helpers/currencyFormatter";
+import PriceDisplay from "../common/PriceDisplay";
 
 function SearchModal(props) {
     const {closeModal} = props;
@@ -15,8 +14,6 @@ function SearchModal(props) {
     const [refresh, setRefresh] = useState(false)
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
-    const currCurrency = props.userConfig.currCurrency;
-    const curr = currCurrency.toUpperCase();
 
     const searchExecution = async () => {
         if (searchTerm.length < 3) {
@@ -47,7 +44,7 @@ function SearchModal(props) {
                         </div>
                         <p className="text-xs font-600">{product.name}</p>
                         <p className={`text-xs`}>
-                            {currencyFormatter(curr).format((currCurrency === "inr") ? product.price : product.usd_price).split(".")[0]}
+                            <PriceDisplay prod={product}/>
                         </p>
                     </a>
                 </Link>

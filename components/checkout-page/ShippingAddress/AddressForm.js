@@ -142,7 +142,7 @@ const AddressForm = (props) => {
     }
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        const updateData = await updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, userData.measurements, shoppingCart.cart);
+        const updateData = await updateUserDataAfterLogin(userData.userServe, appConfig.apiToken, userData.measurements, shoppingCart.cart);
         props.setCart(updateData.shoppingCart)
         props.setUserState(updateData.userState);
         props.setOrderHistory(updateData.orderHistory);

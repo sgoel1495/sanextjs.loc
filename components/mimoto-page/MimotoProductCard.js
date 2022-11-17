@@ -13,6 +13,7 @@ import {addToCart, getUserObject} from "../../helpers/addTocart";
 import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
+import PriceDisplay from "../common/PriceDisplay";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -20,24 +21,22 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCart, appConfig,userConfig, ...props}) => {
+const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCart, appConfig, ...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [expandShop, setExpandShop] = useState(null);
     const [showNotifyMe, setShowNotifyMe] = useState(false)
-    const currCurrency = userConfig.currCurrency;
     const [toastMsg, setToastMsg] = useState(null)
     const [showToast, setShowToast] = useState(false)
     const [showSize, setShowSize] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null)
     const [addToCartWasPressed, setAddToCartWasPressed] = useState(false)
-    const curr = currCurrency.toUpperCase();
 
     const saveToCart = async (size = "", addIt = false) => {
         const haveSize = (size !== "") ? true : !!(selectedSize)
         const currSize = (size !== "") ? size : selectedSize
         if ((haveSize && addToCartWasPressed) || (haveSize && addIt)) {
             const cart = {
-                product_id: prod.asset_id,
+                product_id: prod.product_id,
                 size: currSize,
                 qty: "1",
                 is_sale: false,
@@ -77,7 +76,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                             </div>
                             <div className='inline-flex flex-col items-center'>
                                 <p className={`text-xs`}>
-                                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+                                    <PriceDisplay prod={prod}/>
                                 </p>
                                 <WishListButton pid={prod.asset_id}/>
                             </div>
@@ -100,7 +99,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                         <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
                         <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
                         <p className={`text-xs`}>
-                            {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+                            <PriceDisplay prod={prod}/>
                         </p>
                     </div>
                 </a>
@@ -127,7 +126,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"}`} onClick={() => saveToCart(size)}>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"} ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`} onClick={() => prod.hide_sizes.includes(size.toLowerCase())?{}:saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -173,7 +172,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                                          onClick={() => saveToCart("", true)}>
                                         <span className={`uppercase`}>Add to bag</span>
                                         <p className={`text-xs`}>
-                                            {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+                                            <PriceDisplay prod={prod}/>
                                         </p>
                                     </div>
                                 </Fragment>
@@ -216,8 +215,7 @@ const mapStateToProps = (state) => {
     return {
         userData: state.userData,
         shoppingCart: state.shoppingCart,
-        appConfig: state.appConfig,
-        userConfig:state.userConfig
+        appConfig: state.appConfig
     }
 }
 

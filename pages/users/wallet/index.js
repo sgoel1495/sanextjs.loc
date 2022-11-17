@@ -64,11 +64,11 @@ function UsersWalletPage({appConfig, userConfig, userData, ...props}) {
 
         const voucherCall = await apiCall("redeemVoucher", appConfig.apiToken, queryO)
 
-        if (voucherCall.status = 200) {
+        if (voucherCall.status === 200) {
             setMessage(voucherCall.msg)
             if (voucherCall.msg && voucherCall.msg === "Gift Card Voucher redeem successfully!!") {
                 // we update the whole storage
-                const updateData = await updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, {}, [])
+                const updateData = await updateUserDataAfterLogin(userData.userServe, appConfig.apiToken, {}, [])
                 props.setCart(updateData.shoppingCart)
                 props.setUserState(updateData.userState);
                 props.setOrderHistory(updateData.setOrderHistory)

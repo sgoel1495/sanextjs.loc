@@ -7,6 +7,8 @@ import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import {apiCall} from "../../../helpers/apiCall";
 import {setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
+import Link from "next/link";
+import PriceDisplay from "../PriceDisplay";
 
 function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfig, ...props}) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -15,7 +17,6 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
         edit: false,
         product: null
     })
-
     const changeQty = async (product, updatedQty) => {
         if (updatedQty === 0) {
             setToastMsg("Minimum Quantity Selected")
@@ -67,7 +68,7 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                             {
                                 p.product_id.toLowerCase().includes("giftcard") ? "" :
                                     <div className="text-[#777] uppercase">
-                                        <p className="text-[10px]">COLOR: {(p.multi_color) ? "multicolor" : p.color.name}</p>
+                                        <p className="text-[10px]">COLOR: {(p.multi_color) ? "multicolor" : p.color?p.color.name:""}</p>
                                         <p className="text-[10px]">SIZE: {p.is_tailor ? "Tailored" : p.size}</p>
                                         {
                                             p.is_tailor && <div>
@@ -90,7 +91,7 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                                 <div className="text-[#555]" onClick={() => changeQty(p, p.qty + 1)}>+</div>
                             </div>
                             <p className="text-right text-[#777] text-xs">
-                                {userConfig.currSymbol} {(userConfig.currCurrency == "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
+                                <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1]==="Sale"}/>
                             </p>
                         </div>
                     </div>
@@ -108,16 +109,18 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                 <>
                     {returnValues}
                     <div className="flex gap-x-2 items-center bg-white p-3">
-                        <div className="relative h-40 aspect-[9/16]">
-                            <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
-                                   id={p.cart_id + index.toString()}
-                                   layout="fill"
-                                   objectFit="cover"
-                            />
-                        </div>
+                        <Link href={"/"+p.product_id}>
+                            <div className="relative h-40 aspect-[9/16]">
+                                <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
+                                       id={p.cart_id + index.toString()}
+                                       layout="fill"
+                                       objectFit="cover"
+                                />
+                            </div>
+                        </Link>
                         <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
                             <p className="text-[#777] text-xs">
-                                {userConfig.currSymbol} {(userConfig.currCurrency === "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
+                                <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1]==="Sale"}/>
                             </p>
                             <div>
                                 <p className="font-600 text-sm leading-none">{p.name}</p>
@@ -126,7 +129,7 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                             {
                                 p.product_id.toLowerCase().includes("giftcard") ? "" :
                                     <div className="text-[#777]">
-                                        <p className="text-[10px]">Color:{p.color.name}</p>
+                                        <p className="text-[10px]">Color:{p.color?p.color.name:""}</p>
                                         <p className="text-[10px]">Size: {p.is_tailor ? "Tailored" : p.size}</p>
                                         {
                                             p.is_tailor && <div>

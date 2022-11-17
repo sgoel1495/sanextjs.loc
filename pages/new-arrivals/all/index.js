@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import Image from "next/image";
@@ -7,8 +7,10 @@ import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwip
 import BlockHeader from "../../../components/common/blockHeader";
 import ProductCard from "../../../components/new-Arrivals/ProductCard";
 import MobileProductCard from "../../../components/shop-page/ProductCard"
-import { apiCall } from "../../../helpers/apiCall";
-import { isMobile } from "react-device-detect";
+import {apiCall} from "../../../helpers/apiCall";
+import {isMobile} from "react-device-detect";
+import Loader from "../../../components/common/Loader";
+import {connect} from "react-redux";
 
 /**
  * @todo @team Swiper data
@@ -20,41 +22,107 @@ import { isMobile } from "react-device-detect";
 
 function NewArrivalsAllPage(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const [data] = useState(props.data);
+    const loaderRef = React.useRef()
     const [carousal] = useState(props.carousal);
-    const [mobile, setMobile] = useState(false)
+    const [data, setData] = useState(props.data)
+    const [loading, setLoading] = useState(false)
+    const [page, setPage] = useState(props.appConfig.isMobile ? 5 : 1)
+    const [total, setTotal] = useState(data.total_products_exist)
+    const [visibleData, setVisibleData] = useState(data.data.filter(item => item.is_visible))
 
-    React.useEffect(() => {
-        setMobile(isMobile)
-    }, [])
+    const fetchData = useCallback((io) => {
+        if (total <= page * 18) {
+            return
+        }
+        if (io) {
+            if (!io.isIntersecting) {
+                return;
+            }
+        }
+        if (loading) {
+            return;
+        }
+        setLoading(true);
+        apiCall("getProducts", props.appConfig.apiToken, {
+            category: "new-arrivals",
+            limit: props.appConfig.isMobile ? 90 : 18,
+            skip: page * (props.appConfig.isMobile ? 90 : 18)
+        })
+            .then(resp => {
+                if (resp.response && resp.response.data) {
+                    setVisibleData([...visibleData, ...resp.response.data.filter(item => item.is_visible)])
+                    setData(resp.response)
+                    setPage(page + 1)
+                }
+            })
+            .catch(e => console.log(e.message))
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [visibleData, loading, page, total])
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((io) => fetchData(io[0]), {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.1
+        });
+        if (loaderRef && loaderRef.current) {
+            observer.observe(loaderRef.current);
+        }
+        return () => {
+            if (loaderRef && loaderRef.current) {
+                observer.unobserve(loaderRef.current);
+            }
+        };
+    }, [loaderRef, fetchData]);
+
 
     const loader = <span className={"col-span-3 flex justify-center items-center"} key="loader">
         <span className={"block relative w-14 aspect-square"}>
             <Image src={WEBASSETS + "/assets/images/loader.gif"} layout={`fill`} objectFit={`cover`}
-                alt={"loader"} />
+                   alt={"loader"}/>
         </span>
     </span>
 
     const mobileView = <section className={"bg-[#faf4f0] pb-20"}>
         <div className="flex tracking-widest text-h4 items-center justify-center italic font-cursive font-600 pt-4">
             <span>~</span>
-            <span className="text-center p-2">Newly Launched<br />Products</span>
+            <span className="text-center p-2">Newly Launched<br/>Products</span>
             <span>~</span>
         </div>
-        {(data)
+        {(visibleData)
             ? <main className={`px-5`}>
-                {data.data && data.data.filter(prod => prod.is_visible).slice(0, 8).map((prod, index) => {
+                {visibleData && visibleData.filter(prod => prod.is_visible).slice(0, 8).map((prod, index) => {
                     return <div className={"py-4"} key={index}>
-                        <MobileProductCard prod={prod} isMobile={true} wide={true} />
+                        <MobileProductCard prod={prod} isMobile={true} wide={true}/>
                     </div>
                 })}
                 <div className={"grid grid-cols-2 gap-5"}>
-                    {data.data && data.data.filter(prod => prod.is_visible).slice(8).map((prod, index) => {
+                    {visibleData && visibleData.filter(prod => prod.is_visible).slice(8).map((prod, index) => {
                         return <div className={"py-4"} key={index}>
-                            <MobileProductCard prod={prod} isMobile={true} />
+                            <MobileProductCard prod={prod} isMobile={true}/>
                         </div>
                     })}
+                    {
+                        total <= page * 90 || <div className={`flex justify-center col-span-2`}>
+                            <button className={"uppercase text-[10px] tracking-widest text-[#595765] bg-[#FAEDE3] border-4 border-white rounded-3xl py-2 px-10"}
+                                    onClick={() => fetchData({isIntersecting: true})} disabled={loading}>
+                                {
+                                    loading ?
+                                        <Loader/>
+                                        :
+                                        <>
+                                            <p className={"font-900"}>tap here</p>
+                                            <span>to load more</span>
+                                        </>
+                                }
+
+                            </button>
+                        </div>
+                    }
                 </div>
+
             </main>
             : loader
         }
@@ -68,11 +136,16 @@ function NewArrivalsAllPage(props) {
                 </div>
                 <hr className={"w-44 h-0.5 bg-[#888] "}/>
             </div>
-            {(data)
+            {(visibleData)
                 ? <main className={`px-10 grid grid-cols-3 gap-10`}>
-                    {data.data && data.data.filter(prod => prod.is_visible).map((prod, index) => {
-                        return <ProductCard prod={prod} key={index} />
+                    {visibleData && visibleData.filter(prod => prod.is_visible).map((prod, index) => {
+                        return <ProductCard prod={prod} key={index}/>
                     })}
+                    {
+                        total <= page * 18 || <div className={`flex justify-center col-span-3`} ref={loaderRef}>
+                            <Loader/>
+                        </div>
+                    }
                 </main>
                 : loader
             }
@@ -80,11 +153,11 @@ function NewArrivalsAllPage(props) {
     );
 
     return <>
-        <PageHead url="/new-arrivals/all" id="new-arrivals-all" isMobile={mobile} />
-        <Header type={mobile ? "shopMenu" : ""} isMobile={mobile} />
-        <HomePageHeaderSwiper page={"newArrival"} isMobile={mobile} slides={carousal} />
-        {mobile ? mobileView : browserView}
-        <Footer isMobile={mobile} />
+        <PageHead url="/new-arrivals/all" id="new-arrivals-all" isMobile={props.appConfig.isMobile}/>
+        <Header type={props.appConfig.isMobile ? "shopMenu" : ""} isMobile={props.appConfig.isMobile}/>
+        <HomePageHeaderSwiper page={"newArrival"} isMobile={props.appConfig.isMobile} slides={carousal}/>
+        {props.appConfig.isMobile ? mobileView : browserView}
+        <Footer isMobile={props.appConfig.isMobile}/>
     </>
 }
 
@@ -93,7 +166,7 @@ export async function getStaticProps() {
         let gotData = false;
         const callObject = await apiCall("getProducts", process.env.API_TOKEN, {
             category: "new-arrivals",
-            limit: 10000,
+            limit: 90,
             skip: 0
         })
         if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data"))
@@ -112,5 +185,10 @@ export async function getStaticProps() {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        appConfig: state.appConfig,
+    }
+}
 
-export default NewArrivalsAllPage;
+export default connect(mapStateToProps)(NewArrivalsAllPage);

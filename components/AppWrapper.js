@@ -19,11 +19,10 @@ const AppWrapper = (props) => {
         let flag = true;
         if (userData) {
             if (userData.userServe.email) {
-                updateUserDataAfterLogin(userData.userServe.email, appConfig.apiToken, userData.measurements, shoppingCart.cart).then(updateData => {
+                updateUserDataAfterLogin(userData.userServe, appConfig.apiToken, userData.measurements, shoppingCart.cart).then(updateData => {
                     props.setCart(updateData.shoppingCart)
                     props.setUserState(updateData.userState);
                     props.setOrderHistory(updateData.orderHistory);
-                    props.setPrivilegedUser(updateData.privilegedUser)
                 })
                 flag = false
             }
@@ -31,7 +30,7 @@ const AppWrapper = (props) => {
         if (flag) {
             let userServe = {...userData.userServe, temp_user_id: Date.now().toString()}
             if (userData) {
-                if (!userData.temp_user_id) {
+                if (!userData.userServe.temp_user_id) {
                     props.setUserServe(userServe)
                 }
             } else {

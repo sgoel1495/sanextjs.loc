@@ -27,7 +27,7 @@ const LoginForm = (props) => {
 
 
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        const updateData = await updateUserDataAfterLogin(username, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
+        const updateData = await updateUserDataAfterLogin({...props.userData, email: username}, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
         props.setCart(updateData.shoppingCart)
         props.setUserState(updateData.userState);
         props.setOrderHistory(updateData.orderHistory);
@@ -249,4 +249,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart, setUserState,setOrderHistory})(LoginForm);
+export default connect(mapStateToProps, {setCart, setUserState, setOrderHistory})(LoginForm);

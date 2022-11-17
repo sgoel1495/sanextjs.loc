@@ -16,6 +16,7 @@ const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, 
     let breakSpeedKeys = []
     if (data && data.break_speed)
         breakSpeedKeys = Object.keys(data.break_speed)
+
     if (visibleData) {
         visibleData.forEach((prod, index) => {
             if (category === "jewellery") {
@@ -87,15 +88,19 @@ const MobileView = React.forwardRef(({hpid, category, visibleData, data, total, 
                                                activeLayout={activeLayout} minimal={true}/>}/>
         <CategoryHeaderMobile setActiveLayout={setActiveLayout} category={category} activeLayout={activeLayout} availableFilters={data ? data.filter_count : {}}/>
         {data
-            ? <main className={`grid grid-cols-${activeLayout} gap-5 container py-5 px-5 bg-[#faf4f0]`}>
+            ?
+            <>
+            <main className={`grid grid-cols-${activeLayout} gap-5 container py-5 px-5 bg-[#faf4f0]`}>
                 {returnValue}
+
+
+            </main>
                 {
-                    total <= skip || <div className={`flex justify-center col-span-${activeLayout}`} ref={ref}>
+                    total <= skip || <div className={`flex justify-center bg-[#faf4f0]`} ref={ref}>
                         <Loader/>
                     </div>
                 }
-
-            </main>
+            </>
             : <div className={"flex justify-center col-span-3"}>
                 <Loader/>
             </div>

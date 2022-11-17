@@ -12,6 +12,7 @@ import ReactDom from "react-dom";
 import NotifyMeModal from "../../../common/NotifyMeModal";
 import SizeGuide from "../../SizeGuide";
 import AskStylist from "../AskStylist";
+import PriceDisplay from "../../../common/PriceDisplay";
 
 const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, ...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -79,8 +80,9 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, .
             returnValue = <>
                 {returnValue}
                 <span key={"item" + index}
-                      className={"py-1.5 px-3.5 " + [(selectedSize == size) ? "border border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"]}
-                      onClick={() => setSelectedSize(size)}>
+                      className={"py-1.5 px-3.5 " + [(selectedSize == size) ? "border border-black text-black cursor-pointer" : "cursor-pointer border-t border-b border-transparent"] + [data.hide_sizes.includes(size.toLowerCase()) ? " line-through" : ""]}
+                      onClick={() => data.hide_sizes.includes(size.toLowerCase()) ? {} : setSelectedSize(size)}
+                >
                     {size}
                 </span>
             </>
@@ -93,7 +95,7 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, .
     return (
         <div className={[`flex-[5] p-4 text-${theme}`]}>
             <div className={"flex justify-between px-10"}>
-                <span className={"block"}>{currencyFormatter(curr).format(currCurrency === "inr" ? data.price : data.usd_price).split(".")[0]}</span>
+                <span className={"block"}><PriceDisplay prod={data} isSale={data.product_id.split("-")[1] === "Sale"}/></span>
                 <span className={"block"}>SHARE</span>
             </div>
             <div className="flex flex-col items-center text-center mt-20">
@@ -110,6 +112,11 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, .
                             <p className={"uppercase font-500 mb-4 cursor-pointer"} onClick={() => setSizeModal(true)}>size guide</p>
                         </>
 
+                }
+                {
+                    data.show_sale_price === "true" || data.product_id.split("-")[1] === "Sale" && <div className={"text-center mb-3"}>
+                        <p className="text-[#f05c74] text-sm font-500">NOT VALID FOR RETURN / EXCHANGE</p>
+                    </div>
                 }
                 {
                     isInStock(data) ||

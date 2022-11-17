@@ -12,6 +12,7 @@ import returnSizes from "../../helpers/returnSizes";
 import {useRouter} from "next/router";
 import Toast from "../common/Toast";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
+import PriceDisplay from "../common/PriceDisplay";
 
 const ArrivalDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -19,12 +20,10 @@ const ArrivalDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, userConfig, userData, shoppingCart, appConfig, setCart}) => {
+const ProductCard = ({prod, userData, shoppingCart, appConfig, setCart}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [isOver, setIsOver] = useState(false);
-    const currCurrency = userConfig.currCurrency;
-    const curr = currCurrency.toUpperCase();
     const [showSize, setShowSize] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null)
     const [addToCartClick, setAddToCartClick] = useState(false)
@@ -49,7 +48,7 @@ const ProductCard = ({prod, userConfig, userData, shoppingCart, appConfig, setCa
             }
         }
         const cart = {
-            "product_id": prod.asset_id,
+            "product_id": prod.product_id,
             "size": size ? size : selectedSize,
             "qty": 1,
             "is_sale": false,
@@ -68,7 +67,7 @@ const ProductCard = ({prod, userConfig, userData, shoppingCart, appConfig, setCa
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}`} onClick={() => saveToCart(size)}>
+                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}  ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`} onClick={() => prod.hide_sizes.includes(size.toLowerCase())?{}:saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -95,7 +94,7 @@ const ProductCard = ({prod, userConfig, userData, shoppingCart, appConfig, setCa
                  onClick={() => saveToCart()}>
                 <span className={`uppercase`}>Add to bag</span>
                 <p className={`text-xs`}>
-                    {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
+                    <PriceDisplay prod={prod}/>
                 </p>
             </div>
         </>
@@ -134,7 +133,6 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         shoppingCart: state.shoppingCart,
         appConfig: state.appConfig,
-        userConfig: state.userConfig
     }
 }
 

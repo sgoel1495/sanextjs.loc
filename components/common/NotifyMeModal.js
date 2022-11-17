@@ -49,9 +49,8 @@ function NotifyMeModal({closeModal, isMobile, userO, product, setError, setError
         formData.append("product[notify_data][product_id]", (product.product_id) ? product.product_id : product.asset_id)
         const resp = await apiCall("notifyMe", "noapitokenrequried", formData)
         if (resp.msg && resp.msg === "successfully submit") {
-            if (isMobile) {
-                setError("Thank you, we will notify you shortly!")
-            }
+            setError("Thank you, we will notify you shortly!")
+            setErrorShow(true)
             closeModal(false)
         }
     }
@@ -76,10 +75,10 @@ function NotifyMeModal({closeModal, isMobile, userO, product, setError, setError
                 {
                     loading ?
                         <Loader className={"mt-4"}/>
-                    :
-                    <button className={`font-500 px-4 py-2 bg-[#e5d5c5] text-[#997756] text-sm mt-2 tracking-wider leading-none`} onClick={validateAndNotify}>
-                    <span className={`uppercase`}>NOTIFY ME</span>
-                    </button>
+                        :
+                        <button className={`font-500 px-4 py-2 bg-[#e5d5c5] text-[#997756] text-sm mt-2 tracking-wider leading-none`} onClick={validateAndNotify}>
+                            <span className={`uppercase`}>NOTIFY ME</span>
+                        </button>
                 }
             </div>
         </div>

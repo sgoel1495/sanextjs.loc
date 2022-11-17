@@ -10,6 +10,7 @@ import ExploreSection from "./sub-sections/ExploreSection";
 
 const MobileView = ({ hpid, data }) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
+    const hasLooks = data.paired_products && data.paired_products.length > 0 && data.paired_products[0].products && data.paired_products[0].products.length > 0
     return (
         <>
             <div className={"bg-[#f6f1ef]"}>
@@ -25,7 +26,9 @@ const MobileView = ({ hpid, data }) => {
                     </div>
                 </div>
                 <ProductDetails data={data} hpid={hpid}/>
-                <CompleteLook paired_products={data['paired_products']} id={data['asset_id']} />
+                {
+                    hasLooks &&  <CompleteLook paired_products={data['paired_products']} id={data['asset_id']} />
+                }
                 {data.pattern_no &&
                     <ExploreSection
                         id={data.asset_id}
