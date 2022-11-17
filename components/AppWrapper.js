@@ -23,7 +23,6 @@ const AppWrapper = (props) => {
                     props.setCart(updateData.shoppingCart)
                     props.setUserState(updateData.userState);
                     props.setOrderHistory(updateData.orderHistory);
-                    props.setPrivilegedUser(updateData.privilegedUser)
                 })
                 flag = false
             }

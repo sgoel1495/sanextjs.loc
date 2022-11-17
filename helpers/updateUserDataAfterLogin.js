@@ -2,7 +2,6 @@ import {apiCall} from "./apiCall";
 import {addToCart, checkItemInCart} from "./addTocart";
 
 export async function updateUserDataAfterLogin(userData, apiToken, currentMeasurements, currentCart) {
-    console.log(userData)
     //==================== user Serve
     const serveCall = await apiCall("userServe", apiToken, {contact: userData.email});
 
@@ -138,9 +137,9 @@ export async function updateUserDataAfterLogin(userData, apiToken, currentMeasur
             "userAddresses": userAddresses,
             "wallet": userWallet,
             "measurements": userMeasurements,
+            "privilegedUser": privilegedUser
         },
         "shoppingCart": userCart,
         "orderHistory": orderHistory,
-        "privilegedUser": privilegedUser
     }
 }

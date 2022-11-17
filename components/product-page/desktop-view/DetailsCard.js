@@ -138,7 +138,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
         <div>
             <div className={"bg-white p-4 shadow-xl"}>
                 <div className={"flex items-center justify-between text-black/60 text-sm font-500 mb-4"}>
-                    <span><PriceDisplay prod={data} isSale={data.product_id.split("-")[1]==="Sale"}/></span>
+                    <span><PriceDisplay prod={data} isSale={data.product_id.split("-")[1] === "Sale"}/></span>
                     <div className='flex items-center gap-2 relative'>
                         <WishlistButton pid={hpid}/>
                         <button className={"relative block h-4 w-4"} onClick={() => setShowShare(!showShare)}>
@@ -182,7 +182,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
                     </div>
                 }
                 {
-                    sizeAvail.includes("T") &&
+                    isInStock(data) && sizeAvail.includes("T") &&
                     <TailoredSize data={data} currentMeasurement={currentMeasurement} setCurrentMeasurement={setCurrentMeasurement} setSize={setSelectedSize} isMobile={false}
                                   saveToCart={saveToCart} showModal={showModal} setShowModal={setShowModal}/>
                 }

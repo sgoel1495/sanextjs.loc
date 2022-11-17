@@ -1,7 +1,6 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
-import AppWideContext from "../../../store/AppWideContext";
 import InspiredByTrueStory from "../../../components/about-salt/InspiredByTrueStory";
 import Radhika from "../../../components/about-salt/Radhika";
 import OurDesign from "../../../components/about-salt/OurDesign";

@@ -3,13 +3,14 @@ import appSettings from "../../store/appSettings";
 import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 
-const PriceDisplay = ({userConfig, prod, isSale, qty = 1}) => {
+const PriceDisplay = ({userConfig, prod, isSale, privilegedUser, qty = 1}) => {
+    console.log(privilegedUser)
     const currCurrency = userConfig.currCurrency;
     const curr = currCurrency.toUpperCase();
     const currencyData = appSettings("currency_data");
     const usd = currencyData["usd"].curr_symbol;
-    let price = typeof (prod.price) === typeof("")? parseInt(prod.price.replace(",", "")) : prod.price
-    let sale_price = typeof (prod.sale_price) === typeof("") ? prod.sale_price ? parseInt(prod.sale_price.replace(",", "")) : 0 : prod.sale_price
+    let price = typeof (prod.price) === typeof ("") ? parseInt(prod.price.replace(",", "")) : prod.price
+    let sale_price = typeof (prod.sale_price) === typeof ("") ? prod.sale_price ? parseInt(prod.sale_price.replace(",", "")) : 0 : prod.sale_price
     if (isSale)
         return <>
             {
@@ -24,6 +25,22 @@ const PriceDisplay = ({userConfig, prod, isSale, qty = 1}) => {
                     <>{usd} {prod.usd_price}</>
             }
         </>
+    if (privilegedUser.privilege) {
+        return (
+            <>
+                {
+                    (currCurrency === "inr" || !prod.usd_price) ?
+                        <>
+                            <span className={"line-through"}>{currencyFormatter(curr).format(price * qty).split(".")[0]}</span>
+                            <span
+                                className={"text-rose-600 ml-2 font-600 "}>{currencyFormatter(curr).format(price * qty * (100 - privilegedUser.discount) / 100).split(".")[0]}</span>
+                        </>
+                        :
+                        <>{usd} {prod.usd_price}</>
+                }
+            </>
+        );
+    }
     return (
         <>
             {
@@ -44,7 +61,8 @@ const PriceDisplay = ({userConfig, prod, isSale, qty = 1}) => {
 
 const mapStateToProps = (state) => {
     return {
-        userConfig: state.userConfig
+        userConfig: state.userConfig,
+        privilegedUser: state.userData.privilegedUser
     }
 }
 
