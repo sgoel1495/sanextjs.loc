@@ -1,9 +1,10 @@
 import {apiCall} from "./apiCall";
 import {addToCart, checkItemInCart} from "./addTocart";
 
-export async function updateUserDataAfterLogin(username, apiToken, currentMeasurements, currentCart) {
+export async function updateUserDataAfterLogin(userData, apiToken, currentMeasurements, currentCart) {
+    console.log(userData)
     //==================== user Serve
-    const serveCall = await apiCall("userServe", apiToken, {contact: username});
+    const serveCall = await apiCall("userServe", apiToken, {contact: userData.email});
 
     let userServe = {
         "email": "",
@@ -17,20 +18,19 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     if (serveCall.hasOwnProperty("response") && serveCall.response && serveCall.response.email) {
         userServe = {...serveCall.response};
         if (!userServe.temp_user_id || userServe.temp_user_id === "") {
-            userServe.temp_user_id = Date.now()
+            userServe.temp_user_id = userData.temp_user_id ? userData.temp_user_id : Date.now()
         }
     }
 
     // create user Object required in other calls
-    const tempId = userServe.temp_user_id || Date.now()
     const userO = {
-        email: username,
+        email: userData.email,
         is_guest: false,
-        temp_user_id: tempId
+        temp_user_id: userServe.temp_user_id
     }
 
     //==================== user Wallet
-    const walletCall = await apiCall("userWallet", apiToken, {contact: username});
+    const walletCall = await apiCall("userWallet", apiToken, {contact: userData.email});
 
     let userWallet = {
         "WalletAmount": 0,
@@ -45,7 +45,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
     //==================== user Address
     const addressCall = await apiCall("userAddresses", apiToken, {
         "user": {
-            email: username
+            email: userData.email
         }
     });
     let userAddresses = [];
@@ -54,7 +54,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
 
     const defaultAddressCall = await apiCall("getDefaultAddress", apiToken, {
         "user": {
-            email: username
+            email: userData.email
         }
     });
 
@@ -121,7 +121,7 @@ export async function updateUserDataAfterLogin(username, apiToken, currentMeasur
 
     let orderHistory = {}
     const orderHistoryCall = await apiCall("userOrderHistory", apiToken, {
-        "user": {contact: username, token: apiToken}
+        "user": {contact: userData.email, token: apiToken}
     });
     if (orderHistoryCall.status === 200) {
         orderHistory = orderHistoryCall.response

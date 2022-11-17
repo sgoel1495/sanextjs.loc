@@ -12,17 +12,11 @@ export async function refreshCart(userData, apiToken, setCart) {
 }
 
 export function getUserObject(userData) {
-    let tempId;
-    if (userData.userServe && (!userData.userServe.temp_user_id || userData.userServe.temp_user_id === "")) {
-        tempId = Date.now()
-    } else
-        tempId = userData.userServe.temp_user_id
-
     return {
         email: (userData.userServe.email) ? userData.userServe.email : "",
         contact: (userData.userServe.email) ? userData.userServe.email : "",
         is_guest: !(userData.userServe.email),
-        temp_user_id: tempId
+        temp_user_id: userData.userServe.temp_user_id
     }
 }
 

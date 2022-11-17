@@ -1,19 +1,23 @@
 import React, {useCallback, useEffect, useReducer, useState} from 'react';
-import PageHead from "../../components/PageHead";
-import Header from "../../components/navbar/Header";
-import HomePageHeaderSwiper from "../../components/swipers/HomePageHeaderSwiper";
-import Footer from "../../components/footer/Footer";
-import {apiCall} from "../../helpers/apiCall";
+import PageHead from "../../../components/PageHead";
+import Header from "../../../components/navbar/Header";
+import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
+import Footer from "../../../components/footer/Footer";
+import {apiCall} from "../../../helpers/apiCall";
 import Image from "next/image";
-import ProductCard from "../../components/sale/ProductCard";
+import ProductCard from "../../../components/sale/ProductCard";
 import {connect} from "react-redux";
-import Loader from "../../components/common/Loader";
+import Loader from "../../../components/common/Loader";
+import {useRouter} from "next/router";
 
-function EndOfSeasonSale(props) {
+function Index(props) {
+    const router = useRouter();
     const loaderRef = React.useRef()
     const mobile = props.mobile;
     const [carousal] = useState(props.carousal);
-    const [data, setData] = useState(props.data);
+    const [data, setData] = useState({
+        new_items: []
+    });
     const [selected, setSelected] = useReducer((state, e) => {
         if (e.target.checked) {
             return Array.from(new Set([...state, e.target.name]))
@@ -23,8 +27,8 @@ function EndOfSeasonSale(props) {
     }, [])
 
     const [page, setPage] = useState(1)
-    const [total, setTotal] = useState(props.data.product_count)
-    const [visibleData, setVisibleData] = useState(props.data.new_items.filter(item => item.is_visible))
+    const [total, setTotal] = useState(0)
+    const [visibleData, setVisibleData] = useState([])
     const [loading, setLoading] = useState(false)
 
     const fetchData = useCallback((io) => {
@@ -40,10 +44,10 @@ function EndOfSeasonSale(props) {
             return;
         }
         setLoading(true);
-        apiCall("getSaleItems", props.apiToken, {sale_name: "end of season sale", limit: 18,  skip: page * 18})
+        apiCall("getSaleItems", props.apiToken, {sale_name: router.query.saleName.replace(/-/g, " "), limit: 18, skip: page * 18})
             .then(resp => {
                 if (resp.new_items) {
-                    setData({...resp, new_items:[...data.new_items,...resp.new_items]})
+                    setData({...resp, new_items: [...data.new_items, ...resp.new_items]})
                     setPage(page + 1)
                 }
             })
@@ -51,7 +55,7 @@ function EndOfSeasonSale(props) {
             .finally(() => {
                 setLoading(false)
             })
-    }, [visibleData, loading, page, total])
+    }, [visibleData, loading, page, total, router.query.saleName])
     useEffect(() => {
         const observer = new IntersectionObserver((io) => fetchData(io[0]), {
             root: null,
@@ -69,12 +73,31 @@ function EndOfSeasonSale(props) {
     }, [loaderRef, fetchData]);
 
     useEffect(() => {
+        if (!router.query.saleName) {
+            return
+        }
+        setLoading(true);
+        apiCall("getSaleItems", props.apiToken, {sale_name: router.query.saleName.replace(/-/g, " "), limit: 18, skip: 0})
+            .then(resp => {
+                if (resp.new_items) {
+                    setData(resp)
+                    setPage(1)
+                    setTotal(resp.product_count)
+                }
+            })
+            .catch(e => console.log(e.message))
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [router.query.saleName])
+
+    useEffect(() => {
         if (selected.length) {
             setVisibleData(data.new_items.filter(item => item.is_visible && item.inv_sizes.some(s => selected.includes(s))))
         } else {
             setVisibleData(data.new_items.filter(item => item.is_visible))
         }
-    }, [selected,data])
+    }, [selected, data])
 
     const mobileView = <section className={"bg-[#faf4f0] pb-10"}>
         <span className={"block relative w-full aspect-square"}>
@@ -117,6 +140,11 @@ function EndOfSeasonSale(props) {
         <div className={"grid grid-cols-2 gap-5 container py-5 px-5 "}>
             {visibleData.map((item, index) => <ProductCard prod={item} key={index} isMobile={true}/>)}
         </div>
+        {
+            total <= page * 18 || <div className={`flex justify-center bg-[#faf4f0]`} ref={loaderRef}>
+                <Loader/>
+            </div>
+        }
     </section>
 
     const browserView = (
@@ -162,7 +190,7 @@ function EndOfSeasonSale(props) {
                 {visibleData.map((item, index) => <ProductCard prod={item} key={index} isMobile={false}/>)}
             </div>
             {
-                total <= page*18 || <div className={`flex justify-center bg-[#faf4f0]`} ref={loaderRef}>
+                total <= page * 18 || <div className={`flex justify-center bg-[#faf4f0]`} ref={loaderRef}>
                     <Loader/>
                 </div>
             }
@@ -184,24 +212,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(EndOfSeasonSale);
-
-export async function getServerSideProps() {
-    const fetchData = async () => {
-        let gotData = false;
-        const callObject = await apiCall("getSaleItems", process.env.API_TOKEN, {sale_name: "end of season sale", limit: 18, skip: 0})
-        if (callObject.msg === "Successfully Get") {
-            gotData = true
-        }
-        return (gotData) ? callObject : {
-            product_count:0,
-            new_items:[]
-        }
-    }
-
-    return {
-        props: {
-            data: await fetchData()
-        }
-    }
-}
+export default connect(mapStateToProps)(Index);

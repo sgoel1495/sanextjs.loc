@@ -120,7 +120,7 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                         </Link>
                         <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
                             <p className="text-[#777] text-xs">
-                                {userConfig.currSymbol} {(userConfig.currCurrency === "inr") ? (p.price * p.qty) : (p.usd_price * p.qty)}
+                                <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1]==="Sale"}/>
                             </p>
                             <div>
                                 <p className="font-600 text-sm leading-none">{p.name}</p>

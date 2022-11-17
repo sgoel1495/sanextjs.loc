@@ -76,7 +76,7 @@ function OtpModal(props) {
             setMessage("OTP Verified")
             saveCartMeasurements(props.userData, props.appConfig.apiToken, props.shoppingCart.cart)
             if (props.userData.userServe.email) {
-                let updateData = await updateUserDataAfterLogin(props.userData.userServe.email, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
+                let updateData = await updateUserDataAfterLogin(props.userData.userServe, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
                 props.setCart(updateData.shoppingCart)
                 props.setUserState(updateData.userState);
                 props.setOrderHistory(updateData.orderHistory);

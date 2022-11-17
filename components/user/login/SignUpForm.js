@@ -31,7 +31,7 @@ const SignUpForm = (props) => {
     })
     const router = useRouter();
     const saveUserDataAfterSuccessfulLogin = async (username) => {
-        const updateData = await updateUserDataAfterLogin(username, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
+        const updateData = await updateUserDataAfterLogin({...props.userData, email: username}, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
         props.setCart(updateData.shoppingCart)
         props.setUserState(updateData.userState);
         props.setOrderHistory(updateData.orderHistory);

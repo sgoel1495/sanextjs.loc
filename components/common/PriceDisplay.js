@@ -11,7 +11,6 @@ const PriceDisplay = ({userConfig, prod, isSale, qty = 1}) => {
     let price = typeof (prod.price) === typeof("")? parseInt(prod.price.replace(",", "")) : prod.price
     let sale_price = typeof (prod.sale_price) === typeof("") ? prod.sale_price ? parseInt(prod.sale_price.replace(",", "")) : 0 : prod.sale_price
     if (isSale)
-
         return <>
             {
                 (currCurrency === "inr" || !prod.usd_price) ?
@@ -30,9 +29,9 @@ const PriceDisplay = ({userConfig, prod, isSale, qty = 1}) => {
             {
                 (currCurrency === "inr" || !prod.usd_price) ?
                     <>
-                        <span className={prod.show_sale_price === "true" ? "line-through" : ""}>{currencyFormatter(curr).format(price * qty).split(".")[0]}</span>
+                        <span className={prod.show_sale_price.toString() === "true" ? "line-through" : ""}>{currencyFormatter(curr).format(price * qty).split(".")[0]}</span>
                         {
-                            prod.show_sale_price === "true" &&
+                            prod.show_sale_price.toString() === "true" &&
                             <span className={"text-rose-600 ml-2 font-600 "}>{currencyFormatter(curr).format(sale_price * qty).split(".")[0]}</span>
                         }
                     </>
