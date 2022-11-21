@@ -36,7 +36,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
         const currSize = (size !== "") ? size : selectedSize
         if ((haveSize && addToCartWasPressed) || (haveSize && addIt)) {
             const cart = {
-                product_id: prod.product_id,
+                product_id: prod.asset_id,
                 size: currSize,
                 qty: "1",
                 is_sale: false,

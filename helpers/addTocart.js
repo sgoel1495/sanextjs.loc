@@ -8,6 +8,8 @@ export async function refreshCart(userData, apiToken, setCart) {
             return item.qty != null
         })
         setCart(actualCart)
+    } else {
+        setCart([])
     }
 }
 

@@ -4,7 +4,6 @@ import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 
 const PriceDisplay = ({userConfig, prod, isSale, privilegedUser, qty = 1}) => {
-    console.log(privilegedUser)
     const currCurrency = userConfig.currCurrency;
     const curr = currCurrency.toUpperCase();
     const currencyData = appSettings("currency_data");
@@ -25,7 +24,7 @@ const PriceDisplay = ({userConfig, prod, isSale, privilegedUser, qty = 1}) => {
                     <>{usd} {prod.usd_price}</>
             }
         </>
-    if (privilegedUser.privilege) {
+    if (privilegedUser.privilege && !(prod.asset_id ? prod.asset_id : prod.old_product_id).toLowerCase().includes("giftcard")) {
         return (
             <>
                 {
@@ -33,7 +32,7 @@ const PriceDisplay = ({userConfig, prod, isSale, privilegedUser, qty = 1}) => {
                         <>
                             <span className={"line-through"}>{currencyFormatter(curr).format(price * qty).split(".")[0]}</span>
                             <span
-                                className={"text-rose-600 ml-2 font-600 "}>{currencyFormatter(curr).format(price * qty * (100 - privilegedUser.discount) / 100).split(".")[0]}</span>
+                                className={"ml-2 font-600 "}>{currencyFormatter(curr).format(price * qty * (100 - privilegedUser.discount) / 100).split(".")[0]}</span>
                         </>
                         :
                         <>{usd} {prod.usd_price}</>
@@ -46,9 +45,10 @@ const PriceDisplay = ({userConfig, prod, isSale, privilegedUser, qty = 1}) => {
             {
                 (currCurrency === "inr" || !prod.usd_price) ?
                     <>
-                        <span className={prod.show_sale_price.toString() === "true" ? "line-through" : ""}>{currencyFormatter(curr).format(price * qty).split(".")[0]}</span>
+                        <span
+                            className={prod.show_sale_price && prod.show_sale_price.toString() === "true" ? "line-through" : ""}>{currencyFormatter(curr).format(price * qty).split(".")[0]}</span>
                         {
-                            prod.show_sale_price.toString() === "true" &&
+                            prod.show_sale_price && prod.show_sale_price.toString() === "true" &&
                             <span className={"text-rose-600 ml-2 font-600 "}>{currencyFormatter(curr).format(sale_price * qty).split(".")[0]}</span>
                         }
                     </>

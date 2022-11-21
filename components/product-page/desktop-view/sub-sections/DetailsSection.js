@@ -59,7 +59,7 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, .
             return
         }
         const cart = {
-            product_id: data.product_id,
+            product_id: data.product_id ? data.product_id : data.asset_id,
             size: sizeData.length === 1 && sizeData[0] === "F" ? "f" : selectedSize,
             qty: "1",
             is_sale: false,

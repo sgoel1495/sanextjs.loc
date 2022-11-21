@@ -81,7 +81,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
             size = "F"
         }
         const cart = {
-            "product_id": prod.product_id,
+            "product_id": prod.asset_id,
             "size": size ? size : selectedSize,
             "qty": 1,
             "is_sale": false,
