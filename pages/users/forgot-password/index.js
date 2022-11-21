@@ -23,7 +23,7 @@ const Index = ({isMobile}) => {
         <Fragment>
             <PageHead url={"/users/favourites"} id={"profile"} isMobile={isMobile}/>
             <Header type={isMobile ? "minimal" : "shopMenu"} isMobile={isMobile}/>
-            <div className={"container grid place-items-center gap-5 mt-12 mb-44"}>
+            <div className={"container grid place-items-center gap-5 mt-24 mb-44"}>
                 <div className={"text-center uppercase tracking-widest font-600 text-[#333]"}>
                     change password
                 </div>
