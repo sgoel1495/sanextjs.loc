@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {setOrderSummary} from "../../ReduxStore/reducers/orderSlice";
 import appSettings from "../../store/appSettings";
 
-function OrderSummary({appConfig, userData, userConfig, orderSummary,payMode, ...props}) {
+function OrderSummary({appConfig, userData, userConfig, orderSummary, payMode, ...props}) {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const [gross, setGross] = useState(0)
     const [bagTotal, setBagTotal] = useState(0)
@@ -45,7 +45,7 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary,payMode, ..
             props.setOrderSummary({...orderSummary, "gross": tempGross})
     }, [orderSummary])
     let total = gross;
-    console.log(payMode)
+
     if (orderSummary.payMode === "COD") {
         total += 80;
     }
@@ -56,6 +56,10 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary,payMode, ..
             total -= userData.wallet.WalletAmount
         }
     }
+    let savings = -1 * gross;
+    orderSummary.cart && orderSummary.cart.map((item) => {
+        savings += (item.price*item.qty)
+    })
     const mobileView = (
         <div className=' p-4 border border-solid border-gray-200 mx-3 mt-2'>
             <p className='text-xl mb-2 mt-4 text-center'>Order Summary</p>
@@ -104,7 +108,13 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary,payMode, ..
                 <p className='flex-1'>Amount Payable</p>
                 <p>{currencySymbol}{total}</p>
             </div>
-            <p className='text-[10px] font-500'>* Inclusive GST</p>
+            {savings>0 &&
+                <div className='flex font-600 text-[#008000]'>
+                    <p className='flex-1'>Your Total Savings</p>
+                    <p>{currencySymbol}{savings}</p>
+                </div>
+            }
+            <p className='text-[10px] font-500 mt-2'>* Inclusive GST</p>
         </div>
     );
     const browserView = (
@@ -150,7 +160,13 @@ function OrderSummary({appConfig, userData, userConfig, orderSummary,payMode, ..
                 <p className='flex-1'>Amount Payable</p>
                 <p>{currencySymbol}{total}</p>
             </div>
-            <p className='text-[10px] font-500'>* Inclusive GST</p>
+            {savings>0 &&
+                <div className='flex font-600 text-[#008000]'>
+                    <p className='flex-1'>Your Total Savings</p>
+                    <p>{currencySymbol}{savings}</p>
+                </div>
+            }
+            <p className='text-[10px] font-500 mt-2'>* Inclusive GST</p>
         </div>
     );
 

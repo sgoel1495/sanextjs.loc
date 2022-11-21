@@ -77,7 +77,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
             return
         }
         let cart = {
-            "product_id": data.product_id,
+            "product_id": data.product_id ? data.product_id : data.asset_id,
             "size": sizeAvail.length === 1 && sizeAvail[0] === "F" ? "f" : selectedSize,
             "qty": 1,
             "is_sale": data.is_sale,

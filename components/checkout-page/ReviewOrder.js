@@ -78,6 +78,8 @@ function ReviewOrder(props) {
         if (resp.status === 200 || resp.msg === "Order Placed") {
             if (props.orderSummary.payMode === "COD") {
                 setShowOTPModal(true)
+            } else if(props.orderSummary.payMode === "WALLET"){
+                router.push("/salt/Thankyou?id=" + resp.order_id)
             } else {
                 if (payWith === "razorpay")
                     payRazorPay(resp.razorpay_data.attributes.id, resp.razorpay_data.attributes.amount_due)
@@ -167,9 +169,9 @@ function ReviewOrder(props) {
                 </div>
                 <div
                     onClick={isCOD ? setShowOTPModal : setShowGateways}
-                    className='bg-black py-2 cursor-pointer text-white'
+                    className='bg-black py-2 cursor-pointer text-white flex justify-center'
                 >
-                    <button className='font-600 uppercase px-10'>{isCOD ? "verify otp for cod" : "Place order & pay"}</button>
+                    <button className='font-600 uppercase px-10 '>{props.orderSummary.payment.payment_mode==="WALLET"?"place your order":isCOD ? "verify otp for cod" : "Place order & pay"}</button>
                 </div>
             </div>
             {showOTPModal && ReactDom.createPortal(

@@ -37,7 +37,7 @@ const AppWrapper = (props) => {
                 props.setUserServe(userServe)
             }
         }
-    }, [])
+    }, [userData.userServe.email])
 
     useEffect(() => {
         if (appConfig.isMobile !== isMobile)

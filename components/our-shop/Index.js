@@ -35,7 +35,7 @@ const data = [
             },
             {
                 "linkText": "FIT & FLARE",
-                "linkURL": "/group/fit-&-FLARE"
+                "linkURL": "/group/fit-&-flare"
             },
             {
                 "linkText": "SHIFT DRESSES",

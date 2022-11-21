@@ -16,6 +16,7 @@ import AppWideContext from "../../store/AppWideContext";
 import appSettings from "../../store/appSettings";
 import Link from 'next/link';
 import {connect} from "react-redux";
+import PriceDisplay from "../common/PriceDisplay";
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 
@@ -34,8 +35,6 @@ function NewArrivalsSwiper(props) {
             setData(resp.response.data);
     }, [resp]);
 
-    const currCurrency = props.userConfig.currCurrency;
-    const currSymbol = props.userConfig.currSymbol;
 
     const actualData = [];
 
@@ -47,11 +46,10 @@ function NewArrivalsSwiper(props) {
                 url: WEBASSETS + ele.img_path,
                 name: ele.name,
                 tag: ele.tag_line,
-                price: (currCurrency == "inr") ? ele.price : ele.usd_price
+                ele: ele
             });
         });
     }
-
 
     const mobileView = (
         <section className={"newArrivals bg-[#e8e2df]"}>
@@ -77,7 +75,7 @@ function NewArrivalsSwiper(props) {
                                             <h5 className={'text-h5 font-600 font-cursive italic'}>{item.name}</h5>
                                             <p className="text-[8.5px] font-600 text-black/70 uppercase tracking-widest">{item.tag}</p>
                                         </div>
-                                        <p className="text-sm tracking-wide text-black/70">{currSymbol}{item.price}</p>
+                                        <p className="text-sm tracking-wide text-black/70"><PriceDisplay prod={item.ele}/></p>
                                     </div>
                                 </a>
                             </Link>
@@ -129,7 +127,7 @@ function NewArrivalsSwiper(props) {
                                     <div className={"text-center"}>
                                         <h5 className={'text-h5 font-600'}>{item.name}</h5>
                                         <p className="text-sm tracking-wide">{item.tag}</p>
-                                        <p className="text-sm tracking-wide">{currSymbol}{item.price}</p>
+                                        <p className="text-sm tracking-wide"><PriceDisplay prod={item.ele}/></p>
                                     </div>
                                 </a>
                             </Link>

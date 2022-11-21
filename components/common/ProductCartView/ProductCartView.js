@@ -9,8 +9,10 @@ import {apiCall} from "../../../helpers/apiCall";
 import {setOrderSummary} from "../../../ReduxStore/reducers/orderSlice";
 import Link from "next/link";
 import PriceDisplay from "../PriceDisplay";
+import {useRouter} from "next/router";
 
-function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfig, ...props}) {
+function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfig,orderSummary, ...props}) {
+    const router = useRouter()
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [toastMsg, setToastMsg] = useState(null)
     const [showMeasure, setShowMeasure] = useState({
@@ -35,7 +37,12 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
         if (gotOrderSummaryCall.status === 200) {
             props.setOrderSummary({
                 ...gotOrderSummaryCall,
+                useWallet: orderSummary.useWallet
             });
+            props.setCart(gotOrderSummaryCall.cart)
+        }
+        else{
+            router.push("/new-arrivals/all")
         }
     }
 
@@ -62,13 +69,15 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                             }}>X
                             </button>
                             <div>
+                                {p.product_id.split("-")[1].toLowerCase().includes("sale") &&
+                                    <span className={"uppercase text-[8px] tracking-widest text-[#ff0000]"}>Not valid for return / exchange</span>}
                                 <p className="font-600 text-sm leading-none">{p.name}</p>
                                 <p className="text-[10px]">{p.tag_line}</p>
                             </div>
                             {
                                 p.product_id.toLowerCase().includes("giftcard") ? "" :
                                     <div className="text-[#777] uppercase">
-                                        <p className="text-[10px]">COLOR: {(p.multi_color) ? "multicolor" : p.color?p.color.name:""}</p>
+                                        <p className="text-[10px]">COLOR: {(p.multi_color) ? "multicolor" : p.color ? p.color.name : ""}</p>
                                         <p className="text-[10px]">SIZE: {p.is_tailor ? "Tailored" : p.size}</p>
                                         {
                                             p.is_tailor && <div>
@@ -91,7 +100,7 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                                 <div className="text-[#555]" onClick={() => changeQty(p, p.qty + 1)}>+</div>
                             </div>
                             <p className="text-right text-[#777] text-xs">
-                                <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1]==="Sale"}/>
+                                <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1] === "Sale"}/>
                             </p>
                         </div>
                     </div>
@@ -109,7 +118,7 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                 <>
                     {returnValues}
                     <div className="flex gap-x-2 items-center bg-white p-3">
-                        <Link href={"/"+p.product_id}>
+                        <Link href={"/" + p.product_id}>
                             <div className="relative h-40 aspect-[9/16]">
                                 <Image src={WEBASSETS + p.asset_id} alt={p.cart_id}
                                        id={p.cart_id + index.toString()}
@@ -120,16 +129,17 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                         </Link>
                         <div className="flex-1 inline-flex flex-col gap-y-2 text-left relative">
                             <p className="text-[#777] text-xs">
-                                <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1]==="Sale"}/>
+                                <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1] === "Sale"}/>
                             </p>
                             <div>
+                                <span className={"uppercase text-xs tracking-widest text-[#f05c74]"}>Not valid for return / exchange</span>
                                 <p className="font-600 text-sm leading-none">{p.name}</p>
                                 <p className="text-[10px]">{p.tag_line}</p>
                             </div>
                             {
                                 p.product_id.toLowerCase().includes("giftcard") ? "" :
                                     <div className="text-[#777]">
-                                        <p className="text-[10px]">Color:{p.color?p.color.name:""}</p>
+                                        <p className="text-[10px]">Color:{p.color ? p.color.name : ""}</p>
                                         <p className="text-[10px]">Size: {p.is_tailor ? "Tailored" : p.size}</p>
                                         {
                                             p.is_tailor && <div>
@@ -193,6 +203,7 @@ const mapStateToProps = (state) => {
     return {
         userData: state.userData,
         appConfig: state.appConfig,
+        orderSummary: state.orderData.orderSummary,
         shoppingCart: state.shoppingCart,
         userConfig: state.userConfig
     }

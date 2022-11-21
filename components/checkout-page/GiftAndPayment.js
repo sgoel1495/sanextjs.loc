@@ -42,12 +42,21 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         props.setOrderSummary({...orderSummary, "payMode": payMode})
         if (orderSummary.address_index >= 0 && orderSummary.address_index < userData.userAddresses.length) {
         } else {
-            updateAddressForOrder(0, userData, {orderSummary:{...orderSummary, "payMode": payMode}, currentOrderId}, appConfig.apiToken, props.setOrderSummary);
+            updateAddressForOrder(0, userData, {orderSummary: {...orderSummary, "payMode": payMode}, currentOrderId}, appConfig.apiToken, props.setOrderSummary);
         }
     }, [payMode])
 
     useEffect(() => {
         props.setOrderSummary({...orderSummary, "useWallet": useWallet})
+        if (useWallet && userData.wallet.WalletAmount >= total) {
+            setTimeout(() => {
+                setPayMode("WALLET")
+            }, 100)
+        } else {
+            if (payMode === "WALLET") {
+                setPayMode("")
+            }
+        }
     }, [useWallet])
 
     //for mobile
@@ -111,7 +120,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
     }
 
     //forBrowser
-    const placeOrder = async (payWith) => {
+    const placeOrder = async (payWith = "") => {
         if (isGift) {
             if (!giftData.gift_msg) {
                 setShow(true)
@@ -128,6 +137,8 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         if (resp.status === 200 || resp.msg === "Order Placed") {
             if (payMode === "COD") {
                 setShowOTPModal(true)
+            } else if (payMode === "WALLET") {
+                router.push("/salt/Thankyou?id=" + resp.order_id)
             } else {
                 if (payWith === "razorpay")
                     payRazorPay(resp.razorpay_data.attributes.id, resp.razorpay_data.attributes.amount_due)
@@ -142,7 +153,17 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             setPayOption(null)
         }
     }
-
+    let total = orderSummary.gross;
+    if (orderSummary.useWallet) {
+        if (userData.wallet.WalletAmount >= total) {
+            total = 0
+        } else {
+            total -= userData.wallet.WalletAmount
+        }
+    }
+    if (orderSummary.payMode === "COD") {
+        total += 80;
+    }
     const labelClass = "block text-[#777] font-600 mb-1";
     const focusClass = " focus:bg-white focus:border-[#5d6d86] focus:ring-transparent";
     const inputClass = "block w-full text-[14px] leading-6 bg-[#f1f2f3] border border-[#f1f2f3] outline-0 px-4 py-2" + focusClass;
@@ -174,6 +195,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                                     className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                                     checked={payMode === "COD"}
                                     onChange={() => setPayMode("COD")}
+                                    disabled={payMode === "WALLET"}
                                 />
                                 <span className='text-[#777] font-600'>Cash on Delivery</span>
                             </label>
@@ -186,6 +208,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                             checked={payMode === "CC"}
                             onChange={() => setPayMode("CC")}
+                            disabled={payMode === "WALLET"}
                         />
                         <span className='text-[#777] font-600'>Cards</span>
                     </label>
@@ -196,6 +219,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                             checked={payMode === "DC"}
                             onChange={() => setPayMode("DC")}
+                            disabled={payMode === "WALLET"}
                         />
                         <span className='text-[#777] font-600'>Netbanking</span>
                     </label>
@@ -206,6 +230,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                             checked={payMode === "UPI"}
                             onChange={() => setPayMode("UPI")}
+                            disabled={payMode === "WALLET"}
                         />
                         <span className='text-[#777] font-600'>UPI</span>
                     </label>
@@ -216,6 +241,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                             checked={payMode === "Paytm"}
                             onChange={() => setPayMode("Paytm")}
+                            disabled={payMode === "WALLET"}
                         />
                         <span className='text-[#777] font-600'>Paytm</span>
                     </label>
@@ -255,6 +281,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                             checked={(payMode === "COD")}
                             onChange={() => setPayMode("COD")}
+                            disabled={payMode === "WALLET"}
                         />
                         <span className='text-[#777] font-600'>
                         Cash on Delivery
@@ -271,6 +298,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                         className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                         checked={(payMode === "CC")}
                         onChange={() => setPayMode("CC")}
+                        disabled={payMode === "WALLET"}
                     />
                     <span className='text-[#777] font-600'>Credit Cards</span>
                 </label>
@@ -281,37 +309,50 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                         className='text-[#777] focus:ring-transparent focus:ring-offset-0'
                         checked={(payMode === "DC")}
                         onChange={() => setPayMode("DC")}
+                        disabled={payMode === "WALLET"}
                     />
                     <span className='text-[#777] font-600'>Debit Cards / Net Banking</span>
                 </label>
             </div>
             {
                 !appConfig.isMobile && payMode && ReactDOM.createPortal(<>
-                    {payMode === "COD" ?
-                        <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
-                                onClick={() => placeOrder("ccavenue")} disabled={loading}>
-                            {
-                                loading && <Loader className={"mr-2"}/>
-                            }
-                            verify otp for cod
-                        </button>
-                        :
-                        <>
-                            <button className={'flex my-5 text-white px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center '+[payOption==="ccavenue"?"bg-gray-300":"bg-black"]}
-                                    onClick={() => placeOrder("razorpay")} disabled={loading}>
-                                {
-                                    payOption==="razorpay" && <Loader className={"mr-2"}/>
-                                }
-                                <span className={"mr-2 text-sm"}>Place order with</span><Image src={razorpayLogo} width={95} height={20}/>
-                            </button>
-                            <button className={'flex mb-5 text-white px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center '+[payOption==="razorpay"?"bg-gray-300":"bg-black"]}
+                    {
+                        payMode === "COD" ?
+                            <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
                                     onClick={() => placeOrder("ccavenue")} disabled={loading}>
                                 {
-                                    payOption==="ccavenue" && <Loader className={"mr-2"}/>
+                                    loading && <Loader className={"mr-2"}/>
                                 }
-                                <span className={"mr-2 text-sm"}>Place order with</span><Image src={ccavenue} width={96} height={15}/>
+                                verify otp for cod
                             </button>
-                        </>
+                            :
+                            payMode === "WALLET" ?
+                                <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
+                                        onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                                    {
+                                        loading && <Loader className={"mr-2"}/>
+                                    }
+                                    Place your order
+                                </button>
+                                :
+                                <>
+                                    <button
+                                        className={'flex my-5 text-white px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center ' + [payOption === "ccavenue" ? "bg-gray-300" : "bg-black"]}
+                                        onClick={() => placeOrder("razorpay")} disabled={loading}>
+                                        {
+                                            payOption === "razorpay" && <Loader className={"mr-2"}/>
+                                        }
+                                        <span className={"mr-2 text-sm"}>Place order with</span><Image src={razorpayLogo} width={95} height={20}/>
+                                    </button>
+                                    <button
+                                        className={'flex mb-5 text-white px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center ' + [payOption === "razorpay" ? "bg-gray-300" : "bg-black"]}
+                                        onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                                        {
+                                            payOption === "ccavenue" && <Loader className={"mr-2"}/>
+                                        }
+                                        <span className={"mr-2 text-sm"}>Place order with</span><Image src={ccavenue} width={96} height={15}/>
+                                    </button>
+                                </>
                     }
                 </>, document.getElementById("paymentButton"))
             }

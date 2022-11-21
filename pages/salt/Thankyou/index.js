@@ -9,11 +9,11 @@ import {useRouter} from "next/router";
 import {connect} from "react-redux";
 import {apiCall} from "../../../helpers/apiCall";
 import {setOrderHistory} from "../../../ReduxStore/reducers/orderSlice";
+import PriceDisplay from "../../../components/common/PriceDisplay";
 
 const Thankyou = (props) => {
     const router = useRouter();
     const orderID = router.query.id;
-    const curr = props.userConfig.currCurrency.toUpperCase();
     const [mobile, setMobile] = useState(false)
     const [order, setOrder] = useState({})
 
@@ -33,7 +33,7 @@ const Thankyou = (props) => {
         } else {
             getOrderHistory();
         }
-    }, [props.orderHistory])
+    }, [])
 
     const address = order.delivery_address || {}
     const cart = order.item || []
@@ -106,14 +106,19 @@ const Thankyou = (props) => {
                         <tbody>
                         {
                             cart.map((item, index) => {
-                                let price = curr === "INR" ? item.price : item.usd_price;
                                 return <tr key={index} className={"text-[#777] text-[15px]"}>
                                     <td className="text-center">1</td>
                                     <td className="text-center">{item.name}<br/>{item.tagline}<br/>{item.color}<br/><span className={"text-xs"}>{item.size}</span></td>
-                                    <td className="text-center">{item.size}</td>
+                                    <td className="text-center">
+                                        {item.size}
+                                        {
+                                            item.product_id.split("-")[1] === "Sale" &&
+                                            <span className={"uppercase text-xs text-[f05c74] tracking-wide"}>not valid for return/exchange</span>
+                                        }
+                                    </td>
                                     <td className="text-center">{item.qty}</td>
-                                    <td className="text-center">{price}</td>
-                                    <td className="text-center">{price * item.qty}</td>
+                                    <td className="text-center"><PriceDisplay prod={item} isSale={item.product_id.split("-")[1] === "Sale"}/></td>
+                                    <td className="text-center"><PriceDisplay prod={item} isSale={item.product_id.split("-")[1] === "Sale"} qty={item.qty}/></td>
                                 </tr>
                             })
                         }
@@ -192,4 +197,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps,{setOrderHistory})(Thankyou);
+export default connect(mapStateToProps, {setOrderHistory})(Thankyou);
