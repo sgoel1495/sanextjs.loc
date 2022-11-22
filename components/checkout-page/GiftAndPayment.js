@@ -138,7 +138,14 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             if (payMode === "COD") {
                 setShowOTPModal(true)
             } else if (payMode === "WALLET") {
-                router.push("/salt/Thankyou?id=" + resp.order_id)
+                saveFinalPayment(userData, currentOrderId, null, appConfig.apiToken).then((resp) => {
+                    if (resp.status === 200) {
+                        router.push("/salt/Thankyou?id=" + resp.order_id)
+                    } else {
+                        setLoading(false)
+                        setPayOption(null)
+                    }
+                })
             } else {
                 if (payWith === "razorpay")
                     payRazorPay(resp.razorpay_data.attributes.id, resp.razorpay_data.attributes.amount_due)
@@ -319,7 +326,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                     {
                         payMode === "COD" ?
                             <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
-                                    onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                                    onClick={() => placeOrder("")} disabled={loading}>
                                 {
                                     loading && <Loader className={"mr-2"}/>
                                 }
@@ -327,8 +334,8 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                             </button>
                             :
                             payMode === "WALLET" ?
-                                <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
-                                        onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                                <button className='flex my-5 text-white px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center bg-black'
+                                        onClick={() => placeOrder("")} disabled={loading}>
                                     {
                                         loading && <Loader className={"mr-2"}/>
                                     }

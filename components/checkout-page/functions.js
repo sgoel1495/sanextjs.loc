@@ -29,7 +29,10 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
             "curr_currency": currCurrency,
             "ex_rate": 1
         },
-        "payment_with": payWith
+
+    }
+    if (payWith) {
+        payload["payment_with"] = payWith
     }
     let gross = orderData.orderSummary.gross;
     if (payMode === "COD") {
@@ -39,7 +42,8 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
         payload['order']['is_wallet'] = true
         if (userData.wallet.WalletAmount >= gross) {
             payload['order']['cash_from_wallet'] = gross
-            payload['order']['payment_mode'] = "WALLET"
+            payload['order']['payment_mode'] = "wallet"
+            payload['order']['payment_status'] = "Paid"
         } else {
             payload['order']['cash_from_wallet'] = userData.wallet.WalletAmount
         }
@@ -62,13 +66,27 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
 }
 
 export const saveFinalPayment = async (userData, order_id, razorpayResp, apiToken) => {
-    let payload = {
-        "user": getUserObject(userData),
-        "order": {
-            "order_id": order_id,
-            "razorpay_response": razorpayResp
-        },
-        "payment_with": "razorpay",
+    let payload
+    if (razorpayResp) {
+        payload = {
+            "user": getUserObject(userData),
+            "order": {
+                "order_id": order_id,
+                "razorpay_response": razorpayResp
+            },
+            "payment_with": "razorpay",
+        }
+    } else {
+        payload = {
+            "user": getUserObject(userData),
+            "order": {
+                "order_id": order_id,
+                "payment_mode": "wallet",
+                "payment_status": "Paid",
+                "add_info": "payment with wallet",
+                "curr_currency": "inr"
+            },
+        }
     }
     return await apiCall("saveFinalPayment", apiToken, payload)
 }

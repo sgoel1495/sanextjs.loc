@@ -171,6 +171,16 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             url += "/reset_password";
             body = {
                 token: apiToken,
+                ...queryObject,
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
+
+        case "validateOTP":
+            url += "/validate_forgot_OTP";
+            body = {
+                token: apiToken,
                 contact: queryObject.username,
 
             };

@@ -91,7 +91,7 @@ const passwordFields = [
     }
 ]
 
-function UsersAccountPage({appConfig,userData}) {
+function UsersAccountPage({appConfig, userData}) {
     const [mobile, setMobile] = useState(false);
     const [show, setShow] = useState(false)
     const [changePasswordCheckbox, setChangePasswordCheckbox] = useState(false)
@@ -112,7 +112,8 @@ function UsersAccountPage({appConfig,userData}) {
         "hip": userData.userServe.hip,
         "anyother": userData.userServe.anyother,
     })
-    const [password, setPassword] = useReducer(() => {
+    const [password, setPassword] = useReducer((state, e) => {
+        return {...state, [e.target.id]: e.target.value}
     }, {new: "", confirm: ""})
     const router = useRouter();
     useEffect(() => {
@@ -279,7 +280,7 @@ function UsersAccountPage({appConfig,userData}) {
 
 const mapStateToProps = (state) => {
     return {
-        userData:state.userData,
+        userData: state.userData,
         appConfig: state.appConfig
     }
 }
