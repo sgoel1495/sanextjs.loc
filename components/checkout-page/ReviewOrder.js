@@ -78,7 +78,14 @@ function ReviewOrder(props) {
         if (resp.status === 200 || resp.msg === "Order Placed") {
             if (props.orderSummary.payMode === "COD") {
                 setShowOTPModal(true)
-            } else if(props.orderSummary.payMode === "WALLET"){
+            } else if (props.orderSummary.payMode === "WALLET") {
+                saveFinalPayment(props.userData, props.currentOrderId, null, props.appConfig.apiToken).then((resp) => {
+                    if (resp.status === 200) {
+                        router.push("/salt/Thankyou?id=" + resp.order_id)
+                    } else {
+                        setLoading(false)
+                    }
+                })
                 router.push("/salt/Thankyou?id=" + resp.order_id)
             } else {
                 if (payWith === "razorpay")
@@ -147,16 +154,18 @@ function ReviewOrder(props) {
             <div className='bg-white text-center grid grid-cols-2 fixed h-auto w-full left-0 right-0 bottom-0 mt-4'>
                 {
                     showGateway &&
-                        <>
-                            <button className='flex text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center border-b border-r border-white'
-                                    onClick={() => placeOrder("razorpay")} disabled={loading}>
-                                <Image src={razorpayLogo} width={95} height={20}/>
-                            </button>
-                            <button className='flex text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center border-b border-l border-white'
-                                    onClick={() => placeOrder("ccavenue")} disabled={loading}>
-                                <Image src={ccavenue} width={96} height={15}/>
-                            </button>
-                        </>
+                    <>
+                        <button
+                            className='flex text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center border-b border-r border-white'
+                            onClick={() => placeOrder("razorpay")} disabled={loading}>
+                            <Image src={razorpayLogo} width={95} height={20}/>
+                        </button>
+                        <button
+                            className='flex text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center border-b border-l border-white'
+                            onClick={() => placeOrder("ccavenue")} disabled={loading}>
+                            <Image src={ccavenue} width={96} height={15}/>
+                        </button>
+                    </>
                 }
                 <div
                     onClick={() => {
@@ -168,10 +177,11 @@ function ReviewOrder(props) {
                     <p className='text-xs'>Edit Payment Mode</p>
                 </div>
                 <div
-                    onClick={isCOD ? setShowOTPModal : setShowGateways}
+                    onClick={(props.orderSummary.payment ? props.orderSummary.payment.payment_mode === "WALLET" : false) ? () => placeOrder() : isCOD ? setShowOTPModal : setShowGateways}
                     className='bg-black py-2 cursor-pointer text-white flex justify-center'
                 >
-                    <button className='font-600 uppercase px-10 '>{props.orderSummary.payment.payment_mode==="WALLET"?"place your order":isCOD ? "verify otp for cod" : "Place order & pay"}</button>
+                    <button
+                        className='font-600 uppercase px-10 '>{(props.orderSummary.payment ? props.orderSummary.payment.payment_mode === "WALLET" : false) ? "place your order" : isCOD ? "verify otp for cod" : "Place order & pay"}</button>
                 </div>
             </div>
             {showOTPModal && ReactDom.createPortal(
