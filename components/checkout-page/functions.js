@@ -43,7 +43,7 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
         if (userData.wallet.WalletAmount >= gross) {
             payload['order']['cash_from_wallet'] = gross
             payload['order']['payment_mode'] = "wallet"
-            payload['order']['payment_status'] = "Paid"
+            payload['order']['payment_status'] = "not Paid"
         } else {
             payload['order']['cash_from_wallet'] = userData.wallet.WalletAmount
         }
@@ -65,7 +65,7 @@ export const savePayment = async (isGift, giftData, payMode, useWallet, userData
     return resp
 }
 
-export const saveFinalPayment = async (userData, order_id, razorpayResp, apiToken) => {
+export const saveFinalPayment = async (userData, order_id, razorpayResp, apiToken, gross) => {
     let payload
     if (razorpayResp) {
         payload = {
@@ -84,7 +84,9 @@ export const saveFinalPayment = async (userData, order_id, razorpayResp, apiToke
                 "payment_mode": "wallet",
                 "payment_status": "Paid",
                 "add_info": "payment with wallet",
-                "curr_currency": "inr"
+                "curr_currency": "inr",
+                "is_wallet" : true,
+                "cash_from_wallet": gross
             },
         }
     }

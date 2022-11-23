@@ -5,7 +5,24 @@ const inputSelect = 'font-600 text-xs focus:ring-transparent focus:border-black'
 export const heightF = ['4', '5', '6'];
 export const heightI = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 export const shoulder = ['13', '13.5', '14', '14.5', '15', '15.5', '16', '16.5', '17'];
+export const shoulderCM = ['34', '36', '37', '38', '39', '41', '42', '43'];
 export const biceps = ['10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
+export const bicepsCM = ['25', '28', '30', '33', '36', '38', '41', '43', '46', '48', '51'];
+
+export const heightCMOptions = () => {
+    return (
+        <>
+            <option className={inputSelect} value=''>
+                Select
+            </option>
+            {[...Array(36).keys()].map((value, index) =>
+                <option className={inputSelect} value={value+145} key={index}>
+                    {value + 145}
+                </option>
+            )}
+        </>
+    );
+};
 
 export const heightFOptions = () => {
     return (
@@ -38,13 +55,13 @@ export const heightIOptions = () => {
         </>
     );
 };
-export const shoulderOptions = () => {
+export const shoulderOptions = (unit) => {
     return (
         <>
             <option className={inputSelect} value=''>
                 Select
             </option>
-            {shoulder.map((item,index)=>
+            {(unit === "cm" ? shoulderCM : shoulder).map((item, index) =>
                 <option className={inputSelect} value={item} key={index}>
                     {item}
                 </option>
@@ -55,13 +72,13 @@ export const shoulderOptions = () => {
         </>
     );
 };
-export const bicepsOptions = () => {
-    return(
+export const bicepsOptions = (unit) => {
+    return (
         <>
             <option className={inputSelect} value=''>
                 Select
             </option>
-            {biceps.map((item,index)=>
+            {(unit === "cm" ? bicepsCM : biceps).map((item, index) =>
                 <option className={inputSelect} value={item} key={index}>
                     {item}
                 </option>

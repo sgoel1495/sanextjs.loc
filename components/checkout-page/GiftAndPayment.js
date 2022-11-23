@@ -87,7 +87,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             "image": WEBASSETS + `/assets/images/SALT_attire_logo.png`,
             "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
-                saveFinalPayment(userData, currentOrderId, response, appConfig.apiToken).then((resp) => {
+                saveFinalPayment(userData, currentOrderId, response, appConfig.apiToken, "").then((resp) => {
                     if (resp.status === 200) {
                         router.push("/salt/Thankyou?id=" + resp.order_id)
                     } else {
@@ -138,7 +138,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             if (payMode === "COD") {
                 setShowOTPModal(true)
             } else if (payMode === "WALLET") {
-                saveFinalPayment(userData, currentOrderId, null, appConfig.apiToken).then((resp) => {
+                saveFinalPayment(userData, currentOrderId, null, appConfig.apiToken, orderSummary.gross).then((resp) => {
                     if (resp.status === 200) {
                         router.push("/salt/Thankyou?id=" + resp.order_id)
                     } else {

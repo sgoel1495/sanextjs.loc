@@ -1,7 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
-import {isMobile} from "react-device-detect";
 import SaltIcon from "../../../components/navbar/SaltIcon";
 import Link from "next/link";
 import Footer from "../../../components/footer/Footer";
@@ -10,18 +9,31 @@ import {connect} from "react-redux";
 import {apiCall} from "../../../helpers/apiCall";
 import {setOrderHistory} from "../../../ReduxStore/reducers/orderSlice";
 import PriceDisplay from "../../../components/common/PriceDisplay";
+import {updateUserDataAfterLogin} from "../../../helpers/updateUserDataAfterLogin";
+import {setUserState} from "../../../ReduxStore/reducers/userSlice";
+import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 
 const Thankyou = (props) => {
     const router = useRouter();
     const orderID = router.query.id;
-    const [mobile, setMobile] = useState(false)
+    const mobile = props.appConfig.isMobile;
     const [order, setOrder] = useState({})
+
+
+    const refreshUser = () => {
+        updateUserDataAfterLogin(props.userData.userServe, props.appConfig.apiToken, {}, []).then(updateData => {
+            props.setCart(updateData.shoppingCart)
+            props.setUserState(updateData.userState);
+            props.setOrderHistory(updateData.orderHistory);
+        })
+    }
 
     const getOrderHistory = () => {
         apiCall("userOrderHistory", props.appConfig.apiToken, {user: {token: props.appConfig.apiToken, contact: props.userData.userServe.email}})
             .then(pData => {
                 if (pData.status === 200 && pData.response) {
                     props.setOrderHistory(pData.response);
+
                 }
             })
             .catch(e => console.log(e.message))
@@ -33,13 +45,21 @@ const Thankyou = (props) => {
         } else {
             getOrderHistory();
         }
-    }, [])
+    }, [props.orderHistory])
 
     const address = order.delivery_address || {}
     const cart = order.item || []
 
     useEffect(() => {
-        setMobile(isMobile)
+        let items = router.asPath.split("=")
+        if (items.length > 1) {
+            if (items[1] === "undefined") {
+                router.push("/new-arrivals/all")
+            }
+        } else {
+            router.push("/new-arrivals/all")
+        }
+        refreshUser()
     }, [])
 
     let gross = order.total - order.discount;
@@ -197,4 +217,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setOrderHistory})(Thankyou);
+export default connect(mapStateToProps, {setCart, setUserState, setOrderHistory})(Thankyou);
