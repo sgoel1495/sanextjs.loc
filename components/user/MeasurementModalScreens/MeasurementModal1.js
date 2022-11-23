@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react';
-import {biceps, bicepsOptions, heightF, heightFOptions, heightIOptions, shoulder, shoulderOptions} from "./dropdownOptions";
+import {biceps, bicepsCM, bicepsOptions, heightCMOptions, heightF, heightFOptions, heightIOptions, shoulder, shoulderCM, shoulderOptions} from "./dropdownOptions";
+import {cmToInch, cmToInchP, inchToCm} from "../../../helpers/unitConverter";
 
-function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nextModal, lastModal, product, edit}) {
+function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nextModal, lastModal, product, edit, setCurrentMeasurement, unit, setUnit}) {
     const labelMessage = {
         bust: {offFocus: 'BUST', onFocus: <span className={"text-[8px] bg-white"}>(MEASURE AROUND THE FULLEST PART OF YOUR CHEST)</span>},
         waist: {
@@ -20,6 +21,8 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
     const [wearing_waist, setWearing_waist] = useState(labelMessage.wearing_waist.offFocus);
     const [hips, setHips] = useState(labelMessage.hips.offFocus);
     const [showPlaceholder, setShowPlaceholder] = useState(true)
+
+
     const blockClass = 'flex flex-col items-center max-w-max';
     const labelClass = 'text-xs font-700';
     const inputSelect = 'font-600 text-xs focus:ring-transparent focus:border-black';
@@ -46,24 +49,42 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                     </button>
                     <div className='text-center my-5'>
                         <p className='font-cursive italic text-3xl mb-2'>Step 1/{product.is_customize ? 5 : 2}</p>
-                        <p className={'tracking-wider leading-tight '+[edit?"text-sm text-[#606060]":"text-lg font-900 "]}>MEASUREMENT AS PER YOUR SELECTION</p>
+                        <p className={'tracking-wider leading-tight ' + [edit ? "text-sm text-[#606060]" : "text-lg font-900 "]}>MEASUREMENT AS PER YOUR SELECTION</p>
                     </div>
-                    <p className='text-center font-600 uppercase mb-5'>inches / cm</p>
+                    <p className='text-center uppercase mb-5'>
+                        <span className={"cursor-pointer " + [unit !== "inch" ? "text-[#777]" : "font-600"]} onClick={() => setUnit("inches")}>inches</span> /
+                        <span className={"cursor-pointer " + [unit !== "cm" ? "text-[#777]" : "font-600"]} onClick={() => setUnit("cm")}>cm</span>
+                    </p>
                     <div className='measurementBlock1__sizes__mob relative !h-[465px]'>
                         <ul className={"text-center"}>
                             <li className={"my-2.5 relative"}>
                                 <p className={labelClass}>SHOULDER</p>
-                                <select className={inputSelectMobile} name='shoulder' value={measurement.shoulder} onChange={(e) => updateValues('shoulder', e.target.value)}>
-                                    {shoulderOptions()}
+                                <select className={inputSelectMobile} name='shoulder' value={unit === "cm" ? measurement.shoulder_cm : measurement.shoulder}
+                                        onChange={(e) => {
+                                            if (e.target.value === "custom") {
+                                                setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: e.target.value})
+                                            } else if (unit === "inches") {
+                                                setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: inchToCm(e.target.value)})
+                                            } else {
+                                                setCurrentMeasurement({...measurement, shoulder: cmToInchP(e.target.value, 1), shoulder_cm: e.target.value})
+                                            }
+                                        }}>
+                                    {shoulderOptions(unit)}
                                 </select>
-                                {measurement.shoulder == 'custom' || (measurement.shoulder != '' && !shoulder.includes(measurement.shoulder)) ? (
+                                {measurement.shoulder === 'custom' || (measurement.shoulder !== '' && !(unit === "cm" ? shoulderCM.includes(measurement.shoulder_cm.toString()) : shoulder.includes(measurement.shoulder.toString()))) ? (
                                     <div className={"absolute right-0 bottom-0"}>
                                         <input
                                             className={inputFieldMobile}
                                             name='shoulder_o'
                                             type='text'
-                                            value={measurement.shoulder == 'custom' ? '' : measurement.shoulder}
-                                            onChange={(e) => updateValues('shoulder', e.target.value)}
+                                            value={measurement.shoulder === 'custom' ? '' : unit === "cm" ? measurement.shoulder_cm : measurement.shoulder}
+                                            onChange={(e) => {
+                                                if (unit === "inches") {
+                                                    setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: inchToCm(e.target.value)})
+                                                } else {
+                                                    setCurrentMeasurement({...measurement, shoulder: cmToInchP(e.target.value, 1), shoulder_cm: e.target.value})
+                                                }
+                                            }}
                                         />
                                     </div>
                                 ) : null}
@@ -77,24 +98,25 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='bust'
                                     type='text'
-                                    value={measurement.bust}
-                                    placeholder='inches'
-                                    onChange={(e) => updateValues('bust', e.target.value)}
+                                    value={unit === "cm" ? inchToCm(measurement.bust) : measurement.bust}
+                                    placeholder={unit}
+                                    onChange={(e) => updateValues('bust', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setBust(labelMessage.bust.onFocus)}
                                     onBlur={() => setBust(labelMessage.bust.offFocus)}
                                 />
                                 <div className={"absolute right-0 top-0 z-10"}>
                                     <p className={labelClass}>BICEPS</p>
-                                    <select className={inputSelectMobile} name='biceps' value={measurement.biceps} onChange={(e) => updateValues('biceps', e.target.value)}>
-                                        {bicepsOptions()}
+                                    <select className={inputSelectMobile} name='biceps' value={unit === "cm" ? inchToCm(measurement.biceps) : measurement.biceps}
+                                            onChange={(e) => updateValues('biceps', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}>
+                                        {bicepsOptions(unit)}
                                     </select>
                                 </div>
                             </li>
                             <li className={"text-right"}>
                                 <input
-                                    className={inputFieldMobile + [measurement.biceps == 'custom' || (measurement.biceps != '' && !biceps.includes(measurement.biceps)) ? "" : " invisible"]}
-                                    name='biceps_o' type='text' value={measurement.biceps == 'custom' ? '' : measurement.biceps}
-                                    onChange={(e) => updateValues('biceps', e.target.value)}/>
+                                    className={inputFieldMobile + [measurement.biceps === 'custom' || (measurement.biceps !== '' && !(unit === "cm" ? bicepsCM.includes(inchToCm(measurement.biceps).toString()) : biceps.includes(measurement.biceps.toString()))) ? "" : " invisible"]}
+                                    name='biceps_o' type='text' value={measurement.biceps === 'custom' ? '' : unit === "cm" ? inchToCm(measurement.biceps) : measurement.biceps}
+                                    onChange={(e) => updateValues('biceps', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}/>
                             </li>
                             <li>
                                 <p className={labelClass}>
@@ -104,9 +126,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='waist'
                                     type='text'
-                                    value={measurement.waist}
-                                    placeholder='inches'
-                                    onChange={(e) => updateValues('waist', e.target.value)}
+                                    value={unit === "cm" ? inchToCm(measurement.waist) : measurement.waist}
+                                    placeholder={unit}
+                                    onChange={(e) => updateValues('waist', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setWaist(labelMessage.waist.onFocus)}
                                     onBlur={() => setWaist(labelMessage.waist.offFocus)}
                                 />
@@ -119,9 +141,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='wearing_waist'
                                     type='text'
-                                    value={measurement.wearing_waist}
-                                    placeholder='inches'
-                                    onChange={(e) => updateValues('wearing_waist', e.target.value)}
+                                    value={unit === "cm" ? inchToCm(measurement.wearing_waist) : measurement.wearing_waist}
+                                    placeholder={unit}
+                                    onChange={(e) => updateValues('wearing_waist', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setWearing_waist(labelMessage.wearing_waist.onFocus)}
                                     onBlur={() => setWearing_waist(labelMessage.wearing_waist.offFocus)}
                                 />
@@ -134,9 +156,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='hips'
                                     type='text'
-                                    value={measurement.hips}
-                                    placeholder='inches'
-                                    onChange={(e) => updateValues('hips', e.target.value)}
+                                    value={unit === "cm" ? inchToCm(measurement.hips) : measurement.hips}
+                                    placeholder={unit}
+                                    onChange={(e) => updateValues('hips', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setHips(labelMessage.hips.onFocus)}
                                     onBlur={() => setHips(labelMessage.hips.offFocus)}
                                 />
@@ -145,21 +167,49 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                     </div>
                     <div className={'text-center'}>
                         <span className={labelClass + ' text-sm mr-4'}>HEIGHT:</span>
-                        <select className={inputSelectMobile + ' mr-2 w-[90px]'} name='height_f' value={measurement.height_f}
-                                onChange={(e) => updateValues('height_f', e.target.value)}>
-                            {heightFOptions()}
-                        </select>
-                        <select className={inputSelectMobile + " w-[90px]"} name='height_i' value={measurement.height_i} onChange={(e) => updateValues('height_i', e.target.value)}>
-                            {heightIOptions()}
-                        </select>
-                        {measurement.height_f == 'custom' || (measurement.height_f != '' && !heightF.includes(measurement.height_f)) ? (
+                        {
+                            unit === "cm" ?
+                                <select className={inputSelectMobile + ' mr-2 w-[90px]'} name='height_f' value={measurement.height_cm}
+                                        onChange={(e) => {
+                                            let inch = cmToInch(e.target.value)
+                                            let ft = Math.floor(inch / 12)
+                                            inch = inch - (ft * 12)
+                                            setCurrentMeasurement({...measurement, height_f: ft, height_i: inch, height_cm: e.target.value})
+                                        }}>
+                                    {heightCMOptions()}
+                                </select>
+                                :
+                                <>
+                                    <select className={inputSelectMobile + ' mr-2 w-[90px]'} name='height_f' value={measurement.height_f}
+                                            onChange={(e) => {
+                                                setCurrentMeasurement({
+                                                    ...measurement,
+                                                    height_f: e.target.value,
+                                                    height_cm: inchToCm((e.target.value * 12) + parseInt(measurement.height_i))
+                                                })
+                                            }}>
+                                        {heightFOptions()}
+                                    </select>
+                                    <select className={inputSelectMobile + " w-[90px]"} name='height_i' value={measurement.height_i} onChange={(e) => {
+                                        setCurrentMeasurement({
+                                            ...measurement,
+                                            height_i: e.target.value,
+                                            height_cm: inchToCm((parseInt(measurement.height_f) * 12) + parseInt(e.target.value))
+                                        })
+                                    }}>
+                                        {heightIOptions()}
+                                    </select>
+                                </>
+                        }
+
+                        {measurement.height_f === 'custom' || (measurement.height_f !== '' && !heightF.includes(measurement.height_f)) ? (
                             <div className={"ml-12 mt-2"}>
                                 <input
                                     className={inputFieldMobile + " mr-2 w-[80px]"}
                                     name='height_f_o'
                                     type='text'
                                     placeholder={"ft"}
-                                    value={measurement.height_f == 'custom' ? '' : measurement.height_f}
+                                    value={measurement.height_f === 'custom' ? '' : measurement.height_f}
                                     onChange={(e) => updateValues('height_f', e.target.value)}
                                 />
                                 <input
@@ -208,6 +258,7 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
             </div>
         </div>
     );
+
     const browserView = (
         <div className='bg-black/60 h-screen w-screen fixed inset-0 z-50 grid place-items-center py-[8%] px-[10%]' onClick={closeModal}>
             <div className='bg-white border-2 border-black relative h-full w-[920px] flex flex-col' onClick={(e) => e.stopPropagation()}>
@@ -219,51 +270,99 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                         <p className='font-cursive italic text-3xl mb-2'>Step 1/{product.is_customize ? 5 : 2}</p>
                         <p className='text-lg font-500 text-[#777]'>MEASUREMENT AS PER YOUR SELECTION</p>
                     </div>
+                    <p className='text-center uppercase mb-5'>
+                        <span className={"cursor-pointer " + [unit !== "inches" ? "text-[#777]" : "font-600"]} onClick={() => setUnit("inches")}>inches</span> /
+                        <span className={"cursor-pointer " + [unit !== "cm" ? "text-[#777]" : "font-600"]} onClick={() => setUnit("cm")}>cm</span>
+                    </p>
                     <div className='measurementBlock1__sizes relative min-h-[20rem]'>
                         <div className={'absolute top-[7%] left-5'}>
                             <p className={labelClass + ' text-sm mb-4'}>HEIGHT:</p>
-                            <select className={inputSelect + ' mr-2'} name='height_f' value={measurement.height_f} onChange={(e) => updateValues('height_f', e.target.value)}>
-                                {heightFOptions()}
-                            </select>
-                            <select className={inputSelect} name='height_i' value={measurement.height_i} onChange={(e) => updateValues('height_i', e.target.value)}>
-                                {heightIOptions()}
-                            </select>
-                            <div>
-                                {measurement.height_f == 'custom' || (measurement.height_f != '' && !heightF.includes(measurement.height_f)) ? (
-                                    <div className={"mt-2"}>
-                                        <input
-                                            className={inputField + " mr-2"}
-                                            name='height_f_o'
-                                            type='text'
-                                            placeholder={"ft"}
-                                            value={measurement.height_f == 'custom' ? '' : measurement.height_f}
-                                            onChange={(e) => updateValues('height_f', e.target.value)}
-                                        />
-                                        <input
-                                            className={inputField}
-                                            name='height_i_o'
-                                            type='text'
-                                            placeholder={"in"}
-                                            value={measurement.height_i}
-                                            onChange={(e) => updateValues('height_i', e.target.value)}
-                                        />
-                                    </div>
-                                ) : null}
-                            </div>
+                            {
+                                unit === "cm" ?
+                                    <select className={inputSelect + ' mr-2'} name='height_f' value={measurement.height_cm}
+                                            onChange={(e) => {
+                                                let inch = cmToInch(e.target.value)
+                                                let ft = Math.floor(inch / 12)
+                                                inch = inch - (ft * 12)
+                                                setCurrentMeasurement({...measurement, height_f: ft, height_i: inch, height_cm: e.target.value})
+                                            }}>
+                                        {heightCMOptions()}
+                                    </select>
+                                    :
+                                    <>
+                                        <select className={inputSelect + ' mr-2'} name='height_f' value={measurement.height_f}
+                                                onChange={(e) => {
+                                                    setCurrentMeasurement({
+                                                        ...measurement,
+                                                        height_f: e.target.value,
+                                                        height_cm: inchToCm((e.target.value * 12) + parseInt(measurement.height_i))
+                                                    })
+                                                }}>
+                                            {heightFOptions()}
+                                        </select>
+                                        <select className={inputSelect} name='height_i' value={measurement.height_i} onChange={(e) => {
+                                            setCurrentMeasurement({
+                                                ...measurement,
+                                                height_i: e.target.value,
+                                                height_cm: inchToCm((parseInt(measurement.height_f) * 12) + parseInt(e.target.value))
+                                            })
+                                        }}>
+                                            {heightIOptions()}
+                                        </select>
+                                        <div>
+                                            {measurement.height_f === 'custom' || (measurement.height_f !== '' && !heightF.includes(measurement.height_f.toString())) ? (
+                                                <div className={"mt-2"}>
+                                                    <input
+                                                        className={inputField + " mr-2"}
+                                                        name='height_f_o'
+                                                        type='text'
+                                                        placeholder={"ft"}
+                                                        value={measurement.height_f === 'custom' ? '' : measurement.height_f}
+                                                        onChange={(e) => updateValues('height_f', e.target.value)}
+                                                    />
+                                                    <input
+                                                        className={inputField}
+                                                        name='height_i_o'
+                                                        type='text'
+                                                        placeholder={"in"}
+                                                        value={measurement.height_i}
+                                                        onChange={(e) => updateValues('height_i', e.target.value)}
+                                                    />
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    </>
+                            }
+
                         </div>
                         <div className={blockClass + ' absolute top-[7%] left-1/2 -translate-x-1/2'}>
                             <p className={labelClass}>SHOULDER</p>
-                            <select className={inputSelect} name='shoulder' value={measurement.shoulder} onChange={(e) => updateValues('shoulder', e.target.value)}>
-                                {shoulderOptions()}
+                            <select className={inputSelect} name='shoulder' value={unit === "cm" ? measurement.shoulder_cm : measurement.shoulder}
+                                    onChange={(e) => {
+                                        if (e.target.value === "custom") {
+                                            setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: e.target.value})
+                                        } else if (unit === "inches") {
+                                            setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: inchToCm(e.target.value)})
+                                        } else {
+                                            setCurrentMeasurement({...measurement, shoulder: cmToInchP(e.target.value, 1), shoulder_cm: e.target.value})
+                                        }
+                                    }}>
+                                {shoulderOptions(unit)}
                             </select>
                             <span className={"absolute bottom-0 left-full ml-2"}>
-                                {measurement.shoulder == 'custom' || (measurement.shoulder != '' && !shoulder.includes(measurement.shoulder)) ? (
+                                {measurement.shoulder === 'custom' || (measurement.shoulder !== '' && !(unit === "cm" ? shoulderCM.includes(measurement.shoulder_cm.toString()) : shoulder.includes(measurement.shoulder.toString()))) ? (
                                     <input
                                         className={inputField}
                                         name='shoulder_o'
                                         type='text'
-                                        value={measurement.shoulder == 'custom' ? '' : measurement.shoulder}
-                                        onChange={(e) => updateValues('shoulder', e.target.value)}
+                                        value={measurement.shoulder === 'custom' ? '' : unit === "cm" ? measurement.shoulder_cm : measurement.shoulder}
+                                        onChange={(e) => {
+                                            if (unit === "inches") {
+                                                setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: inchToCm(e.target.value)})
+                                            } else {
+                                                setCurrentMeasurement({...measurement, shoulder: cmToInchP(e.target.value, 1), shoulder_cm: e.target.value})
+                                            }
+                                        }}
                                     />
                                 ) : null}
                             </span>
@@ -276,22 +375,24 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                 className={inputField}
                                 name='bust'
                                 type='text'
-                                value={measurement.bust}
-                                placeholder='inches'
-                                onChange={(e) => updateValues('bust', e.target.value)}
+                                value={unit === "cm" ? inchToCm(measurement.bust) : measurement.bust}
+                                placeholder={unit}
+                                onChange={(e) => updateValues('bust', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                 onFocus={() => setBust(labelMessage.bust.onFocus)}
                                 onBlur={() => setBust(labelMessage.bust.offFocus)}
                             />
                         </div>
                         <div className={blockClass + ' absolute top-[23%] left-[77%] -translate-x-1/2'}>
                             <p className={labelClass}>BICEPS</p>
-                            <select className={inputSelect} name='biceps' value={measurement.biceps} onChange={(e) => updateValues('biceps', e.target.value)}>
-                                {bicepsOptions()}
+                            <select className={inputSelect} name='biceps' value={unit === "cm" ? inchToCm(measurement.biceps) : measurement.biceps}
+                                    onChange={(e) => updateValues('biceps', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}>
+                                {bicepsOptions(unit)}
                             </select>
                             <span className={"absolute bottom-0 left-full ml-2"}>
-                                {measurement.biceps == 'custom' || (measurement.biceps != '' && !biceps.includes(measurement.biceps)) ? (
-                                    <input className={inputField} name='biceps_o' type='text' value={measurement.biceps == 'custom' ? '' : measurement.biceps}
-                                           onChange={(e) => updateValues('biceps', e.target.value)}/>
+                                {measurement.biceps === 'custom' || (measurement.biceps !== '' && !(unit === "cm" ? bicepsCM.includes(inchToCm(measurement.biceps).toString()) : biceps.includes(measurement.biceps.toString()))) ? (
+                                    <input className={inputField} name='biceps_o' type='text'
+                                           value={measurement.biceps === 'custom' ? '' : unit === "cm" ? inchToCm(measurement.biceps) : measurement.biceps}
+                                           onChange={(e) => updateValues('biceps', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}/>
                                 ) : null}
                             </span>
                         </div>
@@ -303,9 +404,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                 className={inputField}
                                 name='waist'
                                 type='text'
-                                value={measurement.waist}
-                                placeholder='inches'
-                                onChange={(e) => updateValues('waist', e.target.value)}
+                                value={unit === "cm" ? inchToCm(measurement.waist) : measurement.waist}
+                                placeholder={unit}
+                                onChange={(e) => updateValues('waist', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                 onFocus={() => setWaist(labelMessage.waist.onFocus)}
                                 onBlur={() => setWaist(labelMessage.waist.offFocus)}
                             />
@@ -318,9 +419,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                 className={inputField}
                                 name='wearing_waist'
                                 type='text'
-                                value={measurement.wearing_waist}
-                                placeholder='inches'
-                                onChange={(e) => updateValues('wearing_waist', e.target.value)}
+                                value={unit === "cm" ? inchToCm(measurement.wearing_waist) : measurement.wearing_waist}
+                                placeholder={unit}
+                                onChange={(e) => updateValues('wearing_waist', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                 onFocus={() => setWearing_waist(labelMessage.wearing_waist.onFocus)}
                                 onBlur={() => setWearing_waist(labelMessage.wearing_waist.offFocus)}
                             />
@@ -333,9 +434,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                 className={inputField}
                                 name='hips'
                                 type='text'
-                                value={measurement.hips}
-                                placeholder='inches'
-                                onChange={(e) => updateValues('hips', e.target.value)}
+                                value={unit === "cm" ? inchToCm(measurement.hips) : measurement.hips}
+                                placeholder={unit}
+                                onChange={(e) => updateValues('hips', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                 onFocus={() => setHips(labelMessage.hips.onFocus)}
                                 onBlur={() => setHips(labelMessage.hips.offFocus)}
                             />

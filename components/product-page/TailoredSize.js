@@ -18,6 +18,7 @@ import useApiCall from "../../hooks/useApiCall";
 import PastOrders from "../user/MeasurementModalScreens/PastOrders";
 import {connect} from "react-redux";
 import {setShowLogin} from "../../ReduxStore/reducers/userConfigSlice";
+import {inchToCm} from "../../helpers/unitConverter";
 
 const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize, isMobile, saveToCart, edit, saveMeasurement, addNew, appConfig, userData, ...props}) => {
     const router = useRouter();
@@ -29,6 +30,7 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
     const [showOrderModal, setShowOrderModal] = useState(false)
     const [currentMeasureProduct, setCurrentMeasurementProduct] = useState(null);
     const [showToast, setShowToast] = useState(false)
+    const [unit, setUnit] = useState("inches")
 
     const nextModal = () => {
         setActive(active + 1);
@@ -104,12 +106,29 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
         refreshMeasurements()
     }, [])
 
+    useEffect(() => {
+        let update = {
+            shoulder_cm: "",
+            height_cm: ""
+        }
+        if (showModal) {
+            if (currentMeasurement.shoulder) {
+                update["shoulder_cm"] = inchToCm(currentMeasurement.shoulder)
+            }
+            if (currentMeasurement.height_f || currentMeasurement.height_i) {
+                update["height_cm"] = inchToCm((parseInt(currentMeasurement.height_f) * 12) + parseInt(currentMeasurement.height_i))
+            }
+            setCurrentMeasurement({...currentMeasurement, ...update})
+        }
+    }, [showModal])
+
     let activeModalScreen
     if (edit) {
         switch (active) {
             case 0:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       nextModal={nextModal} updateValues={updateValues} product={{}} edit={true}/>;
+                                                       nextModal={nextModal} updateValues={updateValues} product={{}} edit={true} setCurrentMeasurement={setCurrentMeasurement}
+                                                       unit={unit} setUnit={setUnit}/>;
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}
@@ -130,7 +149,8 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       nextModal={nextModal} updateValues={updateValues} product={data}/>;
+                                                       nextModal={nextModal} updateValues={updateValues} product={data} setCurrentMeasurement={setCurrentMeasurement} unit={unit}
+                                                       setUnit={setUnit}/>;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModalDress12 closeModal={closeModal} isMobile={isMobile} lastModal={lastModal} nextModal={nextModal} updateValues={updateValues}
@@ -173,7 +193,8 @@ const TailoredSize = ({data, currentMeasurement, setCurrentMeasurement, setSize,
                 break;
             case 1:
                 activeModalScreen = <MeasurementModal1 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} lastModal={lastModal}
-                                                       nextModal={nextModal} updateValues={updateValues} product={data}/>;
+                                                       nextModal={nextModal} updateValues={updateValues} product={data} setCurrentMeasurement={setCurrentMeasurement} unit={unit}
+                                                       setUnit={setUnit}/>;
                 break;
             case 2:
                 activeModalScreen = <MeasurementModal2 closeModal={closeModal} isMobile={isMobile} measurement={currentMeasurement} nextModal={nextModal}

@@ -1,10 +1,5 @@
-import React, {useContext, useEffect, useState} from "react";
-import AppWideContext from "../../store/AppWideContext";
+import React, {useEffect, useState} from "react";
 import {apiCall} from "../../helpers/apiCall";
-import {useRouter} from "next/router";
-import ReactDom from "react-dom";
-import AccountMenu from "../user/AccountMenu";
-import UserLogin from "../user/login/UserLogin";
 import Toast from "./Toast";
 import {connect} from "react-redux";
 import {setUserServe} from "../../ReduxStore/reducers/userSlice";
@@ -29,7 +24,6 @@ const WishListButton = (props) => {
     }, [props.userData.userServe.email, props.userData.userServe.favorites, props.pid])
 
     const addRemoveFav = async () => {
-        console.log(props)
         if (props.userData.userServe.email) {
             const oldUserServe = JSON.parse(JSON.stringify(props.userData.userServe));
             if (pidChecked) {

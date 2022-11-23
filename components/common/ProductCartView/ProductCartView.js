@@ -11,7 +11,7 @@ import Link from "next/link";
 import PriceDisplay from "../PriceDisplay";
 import {useRouter} from "next/router";
 
-function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfig,orderSummary, ...props}) {
+function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfig, orderSummary, ...props}) {
     const router = useRouter()
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [toastMsg, setToastMsg] = useState(null)
@@ -40,8 +40,7 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                 useWallet: orderSummary.useWallet
             });
             props.setCart(gotOrderSummaryCall.cart)
-        }
-        else{
+        } else {
             router.push("/new-arrivals/all")
         }
     }
@@ -132,7 +131,10 @@ function ProductCartView({isMobile, userData, appConfig, shoppingCart, userConfi
                                 <PriceDisplay prod={p} qty={p.qty} isSale={p.product_id.split("-")[1] === "Sale"}/>
                             </p>
                             <div>
-                                <span className={"uppercase text-xs tracking-widest text-[#f05c74]"}>Not valid for return / exchange</span>
+                                {
+                                    p.product_id.split("-")[1] === "Sale" &&
+                                    <span className={"uppercase text-xs tracking-widest text-[#f05c74]"}>Not valid for return / exchange</span>
+                                }
                                 <p className="font-600 text-sm leading-none">{p.name}</p>
                                 <p className="text-[10px]">{p.tag_line}</p>
                             </div>

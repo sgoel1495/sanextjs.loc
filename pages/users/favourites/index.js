@@ -34,6 +34,7 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
         const favCall = await apiCall("getProduct", appConfig.apiToken, {product_id: pid})
         if (favCall.status === 200 && favCall.response && favCall.response.product_id) {
             const p = favCall.response
+            console.log(p)
             return {
                 product_id: pid,
                 title: p.name,
@@ -102,13 +103,15 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
     }
 
     const addToBag = (index) => {
-        if (!isInStock(favProductData[index])) {
+        if (!favProductData[index].in_stock) {
             setShow(true)
             setMessage(favProductData[index].title + " is SOLD OUT")
+            return
         }
         if (!selectedSize[favProductData[index].product_id]) {
             setShow(true)
             setMessage("Please Select a Size")
+            return
         }
         const cart = {
             "product_id": favProductData[index].product_id,
@@ -162,7 +165,7 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
         let msg = []
         let toBeRemoved = []
         for (let i in favProductData) {
-            if (!isInStock(favProductData[i])) {
+            if (!favProductData[i].in_stock) {
                 msg.push(<p>{favProductData[i].title + " is SOLD OUT"}</p>)
                 continue
             }

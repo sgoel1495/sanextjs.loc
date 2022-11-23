@@ -35,7 +35,7 @@ function ReviewOrder(props) {
             "image": WEBASSETS + `/assets/images/SALT_attire_logo.png`,
             "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
-                saveFinalPayment(props.userData, props.currentOrderId, response, props.appConfig.apiToken).then((resp) => {
+                saveFinalPayment(props.userData, props.currentOrderId, response, props.appConfig.apiToken,"").then((resp) => {
                     if (resp.status === 200) {
                         router.push("/salt/Thankyou?id=" + resp.order_id)
                     } else {
@@ -79,14 +79,13 @@ function ReviewOrder(props) {
             if (props.orderSummary.payMode === "COD") {
                 setShowOTPModal(true)
             } else if (props.orderSummary.payMode === "WALLET") {
-                saveFinalPayment(props.userData, props.currentOrderId, null, props.appConfig.apiToken).then((resp) => {
+                saveFinalPayment(props.userData, props.currentOrderId, null, props.appConfig.apiToken, props.orderSummary.gross).then((resp) => {
                     if (resp.status === 200) {
                         router.push("/salt/Thankyou?id=" + resp.order_id)
                     } else {
                         setLoading(false)
                     }
                 })
-                router.push("/salt/Thankyou?id=" + resp.order_id)
             } else {
                 if (payWith === "razorpay")
                     payRazorPay(resp.razorpay_data.attributes.id, resp.razorpay_data.attributes.amount_due)

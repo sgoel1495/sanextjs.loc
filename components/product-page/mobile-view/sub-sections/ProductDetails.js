@@ -170,7 +170,9 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
                         bag
                     </button>
                 </div>
-                <p className={'text-xs mb-5 mt-5 uppercase text-center'}>return policy</p>
+                <Link href={"/salt/shipping-returns"}>
+                    <p className={'text-xs mb-5 mt-5 uppercase text-center cursor-pointer'}>return policy</p>
+                </Link>
                 <div className='flex justify-start flex-wrap w-full'>
                     {tags.map((item, index) => {
                         return (
