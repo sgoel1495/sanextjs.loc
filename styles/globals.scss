@@ -252,3 +252,22 @@ body.scroll-overflow .navigator {
         scale:1
     }
 }
+
+.move-bg-img{
+    animation-name: MOVE-BG;
+    animation-duration: 30s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes MOVE-BG {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-300px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

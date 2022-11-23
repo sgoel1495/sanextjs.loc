@@ -59,17 +59,32 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                         <ul className={"text-center"}>
                             <li className={"my-2.5 relative"}>
                                 <p className={labelClass}>SHOULDER</p>
-                                <select className={inputSelectMobile} name='shoulder' value={measurement.shoulder} onChange={(e) => updateValues('shoulder', e.target.value)}>
-                                    {shoulderOptions()}
+                                <select className={inputSelectMobile} name='shoulder' value={unit === "cm" ? measurement.shoulder_cm : measurement.shoulder}
+                                        onChange={(e) => {
+                                            if (e.target.value === "custom") {
+                                                setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: e.target.value})
+                                            } else if (unit === "inches") {
+                                                setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: inchToCm(e.target.value)})
+                                            } else {
+                                                setCurrentMeasurement({...measurement, shoulder: cmToInchP(e.target.value, 1), shoulder_cm: e.target.value})
+                                            }
+                                        }}>
+                                    {shoulderOptions(unit)}
                                 </select>
-                                {measurement.shoulder === 'custom' || (measurement.shoulder !== '' && !shoulder.includes(measurement.shoulder)) ? (
+                                {measurement.shoulder === 'custom' || (measurement.shoulder !== '' && !(unit === "cm" ? shoulderCM.includes(measurement.shoulder_cm.toString()) : shoulder.includes(measurement.shoulder.toString()))) ? (
                                     <div className={"absolute right-0 bottom-0"}>
                                         <input
                                             className={inputFieldMobile}
                                             name='shoulder_o'
                                             type='text'
-                                            value={measurement.shoulder === 'custom' ? '' : measurement.shoulder}
-                                            onChange={(e) => updateValues('shoulder', e.target.value)}
+                                            value={measurement.shoulder === 'custom' ? '' : unit === "cm" ? measurement.shoulder_cm : measurement.shoulder}
+                                            onChange={(e) => {
+                                                if (unit === "inches") {
+                                                    setCurrentMeasurement({...measurement, shoulder: e.target.value, shoulder_cm: inchToCm(e.target.value)})
+                                                } else {
+                                                    setCurrentMeasurement({...measurement, shoulder: cmToInchP(e.target.value, 1), shoulder_cm: e.target.value})
+                                                }
+                                            }}
                                         />
                                     </div>
                                 ) : null}
@@ -83,24 +98,25 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='bust'
                                     type='text'
-                                    value={measurement.bust}
-                                    placeholder='inches'
-                                    onChange={(e) => updateValues('bust', e.target.value)}
+                                    value={unit === "cm" ? inchToCm(measurement.bust) : measurement.bust}
+                                    placeholder={unit}
+                                    onChange={(e) => updateValues('bust', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setBust(labelMessage.bust.onFocus)}
                                     onBlur={() => setBust(labelMessage.bust.offFocus)}
                                 />
                                 <div className={"absolute right-0 top-0 z-10"}>
                                     <p className={labelClass}>BICEPS</p>
-                                    <select className={inputSelectMobile} name='biceps' value={measurement.biceps} onChange={(e) => updateValues('biceps', e.target.value)}>
-                                        {bicepsOptions()}
+                                    <select className={inputSelectMobile} name='biceps' value={unit === "cm" ? inchToCm(measurement.biceps) : measurement.biceps}
+                                            onChange={(e) => updateValues('biceps', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}>
+                                        {bicepsOptions(unit)}
                                     </select>
                                 </div>
                             </li>
                             <li className={"text-right"}>
                                 <input
-                                    className={inputFieldMobile + [measurement.biceps === 'custom' || (measurement.biceps !== '' && !biceps.includes(measurement.biceps)) ? "" : " invisible"]}
-                                    name='biceps_o' type='text' value={measurement.biceps === 'custom' ? '' : measurement.biceps}
-                                    onChange={(e) => updateValues('biceps', e.target.value)}/>
+                                    className={inputFieldMobile + [measurement.biceps === 'custom' || (measurement.biceps !== '' && !(unit === "cm" ? bicepsCM.includes(inchToCm(measurement.biceps).toString()) : biceps.includes(measurement.biceps.toString()))) ? "" : " invisible"]}
+                                    name='biceps_o' type='text' value={measurement.biceps === 'custom' ? '' : unit === "cm" ? inchToCm(measurement.biceps) : measurement.biceps}
+                                    onChange={(e) => updateValues('biceps', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}/>
                             </li>
                             <li>
                                 <p className={labelClass}>
@@ -110,9 +126,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='waist'
                                     type='text'
-                                    value={measurement.waist}
+                                    value={unit === "cm" ? inchToCm(measurement.waist) : measurement.waist}
                                     placeholder={unit}
-                                    onChange={(e) => updateValues('waist', e.target.value)}
+                                    onChange={(e) => updateValues('waist', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setWaist(labelMessage.waist.onFocus)}
                                     onBlur={() => setWaist(labelMessage.waist.offFocus)}
                                 />
@@ -125,9 +141,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='wearing_waist'
                                     type='text'
-                                    value={measurement.wearing_waist}
+                                    value={unit === "cm" ? inchToCm(measurement.wearing_waist) : measurement.wearing_waist}
                                     placeholder={unit}
-                                    onChange={(e) => updateValues('wearing_waist', e.target.value)}
+                                    onChange={(e) => updateValues('wearing_waist', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setWearing_waist(labelMessage.wearing_waist.onFocus)}
                                     onBlur={() => setWearing_waist(labelMessage.wearing_waist.offFocus)}
                                 />
@@ -140,9 +156,9 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                                     className={inputFieldMobile}
                                     name='hips'
                                     type='text'
-                                    value={measurement.hips}
+                                    value={unit === "cm" ? inchToCm(measurement.hips) : measurement.hips}
                                     placeholder={unit}
-                                    onChange={(e) => updateValues('hips', e.target.value)}
+                                    onChange={(e) => updateValues('hips', unit === "cm" ? cmToInch(e.target.value) : e.target.value)}
                                     onFocus={() => setHips(labelMessage.hips.onFocus)}
                                     onBlur={() => setHips(labelMessage.hips.offFocus)}
                                 />
@@ -151,13 +167,41 @@ function MeasurementModal1({closeModal, isMobile, measurement, updateValues, nex
                     </div>
                     <div className={'text-center'}>
                         <span className={labelClass + ' text-sm mr-4'}>HEIGHT:</span>
-                        <select className={inputSelectMobile + ' mr-2 w-[90px]'} name='height_f' value={measurement.height_f}
-                                onChange={(e) => updateValues('height_f', e.target.value)}>
-                            {heightFOptions()}
-                        </select>
-                        <select className={inputSelectMobile + " w-[90px]"} name='height_i' value={measurement.height_i} onChange={(e) => updateValues('height_i', e.target.value)}>
-                            {heightIOptions()}
-                        </select>
+                        {
+                            unit === "cm" ?
+                                <select className={inputSelectMobile + ' mr-2 w-[90px]'} name='height_f' value={measurement.height_cm}
+                                        onChange={(e) => {
+                                            let inch = cmToInch(e.target.value)
+                                            let ft = Math.floor(inch / 12)
+                                            inch = inch - (ft * 12)
+                                            setCurrentMeasurement({...measurement, height_f: ft, height_i: inch, height_cm: e.target.value})
+                                        }}>
+                                    {heightCMOptions()}
+                                </select>
+                                :
+                                <>
+                                    <select className={inputSelectMobile + ' mr-2 w-[90px]'} name='height_f' value={measurement.height_f}
+                                            onChange={(e) => {
+                                                setCurrentMeasurement({
+                                                    ...measurement,
+                                                    height_f: e.target.value,
+                                                    height_cm: inchToCm((e.target.value * 12) + parseInt(measurement.height_i))
+                                                })
+                                            }}>
+                                        {heightFOptions()}
+                                    </select>
+                                    <select className={inputSelectMobile + " w-[90px]"} name='height_i' value={measurement.height_i} onChange={(e) => {
+                                        setCurrentMeasurement({
+                                            ...measurement,
+                                            height_i: e.target.value,
+                                            height_cm: inchToCm((parseInt(measurement.height_f) * 12) + parseInt(e.target.value))
+                                        })
+                                    }}>
+                                        {heightIOptions()}
+                                    </select>
+                                </>
+                        }
+
                         {measurement.height_f === 'custom' || (measurement.height_f !== '' && !heightF.includes(measurement.height_f)) ? (
                             <div className={"ml-12 mt-2"}>
                                 <input
