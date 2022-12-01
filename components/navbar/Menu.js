@@ -228,7 +228,7 @@ function Menu(props) {
                         </Fragment>
 
                     </ul>
-                    {(props.type === "minimal")
+                    {(props.type === "minimal") && props.availableFilters
                         ? <CategoryFilterSidebar isMobile={props.isMobile} availableFilters={props.availableFilters} />
                         : null
                     }

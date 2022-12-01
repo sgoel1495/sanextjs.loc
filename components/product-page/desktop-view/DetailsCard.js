@@ -183,7 +183,7 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
                         </>
                 }
                 {
-                    data.show_sale_price === "true" || data.product_id.split("-")[1] === "Sale" && <div className={"text-center mb-3"}>
+                    ((data.show_sale_price && data.show_sale_price.toString() === "true") || data.product_id.split("-")[1] === "Sale") && <div className={"text-center mb-3"}>
                         <p className="text-[#f05c74] text-[10px] font-500">NOT VALID FOR RETURN / EXCHANGE</p>
                     </div>
                 }

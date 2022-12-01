@@ -97,7 +97,7 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
         <div>
             <div className='px-5 pt-5'>
                 {
-                    data.show_sale_price === "true" || data.product_id.split("-")[1] === "Sale" && <div className={"text-center mb-3"}>
+                    ((data.show_sale_price && data.show_sale_price.toString() === "true") || data.product_id.split("-")[1] === "Sale") && <div className={"text-center mb-3"}>
                         {data.product_id.split("-")[1] === "Sale" &&
                             <p className={"text-[#4eb16d] text-xs font-500"}>({Object.keys(data.inventory).filter(key => data.inventory[key] > 0).join(', ').toUpperCase()})</p>}
                         <p className="text-[#f05c74] text-sm font-500">NOT VALID FOR RETURN / EXCHANGE</p>
