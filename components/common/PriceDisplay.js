@@ -24,7 +24,7 @@ const PriceDisplay = ({userConfig, prod, isSale, privilegedUser, qty = 1}) => {
                     <>{usd} {prod.usd_price}</>
             }
         </>
-    if (privilegedUser.privilege && !(prod.asset_id ? prod.asset_id : prod.old_product_id).toLowerCase().includes("giftcard")) {
+    if (privilegedUser.privilege && !(prod.asset_id ? prod.asset_id : prod.old_product_id).toLowerCase().includes("giftcard") && !(prod.show_sale_price && prod.show_sale_price.toString() === "true")) {
         return (
             <>
                 {
