@@ -49,7 +49,7 @@ const CategorySection = ({appConfig, homePageSwiper, categoryCircle}) => {
                         onSlideChange={(swiper) => setActive(swiper.realIndex)}
                         initialSlide={0}
                     >
-                        {homePageSwiper.imgs?.slice(0, 10).map((item, index) => {
+                        {homePageSwiper.imgs.map((item, index) => {
                             return <SwiperSlide key={index}>
                                 <Link href={homePageSwiper.links[index] ? homePageSwiper.links[index] : ""}>
                                     <a className={'block relative aspect-[9/16] w-full'}>

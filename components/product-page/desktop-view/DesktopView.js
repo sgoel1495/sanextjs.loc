@@ -31,7 +31,6 @@ const DesktopView = ({hpid, data}) => {
             }).catch(e => setIsVideo(false))
         }, 100)
     }, [hpid]);
-
     const hasLooks = data.paired_products && data.paired_products.length > 0 && data.paired_products[0].products && data.paired_products[0].products.length > 0
 
     return (

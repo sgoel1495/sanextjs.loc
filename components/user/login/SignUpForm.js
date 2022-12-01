@@ -172,7 +172,7 @@ const SignUpForm = (props) => {
                                 value={data.confirm_password}
                                 onChange={(e) => setData({...data, confirm_password: e.target.value})}
                             />
-                            <div className={`col-span-2 flex items-center gap-x-8 justify-start`}>
+                            <div className={`flex items-center gap-x-8 justify-start `+[props.appConfig.isMobile || " col-span-2 "]}>
                                 {loading || <button
                                     type="button"
                                     onClick={goBack}

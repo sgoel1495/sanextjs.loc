@@ -133,7 +133,7 @@ const Thankyou = (props) => {
                                         {item.size}
                                         {
                                             item.product_id.split("-")[1] === "Sale" &&
-                                            <span className={"uppercase text-xs text-[f05c74] tracking-wide"}>not valid for return/exchange</span>
+                                            <div className={"uppercase text-xs text-[#f05c74] tracking-wide"}>not valid for return/exchange</div>
                                         }
                                     </td>
                                     <td className="text-center">{item.qty}</td>

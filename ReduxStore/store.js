@@ -4,7 +4,7 @@ import rootReducer from "./reducers/rootReducer";
 import storage from 'redux-persist/lib/storage'
 import {
     userState,
-    appConfigState, shoppingCartState, userConfigState, orderState, filterState
+    appConfigState, shoppingCartState, userConfigState, orderState, filterState, intentState
 } from "./initialStates";
 
 
@@ -41,7 +41,8 @@ export const store = configureStore({
     shoppingCart: shoppingCartState,
     userConfig: userConfigState,
     orderData: orderState,
-    filters: filterState
+    filters: filterState,
+    intent: intentState
 });
 
 export const persistor = persistStore(store);

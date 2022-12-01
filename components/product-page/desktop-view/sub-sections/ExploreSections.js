@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import ProductCard from "../../../shop-page/ProductCard";
 import Link from "next/link";
-import { apiDictionary } from "../../../../helpers/apiDictionary";
+import {apiDictionary} from "../../../../helpers/apiDictionary";
 import BlockHeader from '../../../common/blockHeader';
 import {connect} from "react-redux";
 
@@ -23,25 +23,27 @@ const ExploreSections = (props) => {
     useEffect(() => {
         fetchData()
     }, [fetchData, props.id])
-
-    return (
-        <div>
-            <BlockHeader space={'py-6'} titleStyle="text-h4 font-500">{props.title}</BlockHeader>
-            <div className={"flex gap-8 justify-center my-12"}>
-                {data.map((product, i) => {
-                    return (
-                        <div className={"w-[20vw]"} key={i}>
-                            <ProductCard prod={product} />
-                        </div>
-                    )
-                })}
+    if (data.length)
+        return (
+            <div>
+                <BlockHeader space={'py-6'} titleStyle="text-h4 font-500">{props.title}</BlockHeader>
+                <div className={"flex gap-8 justify-center my-12"}>
+                    {data.map((product, i) => {
+                        return (
+                            <div className={"w-[20vw]"} key={i}>
+                                <ProductCard prod={product}/>
+                            </div>
+                        )
+                    })}
+                </div>
+                {props.more && <div className='flex justify-center mb-12'>
+                    <Link href={props.href}><a className='p-2 text-sm uppercase bg-black/70 text-white'>&gt;&nbsp;&nbsp;click here to load more&nbsp;&nbsp;&lt;</a></Link>
+                </div>
+                }
             </div>
-            {props.more && <div className='flex justify-center mb-12'>
-                <Link href={props.href}><a className='p-2 text-sm uppercase bg-black/70 text-white'>&gt;&nbsp;&nbsp;click here to load more&nbsp;&nbsp;&lt;</a></Link>
-            </div>
-            }
-        </div>
-    );
+        );
+    else
+        return <></>
 };
 
 const mapStateToProps = (state) => {

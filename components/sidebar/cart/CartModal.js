@@ -12,6 +12,7 @@ import {useRouter} from "next/router";
 import {refreshCart} from "../../../helpers/addTocart";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
+import {addCheckoutIntent} from "../../../ReduxStore/reducers/intentSlice";
 
 const BareHeading = () => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -45,6 +46,13 @@ function CartModal(props) {
     props.shoppingCart.cart.forEach((item) => {
         total += item.qty * (props.userConfig.currCurrency === "inr" ? item.price : item.usd_price)
     })
+
+    const checkout = () =>{
+        let url = props.userData.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"
+        props.addCheckoutIntent()
+        router.push(url)
+    }
+
     const mobileView = () => {
         let returnValue =
             <div className="max-w-[400px] h-full bg-white overflow-y-auto overflow-x-hidden m-1 p-2">
@@ -103,12 +111,12 @@ function CartModal(props) {
                                 Shopping
                             </a>
                         </Link>
-                        <Link href={props.userData.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
+                        <div onClick={checkout}>
                             <a className="flex-1 text-white bg-black w-full px-1 py-1 text-xs">
                                 PROCEED&nbsp;TO<br/>
                                 CHECKOUT
                             </a>
-                        </Link>
+                        </div>
                     </div> : null
                 }
                 <ReturnAndFaq/>
@@ -136,9 +144,9 @@ function CartModal(props) {
                     <p className={`text-sm mb-6`}>YOUR CART {qtyInCart(props.shoppingCart.cart)}</p>
                     {(props.shoppingCart.cart.length > 0)
                         ? <>
-                            <Link href={props.userData.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
+                            <div onClick={checkout}>
                                 <a className="inline-flex mb-5 text-white bg-black px-5 py-3">CHECKOUT</a>
-                            </Link>
+                            </div>
                             <ProductCartView/>
                         </>
                         : <>
@@ -162,9 +170,9 @@ function CartModal(props) {
                     }
 
                     {(props.shoppingCart.cart.length > 0)
-                        ? <Link href={props.userData.userServe.email ? "/users/checkoutpage" : "/order/guestcheckout"}>
+                        ? <div onClick={checkout}>
                             <a className="inline-flex my-5 text-white bg-black px-5 py-3">CHECKOUT</a>
-                        </Link>
+                        </div>
                         : null
                     }
                 </div>
@@ -187,4 +195,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps,{setCart})(CartModal);
+export default connect(mapStateToProps,{setCart,addCheckoutIntent})(CartModal);

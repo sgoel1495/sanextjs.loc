@@ -15,6 +15,7 @@ import {addToCart} from "../../../helpers/addTocart";
 import {connect} from "react-redux";
 import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import {isInStock} from "../../../helpers/returnSizes";
+import {addCartIntent} from "../../../ReduxStore/reducers/intentSlice";
 
 
 function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
@@ -123,9 +124,14 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
             "dress_length": favProductData[index].dress_length
         }
         addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
-            setMessage(`${favProductData[index].title}: Size ${selectedSize[favProductData[index].product_id]} moved to your Bag!`)
+            if (r) {
+                setMessage(`${favProductData[index].title}: Size ${selectedSize[favProductData[index].product_id]} moved to your Bag!`)
+                removeFromFav(index)
+                props.addCartIntent()
+            } else {
+                setMessage("Please try again")
+            }
             setShow(true)
-            removeFromFav(index)
         })
 
     }
@@ -186,6 +192,7 @@ function UsersFavouritesPage({appConfig, userData, shoppingCart, ...props}) {
             if (resp) {
                 msg.push(<p>{`${favProductData[i].title}: Size ${selectedSize[favProductData[i].product_id]} moved to your Bag!`}</p>)
                 toBeRemoved.push(favProductData[i].product_id)
+                props.addCartIntent()
             }
         }
         if (msg.length) {
@@ -304,4 +311,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(UsersFavouritesPage);
+export default connect(mapStateToProps, {setCart, addCartIntent})(UsersFavouritesPage);

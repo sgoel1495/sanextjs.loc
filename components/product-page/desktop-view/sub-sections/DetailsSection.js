@@ -1,11 +1,9 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import Image from "next/image";
-import AppWideContext from "../../../../store/AppWideContext";
 import Link from "next/link";
 import returnSizes, {isInStock} from "../../../../helpers/returnSizes";
 import {addToCart, getUserObject} from "../../../../helpers/addTocart";
 import Toast from "../../../common/Toast";
-import currencyFormatter from "../../../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 import ReactDom from "react-dom";
@@ -13,12 +11,10 @@ import NotifyMeModal from "../../../common/NotifyMeModal";
 import SizeGuide from "../../SizeGuide";
 import AskStylist from "../AskStylist";
 import PriceDisplay from "../../../common/PriceDisplay";
+import {addCartIntent} from "../../../../ReduxStore/reducers/intentSlice";
 
 const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, ...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-
-    const currCurrency = props.userConfig.currCurrency;
-    const curr = currCurrency.toUpperCase();
 
     const [selected, setSelected] = useState(0)
     const [toastMsg, setToastMsg] = useState(null)
@@ -68,7 +64,13 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, .
             dress_length: ""
         }
         addToCart(props.userData, props.shoppingCart.cart, props.appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
-            setToastMsg("Added to Cart")
+            if(r) {
+                setToastMsg("Added to Cart")
+                props.addCartIntent()
+            }
+            else{
+                setToastMsg("Please try again")
+            }
             setShowToast(true)
         })
     }
@@ -227,4 +229,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(DetailsSection);
+export default connect(mapStateToProps, {setCart,addCartIntent})(DetailsSection);

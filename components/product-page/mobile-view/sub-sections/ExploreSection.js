@@ -6,6 +6,7 @@ import Link from "next/link";
 import appSettings from "../../../../store/appSettings";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {connect} from "react-redux";
+import PriceDisplay from "../../../common/PriceDisplay";
 
 const ExploreSection = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -48,21 +49,21 @@ const ExploreSection = (props) => {
                                 alt={product["old_product_id"]}
                             />
                             {!props.minimal && product.is_prod_new &&
-                            <span className={"absolute left-0 top-[50%] translate-y-[-50%] text-[10px] text-white px-1.5 bg-[#c69565] tracking-wider"}>NEW</span>}
+                                <span className={"absolute left-0 top-[50%] translate-y-[-50%] text-[10px] text-white px-1.5 bg-[#c69565] tracking-wider"}>NEW</span>}
 
                         </div>
                         {
                             props.minimal || <>
                                 <span className={"block text-sm"}>{product["name"]}</span>
                                 <span className={"block text-[10px] truncate "}>{product["tag_line"]}</span>
-                                <span className={"block text-[10px]"}>{currencySymbol} {currCurrency === "inr" ? product.price : product.usd_price}</span>
+                                <span className={"block text-[10px]"}><PriceDisplay prod={product}/></span>
                             </>
                         }
 
                     </a>
                 </Link>
             })}
-            <Link href={""}>
+            <Link href={props.href}>
                 <a className={"block"}>
                     <div
                         className={"w-full aspect-square border-2 border-white rounded-[35%] shadow-sm grid place-items-center text-center content-center tracking-widest uppercase text-[9px]"}>
@@ -94,7 +95,7 @@ const ExploreSection = (props) => {
                                             alt={product.asset_id}
                                         />
                                         {product.is_prod_new &&
-                                        <span className={"absolute left-0 top-[50%] translate-y-[-50%] text-[10px] text-white px-1.5 bg-[#c69565] tracking-wider"}>NEW</span>}
+                                            <span className={"absolute left-0 top-[50%] translate-y-[-50%] text-[10px] text-white px-1.5 bg-[#c69565] tracking-wider"}>NEW</span>}
                                     </span>
                                     <span className={"text-[10px] text-[#8c8987] uppercase"}>{product.name}</span>
                                 </span>
@@ -105,11 +106,14 @@ const ExploreSection = (props) => {
             </Swiper>
         </div>
 
-    return <div className={"p-2"}>
-        <span className={"block text-xl text-center"}>{props.title}</span>
-        <span className={"block text-center uppercase text-[9px] tracking-[1.5px]"}>{props.subTitle}</span>
-        {body}
-    </div>
+    if (data.length)
+        return <div className={"p-2"}>
+            <span className={"block text-xl text-center"}>{props.title}</span>
+            <span className={"block text-center uppercase text-[9px] tracking-[1.5px]"}>{props.subTitle}</span>
+            {body}
+        </div>
+    else
+        return <></>
 
 };
 

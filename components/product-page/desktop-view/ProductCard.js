@@ -13,7 +13,7 @@ const ShopDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod,portrait}) => {
+const ProductCard = ({prod, portrait}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [expandShop, setExpandShop] = useState(null);
 
@@ -39,7 +39,7 @@ const ProductCard = ({prod,portrait}) => {
                                 <div className={`font-800 bg-black text-white h-full flex flex-col gap-2 justify-center leading-none`}>
                                     <span className={`uppercase`}>Add to bag</span>
                                     <p className={`text-xs`}>
-                                        <PriceDisplay prod={prod} isSale={prod.product_id.split("-")[1]==="Sale"}/>
+                                        <PriceDisplay prod={prod} isSale={prod.product_id ? prod.product_id.split("-")[1] === "Sale" : false}/>
                                     </p>
                                 </div>
                             </>

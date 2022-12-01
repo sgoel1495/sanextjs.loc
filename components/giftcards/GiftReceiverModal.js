@@ -6,6 +6,7 @@ import {useRouter} from "next/router";
 import {addToCart} from "../../helpers/addTocart";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
+import {addCartIntent} from "../../ReduxStore/reducers/intentSlice";
 
 const GiftReceiverModal = (props) => {
     const router = useRouter();
@@ -115,6 +116,9 @@ const GiftReceiverModal = (props) => {
             ...payload
         }
         addToCart(props.userData, props.shoppingCart.cart, props.appConfig.apiToken, props.setCart, {giftcard_details: displayCart}, "addGiftToCart").then(r => {
+            if (r) {
+                props.addCartIntent()
+            }
         })
         if (props.isMobile) {
             router.push("/homepage/cart")
@@ -356,4 +360,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps,{setCart})(GiftReceiverModal);
+export default connect(mapStateToProps, {setCart, addCartIntent})(GiftReceiverModal);
