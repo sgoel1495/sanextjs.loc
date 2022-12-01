@@ -1,8 +1,6 @@
-import React, {Fragment, useContext, useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import appSettings from "../../store/appSettings";
-import AppWideContext from "../../store/AppWideContext";
 import returnSizes, {getQty, isInStock} from "../../helpers/returnSizes";
 import ReactDom from "react-dom";
 import WishListButton from "../common/WishListButton";
@@ -10,10 +8,10 @@ import NotifyMeModal from "../common/NotifyMeModal";
 import Toast from "../common/Toast";
 import {addToCart, getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
-import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 import PriceDisplay from "../common/PriceDisplay";
+import {addCartIntent} from "../../ReduxStore/reducers/intentSlice";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -96,7 +94,12 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
             "dress_length": ""
         }
         addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
-            setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
+            if(r){
+                setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
+                props.addCartIntent()
+            } else{
+                setToastMsg("Please try again")
+            }
             setShowToast(true)
         })
     }
@@ -211,4 +214,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(ProductCard);
+export default connect(mapStateToProps, {setCart,addCartIntent})(ProductCard);

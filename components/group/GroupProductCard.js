@@ -12,6 +12,7 @@ import NotifyMeModal from "../common/NotifyMeModal";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 import PriceDisplay from "../common/PriceDisplay";
+import {addCartIntent} from "../../ReduxStore/reducers/intentSlice";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[26/43]" : "aspect-square"]}>
@@ -55,7 +56,9 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}  ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`} onClick={() => prod.hide_sizes.includes(size.toLowerCase())?{}:saveToCart(size)}>
+                <button
+                    className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}  ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`}
+                    onClick={() => prod.hide_sizes.includes(size.toLowerCase()) ? {} : saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -70,13 +73,12 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
             router.push("/" + prod.asset_id);
             return
         }
-        if(size){
+        if (size) {
             setSelectedSize(size)
             if (!addToCartClick) {
                 return
             }
-        }
-        else{
+        } else {
             setAddToCartClick(true)
             if (!selectedSize) {
                 setShowSize(true)
@@ -93,69 +95,16 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
             "dress_length": ""
         }
         addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
-            setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
+            if (r) {
+                setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
+                props.addCartIntent()
+            } else {
+                setToastMsg(`Please try again`)
+            }
             setShowToast(true)
+
         })
     }
-    // if (isMobile) {
-    //     if (wide) {
-    //         return <div className={"relative rounded-3xl bg-white overflow-hidden mx-10 my-6 shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]"}>
-    //             {prod.is_prod_new && <span
-    //                 className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
-    //             <Link href={"/" + prod.asset_id}>
-    //                 <a className={`block z-0`} id={prod.asset_id}>
-    //                     <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} outOfStock={!isInStock(prod)}/>
-    //                     <div className={`flex px-5 items-center leading-none py-3`}>
-    //                         <div className='flex-1'>
-    //                             <p className={`font-600 font-cursive italic`}>{prod.name}</p>
-    //                             <p className={`text-[10px] font-500`}>{prod.tag_line}</p>
-    //                         </div>
-    //                         <div className='inline-flex flex-col items-center'>
-    //                             <p className={`text-xs`}>
-    //                                 {currencyFormatter(curr).format((currCurrency === "inr") ? prod.price : prod.usd_price).split(".")[0]}
-    //                             </p>
-    {/*                            <WishListButton pid={prod.asset_id} isMobile={true}/>*/}
-    {/*                        </div>*/}
-    {/*                    </div>*/}
-    {/*                </a>*/}
-    {/*            </Link>*/}
-    {/*        </div>*/}
-    //     }
-    //     return <div className={"relative"}>
-    //         <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true}/>
-    {/*        {prod.is_prod_new && <span*/}
-    //             className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 -left-2 font-bold"}>NEW</span>}
-    //         <Link href={"/" + prod.asset_id}>
-    //             <a className={`block text-center z-0`} id={prod.asset_id}>
-    //                 <div
-    //                     className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
-    //                     <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={true}
-    //                                         outOfStock={!isInStock(prod)}/>
-    //                 </div>
-    //                 <div className={`leading-none py-2`}>
-    //                     <p className={`text-sm font-600 font-cursive italic`}>{prod.name}</p>
-    //                     {prod.sale_price ? "" : <p className={`text-[10px] font-500`}>{prod.tag_line}</p>}
-    //                     <p className={`text-xs`}>
-    //                         <span>
-    //                             {
-    //                                 (currCurrency === "inr" || !prod.usd_price) ?
-    //                                     <>
-    //                                         <span className={prod.sale_price ? "line-through" : ""}>{currencyFormatter(curr).format(prod.price).split(".")[0]}</span>
-    //                                         {
-    //                                             prod.sale_price && <span className={"text-rose-600 ml-2 font-600 "}>{inr}{prod.sale_price}</span>
-    {/*                                        }*/}
-    {/*                                    </>*/}
-    {/*                                    :*/}
-    //                                     <>{usd} {prod.usd_price}</>
-    //                             }
-    //                         </span>
-    //                     </p>
-    //                 </div>
-    //             </a>
-    //         </Link>
-    //     </div>
-    //
-    // }
 
     return (
         <>
@@ -250,4 +199,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(GroupProductCard);
+export default connect(mapStateToProps, {setCart, addCartIntent})(GroupProductCard);

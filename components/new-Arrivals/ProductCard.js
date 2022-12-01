@@ -13,6 +13,7 @@ import {useRouter} from "next/router";
 import Toast from "../common/Toast";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 import PriceDisplay from "../common/PriceDisplay";
+import {addCartIntent} from "../../ReduxStore/reducers/intentSlice";
 
 const ArrivalDataBlockImage = (props) => (
     <span className={`block relative w-full h-full aspect-square`}>
@@ -20,7 +21,7 @@ const ArrivalDataBlockImage = (props) => (
     </span>
 )
 
-const ProductCard = ({prod, userData, shoppingCart, appConfig, setCart}) => {
+const ProductCard = ({prod, userData, shoppingCart, appConfig, setCart, addCartIntent}) => {
     const router = useRouter();
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const [isOver, setIsOver] = useState(false);
@@ -57,7 +58,12 @@ const ProductCard = ({prod, userData, shoppingCart, appConfig, setCart}) => {
             "dress_length": ""
         }
         addToCart(userData, shoppingCart.cart, appConfig.apiToken, setCart, {cart: cart}).then(r => {
-            setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
+            if (r) {
+                setToastMsg(`${prod.name}: Size ${size ? size : selectedSize} added to your Bag!`)
+                addCartIntent()
+            } else {
+                setToastMsg(`Please try again`)
+            }
             setShowToast(true)
         })
     }
@@ -67,7 +73,9 @@ const ProductCard = ({prod, userData, shoppingCart, appConfig, setCart}) => {
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}  ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`} onClick={() => prod.hide_sizes.includes(size.toLowerCase())?{}:saveToCart(size)}>
+                <button
+                    className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize === size) ? "border-black" : "border-transparent"}  ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`}
+                    onClick={() => prod.hide_sizes.includes(size.toLowerCase()) ? {} : saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -136,4 +144,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(ProductCard);
+export default connect(mapStateToProps, {setCart, addCartIntent})(ProductCard);

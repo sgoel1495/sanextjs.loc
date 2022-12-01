@@ -1,10 +1,17 @@
 import React from 'react';
 import Image from "next/image";
 import {useRouter} from "next/router";
+import {connect} from "react-redux";
+import {addOnPaymentIntent} from "../../../ReduxStore/reducers/intentSlice";
 
-const Index = () => {
+const Index = (props) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
     const router = useRouter();
+
+    React.useEffect(() => {
+        props.addOnPaymentIntent();
+    }, [])
+
     const onRedirect = (e) => {
         if (e.target.src.includes("saltattire")) {
             router.replace(e.target.src)
@@ -26,4 +33,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default connect(() => ({}), {addOnPaymentIntent})(Index);

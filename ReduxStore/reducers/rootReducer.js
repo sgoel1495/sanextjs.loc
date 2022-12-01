@@ -5,6 +5,7 @@ import shoppingCartSlice from "./shoppingCartSlice";
 import userConfigSlice from "./userConfigSlice";
 import orderSlice from "./orderSlice";
 import filterSlice from "./filterSlice";
+import intentSlice from "./intentSlice";
 
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     shoppingCart: shoppingCartSlice,
     userConfig: userConfigSlice,
     orderData: orderSlice,
-    filters: filterSlice
+    filters: filterSlice,
+    intent: intentSlice
 });
 export default rootReducer;

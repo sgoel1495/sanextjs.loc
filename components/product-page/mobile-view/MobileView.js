@@ -55,6 +55,7 @@ const MobileView = ({ hpid, data }) => {
                         "limit": 5,
                     }}
                     grid={true}
+                    href={"/best-"+data.category}
                 />
                 {data.fabric_code &&
                     <ExploreSection
@@ -83,6 +84,7 @@ const MobileView = ({ hpid, data }) => {
                     }}
                     grid={true}
                     minimal={true}
+                    href={"/best-selling"}
                 />
                 <NewArrivalsSection />
                 <AboutUs />

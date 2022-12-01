@@ -1,6 +1,4 @@
-import React, {Fragment, useCallback, useContext, useEffect, useState} from "react";
-import AppWideContext from "./store/AppWideContext";
-import Toast from "./components/common/Toast";
+import React, {Fragment} from "react";
 
 function CreateMyAccount({isMobile, createAccount, updateCreateAccount, error}) {
     const labelClass = "block font-500 mb-1";

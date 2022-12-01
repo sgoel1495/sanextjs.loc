@@ -735,6 +735,15 @@ export const apiDictionary = (word, apiToken = "", queryObject = {}) => {
             postFetcher.body = JSON.stringify(body);
             finalFetcher = {...postFetcher}
             break;
+        case  "intentToBuy":
+            url += "/intent_to_buy"
+            body = {
+                token: apiToken,
+                ...queryObject
+            };
+            postFetcher.body = JSON.stringify(body);
+            finalFetcher = {...postFetcher}
+            break;
 
         default:
             url = null;

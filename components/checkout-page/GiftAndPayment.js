@@ -11,6 +11,7 @@ import razorpayLogo from "../../public/assets/images/razorpay_logo.svg"
 import ccavenue from "../../public/assets/images/ccavenue.png"
 import Image from "next/image";
 import Loader from "../common/Loader";
+import {addBackFromPaymentIntent, addOnPaymentIntent} from "../../ReduxStore/reducers/intentSlice";
 
 function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummary, currentOrderId, ...props}) {
     const currencySymbol = userConfig.currSymbol;
@@ -98,6 +99,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
             },
             "modal": {
                 "ondismiss": function () {
+                    props.addBackFromPaymentIntent()
                     setLoading(false)
                     setPayOption(null)
                 }
@@ -113,10 +115,12 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         };
         let rzp1 = new Razorpay(options);
         rzp1.on('payment.failed', function (response) {
+            props.addBackFromPaymentIntent()
             setLoading(false)
             setPayOption(null)
         });
         rzp1.open()
+        props.addOnPaymentIntent()
     }
 
     //forBrowser
@@ -448,4 +452,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setOrderSummary})(GiftAndPayment);
+export default connect(mapStateToProps, {setOrderSummary,addBackFromPaymentIntent,addOnPaymentIntent})(GiftAndPayment);

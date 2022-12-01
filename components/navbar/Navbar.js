@@ -167,7 +167,7 @@ function Navbar(props) {
                             <SaltIcon type={props.type} isMobile={true}/>
                             <CurrencySwitcher isMobile={true}/>
                         </div>
-                        <p className={'text-xs'}>BESPOKE &amp; CUSTOM CLOTHING</p>
+                        <p className={'text-xs py-1 font-500 tracking-wide'}>BESPOKE &amp; CUSTOM CLOTHING</p>
                     </div>
                 </div>
                 <div className={"z-10 sticky top-0 pt-2 " + navStyle} style={{background: "var(--very-light-pink)"}}>

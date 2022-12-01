@@ -21,6 +21,7 @@ import {setCart} from "../../../ReduxStore/reducers/shoppingCartSlice";
 import NotifyMeModal from "../../common/NotifyMeModal";
 import {useRouter} from "next/router";
 import PriceDisplay from "../../common/PriceDisplay";
+import {addCartIntent} from "../../../ReduxStore/reducers/intentSlice";
 
 /**
  * @Sambhav look at line 61. We need a bar(border) above and below if the size has been selected
@@ -99,8 +100,13 @@ const DetailsCard = ({data, hpid, selectedSize, setSelectedSize, appConfig, user
             measurements = {...currMeasurement, "measure_id": measureID}
         }
         addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart, measurments: measurements}).then(r => {
-            setCurrentMeasurement({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length})
-            setToastMsg("Added to Cart")
+            if (r) {
+                setCurrentMeasurement({...emptyMeasurement, "selected_length": data.dress_length, "selected_sleeve": data.sleeve_length})
+                setToastMsg("Added to Cart")
+                props.addCartIntent()
+            } else {
+                setToastMsg("Please try again")
+            }
             setShowToast(true)
         })
     }
@@ -288,4 +294,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(DetailsCard);
+export default connect(mapStateToProps, {setCart,addCartIntent})(DetailsCard);

@@ -1,13 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Image from "next/image";
-import AppWideContext from "../../../../store/AppWideContext";
-import appSettings from "../../../../store/appSettings";
 import {connect} from "react-redux";
+import PriceDisplay from "../../../common/PriceDisplay";
 
 const CompleteLook = ({paired_products, id, userConfig}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
-    const currCurrency = userConfig.currCurrency;
-    const currencySymbol = userConfig.currSymbol;
     return (
         <div className="py-5">
             <span className="block text-center text-xl">Complete The Look</span>
@@ -28,9 +25,9 @@ const CompleteLook = ({paired_products, id, userConfig}) => {
                                                     <span className="block relative aspect-[2/3] w-1/3 border-2 border-white rounded-[8vw] overflow-hidden shadow-lg">
                                                         <Image src={WEBASSETS + product.asset_id} alt='' layout={"fill"} objectFit={`cover`}/>
                                                     </span>
-                                                    <span className="block">{product.name}</span>
-                                                    <span className="block">{product.tag_line}</span>
-                                                    <span className="block">{currencySymbol} {currCurrency === "inr" ? product.price : product.usd_price}</span>
+                                                    <span className="block text-xs font-cursive font-600 mt-2">{product.name}</span>
+                                                    <span className="block text-[8px]">{product.tag_line}</span>
+                                                    <span className="block text-[8px]"><PriceDisplay prod={product}/></span>
                                                 </div>
                                         })}
                                     </div>
@@ -42,7 +39,7 @@ const CompleteLook = ({paired_products, id, userConfig}) => {
                                     </div>
                                     <span className="block">{item.name}</span>
                                     <span className="block">{item.tag_line}</span>
-                                    <span className="block">{currencySymbol} {currCurrency === "inr" ? item.price : item.usd_price}</span>
+                                    <span className="block"><PriceDisplay prod={item}/></span>
                                 </div>
                         })
                     }

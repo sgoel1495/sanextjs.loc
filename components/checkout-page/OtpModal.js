@@ -2,7 +2,7 @@ import React, {Fragment, useCallback, useEffect, useState} from "react";
 import {apiCall} from "../../helpers/apiCall";
 import Toast from "../common/Toast";
 import Loader from "../common/Loader";
-import {clearCart, getUserObject} from "../../helpers/addTocart";
+import {getUserObject} from "../../helpers/addTocart";
 import {useRouter} from "next/router";
 import {updateUserDataAfterLogin} from "../../helpers/updateUserDataAfterLogin";
 import {saveCartMeasurements} from "../../helpers/measurementHelper";
@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 import {setUserState} from "../../ReduxStore/reducers/userSlice";
 import {setOrderHistory} from "../../ReduxStore/reducers/orderSlice";
+import {addBackFromPaymentIntent, addOnPaymentIntent} from "../../ReduxStore/reducers/intentSlice";
 
 function OtpModal(props) {
     const router = useRouter()
@@ -55,7 +56,7 @@ function OtpModal(props) {
 
     useEffect(() => {
         requestOTP()
-            .then(resp => console.log("OTP REQUEST SENT"))
+            .then(resp => props.addOnPaymentIntent())
     }, [])
 
     const verifyOtp = async () => {
@@ -71,12 +72,11 @@ function OtpModal(props) {
         const verifyCall = await apiCall("verifyOtp", props.appConfig.apiToken, queryObject)
         if (verifyCall.message
             && verifyCall.message === "OTP Verification Successful for COD Order and Order placed successfully") {
-            clearCart(props.userData, props.appConfig.apiToken, props.shoppingCart.cart, props.setCart)
             setShow(true)
             setMessage("OTP Verified")
             saveCartMeasurements(props.userData, props.appConfig.apiToken, props.shoppingCart.cart)
             if (props.userData.userServe.email) {
-                let updateData = await updateUserDataAfterLogin(props.userData.userServe, props.appConfig.apiToken, props.userData.measurements, props.shoppingCart.cart);
+                let updateData = await updateUserDataAfterLogin(props.userData.userServe, props.appConfig.apiToken, [], []);
                 props.setCart(updateData.shoppingCart)
                 props.setUserState(updateData.userState);
                 props.setOrderHistory(updateData.orderHistory);
@@ -91,13 +91,18 @@ function OtpModal(props) {
         setPlacing(false)
     }
 
+    const closeModal = () => {
+        props.addBackFromPaymentIntent()
+        props.closeModal()
+    }
+
     return (
         <Fragment>
             <div className={"bg-black/60 h-screen w-screen fixed inset-0 z-50 flex justify-center items-start" + [props.isMobile ? "" : " py-[5%] px-[10%]"]}
-                 onClick={props.closeModal}>
+                 onClick={closeModal}>
                 <div className={"bg-white relative flex flex-col items-center text-center " + [props.isMobile ? " h-full py-10 px-12" : " py-10 px-16"]}
                      onClick={e => e.stopPropagation()}>
-                    <button className="absolute top-2 right-5 text-2xl z-50" onClick={props.closeModal}>X</button>
+                    <button className="absolute top-2 right-5 text-2xl z-50" onClick={closeModal}>X</button>
                     <p className="text-2xl mb-4">OTP Verification For COD</p>
                     <p className="text-[#777] mb-8">We have sent an OTP for COD verification on your below<br/>mentioned details:</p>
                     <div className="inline-flex gap-2 items-center self-start text-[#777]">
@@ -144,4 +149,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart, setUserState,setOrderHistory})(OtpModal)
+export default connect(mapStateToProps, {setCart, setUserState, setOrderHistory, addBackFromPaymentIntent, addOnPaymentIntent})(OtpModal)

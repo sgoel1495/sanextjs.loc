@@ -12,7 +12,7 @@ export const userState = {
     userAddresses: [],
     wallet: {},
     measurements: {},
-    privilegedUser:{}
+    privilegedUser: {}
 }
 
 export const shoppingCartState = {
@@ -20,10 +20,19 @@ export const shoppingCartState = {
 }
 
 export const filterState = {
-    filter:[],
-    refreshFilter:false,
+    filter: [],
+    refreshFilter: false,
     filterCheckboxes: {},
-    sortBy:""
+    sortBy: ""
+}
+
+export const intentState = {
+    cart: 0,
+    checkout: 0,
+    withoutAddress: 0,
+    withAddress: 0,
+    onPayment: 0,
+    backFromPayment: 0
 }
 
 export const userConfigState = {

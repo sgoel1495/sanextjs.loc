@@ -18,11 +18,11 @@ const Index = ({isMobile, apiToken, userData, shoppingCart, setCart, setUserStat
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [payload, setPayload] = useReducer((state, e) => {
-        if (e.target.name === "otp") {
-            if (e.target.value.toString().length > 4) {
-                return state
-            }
-        }
+        // if (e.target.name === "otp") {
+        //     if (e.target.value.toString().length > 4) {
+        //         return state
+        //     }
+        // }
         return {...state, [e.target.name]: e.target.value}
     }, {
         otp: "",

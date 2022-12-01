@@ -10,6 +10,7 @@ import {saveFinalPayment, savePayment} from "./functions";
 import Image from "next/image";
 import razorpayLogo from "../../public/assets/images/razorpay_logo.svg";
 import ccavenue from "../../public/assets/images/ccavenue.png";
+import {addBackFromPaymentIntent, addOnPaymentIntent} from "../../ReduxStore/reducers/intentSlice";
 
 function ReviewOrder(props) {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -35,7 +36,7 @@ function ReviewOrder(props) {
             "image": WEBASSETS + `/assets/images/SALT_attire_logo.png`,
             "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
-                saveFinalPayment(props.userData, props.currentOrderId, response, props.appConfig.apiToken,"").then((resp) => {
+                saveFinalPayment(props.userData, props.currentOrderId, response, props.appConfig.apiToken, "").then((resp) => {
                     if (resp.status === 200) {
                         router.push("/salt/Thankyou?id=" + resp.order_id)
                     } else {
@@ -45,6 +46,7 @@ function ReviewOrder(props) {
             },
             "modal": {
                 "ondismiss": function () {
+                    props.addBackFromPaymentIntent()
                     setLoading(false)
                 }
             },
@@ -59,9 +61,11 @@ function ReviewOrder(props) {
         };
         let rzp1 = new Razorpay(options);
         rzp1.on('payment.failed', function (response) {
+            props.addBackFromPaymentIntent()
             setLoading(false)
         });
         rzp1.open()
+        props.addOnPaymentIntent()
     }
 
     const placeOrder = async (payWith) => {
@@ -221,4 +225,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setOrderSummary})(ReviewOrder);
+export default connect(mapStateToProps, {setOrderSummary, addBackFromPaymentIntent, addOnPaymentIntent})(ReviewOrder);

@@ -14,6 +14,7 @@ import currencyFormatter from "../../helpers/currencyFormatter";
 import {connect} from "react-redux";
 import {setCart} from "../../ReduxStore/reducers/shoppingCartSlice";
 import PriceDisplay from "../common/PriceDisplay";
+import {addCartIntent} from "../../ReduxStore/reducers/intentSlice";
 
 const ShopDataBlockImage = (props) => (
     <span className={`block relative w-full h-full ` + [props.portrait ? "aspect-[2/3]" : "aspect-square"]}>
@@ -45,7 +46,12 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                 dress_length: ""
             }
             addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart}).then(r => {
-                setToastMsg(`${prod.name}: Size ${currSize} added to your Bag!`)
+                if (r) {
+                    setToastMsg(`${prod.name}: Size ${currSize} added to your Bag!`)
+                    props.addCartIntent()
+                } else {
+                    setToastMsg(`Please try again`)
+                }
                 setShowToast(true)
             })
             setShowSize(false)
@@ -126,7 +132,9 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
         sizeData.forEach(size => {
             returnValue = <Fragment>
                 {returnValue}
-                <button className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"} ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`} onClick={() => prod.hide_sizes.includes(size.toLowerCase())?{}:saveToCart(size)}>
+                <button
+                    className={`border text-sm text-[#777] px-1 py-0.5 ${(selectedSize == size) ? "border-black" : "border-transparent"} ${prod.hide_sizes.includes(size.toLowerCase()) ? "line-through" : ""}`}
+                    onClick={() => prod.hide_sizes.includes(size.toLowerCase()) ? {} : saveToCart(size)}>
                     {size}
                 </button>
             </Fragment>
@@ -197,14 +205,14 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                 <p>{toastMsg}</p>
             </Toast>
             {showNotifyMe &&
-            ReactDom.createPortal(
-                <NotifyMeModal
-                    closeModal={closeModal.bind(this)}
-                    isMobile={appConfig.isMobile}
-                    userO={getUserObject(userData)}
-                    product={prod}
-                />,
-                document.getElementById("measurementmodal"))
+                ReactDom.createPortal(
+                    <NotifyMeModal
+                        closeModal={closeModal.bind(this)}
+                        isMobile={appConfig.isMobile}
+                        userO={getUserObject(userData)}
+                        product={prod}
+                    />,
+                    document.getElementById("measurementmodal"))
             }
 
         </>
@@ -219,4 +227,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {setCart})(MimotoProductCard);
+export default connect(mapStateToProps, {setCart, addCartIntent})(MimotoProductCard);

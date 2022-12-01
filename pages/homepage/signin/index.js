@@ -1,11 +1,10 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import PageHead from "../../../components/PageHead";
 import Footer from "../../../components/footer/Footer";
 import Header from "../../../components/navbar/Header";
 import {isMobile} from "react-device-detect";
 import UserLogin from "../../../components/user/login/UserLogin";
 import {useRouter} from "next/router";
-import AppWideContext from "../../../store/AppWideContext";
 import {connect} from "react-redux";
 
 function HomepageSignInPage({userData}) {

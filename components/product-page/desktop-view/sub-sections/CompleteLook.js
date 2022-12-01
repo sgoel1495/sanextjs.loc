@@ -8,10 +8,8 @@ const CompleteLook = ({data}) => {
             <BlockHeader space={'pt-16'} titleStyle="text-h4 font-500">Complete The LOOK</BlockHeader>
             <div className={"flex gap-8 justify-center my-12"}>
                 {data.paired_products.map((look, index) => {
-                    if (look)
+                    if (!!look)
                         return look.products.map((product, i) => {
-                            if (data.asset_id === product['old_product_id'])
-                                return <></>
                             product['asset_id'] = product['old_product_id']
                             return (
                                 <div className={"w-[20vw]"} key={index}>

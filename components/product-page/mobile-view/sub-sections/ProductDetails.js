@@ -1,7 +1,5 @@
-import React, {useContext, useEffect, useReducer, useState} from 'react';
+import React, {useState} from 'react';
 import WishListButton from '../../../common/WishListButton';
-import AppWideContext from '../../../../store/AppWideContext';
-import appSettings from '../../../../store/appSettings';
 import Image from 'next/image';
 import Accordion from '../../../common/accordion';
 import SizeSelect from "./SizeSelect";
@@ -17,6 +15,7 @@ import {connect} from "react-redux";
 import {setCart} from "../../../../ReduxStore/reducers/shoppingCartSlice";
 import returnSizes, {isInStock} from "../../../../helpers/returnSizes";
 import PriceDisplay from "../../../common/PriceDisplay";
+import {addCartIntent} from "../../../../ReduxStore/reducers/intentSlice";
 
 const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) => {
     const WEBASSETS = process.env.NEXT_PUBLIC_WEBASSETS;
@@ -70,6 +69,9 @@ const ProductDetails = ({data, hpid, appConfig,userData,shoppingCart,...props}) 
             measurements = {...currentMeasurement}
         }
         addToCart(userData, shoppingCart.cart, appConfig.apiToken, props.setCart, {cart: cart, measurments: measurements}).then(r => {
+            if(r){
+                props.addCartIntent()
+            }
         })
         router.push("/homepage/cart")
     }
@@ -304,4 +306,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps,{setCart})(ProductDetails);
+export default connect(mapStateToProps,{setCart,addCartIntent})(ProductDetails);
