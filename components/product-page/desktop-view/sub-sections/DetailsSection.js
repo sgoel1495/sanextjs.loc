@@ -116,7 +116,7 @@ const DetailsSection = ({theme, data, selectedSize, setSelectedSize, hasLooks, .
 
                 }
                 {
-                    data.show_sale_price === "true" || data.product_id.split("-")[1] === "Sale" && <div className={"text-center mb-3"}>
+                    ((data.show_sale_price && data.show_sale_price.toString() === "true") || data.product_id.split("-")[1] === "Sale") && <div className={"text-center mb-3"}>
                         <p className="text-[#f05c74] text-sm font-500">NOT VALID FOR RETURN / EXCHANGE</p>
                     </div>
                 }
