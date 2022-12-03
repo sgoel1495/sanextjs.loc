@@ -43,7 +43,7 @@ const AppWrapper = (props) => {
         let flag = true;
         if (userData) {
             if (userData.userServe.email) {
-                updateUserDataAfterLogin(userData.userServe, appConfig.apiToken, userData.measurements, shoppingCart.cart).then(updateData => {
+                updateUserDataAfterLogin(userData.userServe, appConfig.apiToken, [], []).then(updateData => {
                     props.setCart(updateData.shoppingCart)
                     props.setUserState(updateData.userState);
                     props.setOrderHistory(updateData.orderHistory);

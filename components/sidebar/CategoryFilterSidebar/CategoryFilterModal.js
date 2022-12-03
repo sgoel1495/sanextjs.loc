@@ -1,6 +1,4 @@
-import {useRouter} from "next/router";
 import React, {Fragment, useState} from "react";
-import {apiCall} from "../../../helpers/apiCall";
 import DrawerSort from "./DrawerSort";
 import ShowFilters from "./ShowFilters";
 import {connect} from "react-redux";
@@ -8,8 +6,6 @@ import {applyFilters, setFilter, setFilterCheckbox, setSortBy} from "../../../Re
 
 
 function CategoryFilterModal(props) {
-    const router = useRouter()
-
     const [checkedBoxes, setCheckedBoxes] = useState(props.filterCheckboxes);
 
     const closeModalAndApplyFilter = () => {

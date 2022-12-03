@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {setFilterCheckbox} from "../../../ReduxStore/reducers/filterSlice";
+import {colorMap} from "../../../helpers/colorMapping";
 
 function Checkbox(props) {
     const [isChecked, setIsChecked] = useState(false)
@@ -18,7 +19,6 @@ function Checkbox(props) {
 
     const inputClass = `text-black border-black/20 focus:ring-offset-0 focus:ring-0 cursor-pointer`
     const inputMobileClass = `text-[#faf4f0] h-5 w-5 border-[#997756] bg-[#faf4f0] checked:!border-[2px] checked:!border-white checked:!bg-[#99775666] mobileCheckbox focus:ring-offset-0 focus:ring-0 cursor-pointer`
-
     return (
         <div className="relative flex gap-2 items-center justify-start leading-none" key={props.item.name + props.filter}>
             <input
@@ -29,6 +29,9 @@ function Checkbox(props) {
                 id={props.item.name + props.filter}
                 name={props.item.name + props.filter}
             />
+            {
+                props.item.name === "color" && <span className={"h-4 aspect-square rounded-full"} style={colorMap[props.filter.replace(" ","-")]}/>
+            }
             <label htmlFor={props.item.name + props.filter} className={`block capitalize text-sm`}>{props.filter}</label>
             <span className={`text-black/50 text-xs font-600`}>({props.count})</span>
         </div>
