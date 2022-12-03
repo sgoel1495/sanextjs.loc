@@ -4,11 +4,9 @@ import Footer from "../../../components/footer/Footer";
 import Image from "next/image";
 import Header from "../../../components/navbar/Header";
 import HomePageHeaderSwiper from "../../../components/swipers/HomePageHeaderSwiper";
-import BlockHeader from "../../../components/common/blockHeader";
 import ProductCard from "../../../components/new-Arrivals/ProductCard";
 import MobileProductCard from "../../../components/shop-page/ProductCard"
 import {apiCall} from "../../../helpers/apiCall";
-import {isMobile} from "react-device-detect";
 import Loader from "../../../components/common/Loader";
 import {connect} from "react-redux";
 
@@ -45,8 +43,8 @@ function NewArrivalsAllPage(props) {
         setLoading(true);
         apiCall("getProducts", props.appConfig.apiToken, {
             category: "new-arrivals",
-            limit: props.appConfig.isMobile ? 90 : 18,
-            skip: page * (props.appConfig.isMobile ? 90 : 18)
+            limit: 18,
+            skip: 18
         })
             .then(resp => {
                 if (resp.response && resp.response.data) {
@@ -105,7 +103,7 @@ function NewArrivalsAllPage(props) {
                         </div>
                     })}
                     {
-                        total <= page * 90 || <div className={`flex justify-center col-span-2`}>
+                        total <= page * 18 || <div className={`flex justify-center col-span-2`}>
                             <button className={"uppercase text-[10px] tracking-widest text-[#595765] bg-[#FAEDE3] border-4 border-white rounded-3xl py-2 px-10"}
                                     onClick={() => fetchData({isIntersecting: true})} disabled={loading}>
                                 {
@@ -166,7 +164,7 @@ export async function getStaticProps() {
         let gotData = false;
         const callObject = await apiCall("getProducts", process.env.API_TOKEN, {
             category: "new-arrivals",
-            limit: 90,
+            limit: 18,
             skip: 0
         })
         if (callObject.hasOwnProperty("response") && callObject.response.hasOwnProperty("data"))
