@@ -29,18 +29,20 @@ const ProductCard = ({product, appConfig}) => {
 
     return (
         <Link href={product}>
-            <div className={"flex w-80 border-2 border-grey mr-2"}>
-                <div className={"p-5 w-40"}>
+            <a target="_blank">
+                <div className={"flex w-80 border-2 border-grey mr-2"}>
+                    <div className={"p-5 w-40"}>
                     <span className={`block relative w-full aspect-square`}>
                         <Image src={WEBASSETS + "/assets/" + product + "/square-crop.jpg"} layout={`fill`} objectFit={`cover`}/>
                     </span>
+                    </div>
+                    <div className={"w-40 flex flex-col justify-center items-center"}>
+                        <div className={"text-base font-600"}>{data.name}</div>
+                        <div className={"text-xs font-200"}>{data.tag_line}</div>
+                        <div className={"text-xs font-900"}><PriceDisplay prod={data}/></div>
+                    </div>
                 </div>
-                <div className={"w-40 flex flex-col justify-center items-center"}>
-                    <div className={"text-base font-600"}>{data.name}</div>
-                    <div className={"text-xs font-200"}>{data.tag_line}</div>
-                    <div className={"text-xs font-900"}><PriceDisplay prod={data}/></div>
-                </div>
-            </div>
+            </a>
         </Link>
     );
 };

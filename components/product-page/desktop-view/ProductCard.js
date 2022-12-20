@@ -20,7 +20,7 @@ const ProductCard = ({prod, portrait}) => {
 
     return (
         <Link href={"/" + prod.asset_id}>
-            <a className={`block bg-white text-center relative z-0`} id={prod.asset_id}>
+            <a className={`block bg-white text-center relative z-0`} id={prod.asset_id} target="_blank">
                 <div
                     onMouseEnter={() => {
                         setExpandShop(true)
