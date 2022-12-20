@@ -152,14 +152,20 @@ const MyOrderProductCard = ({product, itemIndex, isMobile, getOrderHistory, user
             </div>
         </div>
         <div className={"flex flex-col items-center flex-1"}>
-            <button
-                onClick={() => {
-                    setShowModal(3)
-                }}
-                className="ml-3 w-[60%] bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-2"
-            >
-                CANCEL
-            </button>
+            {
+                Object.keys(product.item[itemIndex].item_status).length <= 1 ?
+                    <button
+                        onClick={() => {
+                            setShowModal(3)
+                        }}
+                        className="ml-3 w-[60%] bg-black px-4 py-1.5 text-white uppercase text-sm font-500 shadow-md my-2"
+                    >
+                        CANCEL
+                    </button>
+                    :
+                    null
+            }
+
             <button
                 onClick={() => {
                     setShowModal(4)
