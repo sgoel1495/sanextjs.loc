@@ -123,6 +123,12 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
         props.addOnPaymentIntent()
     }
 
+    useEffect(()=>{
+        if(!showOTPModal){
+            setLoading(false)
+        }
+    },[showOTPModal])
+
     //forBrowser
     const placeOrder = async (payWith = "") => {
         if (isGift) {
@@ -329,7 +335,7 @@ function GiftAndPayment({setActive, appConfig, userData, userConfig, orderSummar
                 !appConfig.isMobile && payMode && ReactDOM.createPortal(<>
                     {
                         payMode === "COD" ?
-                            <button className='my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer'
+                            <button className='flex my-5 text-white bg-black px-5 py-3 w-full text-center uppercase cursor-pointer justify-center items-center'
                                     onClick={() => placeOrder("")} disabled={loading}>
                                 {
                                     loading && <Loader className={"mr-2"}/>
