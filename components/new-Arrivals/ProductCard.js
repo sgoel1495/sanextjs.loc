@@ -115,7 +115,7 @@ const ProductCard = ({prod, userData, shoppingCart, appConfig, setCart, addCartI
             setIsOver(false)
         }}>
             <Link href={"/" + prod.asset_id}>
-                <a className={"block bg-white text-center relative z-0"}>
+                <a className={"block bg-white text-center relative z-0"} target="_blank">
                     <WishlistButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id}/>
                     <ArrivalDataBlockImage src={imgPath} alt={prod.name}/>
                 </a>

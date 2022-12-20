@@ -1,13 +1,12 @@
 import PageHead from "../../../components/PageHead";
 import Header from "../../../components/navbar/Header";
 import Link from "next/link";
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import OrderSummary from "../../../components/checkout-page/OrderSummary";
 import ShippingAddress from "../../../components/checkout-page/ShippingAddress/ShippingAddress";
 import PromoCode from "../../../components/checkout-page/PromoCode";
 import GiftAndPayment from "../../../components/checkout-page/GiftAndPayment";
 import ReviewOrder from "../../../components/checkout-page/ReviewOrder";
-import AppWideContext from "../../../store/AppWideContext";
 import {apiCall} from "../../../helpers/apiCall";
 import Image from "next/image";
 import AdditionalSizeDetail from "../../../components/checkout-page/mobile-view/AdditionalSizeDetails";

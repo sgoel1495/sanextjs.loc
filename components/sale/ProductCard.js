@@ -108,7 +108,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
         return <div className={"relative"}>
             <WishListButton className={`absolute left-2 top-2 z-10`} pid={prod.asset_id} isMobile={true}/>
             <Link href={"/" + (prod.is_sale ? prod.product_id : prod.asset_id)}>
-                <a className={`block text-center z-0`} id={prod.asset_id}>
+                <a className={`block text-center z-0`} id={prod.asset_id} target="_blank">
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
                         <ShopDataBlockImage src={WEBASSETS + prod.look_thumb} alt={prod.name} portrait={true} outOfStock={!isInStock(prod)}/>
@@ -145,7 +145,7 @@ const ProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData, sho
                 >
                     <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id} isMobile={false}/>
                     <Link href={"/" + prod.product_id}>
-                        <a>
+                        <a target="_blank">
                             <ShopDataBlockImage
                                 src={WEBASSETS + (expandShop ? prod.look_mo_thumb : prod.look_thumb)}
                                 alt={prod.name} portrait={portrait}/>

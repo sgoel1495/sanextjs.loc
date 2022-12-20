@@ -122,7 +122,7 @@ const GroupProductCard = ({prod, isMobile, wide, portrait, isAccessory, userData
                 >
                     <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id} isMobile={false}/>
                     <Link href={"/" + prod.asset_id}>
-                        <a>
+                        <a target="_blank">
                             <ShopDataBlockImage
                                 src={WEBASSETS + "/assets/" + prod.asset_id + "/thumb.jpg"}
                                 alt={prod.seo ? prod.seo.imgalt : prod.name} portrait={portrait} expandShop={expandShop}

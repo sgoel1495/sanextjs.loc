@@ -73,7 +73,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                 {prod.is_prod_new && <span
                     className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 left-0 font-bold"}>NEW</span>}
                 <Link href={"/" + prod.asset_id}>
-                    <a className={`block z-0`} id={prod.asset_id}>
+                    <a className={`block z-0`} id={prod.asset_id} target="_blank">
                         <ShopDataBlockImage src={WEBASSETS + prod.single_view_img} alt={prod.name}/>
                         <div className={`flex px-5 items-center leading-none py-3`}>
                             <div className='flex-1'>
@@ -96,7 +96,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
             {prod.is_prod_new && <span
                 className={"absolute text-white px-1.5 z-10 bg-black text-[8px] top-9 -left-2 font-bold"}>NEW</span>}
             <Link href={"/" + prod.asset_id}>
-                <a className={`block text-center z-0`} id={prod.asset_id}>
+                <a className={`block text-center z-0`} id={prod.asset_id} target="_blank">
                     <div
                         className={`rounded-3xl bg-white overflow-hidden border-2 border-white shadow-[24.7px_24.7px_49px_1px_rgb(0,0,0,0.07)]`}>
                         <ShopDataBlockImage src={WEBASSETS + prod.double_view_img} alt={prod.name} portrait={true}/>
@@ -161,7 +161,7 @@ const MimotoProductCard = ({prod, isMobile, wide, portrait, userData, shoppingCa
                 >
                     <WishListButton className={`absolute right-4 top-4 z-10`} pid={prod.asset_id}/>
                     <Link href={"/" + prod.asset_id}>
-                        <a>
+                        <a target="_blank">
                             <ShopDataBlockImage
                                 src={WEBASSETS + "/assets/" + prod.asset_id + (expandShop ? "/mo.new.jpg" : "/new.jpg")}
                                 alt={prod.name} portrait={portrait}/>
