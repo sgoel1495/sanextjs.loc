@@ -142,15 +142,15 @@ function SizeGuide({closeModal, isMobile}) {
                                         {
                                             row.map((cell, cellIndex) => {
                                                 if (cellIndex === 0) {
-                                                    return <th>{cell}</th>
+                                                    return <th key={cellIndex}>{cell}</th>
                                                 } else {
                                                     if (cell === "" && item.columns[cellIndex - 1] !== "") {
                                                         if (rowIndex === 0) {
-                                                            return <td rowSpan={item.rows.length + (item.rows[item.rows.length - 1][0] === "TAILORED" ? -1 : 0)}>Standard lengths
+                                                            return <td rowSpan={item.rows.length + (item.rows[item.rows.length - 1][0] === "TAILORED" ? -1 : 0)} key={cellIndex}>Standard lengths
                                                                 fit average heights of 5&apos;2&quot; to 5&apos;4&quot;</td>
                                                         }
                                                     } else {
-                                                        return <td colSpan={row.length === 2 ? item.columns.length : ""}>{cell}</td>
+                                                        return <td colSpan={row.length === 2 ? item.columns.length : ""} key={cellIndex}>{cell}</td>
                                                     }
                                                 }
                                             })
